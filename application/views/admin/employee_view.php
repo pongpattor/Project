@@ -1,0 +1,47 @@
+<h1 class="mt-4">พนักงาน</h1>
+<div class="row ">
+    <div class="col d-flex flex-row-reverse">
+        <div class="p-2"><a href="<?= site_url('admin/admin/addEmployee'); ?>" class="nav-link btn btn-info">เพิ่มพนักงาน</a></div>
+    </div>
+
+</div>
+<table id="selectedColumn" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead class="thead-dark">
+        <tr>
+            <th style="text-align: center;">รหัสประจำตัวพนักงาน
+            </th>
+            <th style="text-align: center;">ชื่อ
+            </th>
+            <th style="text-align: center;">นามสกุล
+            </th>
+            <th style="text-align: center;">อีเมล
+            </th>
+            <th style="text-align: center;">เบอร์โทรศัพท์
+            </th>
+            <th style="text-align: center;">ตำแหน่ง
+            </th>
+            <th style="text-align: center;">เงินเดือน
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($employee as $row) : ?>
+            <tr>
+                <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->LASTNAME ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->TEL ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->POSITION ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>
+                <td>
+                    <center>
+                        <button class="btn btn-warning col-5" style="text-align: center;">แก้ไข</button>
+                        <button class="btn btn-danger col-5" style="text-align: center;">ลบ</button>
+                    </center>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
