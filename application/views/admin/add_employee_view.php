@@ -114,7 +114,12 @@
                 <input type="number" name="price" class="form-control" min="0">
             </div>
         </div>
-     
+        <div class="row justify-content-center">
+            <div class="col-5 ">
+                <label>รูปภาพ </label>
+                <input type="file" name="price" class="form-control" >
+            </div>
+        </div>
 
         <br>
         <div class="row justify-content-center">
