@@ -1,6 +1,7 @@
 <br>
 <div class="container" style="background-color: ghostwhite;">
     <h3>สมัครสมาชิก</h3>
+    <?php echo validation_errors('<div>Hello</div>'); ?>
     <form action="<?= site_url('user/register'); ?>" method="POST">
         <div class="row justify-content-center">
             <div class="col-5 ">
@@ -26,9 +27,7 @@
             <div class="col-5">
                 <label for="">เพศ</label>
             </div>
-
         </div>
-
         <div class="row justify-content-center">
             <div class="col-5 ">
                 <div class="form-check form-check-inline">
@@ -45,6 +44,7 @@
             <div class="col-5 ">
                 <label>ชื่อ </label>
                 <input type="text" name="firstname" class="form-control">
+                
             </div>
         </div>
         <div class="row justify-content-center">

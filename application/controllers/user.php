@@ -8,13 +8,14 @@ class user extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        $this->load->library('form_validation');
     }
 
     public function signup()
     {
-        $this->load->model('dependent_model');
+        $this->load->model('base_data_model');
         $data['page'] = "signup";
-        $data['province'] = $this->dependent_model->fetch_province();
+        $data['province'] = $this->base_data_model->fetch_province();
         $this->load->view('main', $data);
     }
 
@@ -40,46 +41,46 @@ class user extends CI_Controller
         $this->customer_model->insert('customer', $customer_detail);
         if (true) {
             return redirect(site_url());
+            echo "<script>alert('สมัครสำเร็จ')</script>";
+        }
+        else{
+            echo "False";
         }
     }
 
     public function amphur()
     {
-        $this->load->model('dependent_model');
+        $this->load->model('base_data_model');
         $province_id = $this->input->post('PROVINCE_ID');
-        $data['amphur'] = $this->dependent_model->fetch_amphur($province_id);
+        $data['amphur'] = $this->base_data_model->fetch_amphur($province_id);
         echo $data['amphur'];
     }
 
     public function district()
     {
-        $this->load->model('dependent_model');
+        $this->load->model('base_data_model');
         $amphur_id = $this->input->post("AMPHUR_ID");
-        $data['district'] = $this->dependent_model->fetch_district($amphur_id);
+        $data['district'] = $this->base_data_model->fetch_district($amphur_id);
         echo $data['district'];
     }
     public function postcode()
     {
-        $this->load->model('dependent_model');
+        $this->load->model('base_data_model');
         $district_id = $this->input->post("DISTRICT_ID");
-        $data['postcode'] = $this->dependent_model->fetch_postcode($district_id);
+        $data['postcode'] = $this->base_data_model->fetch_postcode($district_id);
         echo $data['postcode'];
     }
 
     public function department()
     {
-        $this->load->model('dependent_model');
+        $this->load->model('base_data_model');
         $department_id = $this->input->post('DEPARTMENT_ID');
-        $data['department'] = $this->dependent_model->fetch_position($department_id);
+        $data['department'] = $this->base_data_model->fetch_position($department_id);
         echo $data['department'];
     }
 
     public function test()
     {
-        // $this->load->model('dependent_model');
-        // $province_id = $this->input->post('PROVINCE_ID');
-        // $data['amphur'] = $this->dependent_model->fetch_amphur();
-        // echo $data['amphur'];
     }
 
     public function datetime()

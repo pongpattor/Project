@@ -6,7 +6,7 @@ class admin extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('customer_model');
+        $this->load->model('base_data_model');
         $this->load->model('crud_model');
 
     }
@@ -33,10 +33,10 @@ class admin extends CI_Controller{
     }
 
     public function addEmployee(){
-        $this->load->model('dependent_model');
+        $this->load->model('base_data_model');
         $this->load->model('crud_model');
         $data['page'] = 'add_employee_view';
-        $data['province'] = $this->dependent_model->fetch_province();
+        $data['province'] = $this->base_data_model->fetch_province();
         $data['department'] = $this->crud_model->findall('department');
         $this->load->view('admin/main_view',$data);
     }

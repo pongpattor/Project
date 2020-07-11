@@ -6,14 +6,17 @@ class customer_model extends CI_Model
 
   public function insert($table, $data = array())
   {
-    if($this->db->insert($table, $data))
-    {
-      return true;
+    $sql = "SELECT COUNT(USERNAME) as'co' FROM $table where USERNAME = '".$data['USERNAME']."'";
+    $data= $this->db->query($sql)->result();
+    foreach($data as $row){
+      if($row->co >0){
+        return false;
+      }
+      else{
+        $this->db->insert($table,$data);
+        return true;
+      }
     }
-    else{
-      return false;
-    }
-    
   }
 
   public function findall()

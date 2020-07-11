@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class dependent_model extends CI_Model
+class base_data_model extends CI_Model
 {
 
     function fetch_province()
