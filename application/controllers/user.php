@@ -38,14 +38,15 @@ class user extends CI_Controller
             'POSTCODE' => $this->input->post('postcode'),
             'CREATE_AT' => date('Y-m-d H:i:s')
         );
-        $this->customer_model->insert('customer', $customer_detail);
-        if (true) {
-            return redirect(site_url());
-            echo "<script>alert('สมัครสำเร็จ')</script>";
-        }
-        else{
-            echo "False";
-        }
+       $data['count'] = $this->customer_model->check_user($customer_detail['USERNAME']);
+       if($data['count']>0){
+           echo "<script>alert('ไอดีนี้ถูกใช้ไปแล้ว');</script>";
+           echo "<script>window.history.back();</script>";
+       }
+       else{
+           $this->customer_model->insert('customer',$customer_detail);
+           redirect(site_url());
+       }
     }
 
     public function amphur()
@@ -79,13 +80,14 @@ class user extends CI_Controller
         echo $data['department'];
     }
 
-    public function test()
+    public function test($username="")
     {
+        $this->load->model('customer_model');
+        $data['count'] = $this->customer_model->check_user('customer',$username);
+        print_r($data['count']);
     }
 
     public function datetime()
     {
-
-        echo date('Y-m-d H:i:s');
     }
 }

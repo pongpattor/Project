@@ -27,21 +27,29 @@
     </thead>
     <tbody>
         <?php foreach ($employee as $row) : ?>
-            <tr>
+            <tr id="<?= $row->ID ?>">
                 <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
                 <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME ?></td>
                 <td class="align-middle" style="text-align: center;"><?= $row->LASTNAME ?></td>
                 <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
                 <td class="align-middle" style="text-align: center;"><?= $row->TEL ?></td>
-                <td class="align-middle" style="text-align: center;"><?= $row->POSITION ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
                 <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>
                 <td>
                     <center>
-                        <button class="btn btn-warning col-5" style="text-align: center;">แก้ไข</button>
-                        <button class="btn btn-danger col-5" style="text-align: center;">ลบ</button>
+                        <a href="<?= site_url("admin/admin/editEmployee/$row->ID") ?>"><button class="btn btn-warning col-5" style="text-align: center;">แก้ไข</button></a>
+                        <button  class="btn btn-danger col-5 delete" style="text-align: center;" value="<?= $row->ID; ?>">ลบ</button>
                     </center>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+<script>
+    $(document).ready(function() {
+        $('.delete').click(function(){
+            var ID = $(this).parents("tr").attr("id");
+            
+        });
+    });
+</script>
