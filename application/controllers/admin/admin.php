@@ -76,10 +76,10 @@ class admin extends CI_Controller
         redirect(site_url('admin/admin/employee'));
     }
 
-    public function deleteEmployee($id){
+    public function deleteEmployee(){
         $delete_at = date('Y-m-d H:i:s');
-        $this->employee_model->delEmp($id,$delete_at);
-        return redirect(site_url('admin/admin/employee'));
+        $empID = $this->input->post('empID');
+        $this->employee_model->delEmp($empID,$delete_at);
     }
 
     public function editEmployee($id)

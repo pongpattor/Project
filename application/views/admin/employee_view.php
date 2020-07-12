@@ -38,7 +38,7 @@
                 <td>
                     <center>
                         <a href="<?= site_url("admin/admin/editEmployee/$row->ID") ?>"><button class="btn btn-warning col-5" style="text-align: center;">แก้ไข</button></a>
-                        <button  class="btn btn-danger col-5 delete" style="text-align: center;" value="<?= $row->ID; ?>">ลบ</button>
+                        <button class="btn btn-danger col-5 delete" style="text-align: center;" value="<?= $row->ID; ?>">ลบ</button>
                     </center>
                 </td>
             </tr>
@@ -47,9 +47,23 @@
 </table>
 <script>
     $(document).ready(function() {
-        $('.delete').click(function(){
+        $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
-            
+            var result = confirm(`ยืนยันการลบ ${ID}`);
+           if(result){
+               $.ajax({
+                url : "<?= site_url('admin/admin/deleteEmployee')?>",
+                method : "POST",
+                data : {empID : ID},
+                success:function(){
+                    alert(`ลบ ${ID} เสร็จสิ้น`);
+                    location.reload();
+                }
+               });
+           }
+
+        
+
         });
     });
 </script>
