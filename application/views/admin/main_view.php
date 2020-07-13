@@ -13,8 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <!-- SWAL CDN -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <style>
         .image-preview{
             width: 300px;
@@ -137,7 +136,7 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid">
+                <div id="content" class="container-fluid">
 
                     <?php $this->load->view('admin/' . $page); ?>
 

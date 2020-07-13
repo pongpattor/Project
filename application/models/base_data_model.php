@@ -34,6 +34,11 @@ class base_data_model extends CI_Model
         return $output;
     }
 
+    function  fetch_department(){
+        $sql = "SELECT * FROM department";
+        return $this->db->query($sql)->result();
+    }
+
     function fetch_postcode($district_id)
     {
         $sql = "SELECT POSTCODE from district where DISTRICT_ID = $district_id";
@@ -53,8 +58,9 @@ class base_data_model extends CI_Model
         foreach ($query as $row) {
             $output .= '<option value="' . $row->POSITION_ID . '">' . $row->POSITION_NAME . '</option>';
         }
-        return $output;
-
+        return $output; 
     }
+
+
 
 }

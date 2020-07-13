@@ -12,7 +12,6 @@ class customer_model extends CI_Model
     }
   }
 
-  
   function insert($table, $data = array())
   {
     $this->db->insert($table, $data);

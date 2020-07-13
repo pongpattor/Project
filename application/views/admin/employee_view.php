@@ -37,8 +37,12 @@
                 <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>
                 <td>
                     <center>
-                        <a href="<?= site_url("admin/admin/editEmployee/$row->ID") ?>"><button class="btn btn-warning col-5" style="text-align: center;">แก้ไข</button></a>
-                        <button class="btn btn-danger col-5 delete" style="text-align: center;" value="<?= $row->ID; ?>">ลบ</button>
+                        <div class="inline">
+                            <form action="<?= site_url('admin/admin/editEmployee')?>" method="GET">
+                            <button name="empID" class="btn btn-warning col-5 edit" style="text-align: center;" value="<?= $row->ID ?>">แก้ไข</button>
+                            <button class="btn btn-danger col-5 delete" style="text-align: center;" >ลบ</button>
+                            </form>
+                        </div>
                     </center>
                 </td>
             </tr>
@@ -50,20 +54,19 @@
         $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
             var result = confirm(`ยืนยันการลบ ${ID}`);
-           if(result){
-               $.ajax({
-                url : "<?= site_url('admin/admin/deleteEmployee')?>",
-                method : "POST",
-                data : {empID : ID},
-                success:function(){
-                    alert(`ลบ ${ID} เสร็จสิ้น`);
-                    location.reload();
-                }
-               });
-           }
-
-        
-
-        });
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/admin/deleteEmployee') ?>",
+                    method: "POST",
+                    data: {
+                        empID: ID
+                    },
+                    success: function() {
+                        alert(`ลบ ${ID} เสร็จสิ้น`);
+                        location.reload();
+                    }
+                });
+            }
+        });  
     });
 </script>

@@ -9,7 +9,7 @@ class employee_model extends CI_Model{
       }
 
     function editEmp($id){
-        $sql = "SELECT * FROM employee where ID = $id";
+        $sql = "SELECT * FROM employee WHERE ID = $id";
         return $this->db->query($sql)->result();
     }
 
@@ -25,4 +25,9 @@ class employee_model extends CI_Model{
             return $row->MID;
         }
     }
+    function fetchEmpForDepartment(){
+        $sql = "SELECT ID ,FIRSTNAME,LASTNAME FROM employee";
+        return $this->db->query($sql)->result();
+    }
+
 }
