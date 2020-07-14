@@ -94,19 +94,13 @@ class admin extends CI_Controller
         $data['district'] = $this->crud_model->find('district', 'AMPHUR_ID', $amphur_id);
         $data['department'] = $this->crud_model->findall('department');
         $department_id = $data['employee']['0']->DEPARTMENT;
-        $data['position'] = $this->crud_model->find('position','DEPT_ID',$department_id);
-
-
-        //  echo '<pre>';
-        //  print_r($data['department']);
-        //  echo $department_id;
-        //  echo '</pre>';
-
+        $data['position'] = $this->crud_model->find('position', 'DEPT_ID', $department_id);
         $data['page'] = 'edit_employee_view';
-        $this->load->view('admin/main_view',$data);
+        $this->load->view('admin/main_view', $data);
     }
 
-    public function updateEmp(){
+    public function updateEmp()
+    {
         $idEmp = $this->input->post('idEmp');
         $employeeDetail = array(
             'IDCARD' => $this->input->post('idcard'),
@@ -127,8 +121,8 @@ class admin extends CI_Controller
             'SALARY' => $this->input->post('salary'),
             'UPDATE_AT' => date('Y-m-d H:i:s'),
         );
-            $this->crud_model->update('employee',$employeeDetail,'ID',$idEmp);
-            redirect(site_url('admin/admin/employee'));
+        $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmp);
+        redirect(site_url('admin/admin/employee'));
     }
     public function genID()
     {
@@ -158,16 +152,85 @@ class admin extends CI_Controller
     public function Department()
     {
         $data['page'] = 'department_view';
+        $data['department'] = $this->employee_model->fetctDeptHead();
         $this->load->view('admin/main_view', $data);
+        // echo '<pre>';
+        // print_r($data['editDept']);
+        // echo '</pre>';
     }
 
     public function addDepartment()
     {
         $data['page'] = 'add_department_view';
-        $data['employee'] =  $this->employee_model->fetchEmpForDepartment();
+        $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
+
         // echo '<pre>';
         // print_r($data['employee']);
         // echo '</pre>';
+
         $this->load->view('admin/main_view', $data);
+    }
+
+    public function insertDepartment()
+    {
+        $DEPARTMENT_HEAD =  $this->input->post('DEPARTMENT_HEAD');
+        if ($DEPARTMENT_HEAD != '') {
+            $dept = array(
+                'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
+                'DEPARTMENT_HEAD' => $this->input->post('DEPARTMENT_HEAD')
+            );
+            $this->crud_model->insert('department', $dept);
+        } else {
+            $dept = array(
+                'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME')
+            );
+            $this->crud_model->insert('department', $dept);
+        }
+        redirect(site_url('admin/admin/department'));
+    }
+    public function editDepartment()
+    {
+        $deptID = $this->input->get('departmentID');
+        $data['page'] = 'edit_department_view';
+        if ($deptID != '') {
+            $data['oldDept'] = $this->employee_model->editDept($deptID);
+        } 
+        else{
+            $data['oldDept'] = $this->crud_model->find('department','DEPARTMENT_ID',$deptID);
+        }
+        $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
+        
+        // $data['deptID'] = $deptID;
+        // echo $deptID;
+
+
+        // echo '<pre>';
+        // print_r($data['oldDept']);
+        // echo '</pre>';
+
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function updateDepartment(){
+        $DEPARTMENT_ID = $this->input->post('DEPARTMENT_ID');
+        $department_detail = array(
+            'DEPARTMENT_ID' => $DEPARTMENT_ID,
+            'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
+            'DEPARTMENT_HEAD' => $this->input->post('DEPARTMENT_HEAD')
+        );
+        // echo $DEPARTMENT_ID;
+        // echo '<pre>';
+        // print_r($department_detail);
+        // echo '</pre>';
+        
+        // $table, $data = array(), $where, $whereData
+        $this->crud_model->update('department',$department_detail,'DEPARTMENT_ID',$DEPARTMENT_ID);
+        redirect(site_url('admin/admin/department'));
+    }
+
+    public function deleteDepartment()
+    {
+        $dept = $this->input->post('deptID');
+        $this->crud_model->delete('department', 'DEPARTMENT_ID', $dept);
     }
 }

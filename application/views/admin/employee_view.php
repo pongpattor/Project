@@ -40,7 +40,7 @@
                         <div class="inline">
                             <form action="<?= site_url('admin/admin/editEmployee')?>" method="GET">
                             <button name="empID" class="btn btn-warning col-5 edit" style="text-align: center;" value="<?= $row->ID ?>">แก้ไข</button>
-                            <button class="btn btn-danger col-5 delete" style="text-align: center;" >ลบ</button>
+                            <button class="btn btn-danger col-5 delete" style="text-align: center; " >ลบ</button>
                             </form>
                         </div>
                     </center>

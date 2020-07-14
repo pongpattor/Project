@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class employee_model extends CI_Model{
 
     function fetchEmp(){
-        $sql = "SELECT * FROM employee INNER JOIN position on POSITION = POSITION_ID  WHERE STATUS = '1' ORDER BY ID ASC";
+        $sql = "SELECT * FROM employee lEFT JOIN position on POSITION = POSITION_ID  WHERE STATUS = '1' ORDER BY ID ASC";
         return $this->db->query($sql)->result();
       }
 
@@ -25,9 +25,16 @@ class employee_model extends CI_Model{
             return $row->MID;
         }
     }
-    function fetchEmpForDepartment(){
-        $sql = "SELECT ID ,FIRSTNAME,LASTNAME FROM employee";
+    function fetctDeptHead(){
+        $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME,DEPARTMENT_HEAD,FIRSTNAME,LASTNAME,ID FROM department LEFT JOIN employee ON DEPARTMENT_HEAD = ID";
         return $this->db->query($sql)->result();
     }
+
+    function editDept($id){
+        $sql = "SELECT ID,FIRSTNAME,LASTNAME,DEPARTMENT_ID,DEPARTMENT_NAME,DEPARTMENT_HEAD FROM department LEFT JOIN employee ON DEPARTMENT_HEAD = ID
+        WHERE DEPARTMENT_ID = $id";
+        return $this->db->query($sql)->result();
+    }
+    
 
 }

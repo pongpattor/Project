@@ -20,9 +20,21 @@ class crud_model extends CI_Model
         $sql = "SELECT * FROM $table where $where = '$data'";
         return $this->db->query($sql)->result();
     }
+    function findColumns($columns, $table)
+    {
+           $sql = "SELECT $columns FROM $table";
+           return $this->db->query($sql)->result();
+    }
 
-    function update($table,$data=array(),$where,$whereData){
-        $this->db->where($where,$whereData);
-        $this->db->update($table,$data);
+    function update($table, $data = array(), $where, $whereData)
+    {
+        $this->db->where($where, $whereData);
+        $this->db->update($table, $data);
+    }
+
+    function delete($table, $where, $data)
+    {
+        $sql = "DELETE FROM $table WHERE $where = '$data'";
+        $this->db->query($sql);
     }
 }
