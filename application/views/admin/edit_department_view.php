@@ -10,18 +10,6 @@
                     <input type="hidden" name="DEPARTMENT_ID" value="<?= $row->DEPARTMENT_ID?>">
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-5 ">
-                    <label>หัวหน้าแผนก </label>
-                    <select name="DEPARTMENT_HEAD" id="DEPARTMENT_HEAD" class="form-control">
-                        <option value="" selected disabled>กรุณาเลือกหัวหน้าแผนก</option>
-                        <?php foreach ($employee as $row2) : ?>
-                            <option value="<?= $row2->ID; ?>"<?php if($row->ID==$row2->ID)echo 'selected';?>><?= $row2->FIRSTNAME . ' ' . $row2->LASTNAME; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <label for="departmentHead" style="color: red;">*กลับมาเลือกทีหลังได้</label>
-                </div>
-            </div>
 
             <br>
             <div class="row justify-content-center">

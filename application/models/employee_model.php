@@ -31,7 +31,7 @@ class employee_model extends CI_Model{
     }
 
     function editDept($id){
-        $sql = "SELECT ID,FIRSTNAME,LASTNAME,DEPARTMENT_ID,DEPARTMENT_NAME,DEPARTMENT_HEAD FROM department LEFT JOIN employee ON DEPARTMENT_HEAD = ID
+        $sql = "SELECT * FROM department 
         WHERE DEPARTMENT_ID = $id";
         return $this->db->query($sql)->result();
     }

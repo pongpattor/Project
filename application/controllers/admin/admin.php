@@ -152,7 +152,7 @@ class admin extends CI_Controller
     public function Department()
     {
         $data['page'] = 'department_view';
-        $data['department'] = $this->employee_model->fetctDeptHead();
+        $data['department'] = $this->crud_model->findall('department');
         $this->load->view('admin/main_view', $data);
         // echo '<pre>';
         // print_r($data['editDept']);
@@ -173,35 +173,20 @@ class admin extends CI_Controller
 
     public function insertDepartment()
     {
-        $DEPARTMENT_HEAD =  $this->input->post('DEPARTMENT_HEAD');
-        if ($DEPARTMENT_HEAD != '') {
             $dept = array(
                 'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
-                'DEPARTMENT_HEAD' => $this->input->post('DEPARTMENT_HEAD')
             );
             $this->crud_model->insert('department', $dept);
-        } else {
-            $dept = array(
-                'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME')
-            );
-            $this->crud_model->insert('department', $dept);
-        }
+
         redirect(site_url('admin/admin/department'));
     }
     public function editDepartment()
     {
         $deptID = $this->input->get('departmentID');
         $data['page'] = 'edit_department_view';
-        if ($deptID != '') {
-            $data['oldDept'] = $this->employee_model->editDept($deptID);
-        } 
-        else{
-            $data['oldDept'] = $this->crud_model->find('department','DEPARTMENT_ID',$deptID);
-        }
-        $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
-        
-        // $data['deptID'] = $deptID;
-        // echo $deptID;
+        $data['oldDept'] = $this->employee_model->editDept($deptID);
+      
+
 
 
         // echo '<pre>';
@@ -216,13 +201,11 @@ class admin extends CI_Controller
         $department_detail = array(
             'DEPARTMENT_ID' => $DEPARTMENT_ID,
             'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
-            'DEPARTMENT_HEAD' => $this->input->post('DEPARTMENT_HEAD')
         );
         // echo $DEPARTMENT_ID;
         // echo '<pre>';
         // print_r($department_detail);
         // echo '</pre>';
-        
         // $table, $data = array(), $where, $whereData
         $this->crud_model->update('department',$department_detail,'DEPARTMENT_ID',$DEPARTMENT_ID);
         redirect(site_url('admin/admin/department'));

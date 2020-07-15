@@ -15,7 +15,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
     <style>
-        .image-preview{
+        .image-preview {
             width: 300px;
             min-height: 150px;
             border: 2px solid #dddddd;
@@ -26,14 +26,13 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: #cccccc; 
+            color: #cccccc;
         }
 
-        .image-preview__image{
+        .image-preview__image {
             display: none;
             width: 100%;
         }
-
     </style>
 </head>
 

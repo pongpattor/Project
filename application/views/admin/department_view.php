@@ -2,20 +2,17 @@
 <div class="row ">
     <div class="col d-flex flex-row-reverse">
 
-    <div class="p-2"><a href="<?= site_url('admin/admin/addDepartment'); ?>" class="nav-link btn btn-info">เพิ่มแผนก</a></div>
+        <div class="p-2"><a href="<?= site_url('admin/admin/addDepartment'); ?>" class="nav-link btn btn-info"><i class="fa fa-plus-circle"></i></a></div>
     </div>
 </div><br>
 
 <table id="selectedColumn" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
     <thead class="thead-dark">
         <tr>
-            <th style="text-align: center;">รหัสแผนก
-            </th>
-            <th style="text-align: center;">ชื่อแผนก
-            </th>
-            <th style="text-align: center;">หัวหน้าแผนก
-            </th>
-            <th style="width: 180px;"></th>
+            <th style="text-align: center;">รหัสแผนก</th>
+            <th style="text-align: center;">ชื่อแผนก</th>
+            <th style="text-align: center;  ">แก้ไข</th>
+                <th style="text-align: center;">ลบ</th>
         </tr>
     </thead>
     <tbody>
@@ -23,13 +20,16 @@
             <tr id="<?= $row2->DEPARTMENT_ID ?>" class="<?= $row2->DEPARTMENT_NAME; ?>">
                 <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_ID; ?></td>
                 <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_NAME; ?></td>
-                <td class="align-middle" style="text-align: center;"><?= $row2->FIRSTNAME . ' ' . $row2->LASTNAME; ?></td>
                 <td>
                     <center>
-                        <form action="<?= site_url('admin/admin/editDepartment')?>" method="get">
-                        <button name="departmentID" class="btn btn-warning col-5 edit" style="text-align: center;width: 100px;" value="<?=$row2->DEPARTMENT_ID?>">แก้ไข</button>
-                        <button class="btn btn-danger col-5 delete" style="text-align: center;width: 100px;">ลบ</button>
+                        <form action="<?= site_url('admin/admin/editDepartment') ?>" method="get">
+                            <button name="departmentID" class="btn btn-warning col-3 edit" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-cog"></i></button>
                         </form>
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        <button class="btn btn-danger col-3 delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
                     </center>
                 </td>
             </tr>
@@ -38,7 +38,7 @@
 </table>
 <script>
     $(document).ready(function() {
-       
+
 
         $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
