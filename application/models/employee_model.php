@@ -35,6 +35,16 @@ class employee_model extends CI_Model{
         WHERE DEPARTMENT_ID = $id";
         return $this->db->query($sql)->result();
     }
+
+    function position(){
+        $sql = 'SELECT * FROM position inner join department on DEPT_ID = DEPARTMENT_ID ORDER BY DEPARTMENT_NAME,POSITION_NAME';
+        return $this->db->query($sql)->result();
+    }
     
+    function editPos($id){
+        $sql = "SELECT * FROM position 
+        WHERE POSITION_ID = $id";
+        return $this->db->query($sql)->result();
+    }
 
 }

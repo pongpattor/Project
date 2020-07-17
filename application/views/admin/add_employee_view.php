@@ -1,6 +1,6 @@
 <h1 class="mt-4">เพิ่มพนักงาน</h1>
 <br>
-<div>
+<div class="container">
     <form action="<?= site_url('admin/admin/insertEmp') ?>" method="POST" enctype="multipart/form-data">
         <div class="row justify-content-center">
             <div class="col-5 ">

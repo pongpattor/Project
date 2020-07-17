@@ -53,7 +53,7 @@ class base_data_model extends CI_Model
 
     function fetch_position($department_id)
     {
-        $sql = "SELECT * from position where DEPT_ID = $department_id";
+        $sql = "SELECT * from position where DEPT_ID = $department_id ORDER BY POSITION_NAME ASC";
         $query =  $this->db->query($sql)->result();
         $output = '<option value="" selected disable>กรุณาเลือกตำแหน่ง</option>';
         foreach ($query as $row) {

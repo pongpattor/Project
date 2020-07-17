@@ -58,7 +58,7 @@ class admin extends CI_Controller
             'FIRSTNAME' => $this->input->post('firstname'),
             'LASTNAME' => $this->input->post('lastname'),
             'GENDER' => $this->input->post('gender'),
-            'EMAIL' => $this->input->post('firstname'),
+            'EMAIL' => $this->input->post('email'),
             'TEL' => $this->input->post('tel'),
             'BDATE' => $this->input->post('bdate'),
             'ADDRESS' => $this->input->post('address'),
@@ -173,10 +173,10 @@ class admin extends CI_Controller
 
     public function insertDepartment()
     {
-            $dept = array(
-                'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
-            );
-            $this->crud_model->insert('department', $dept);
+        $dept = array(
+            'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
+        );
+        $this->crud_model->insert('department', $dept);
 
         redirect(site_url('admin/admin/department'));
     }
@@ -185,9 +185,6 @@ class admin extends CI_Controller
         $deptID = $this->input->get('departmentID');
         $data['page'] = 'edit_department_view';
         $data['oldDept'] = $this->employee_model->editDept($deptID);
-      
-
-
 
         // echo '<pre>';
         // print_r($data['oldDept']);
@@ -195,8 +192,8 @@ class admin extends CI_Controller
 
         $this->load->view('admin/main_view', $data);
     }
-
-    public function updateDepartment(){
+    public function updateDepartment()
+    {
         $DEPARTMENT_ID = $this->input->post('DEPARTMENT_ID');
         $department_detail = array(
             'DEPARTMENT_ID' => $DEPARTMENT_ID,
@@ -207,7 +204,7 @@ class admin extends CI_Controller
         // print_r($department_detail);
         // echo '</pre>';
         // $table, $data = array(), $where, $whereData
-        $this->crud_model->update('department',$department_detail,'DEPARTMENT_ID',$DEPARTMENT_ID);
+        $this->crud_model->update('department', $department_detail, 'DEPARTMENT_ID', $DEPARTMENT_ID);
         redirect(site_url('admin/admin/department'));
     }
 
@@ -215,5 +212,80 @@ class admin extends CI_Controller
     {
         $dept = $this->input->post('deptID');
         $this->crud_model->delete('department', 'DEPARTMENT_ID', $dept);
+    }
+    public function position()
+    {
+        // $data['page'] = 'Test';
+        $data['dept_pos'] = $this->employee_model->position();
+        $data['page'] = 'position_view';
+        // echo '<pre>';
+        // print_r($data['dept_pos']);
+        // echo '</pre>';
+
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function addPosition()
+    {
+        $data['page'] = 'add_position_view';
+        $data['department'] = $this->crud_model->findall('department');
+
+        // echo '<pre>';
+        // print_r($data['department']);
+        // echo '</pre>';
+
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function insertPos()
+    {
+        $position = array(
+            'POSITION_NAME' => $this->input->post('positionName'),
+            'DEPT_ID' => $this->input->post('departmentID')
+        );
+
+        $this->crud_model->insert('position', $position);
+
+        redirect(site_url('admin/admin/position'));
+    }
+
+    public function editPosition()
+    {
+        $posID = $this->input->get('positionID');
+        $data['page'] = 'edit_position_view';
+        $data['oldPos'] = $this->crud_model->find('position', 'POSITION_ID', $posID);
+        $data['department'] = $this->crud_model->findall('department');
+
+
+
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function updatePosition()
+    {
+        $POSITION_ID = $this->input->post('positionID');
+        $position_detail = array(   
+            'POSITION_NAME' => $this->input->post('positionName'),
+            'DEPT_ID' => $this->input->post('departmentID'),
+        );
+        // echo $POSITION_ID;
+        // echo '<pre>';
+        // print_r($position_detail);
+        // echo '</pre>';
+        // $table, $data = array(), $where, $whereData
+        $this->crud_model->update('position', $position_detail, 'POSITION_ID', $POSITION_ID);
+        redirect(site_url('admin/admin/position'));
+    }
+
+    public function deletePosition()
+    {
+        $pos = $this->input->post('posID');
+        $this->crud_model->delete('position', 'POSITION_ID', $pos);
+    }
+
+    public function test(){
+        $data['page'] = "Test";
+        $data['employee'] = $this->employee_model->fetchEmp();
+        $this->load->view('admin/main_view',$data);
     }
 }
