@@ -3,13 +3,13 @@
 <div>
     <form action="<?= site_url('admin/admin/insertPos') ?>" method="POST" enctype="multipart/form-data">
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6  ">
                 <label>ชื่อตำแหน่ง </label>
-                <input type="text" name="positionName" class="form-control">
+                <input type="text" name="positionName" id="positionName" class="form-control">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>แผนก </label>
                 <select name="departmentID" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกแผนก</option>
@@ -21,11 +21,11 @@
         </div>
         <br>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6  ">
                 <center>
                     <div class="input-group">
                         <div class="col">
-                            <a href="<?= site_url('admin/admin/position'); ?>" class="btn btn-danger col-7">ยกเลิก</a>
+                            <a href="<?= site_url('admin/admin/position'); ?>" class="btn btn-danger col-7 backPage">ยกเลิก</a>
                         </div>
                         <div class="col">
                             <input id="btn_regis" class="btn btn-success col-7" type="submit" value="บันทึก">
@@ -39,3 +39,18 @@
     <br>
 </div>
 <br>
+<script>
+    $(document).ready(function(){
+        $('.backPage').click(function(){
+            let positionName = $('#positionName').val();
+            if(positionName != ''){
+            if(confirm('คุณต้องการยกเลิกใช่หรือไม่')){
+                return true;
+            }
+            else{
+                return false;
+            }}
+            
+        });
+    });
+</script>

@@ -37,4 +37,12 @@ class crud_model extends CI_Model
         $sql = "DELETE FROM $table WHERE $where = '$data'";
         $this->db->query($sql);
     }
+
+    function test(){
+        $sql = "SELECT COUNT(*)as row FROM employee";
+        $result =  $this->db->query($sql)->result();
+        foreach ($result as $row){
+            return $row->row;
+        }
+    }
 }

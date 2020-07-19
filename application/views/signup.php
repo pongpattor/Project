@@ -1,7 +1,6 @@
 <br>
 <div class="container" style="background-color: ghostwhite;">
     <h3>สมัครสมาชิก</h3>
-    <?php echo validation_errors('<div>Hello</div>'); ?>
     <form action="<?= site_url('user/register'); ?>" method="POST">
         <div class="row justify-content-center">
             <div class="col-5 ">

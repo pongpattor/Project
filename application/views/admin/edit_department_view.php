@@ -4,7 +4,7 @@
     <form action="<?= site_url('admin/admin/updateDepartment') ?>" method="POST" enctype="multipart/form-data">
             <div class="row justify-content-center">
             <?php foreach ($oldDept as $row) : ?>
-                <div class="col-5 ">
+                <div class="col-sm col-md col-xl-6 ">
                     <label>ชื่อแผนก </label>
                     <input type="text" name="DEPARTMENT_NAME" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>">
                     <input type="hidden" name="DEPARTMENT_ID" value="<?= $row->DEPARTMENT_ID?>">
@@ -13,7 +13,7 @@
 
             <br>
             <div class="row justify-content-center">
-                <div class="col-5 ">
+                <div class="col-sm col-md col-xl-6  ">
                     <center>
                         <div class="input-group">
                             <div class="col">

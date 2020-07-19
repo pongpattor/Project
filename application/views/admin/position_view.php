@@ -1,11 +1,25 @@
-<h1 class="mt-4">แผนก</h1>
-<div class="row ">
-    <div class="col d-flex flex-row-reverse">
-
-        <div class="p-2"><a href="<?= site_url('admin/admin/addPosition'); ?>" class="nav-link btn btn-info"><i class="fa fa-plus-circle"></i></a></div>
+<div class="row">
+    <div class="col-sm col-md">
+        <h1 >ตำแหน่ง</h1>
     </div>
-</div><br>
-
+</div>
+<div class="row ">
+    <div class="col-sm col-md">
+        <div class="col d-flex flex-row-reverse">
+            <a href="<?= site_url('admin/admin/addPosition'); ?>" class="nav-link btn btn-info"><i class="fa fa-plus-circle"></i></a>
+        </div>
+        <br>
+        <form action="#" method="GET">
+            <div class="input-group mb-3 col-sm-6 col-md-6">
+                <input type="text" class="form-control" name="Searchtxt">
+                <div class="input-group-append">
+                    <button class="input-group-text"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="table-responsive">
 <table id="selectedColumn" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
     <thead class="thead-dark">
         <tr>
@@ -18,27 +32,27 @@
     <tbody>
         <?php foreach ($dept_pos as $row) : ?>
             <tr id="<?= $row->POSITION_ID ?>" class="<?= $row->POSITION_NAME ?>">
-                <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME;?></td>
-                <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME;?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME; ?></td>
+                <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME; ?></td>
                 <td>
                     <center>
                         <form action="<?= site_url('admin/admin/editPosition') ?>" method="get">
-                            <button name="positionID" class="btn btn-warning col-3 edit" style="text-align: center;" value="<?=$row->POSITION_ID?>"><i class="fa fa-cog"></i></button>
+                            <button name="positionID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->POSITION_ID ?>"><i class="fa fa-cog"></i></button>
                         </form>
                     </center>
                 </td>
                 <td>
                     <center>
-                        <button class="btn btn-danger col-3 delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
+                        <button class="btn btn-danger  delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
                     </center>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 <script>
     $(document).ready(function() {
-
 
         $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
@@ -59,5 +73,6 @@
                 });
             }
         });
+        
     });
 </script>

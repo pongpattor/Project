@@ -47,4 +47,9 @@ class employee_model extends CI_Model{
         return $this->db->query($sql)->result();
     }
 
+    function rowEmployee(){
+        $sql = "SELECT COUNT(*) FROM employee";
+        return $this->db->query($sql)->result();
+    }
+
 }

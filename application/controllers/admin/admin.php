@@ -18,18 +18,65 @@ class admin extends CI_Controller
         $this->load->view('admin/adminlogin');
     }
 
+    public function login()
+    {
+        $this->load->view('admin/login');
+    }
+
     public function dashboard()
     {
         $data['page'] = 'dashboard_view';
         $this->load->view('admin/main_view', $data);
     }
-
+    // Customer Start
     public function customer()
     {
-        $data['customer'] = $this->customer_model->findall('customer');
+        $data['customer'] = $this->crud_model->findall('customer');
         $data['page'] = 'customer_view';
+        // echo '<pre>';
+        // print_r($data['customer']);
+        // echo '</pre>';
         $this->load->view('admin/main_view', $data);
     }
+
+    public function editCustomer()
+    {
+        $customerUSERNAME = $this->input->get('username');
+        $data['customer'] = $this->crud_model->find('customer', 'USERNAME', $customerUSERNAME);
+        echo $customerUSERNAME;
+        $data['province']  = $this->base_data_model->fetch_province();
+        $province_id = $data['customer']['0']->PROVINCE;
+        $data['amphur'] = $this->crud_model->find('amphur', 'PROVINCE_ID', $province_id);
+        $amphur_id =  $data['customer']['0']->AMPHUR;
+        $data['district'] = $this->crud_model->find('district', 'AMPHUR_ID', $amphur_id);
+        $data['page'] = 'edit_customer_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function updateCustomer()
+    {
+        $username = $this->input->post('username');
+        $customer_detail = array(
+            'GENDER' => $this->input->post('gender'),
+            'FIRSTNAME' => $this->input->post('firstname'),
+            'LASTNAME' => $this->input->post('lastname'),
+            'EMAIL' => $this->input->post('email'),
+            'TEL' => $this->input->post('tel'),
+            'BDATE' => $this->input->post('bdate'),
+            'PROVINCE' => $this->input->post('province'),
+            'AMPHUR' => $this->input->post('amphur'),
+            'DISTRICT' => $this->input->post('district'),
+            'POSTCODE' => $this->input->post('postcode'),
+            'UPDATE_AT' => date('Y-m-d')
+        );
+        $this->crud_model->update('customer', $customer_detail, 'USERNAME', $username);
+        redirect(site_url('admin/admin/customer'));
+    }
+
+
+    // Customer End
+
+    // Employee Start
 
     public function employee()
     {
@@ -124,6 +171,8 @@ class admin extends CI_Controller
         $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmp);
         redirect(site_url('admin/admin/employee'));
     }
+
+    //genID Employee 
     public function genID()
     {
         $this->load->model('employee_model');
@@ -149,6 +198,9 @@ class admin extends CI_Controller
         }
     }
 
+    // Employee End
+
+    // Department Start
     public function Department()
     {
         $data['page'] = 'department_view';
@@ -213,6 +265,11 @@ class admin extends CI_Controller
         $dept = $this->input->post('deptID');
         $this->crud_model->delete('department', 'DEPARTMENT_ID', $dept);
     }
+
+    // Department End
+
+
+    // Position Start
     public function position()
     {
         // $data['page'] = 'Test';
@@ -264,7 +321,7 @@ class admin extends CI_Controller
     public function updatePosition()
     {
         $POSITION_ID = $this->input->post('positionID');
-        $position_detail = array(   
+        $position_detail = array(
             'POSITION_NAME' => $this->input->post('positionName'),
             'DEPT_ID' => $this->input->post('departmentID'),
         );
@@ -283,9 +340,37 @@ class admin extends CI_Controller
         $this->crud_model->delete('position', 'POSITION_ID', $pos);
     }
 
-    public function test(){
-        $data['page'] = "Test";
-        $data['employee'] = $this->employee_model->fetchEmp();
-        $this->load->view('admin/main_view',$data);
+    // Position End
+
+    public function table()
+    {
+        $data['page'] = 'table_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function addTable()
+    {
+        $data['page'] = 'add_table_view';
+    }
+
+
+    public function test()
+    {
+        $data= $this->crud_model->test();
+    
+
+        $this->load->library('pagination');
+        $config['base_url'] = site_url('admin/admin/test');
+        $config['total_rows'] = $data;
+        $config['per_page'] = 3;
+
+        $this->pagination->initialize($config);
+
+        echo $this->pagination->create_links();
+
+
+        // $data['page'] = "Test";
+        // $data['employee'] = $this->employee_model->fetchEmp();
+        // $this->load->view('admin/main_view', $data);
     }
 }

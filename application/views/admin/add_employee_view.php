@@ -3,19 +3,19 @@
 <div class="container">
     <form action="<?= site_url('admin/admin/insertEmp') ?>" method="POST" enctype="multipart/form-data">
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>รหัสบัตรประจำตัวประชาชน13หลัก </label>
                 <input type="text" name="idcard" class="form-control">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>คำนำหน้า</label><br>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input  " type="radio" name="title" id="title1" value="นาย">
                     <label class="form-check-label" for="title1">นาย</label>
                 </div>
-                <div class="form-check form-check-inline">
+                <div class="form-check form-check-inline ">
                     <input class="form-check-input" type="radio" name="title" id="title2" value="นาง">
                     <label class="form-check-label" for="title2">นาง</label>
                 </div>
@@ -29,24 +29,24 @@
 
 
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>ชื่อ </label>
                 <input type="text" name="firstname" class="form-control">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>นามสกุล </label>
                 <input type="text" name="lastname" class="form-control">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5">
+            <div class="col-sm col-md col-xl-6">
                 <label for="">เพศ</label>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gender" id="genderM" value="M">
                     <label class="form-check-label" for="genderM">ชาย</label>
@@ -58,31 +58,31 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>อีเมล </label>
                 <input type="email" class="form-control" name="email" placeholder="mut@example.com">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>เบอร์โทร </label>
                 <input type="tel" class="form-control" name="tel">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>วันเกิด </label>
                 <input type="date" id="bdate" name="bdate" class="form-control">
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>ที่อยู่  </label>
                 <textarea name="address" id="address" cols="10" rows="5" class="form-control"></textarea>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>จังหวัด </label>
                 <select name="province" id="province" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกจังหวัด</option>
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>เขต </label>
                 <select name="amphur" id="amphur" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกเขต</option>
@@ -101,7 +101,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>แขวง </label>
                 <select name="district" id="district" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกแขวง</option>
@@ -109,7 +109,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>รหัสไปรษณีย์ </label>
                 <select name="postcode" id="postcode" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกรหัสไปรษณีย์</option>
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>แผนก </label>
                 <select name="department" id="department" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกแผนก</option>
@@ -128,7 +128,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <label>ตำแหน่ง </label>
                 <select name="position" id="position" class="form-control">
                     <option value="" selected disabled>กรุณาเลือกตำแหน่ง</option>
@@ -136,21 +136,21 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6 ">
                 <label>เงินเดือน </label>
                 <input type="number" name="salary" class="form-control" min="0">
             </div>
         </div>
         <br>
         <div class="row justify-content-center">
-            <div class="col-5 ">
+            <div class="col-sm col-md col-xl-6">
                 <center>
                     <div class="input-group">
                         <div class="col">
-                            <a href="<?= site_url('admin/admin/employee'); ?>" class="btn btn-danger">ยกเลิก</a>
+                            <a href="<?= site_url('admin/admin/employee'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                         </div>
                         <div class="col">
-                            <input id="btn_regis" class="btn btn-success" type="submit" value="สมัครสมาชิก">
+                            <input id="btn_regis" class="btn btn-success " type="submit" value="  เพิ่ม  " >
                         </div>
                     </div>
                 </center>
