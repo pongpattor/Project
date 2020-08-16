@@ -49,7 +49,7 @@ class admin extends CI_Controller
         $data['amphur'] = $this->crud_model->find('amphur', 'PROVINCE_ID', $province_id);
         $amphur_id =  $data['customer']['0']->AMPHUR;
         $data['district'] = $this->crud_model->find('district', 'AMPHUR_ID', $amphur_id);
-        $data['page'] = 'edit_customer_view';
+        $data['page'] = 'customer_edit_view';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -89,7 +89,7 @@ class admin extends CI_Controller
     {
         $this->load->model('base_data_model');
         $this->load->model('crud_model');
-        $data['page'] = 'add_employee_view';
+        $data['page'] = 'employee_add_view';
         $data['province'] = $this->base_data_model->fetch_province();
         $data['department'] = $this->crud_model->findall('department');
         $this->load->view('admin/main_view', $data);
@@ -142,7 +142,7 @@ class admin extends CI_Controller
         $data['department'] = $this->crud_model->findall('department');
         $department_id = $data['employee']['0']->DEPARTMENT;
         $data['position'] = $this->crud_model->find('position', 'DEPT_ID', $department_id);
-        $data['page'] = 'edit_employee_view';
+        $data['page'] = 'employee_edit_view';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -213,7 +213,7 @@ class admin extends CI_Controller
 
     public function addDepartment()
     {
-        $data['page'] = 'add_department_view';
+        $data['page'] = 'department_add_view';
         $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
 
         // echo '<pre>';
@@ -235,7 +235,7 @@ class admin extends CI_Controller
     public function editDepartment()
     {
         $deptID = $this->input->get('departmentID');
-        $data['page'] = 'edit_department_view';
+        $data['page'] = 'department_edit_view';
         $data['oldDept'] = $this->employee_model->editDept($deptID);
 
         // echo '<pre>';
@@ -284,7 +284,7 @@ class admin extends CI_Controller
 
     public function addPosition()
     {
-        $data['page'] = 'add_position_view';
+        $data['page'] = 'position_add_view';
         $data['department'] = $this->crud_model->findall('department');
 
         // echo '<pre>';
@@ -309,7 +309,7 @@ class admin extends CI_Controller
     public function editPosition()
     {
         $posID = $this->input->get('positionID');
-        $data['page'] = 'edit_position_view';
+        $data['page'] = 'position_edit_view';
         $data['oldPos'] = $this->crud_model->find('position', 'POSITION_ID', $posID);
         $data['department'] = $this->crud_model->findall('department');
 
@@ -350,14 +350,15 @@ class admin extends CI_Controller
 
     public function addTable()
     {
-        $data['page'] = 'add_table_view';
+        $data['page'] = 'table_add_view';
+        $this->load->view('admin/main_view', $data);
     }
 
 
     public function test()
     {
-        $data= $this->crud_model->test();
-    
+        $data = $this->crud_model->test();
+
 
         $this->load->library('pagination');
         $config['base_url'] = site_url('admin/admin/test');
@@ -372,5 +373,23 @@ class admin extends CI_Controller
         // $data['page'] = "Test";
         // $data['employee'] = $this->employee_model->fetchEmp();
         // $this->load->view('admin/main_view', $data);
+    }
+
+    public function test2()
+    {
+        $this->load->library('pagination');
+        $data['rows'] =  $this->crud_model->countAll('employee');
+        $config['base_url'] = site_url('admin/admin/test2');
+        $config['total_rows'] = $data['rows']['0']->row;
+        $config['per_page'] = 4;
+
+        $this->pagination->initialize($config);
+
+        $data['links'] = $this->pagination->create_links();
+        $data['employee'] = $this->crud_model->findall('employee');
+        $this->load->view('test',$data);
+        // echo '<pre>';
+        // print_r($data['rows']);
+        // echo '</pre>';
     }
 }

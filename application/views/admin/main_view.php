@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
-    <link href="../../../assets/css/styles.css" rel="stylesheet" />
+    <link href="<?=base_url('assets/css/styles.css')?>" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -58,20 +58,13 @@
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#CustomercollapseLayouts" aria-expanded="false" aria-controls="CustomercollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/customer'); ?>">
+                            <div class="sb-nav-link-icon"><i class="fa fa-user-circle"></i></div>
                             ลูกค้า
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
 
-                        <div class="collapse" id="CustomercollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= site_url('admin/admin/customer'); ?>">รายชื่อลูกค้า</a>
-                            </nav>
-                        </div>
-
                         <a class="nav-link collapsed" href="<?= site_url('admin/admin/table'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
                             โต๊ะ
                         </a>
 
@@ -114,13 +107,13 @@
             </footer>
         </div>
     </div>
-    <script src="../../../assets/script/scripts.js"></script>
+    <script src="<?=base_url('assets/script/scripts.js"')?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../../../assets/chartjs/chart-area-demo.js"></script>
-    <script src="../../../assets/chartjs/chart-bar-demo.js"></script>
+    <script src="<?=base_url('assets/chartjs/chart-area-demo.js')?>"></script>
+    <script src="<?=base_url('assets/chartjs/chart-bar-demo.js')?>"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <script src="../../../assets/chartjs/datatables-demo.js"></script>
+    <script src="<?=base_url('assets/chartjs/datatables-demo.js')?>"></script>
 </body>
 
 </html>

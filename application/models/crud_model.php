@@ -18,11 +18,18 @@ class crud_model extends CI_Model
     function find($table, $where, $data)
     {
         $sql = "SELECT * FROM $table where $where = '$data'";
-        return $this->db->query($sql)->result();
+        return  $this->db->query($sql)->result();
+        
     }
     function findColumns($columns, $table)
     {
            $sql = "SELECT $columns FROM $table";
+           return $this->db->query($sql)->result();
+    }
+
+    function countAll($table)
+    {
+           $sql = "SELECT COUNT(*) as row FROM $table";
            return $this->db->query($sql)->result();
     }
 
