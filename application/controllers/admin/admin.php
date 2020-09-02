@@ -206,21 +206,13 @@ class admin extends CI_Controller
         $data['page'] = 'department_view';
         $data['department'] = $this->crud_model->findall('department');
         $this->load->view('admin/main_view', $data);
-        // echo '<pre>';
-        // print_r($data['editDept']);
-        // echo '</pre>';
     }
 
     public function addDepartment()
     {
         $data['page'] = 'department_add_view';
         $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
-
-        // echo '<pre>';
-        // print_r($data['employee']);
-        // echo '</pre>';
-
-        $this->load->view('admin/main_view', $data);
+       $this->load->view('admin/main_view', $data);
     }
 
     public function insertDepartment()
@@ -237,11 +229,6 @@ class admin extends CI_Controller
         $deptID = $this->input->get('departmentID');
         $data['page'] = 'department_edit_view';
         $data['oldDept'] = $this->employee_model->editDept($deptID);
-
-        // echo '<pre>';
-        // print_r($data['oldDept']);
-        // echo '</pre>';
-
         $this->load->view('admin/main_view', $data);
     }
     public function updateDepartment()
@@ -251,11 +238,6 @@ class admin extends CI_Controller
             'DEPARTMENT_ID' => $DEPARTMENT_ID,
             'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
         );
-        // echo $DEPARTMENT_ID;
-        // echo '<pre>';
-        // print_r($department_detail);
-        // echo '</pre>';
-        // $table, $data = array(), $where, $whereData
         $this->crud_model->update('department', $department_detail, 'DEPARTMENT_ID', $DEPARTMENT_ID);
         redirect(site_url('admin/admin/department'));
     }
@@ -272,13 +254,8 @@ class admin extends CI_Controller
     // Position Start
     public function position()
     {
-        // $data['page'] = 'Test';
         $data['dept_pos'] = $this->employee_model->position();
         $data['page'] = 'position_view';
-        // echo '<pre>';
-        // print_r($data['dept_pos']);
-        // echo '</pre>';
-
         $this->load->view('admin/main_view', $data);
     }
 
@@ -286,11 +263,6 @@ class admin extends CI_Controller
     {
         $data['page'] = 'position_add_view';
         $data['department'] = $this->crud_model->findall('department');
-
-        // echo '<pre>';
-        // print_r($data['department']);
-        // echo '</pre>';
-
         $this->load->view('admin/main_view', $data);
     }
 
@@ -325,11 +297,6 @@ class admin extends CI_Controller
             'POSITION_NAME' => $this->input->post('positionName'),
             'DEPT_ID' => $this->input->post('departmentID'),
         );
-        // echo $POSITION_ID;
-        // echo '<pre>';
-        // print_r($position_detail);
-        // echo '</pre>';
-        // $table, $data = array(), $where, $whereData
         $this->crud_model->update('position', $position_detail, 'POSITION_ID', $POSITION_ID);
         redirect(site_url('admin/admin/position'));
     }
@@ -352,44 +319,5 @@ class admin extends CI_Controller
     {
         $data['page'] = 'table_add_view';
         $this->load->view('admin/main_view', $data);
-    }
-
-
-    public function test()
-    {
-        $data = $this->crud_model->test();
-
-
-        $this->load->library('pagination');
-        $config['base_url'] = site_url('admin/admin/test');
-        $config['total_rows'] = $data;
-        $config['per_page'] = 3;
-
-        $this->pagination->initialize($config);
-
-        echo $this->pagination->create_links();
-
-
-        // $data['page'] = "Test";
-        // $data['employee'] = $this->employee_model->fetchEmp();
-        // $this->load->view('admin/main_view', $data);
-    }
-
-    public function test2()
-    {
-        $this->load->library('pagination');
-        $data['rows'] =  $this->crud_model->countAll('employee');
-        $config['base_url'] = site_url('admin/admin/test2');
-        $config['total_rows'] = $data['rows']['0']->row;
-        $config['per_page'] = 4;
-
-        $this->pagination->initialize($config);
-
-        $data['links'] = $this->pagination->create_links();
-        $data['employee'] = $this->crud_model->findall('employee');
-        $this->load->view('test',$data);
-        // echo '<pre>';
-        // print_r($data['rows']);
-        // echo '</pre>';
     }
 }

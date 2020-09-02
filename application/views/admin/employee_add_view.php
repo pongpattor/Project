@@ -65,8 +65,18 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-sm col-md col-xl-6">
-                <label>เบอร์โทร </label>
-                <input type="tel" class="form-control" name="tel">
+                <table style="width:100%" id="tablephone">
+                    <tbody>
+                        <tr>
+                            <td>เบอร์โทร</td>
+                            <td><button type="button" id="addphone" class="btn btn-success"><i class="fa fa-plus"></i></button></td>
+                        </tr>
+                        <tr id="row1">
+                            <td><input type="tel" class="form-control" name="tel[]"></td>
+                            <td><button type="button" id="1" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -77,7 +87,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-sm col-md col-xl-6">
-                <label>ที่อยู่  </label>
+                <label>ที่อยู่ </label>
                 <textarea name="address" id="address" cols="10" rows="5" class="form-control"></textarea>
             </div>
         </div>
@@ -150,16 +160,18 @@
                             <a href="<?= site_url('admin/admin/employee'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                         </div>
                         <div class="col">
-                            <input id="btn_regis" class="btn btn-success " type="submit" value="  เพิ่ม  " >
+                            <input id="btn_regis" class="btn btn-success " type="submit" value="  เพิ่ม  ">
                         </div>
                     </div>
                 </center>
             </div>
         </div>
     </form>
-
     <script>
         $(document).ready(function() {
+
+
+
             $('#province').change(function() {
                 var PROVINCE_ID = $('#province').val();
                 if (PROVINCE_ID != "") {
@@ -228,6 +240,30 @@
             });
 
 
+
+            var addphone_id = 1;
+            $('#addphone').click(function() {
+                addphone_id++;
+                var txt = `<tr id="row${addphone_id}">
+                            <td><input type="tel" class="form-control" name="tel[]"></td>
+                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            </tr>`;
+                $('#tablephone').append(txt);
+                $('.btn-remove').on('click', function() {
+                    var btn_del = $(this).attr("id");
+                    $('#row' + btn_del).remove();
+                });
+            });
+
+
+
+
+            // $("#tablephone tr td").on("click", ".btn-remove", function() {
+            //     $(this).closest('tr').remove()
+            // });
         });
     </script>
     <br>

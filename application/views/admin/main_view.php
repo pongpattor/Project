@@ -58,11 +58,6 @@
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/customer'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fa fa-user-circle"></i></div>
-                            ลูกค้า
-                        </a>
-
                         <a class="nav-link collapsed" href="<?= site_url('admin/admin/table'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
                             โต๊ะ

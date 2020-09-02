@@ -29,8 +29,6 @@
                 </th>
                 <th style="text-align: center;">อีเมล
                 </th>
-                <th style="text-align: center;">เบอร์โทรศัพท์
-                </th>
                 <th style="text-align: center;">ตำแหน่ง
                 </th>
                 <th style="text-align: center;">เงินเดือน
@@ -39,29 +37,12 @@
                 <th style="text-align: center;">ลบ</th>
             </tr>
         </thead>
-        <tfoot class="thead-dark">
-            <th style="text-align: center;">รหัสประจำตัวพนักงาน
-            </th>
-            <th style="text-align: center;">ชื่อ-สกุล
-            </th>
-            <th style="text-align: center;">อีเมล
-            </th>
-            <th style="text-align: center;">เบอร์โทรศัพท์
-            </th>
-            <th style="text-align: center;">ตำแหน่ง
-            </th>
-            <th style="text-align: center;">เงินเดือน
-            </th>
-            <th style="text-align: center;">แก้ไข</th>
-            <th style="text-align: center;">ลบ</th>
-        </tfoot>
         <tbody>
             <?php foreach ($employee as $row) : ?>
                 <tr id="<?= $row->ID ?>">
                     <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
                     <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME . ' ' . $row->LASTNAME ?></td>
                     <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
-                    <td class="align-middle" style="text-align: center;"><?= $row->TEL ?></td>
                     <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
                     <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>
                     <td>
