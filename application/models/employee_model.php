@@ -52,4 +52,9 @@ class employee_model extends CI_Model{
         return $this->db->query($sql)->result();
     }
 
+    function PhoneEmployee($ID){
+        $sql = "SELECT PHONE FROM employee_telephone et inner join employee e on et.EMPLOYEE_ID=e.ID WHERE e.ID = $ID";
+        return $this->db->query($sql)->result();
+    }
+
 }

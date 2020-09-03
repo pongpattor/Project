@@ -73,7 +73,9 @@
                         </tr>
                         <tr id="row1">
                             <td><input type="tel" class="form-control" name="tel[]"></td>
-                            <td><button type="button" id="1" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button></td>
+                            <td>
+                                <button type="button" id="1" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -257,13 +259,10 @@
                     $('#row' + btn_del).remove();
                 });
             });
-
-
-
-
-            // $("#tablephone tr td").on("click", ".btn-remove", function() {
-            //     $(this).closest('tr').remove()
-            // });
+            $('.btn-remove').on('click', function() {
+                var btn_del = $(this).attr("id");
+                $('#row' + btn_del).remove();
+            });
         });
     </script>
     <br>

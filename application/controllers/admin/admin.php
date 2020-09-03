@@ -28,53 +28,6 @@ class admin extends CI_Controller
         $data['page'] = 'dashboard_view';
         $this->load->view('admin/main_view', $data);
     }
-    // Customer Start
-    public function customer()
-    {
-        $data['customer'] = $this->crud_model->findall('customer');
-        $data['page'] = 'customer_view';
-        // echo '<pre>';
-        // print_r($data['customer']);
-        // echo '</pre>';
-        $this->load->view('admin/main_view', $data);
-    }
-
-    public function editCustomer()
-    {
-        $customerUSERNAME = $this->input->get('username');
-        $data['customer'] = $this->crud_model->find('customer', 'USERNAME', $customerUSERNAME);
-        echo $customerUSERNAME;
-        $data['province']  = $this->base_data_model->fetch_province();
-        $province_id = $data['customer']['0']->PROVINCE;
-        $data['amphur'] = $this->crud_model->find('amphur', 'PROVINCE_ID', $province_id);
-        $amphur_id =  $data['customer']['0']->AMPHUR;
-        $data['district'] = $this->crud_model->find('district', 'AMPHUR_ID', $amphur_id);
-        $data['page'] = 'customer_edit_view';
-        $this->load->view('admin/main_view', $data);
-    }
-
-    public function updateCustomer()
-    {
-        $username = $this->input->post('username');
-        $customer_detail = array(
-            'GENDER' => $this->input->post('gender'),
-            'FIRSTNAME' => $this->input->post('firstname'),
-            'LASTNAME' => $this->input->post('lastname'),
-            'EMAIL' => $this->input->post('email'),
-            'TEL' => $this->input->post('tel'),
-            'BDATE' => $this->input->post('bdate'),
-            'PROVINCE' => $this->input->post('province'),
-            'AMPHUR' => $this->input->post('amphur'),
-            'DISTRICT' => $this->input->post('district'),
-            'POSTCODE' => $this->input->post('postcode'),
-            'UPDATE_AT' => date('Y-m-d')
-        );
-        $this->crud_model->update('customer', $customer_detail, 'USERNAME', $username);
-        redirect(site_url('admin/admin/customer'));
-    }
-
-
-    // Customer End
 
     // Employee Start
 
@@ -106,7 +59,6 @@ class admin extends CI_Controller
             'LASTNAME' => $this->input->post('lastname'),
             'GENDER' => $this->input->post('gender'),
             'EMAIL' => $this->input->post('email'),
-            'TEL' => $this->input->post('tel'),
             'BDATE' => $this->input->post('bdate'),
             'ADDRESS' => $this->input->post('address'),
             'DISTRICT' => $this->input->post('district'),
@@ -120,6 +72,15 @@ class admin extends CI_Controller
             'STATUS' => 1
         );
         $this->crud_model->insert('employee', $employee_detail);
+        $id = $this->employee_model->maxIdEmp();
+        $tel = $this->input->post('tel');
+        foreach ($tel as $row) {
+            $data = array(
+                'PHONE' => $row,
+                'EMPLOYEE_ID' => $id
+            );
+            $this->crud_model->insert('employee_telephone', $data);
+        }
         redirect(site_url('admin/admin/employee'));
     }
 
@@ -143,6 +104,10 @@ class admin extends CI_Controller
         $department_id = $data['employee']['0']->DEPARTMENT;
         $data['position'] = $this->crud_model->find('position', 'DEPT_ID', $department_id);
         $data['page'] = 'employee_edit_view';
+        $data['phone'] = $this->employee_model->PhoneEmployee($id);
+        // echo '<pre>';
+        // print_r($data['phone']);
+        // echo '</pre>';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -155,7 +120,6 @@ class admin extends CI_Controller
             'FIRSTNAME' => $this->input->post('firstname'),
             'LASTNAME' => $this->input->post('lastname'),
             'GENDER' => $this->input->post('gender'),
-            'TEL' => $this->input->post('tel'),
             'EMAIL' => $this->input->post('email'),
             'BDATE' => $this->input->post('bdate'),
             'ADDRESS' => $this->input->post('address'),
@@ -166,9 +130,17 @@ class admin extends CI_Controller
             'DEPARTMENT' => $this->input->post('department'),
             'POSITION' => $this->input->post('position'),
             'SALARY' => $this->input->post('salary'),
-            'UPDATE_AT' => date('Y-m-d H:i:s'),
         );
         $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmp);
+        $tel = $this->input->post('tel');
+        $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmp);
+        foreach ($tel as $row) {
+            $data = array(
+                'PHONE' => $row,
+                'EMPLOYEE_ID' => $idEmp
+            );
+            $this->crud_model->insert('employee_telephone', $data);
+        }
         redirect(site_url('admin/admin/employee'));
     }
 
@@ -212,7 +184,7 @@ class admin extends CI_Controller
     {
         $data['page'] = 'department_add_view';
         $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
-       $this->load->view('admin/main_view', $data);
+        $this->load->view('admin/main_view', $data);
     }
 
     public function insertDepartment()
@@ -319,5 +291,13 @@ class admin extends CI_Controller
     {
         $data['page'] = 'table_add_view';
         $this->load->view('admin/main_view', $data);
+    }
+
+    public function test()
+    {
+        $data = $this->employee_model->PhoneEmployee('6311110001');
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
     }
 }

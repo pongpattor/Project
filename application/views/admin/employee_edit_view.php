@@ -73,8 +73,26 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-sm col-md col-xl-6">
-                    <label>เบอร์โทร </label>
-                    <input type="tel" class="form-control" name="tel" value="<?= $row->TEL ?>">
+                    <table style="width:100%" id="tablephone">
+                        <tbody>
+                            <tr>
+                                <td>เบอร์โทร</td>
+                                <td><button type="button" id="addphone" class="btn btn-success"><i class="fa fa-plus"></i></button></td>
+                            </tr>
+                            <?php
+                            $rowid = 1;
+                            foreach ($phone as $rowphone) { ?>
+                                <tr id="row<?= $rowid; ?>">
+                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>"></td>
+                                    <td>
+                                        <button type="button" id="<?= $rowid; ?>" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>
+                                    </td>
+                                </tr>
+                            <?php
+                                $rowid++;
+                            } ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -248,8 +266,27 @@
                     });
                 }
             });
+            var addphone_id = 1;
+            $('#addphone').click(function() {
+                addphone_id++;
+                var txt = `<tr id="row${addphone_id}">
+                            <td><input type="tel" class="form-control" name="tel[]"></td>
+                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            </tr>`;
+                $('#tablephone').append(txt);
 
-
+                $('.btn-remove').on('click', function() {
+                    var btn_del = $(this).attr("id");
+                    $('#row' + btn_del).remove();
+                });
+            });
+            $('.btn-remove').on('click', function() {
+                var btn_del = $(this).attr("id");
+                $('#row' + btn_del).remove();
+            });
         });
     </script>
     <br>
