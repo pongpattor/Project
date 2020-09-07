@@ -69,12 +69,11 @@
                     <tbody>
                         <tr>
                             <td>เบอร์โทร</td>
-                            <td><button type="button" id="addphone" class="btn btn-success"><i class="fa fa-plus"></i></button></td>
                         </tr>
                         <tr id="row1">
-                            <td><input type="tel" class="form-control" name="tel[]"></td>
+                            <td><input type="tel" class="form-control" name="tel[]" maxlength="10" required></td>
                             <td>
-                                <button type="button" id="1" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>
+                                <button type="button" id="addphone" class="btn btn-success"><i class="fa fa-plus"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -258,10 +257,6 @@
                     var btn_del = $(this).attr("id");
                     $('#row' + btn_del).remove();
                 });
-            });
-            $('.btn-remove').on('click', function() {
-                var btn_del = $(this).attr("id");
-                $('#row' + btn_del).remove();
             });
         });
     </script>

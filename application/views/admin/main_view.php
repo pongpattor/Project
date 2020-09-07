@@ -8,16 +8,19 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
-    <link href="<?=base_url('assets/css/styles.css')?>" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <!-- CSS JQUERY -->
+    <link href="<?= base_url('assets/css/styles.css') ;?>" rel="stylesheet" />
+    <script src="<?= base_url('assets\script\node_modules\jquery\dist\jquery.js'); ?>"></script>
+    <script src="<?= base_url('assets\bootstrap-4.5.2-dist\js\bootstrap.bundle.min.js'); ?>"></script>
+    <!-- Icon -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script> -->
+    <script src="<?= base_url('assets\icon_fontawesome\js\all.js');?>" crossorigin="anonymous"></script>
+
 </head>
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="<?= site_url('admin/admin/dashboard'); ?>">ADMIN FOODSHOP</a>
+        <a class="navbar-brand" href="<?= site_url('admin/admin/home'); ?>">ADMIN FOODSHOP</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
         <!-- div Space-->
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
@@ -39,16 +42,11 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="<?= site_url('admin/admin/dashboard'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
                         <div class="sb-sidenav-menu-heading">Interface</div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-address-card"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-address-card"></i></div>
                             พนักงาน
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="EmployeecollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
@@ -63,7 +61,24 @@
                             โต๊ะ
                         </a>
 
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fa fa-cart-plus"></i></div>
+                            อาหารและเครื่องดื่ม
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="ProductcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">สินค้า</a>
+                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทอาหาร</a>
+                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเครื่องดื่ม</a>
+                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเนื้อสัตว์</a>
+                            </nav>
+                        </div>
 
+                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/receiveIngredient'); ?>">
+                            <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
+                            รับวัตถุดิบ
+                        </a>
 
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
@@ -102,13 +117,8 @@
             </footer>
         </div>
     </div>
-    <script src="<?=base_url('assets/script/scripts.js"')?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="<?=base_url('assets/chartjs/chart-area-demo.js')?>"></script>
-    <script src="<?=base_url('assets/chartjs/chart-bar-demo.js')?>"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <script src="<?=base_url('assets/chartjs/datatables-demo.js')?>"></script>
+    <script src="<?= base_url('assets/script/scripts.js"') ?>"></script>
+
 </body>
 
 </html>

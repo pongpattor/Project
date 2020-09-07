@@ -11,21 +11,12 @@ class admin extends CI_Controller
         $this->load->model('base_data_model');
         $this->load->model('crud_model');
         $this->load->model('employee_model');
+        $this->load->model('receive_ingredient_model');
     }
 
-    public function index()
+    public function home()
     {
-        $this->load->view('admin/adminlogin');
-    }
-
-    public function login()
-    {
-        $this->load->view('admin/login');
-    }
-
-    public function dashboard()
-    {
-        $data['page'] = 'dashboard_view';
+        $data['page'] = 'home';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -50,9 +41,10 @@ class admin extends CI_Controller
 
     public function insertEmp()
     {
+        $IDposition = $this->input->post('position');
         $employee_detail = array(
-            'ID' => $this->genID(),
-            'PASSWORD' => $this->genID(),
+            'ID' => $this->genID($IDposition),
+            'PASSWORD' => $this->genID($IDposition),
             'IDCARD' => $this->input->post('idcard'),
             'TITLENAME' => $this->input->post('title'),
             'FIRSTNAME' => $this->input->post('firstname'),
@@ -65,14 +57,13 @@ class admin extends CI_Controller
             'AMPHUR' => $this->input->post('amphur'),
             'PROVINCE' => $this->input->post('province'),
             'POSTCODE' => $this->input->post('postcode'),
-            'DEPARTMENT' => $this->input->post('department'),
-            'POSITION' => $this->input->post('position'),
+            'POSITION' =>  $IDposition,
             'SALARY' => $this->input->post('salary'),
             'CREATE_AT' => date('Y-m-d H:i:s'),
             'STATUS' => 1
         );
         $this->crud_model->insert('employee', $employee_detail);
-        $id = $this->employee_model->maxIdEmp();
+        $id = $this->employee_model->maxIdEmp($IDposition);
         $tel = $this->input->post('tel');
         foreach ($tel as $row) {
             $data = array(
@@ -82,6 +73,32 @@ class admin extends CI_Controller
             $this->crud_model->insert('employee_telephone', $data);
         }
         redirect(site_url('admin/admin/employee'));
+    }
+
+    //genID Employee 
+    public function genID($posid)
+    {
+        $maxId = $this->employee_model->maxIdEmp($posid);
+        $firstID = substr($maxId, 0, 2);
+        $date =  date('Y') + 543;
+        $Y =  substr($date, 2);
+        $middle = 1100;
+        $middle += $posid;
+
+        if ($firstID != $Y) {
+            $last = 0001;
+            while (strlen($last) < 4) {
+                $last = '0' . $last;
+            }
+            return $Y . $middle . $last;
+        } else {
+            $last = substr($maxId, 6);
+            $last += 1;
+            while (strlen($last) < 4) {
+                $last = '0' . $last;
+            }
+            return $Y . $middle . $last;
+        }
     }
 
     public function deleteEmployee()
@@ -94,20 +111,19 @@ class admin extends CI_Controller
     public function editEmployee()
     {
         $id = $this->input->get('empID');
-        $data['employee'] = $this->crud_model->find('employee', 'ID', $id);
+        $data['employee'] = $this->employee_model->editEmp($id);
         $data['province']  = $this->base_data_model->fetch_province();
         $province_id = $data['employee']['0']->PROVINCE;
         $data['amphur'] = $this->crud_model->find('amphur', 'PROVINCE_ID', $province_id);
         $amphur_id =  $data['employee']['0']->AMPHUR;
         $data['district'] = $this->crud_model->find('district', 'AMPHUR_ID', $amphur_id);
+
+
         $data['department'] = $this->crud_model->findall('department');
-        $department_id = $data['employee']['0']->DEPARTMENT;
+        $department_id = $data['employee']['0']->DEPARTMENT_ID;
         $data['position'] = $this->crud_model->find('position', 'DEPT_ID', $department_id);
-        $data['page'] = 'employee_edit_view';
         $data['phone'] = $this->employee_model->PhoneEmployee($id);
-        // echo '<pre>';
-        // print_r($data['phone']);
-        // echo '</pre>';
+        $data['page'] = 'employee_edit_view';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -127,7 +143,6 @@ class admin extends CI_Controller
             'AMPHUR' => $this->input->post('amphur'),
             'PROVINCE' => $this->input->post('province'),
             'POSTCODE' => $this->input->post('postcode'),
-            'DEPARTMENT' => $this->input->post('department'),
             'POSITION' => $this->input->post('position'),
             'SALARY' => $this->input->post('salary'),
         );
@@ -144,31 +159,7 @@ class admin extends CI_Controller
         redirect(site_url('admin/admin/employee'));
     }
 
-    //genID Employee 
-    public function genID()
-    {
-        $this->load->model('employee_model');
-        $maxId = $this->employee_model->maxIdEmp();
-        $firstID = substr($maxId, 0, 2);
-        $date =  date('Y') + 543;
-        $Y =  substr($date, 2);
-        $middle = 1110;
-        $middle += 1;
-        if ($firstID != $Y) {
-            $last = 0001;
-            while (strlen($last) < 4) {
-                $last = '0' . $last;
-            }
-            return $Y . $middle . $last;
-        } else {
-            $last = substr($maxId, 6);
-            $last += 1;
-            while (strlen($last) < 4) {
-                $last = '0' . $last;
-            }
-            return $Y . $middle . $last;
-        }
-    }
+
 
     // Employee End
 
@@ -293,11 +284,87 @@ class admin extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
+
+    public function receiveIngredient()
+    {
+        $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive();
+        $data['page'] = 'receive_ingredient_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function addReceiveIngredient()
+    {
+        $data['page'] = 'receive_ingredient_add_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function InsertReceiveIngredient()
+    {
+        $receiveName = $this->input->post("ReceiveName");
+        $receivePrice = $this->input->post("ReceivePrice");
+        $totalPrice = 0;
+        foreach ($receivePrice as $row) {
+            $totalPrice += $row;
+        }
+
+        $Receive = array(
+            'DATE_AT' => date('Y-m-d H:i:s'),
+            'TOTAL_PRICE' => $totalPrice,
+            'TIME_AT' => date('H:i:s')
+        );
+        $this->crud_model->insert('receive_ingredient', $Receive);
+        $receiveID = $this->receive_ingredient_model->maxIdReceiveIngredien();
+
+        for ($i = 0; $i < count($receiveName); $i++) {
+            $receiveDetail = array(
+                "INGREDIENT_ID" => $i + 1,
+                "INGREDIENT_RECEIVE_ID" => $receiveID,
+                "INGREDIENT_NAME" => $receiveName[$i],
+                "INGREDIENT_PRICE" => $receivePrice[$i]
+            );
+            $this->crud_model->insert('receive_ingredient_detail', $receiveDetail);
+        }
+
+        redirect(site_url('admin/admin/receiveIngredient'));
+    }
+
+    public function editReceiveIngredient()
+    {
+        $ReceiveID = $this->input->GET("ReceiveID");
+        $data['ingredient'] = $this->crud_model->find('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $ReceiveID);
+        // print_r($data['ingredient']);
+        $data['page'] = 'receive_ingredient_edit_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function UpdateReceiveIngredient()
+    {
+
+        $receiveID =  $this->input->POST('receiveID');
+        $receiveName = $this->input->POST('ReceiveName');
+        $receivePrice = $this->input->POST('ReceivePrice');
+
+        $this->crud_model->delete('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $receiveID);
+        for ($i = 0; $i < count($receiveName); $i++) {
+            $receiveDetail = array(
+                "INGREDIENT_ID" => $i + 1,
+                "INGREDIENT_RECEIVE_ID" => $receiveID,
+                "INGREDIENT_NAME" => $receiveName[$i],
+                "INGREDIENT_PRICE" => $receivePrice[$i]
+            );
+            $this->crud_model->insert('receive_ingredient_detail', $receiveDetail);
+        }
+        redirect(site_url('admin/admin/receiveIngredient'));
+    }
+
+    public function deleteReceiveIngredient(){
+        $ReceiveID = $this->input->post('ReceiveID');
+        $this->crud_model->delete('receive_ingredient', 'RECEIVE_INGREDIENT_ID', $ReceiveID);
+    }
+
     public function test()
     {
-        $data = $this->employee_model->PhoneEmployee('6311110001');
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
+        $data['page'] = 'Test';
+        $this->load->view('admin/main_view', $data);
     }
 }

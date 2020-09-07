@@ -9,7 +9,8 @@ class employee_model extends CI_Model{
       }
 
     function editEmp($id){
-        $sql = "SELECT * FROM employee WHERE ID = $id";
+        $sql = "SELECT * FROM employee e inner join position p inner join department d on
+                e.POSITION = p.POSITION_ID and p.DEPT_ID = d.DEPARTMENT_ID WHERE e.ID = $id";
         return $this->db->query($sql)->result();
     }
 
@@ -18,8 +19,8 @@ class employee_model extends CI_Model{
          return $this->db->query($sql);
     }
 
-    function maxIdEmp(){
-        $sql ="SELECT MAX(ID)as'MID'  FROM employee ";
+    function maxIdEmp($position_id){
+        $sql ="SELECT MAX(ID)as'MID'  FROM employee where POSITION = $position_id";
         $query = $this->db->query($sql)->result();
         foreach($query as $row){
             return $row->MID;

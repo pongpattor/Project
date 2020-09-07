@@ -13,7 +13,7 @@
             <div class="row justify-content-center">
                 <div class="col-sm col-md col-xl-6 ">
                     <label>รหัสบัตรประจำตัวประชาชน13หลัก </label>
-                    <input type="text" name="idcard" class="form-control" value="<?= $row->IDCARD ?>">
+                    <input type="text" name="idcard" class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13">
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -77,15 +77,18 @@
                         <tbody>
                             <tr>
                                 <td>เบอร์โทร</td>
-                                <td><button type="button" id="addphone" class="btn btn-success"><i class="fa fa-plus"></i></button></td>
                             </tr>
                             <?php
                             $rowid = 1;
                             foreach ($phone as $rowphone) { ?>
                                 <tr id="row<?= $rowid; ?>">
-                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>"></td>
+                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" maxlength="10"></td>
                                     <td>
-                                        <button type="button" id="<?= $rowid; ?>" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>
+                                        <?php if ($rowid == 1) { ?>
+                                            <button type="button" id="addphone" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                        <?php } else { ?>
+                                            <button type="button" id="<?= $rowid; ?>" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>
+                                        <?php } ?>
                                     </td>
                                 </tr>
                             <?php
@@ -157,7 +160,7 @@
                     <select name="department" id="department" class="form-control">
                         <option value="" selected disabled>กรุณาเลือกแผนก</option>
                         <?php foreach ($department as $row6) : ?>
-                            <option value="<?= $row6->DEPARTMENT_ID; ?>" <?php if ($row6->DEPARTMENT_ID == $row->DEPARTMENT) echo 'selected'; ?>><?= $row6->DEPARTMENT_NAME; ?></option>
+                            <option value="<?= $row6->DEPARTMENT_ID; ?>" <?php if ($row6->DEPARTMENT_ID == $row->DEPARTMENT_ID) echo 'selected'; ?>><?= $row6->DEPARTMENT_NAME; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -271,7 +274,7 @@
                 addphone_id++;
                 var txt = `<tr id="row${addphone_id}">
                             <td><input type="tel" class="form-control" name="tel[]"></td>
-                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove">
+                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove" maxlength="10">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
@@ -282,10 +285,23 @@
                     var btn_del = $(this).attr("id");
                     $('#row' + btn_del).remove();
                 });
+                $(function() {
+                    $("input[name='tel[]']").on('input', function(e) {
+                        $(this).val($(this).val().replace(/[^0-9]/g, ''));
+                    });
+                });
+
             });
             $('.btn-remove').on('click', function() {
                 var btn_del = $(this).attr("id");
                 $('#row' + btn_del).remove();
+                console.log(btn_del);
+            });
+
+            $(function() {
+                $("input[name='tel[]']").on('input', function(e) {
+                    $(this).val($(this).val().replace(/[^0-9]/g, ''));
+                });
             });
         });
     </script>
