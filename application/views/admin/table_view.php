@@ -45,7 +45,7 @@
                 <td>
                     <center>
                         <form action="<?= site_url('admin/admin/editPosition') ?>" method="get">
-                            <button name="positionID" class="btn btn-warning  edit" style="text-align: center;"><i class="fa fa-cog"></i></button>
+                            <button name="positionID" class="btn btn-warning  edit" style="text-align: center;"><i class="fa fa-edit"></i></button>
                         </form>
                     </center>
                 </td>

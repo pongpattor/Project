@@ -48,7 +48,7 @@
                     <td>
                         <center>
                             <form action="<?= site_url('admin/admin/editEmployee') ?>" method="GET">
-                                <button name="empID" class="btn btn-warning  edit" class="btn btn-warning" value="<?= $row->ID ?>"> <i class="fa fa-cog"></i></button>
+                                <button name="empID" class="btn btn-warning  edit" class="btn btn-warning" value="<?= $row->ID ?>"> <i class="fa fa-edit"></i></button>
                             </form>
                         </center>
                     </td>

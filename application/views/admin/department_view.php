@@ -45,7 +45,7 @@
                     <td>
                         <center>
                             <form action="<?= site_url('admin/admin/editDepartment') ?>" method="get">
-                                <button name="departmentID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-cog"></i></button>
+                                <button name="departmentID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-edit"></i></button>
                             </form>
                         </center>
                     </td>

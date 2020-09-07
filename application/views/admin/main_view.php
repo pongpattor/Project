@@ -9,12 +9,12 @@
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
     <!-- CSS JQUERY -->
-    <link href="<?= base_url('assets/css/styles.css') ;?>" rel="stylesheet" />
+    <link href="<?= base_url('assets/css/styles.css'); ?>" rel="stylesheet" />
     <script src="<?= base_url('assets\script\node_modules\jquery\dist\jquery.js'); ?>"></script>
-    <script src="<?= base_url('assets\bootstrap-4.5.2-dist\js\bootstrap.bundle.min.js'); ?>"></script>
+    <script src="<?= base_url('assets\bootstrap4\js\bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script> -->
-    <script src="<?= base_url('assets\icon_fontawesome\js\all.js');?>" crossorigin="anonymous"></script>
+    <script src="<?= base_url('assets\icon_fontawesome\js\all.js'); ?>" crossorigin="anonymous"></script>
 
 </head>
 
@@ -57,12 +57,12 @@
                         </div>
 
                         <a class="nav-link collapsed" href="<?= site_url('admin/admin/table'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-couch"></i></div>
                             โต๊ะ
                         </a>
 
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fa fa-cart-plus"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-utensils"></i></div>
                             อาหารและเครื่องดื่ม
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
@@ -76,7 +76,7 @@
                         </div>
 
                         <a class="nav-link collapsed" href="<?= site_url('admin/admin/receiveIngredient'); ?>">
-                            <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-cart-arrow-down"></i></div>
                             รับวัตถุดิบ
                         </a>
 
@@ -107,11 +107,7 @@
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
+
                     </div>
                 </div>
             </footer>

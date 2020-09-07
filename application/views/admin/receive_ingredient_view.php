@@ -39,7 +39,7 @@
                     <td>
                         <center>
                             <form action="<?= site_url('admin/admin/editReceiveIngredient') ?>" method="get">
-                                <button name="ReceiveID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->RECEIVE_INGREDIENT_ID ?>"><i class="fa fa-cog"></i></button>
+                                <button name="ReceiveID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->RECEIVE_INGREDIENT_ID ?>"><i class="fa fa-edit"></i></button>
                             </form>
                         </center>
                     </td>
