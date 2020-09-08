@@ -12,6 +12,7 @@ class admin extends CI_Controller
         $this->load->model('crud_model');
         $this->load->model('employee_model');
         $this->load->model('receive_ingredient_model');
+        $this->load->model('desk_model');
     }
 
     public function home()
@@ -272,19 +273,109 @@ class admin extends CI_Controller
 
     // Position End
 
-    public function table()
+    // Table Start
+    public function desk()
     {
-        $data['page'] = 'table_view';
+
+        $data['desk'] =  $this->desk_model->fetchDesk();
+        $data['page'] = 'desk_view';
+        // print_r($data['desk']);
         $this->load->view('admin/main_view', $data);
     }
 
-    public function addTable()
+    public function addDesk()
     {
-        $data['page'] = 'table_add_view';
+        $data['page'] = 'desk_add_view';
         $this->load->view('admin/main_view', $data);
     }
 
+    public function insertDesk()
+    {
+        $deskNumber = $this->input->post('deskNumber');
+        $count = $this->checkDeskNumber($deskNumber);
+        if ($count > 0) {
+            echo '<script>';
+            echo 'alert("เลขโต๊ะนี้ได้มีการใช้แล้ว");';
+            echo 'window.history.back();';
+            echo '</script>';
+        } else {
+            $detailDesk = array(
+                'DESK_ID' => $this->genDeskID(),
+                'DESK_NUMBER' => $deskNumber,
+                'DESK_STATUS' => '0'
+            );
+            $this->crud_model->insert('desk', $detailDesk);
+            redirect(site_url('admin/admin/desk'));
+        }
+    }
 
+    public function genDeskID()
+    {
+        $maxId =  $this->desk_model->maxID();
+        $ID = substr($maxId, 1) + 1;
+        while (strlen($ID) < 3) {
+            $ID =  '0' . $ID;
+        }
+
+        $deskID = 'D' . $ID;
+        return $deskID;
+    }
+
+    public function checkDeskNumber($number)
+    {
+        $count = $this->desk_model->checkNumber($number);
+        return $count;
+    }
+
+    public function editDesk()
+    {
+        $deskID = $this->input->get('deskID');
+        $data['desk'] = $this->crud_model->find('desk', 'DESK_ID', $deskID);
+        $data['page'] = 'desk_edit_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function updateDesk()
+    {
+        $deskNumber = $this->input->post('deskNumber');
+        $deskStatus = $this->input->post('status');
+        $deskID = $this->input->post('deskID');
+        $oldNumber = $this->input->post('oldNumber');
+        if ($oldNumber == $deskNumber) {
+            $deskDetail = array(
+                'DESK_NUMBER' => $deskNumber,
+                'DESK_STATUS' => $deskStatus
+            );
+            $this->crud_model->update('desk', $deskDetail, 'DESK_ID', $deskID);
+            redirect(site_url('admin/admin/desk'));
+        } else {
+            $count = $this->checkDeskNumber($deskNumber);
+            if ($count > 0) {
+                echo '<script>';
+                echo 'alert("เลขโต๊ะนี้ได้มีการใช้แล้ว");';
+                echo 'window.history.back();';
+                echo '</script>';
+            } else {
+                $deskDetail = array(
+                    'DESK_NUMBER' => $deskNumber,
+                    'DESK_STATUS' => $deskStatus
+                );
+                $this->crud_model->update('desk', $deskDetail, 'DESK_ID', $deskID);
+                redirect(site_url('admin/admin/desk'));
+            }
+        }
+    }
+
+    public function deleteDesk()
+    {
+        $deskID = $this->input->post('deskID');
+        $this->desk_model->delDesk($deskID);
+    }
+
+
+    // Table End
+
+    // receiveIngredient start
     public function receiveIngredient()
     {
         $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive();
@@ -317,7 +408,7 @@ class admin extends CI_Controller
 
         for ($i = 0; $i < count($receiveName); $i++) {
             $receiveDetail = array(
-                "INGREDIENT_ID" => $i + 1,
+                "INGREDIENT_NO" => $i + 1,
                 "INGREDIENT_RECEIVE_ID" => $receiveID,
                 "INGREDIENT_NAME" => $receiveName[$i],
                 "INGREDIENT_PRICE" => $receivePrice[$i]
@@ -347,7 +438,7 @@ class admin extends CI_Controller
         $this->crud_model->delete('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $receiveID);
         for ($i = 0; $i < count($receiveName); $i++) {
             $receiveDetail = array(
-                "INGREDIENT_ID" => $i + 1,
+                "INGREDIENT_NO" => $i + 1,
                 "INGREDIENT_RECEIVE_ID" => $receiveID,
                 "INGREDIENT_NAME" => $receiveName[$i],
                 "INGREDIENT_PRICE" => $receivePrice[$i]
@@ -357,10 +448,13 @@ class admin extends CI_Controller
         redirect(site_url('admin/admin/receiveIngredient'));
     }
 
-    public function deleteReceiveIngredient(){
+    public function deleteReceiveIngredient()
+    {
         $ReceiveID = $this->input->post('ReceiveID');
         $this->crud_model->delete('receive_ingredient', 'RECEIVE_INGREDIENT_ID', $ReceiveID);
     }
+
+    // receiveIngredient End
 
     public function test()
     {

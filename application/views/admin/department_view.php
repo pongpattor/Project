@@ -1,64 +1,74 @@
+<br>
 <div class="row">
-    <div class="col-sm col-md">
-        <h1>แผนก</h1>
+    <div class="col-12">
+        <div class="card boder-0 shadow-lg">
+            <div class="card-body">
+                <h3 class="d-inline">แผนก</h3>
+            </div>
+        </div>
     </div>
 </div>
+<br>
 <div class="row ">
-    <div class="col-sm col-md">
-        <div class="col d-flex flex-row-reverse">
-            <a href="<?= site_url('admin/admin/addDepartment'); ?>" class="nav-link btn btn-info"><i class="fa fa-plus-circle"></i></a>
-        </div>
-        <br>
-        <form action="#" method="GET">
-            <div class="input-group mb-3 col-sm-6 col-md-6">
-                <input type="text" class="form-control" name="Searchtxt">
-                <div class="input-group-append">
-                    <button class="input-group-text"><i class="fa fa-search"></i></button>
+    <div class="col-12">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body">
+                <form action="#">
+                    <div class="row">
+                        <div class="col-6 input-group">
+                            <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
+                            <div class="input-group-append">
+                                <button class="input-group-text"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <a href="<?= site_url('admin/admin/addDepartment') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-sm" width="100%" cellspacing="0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="text-align: center;">รหัสแผนก</th>
+                                        <th style="text-align: center;">ชื่อแผนก</th>
+                                        <th style="text-align: center;  ">แก้ไข</th>
+                                        <th style="text-align: center;">ลบ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($department as $row2) : ?>
+                                        <tr id="<?= $row2->DEPARTMENT_ID ?>" class="<?= $row2->DEPARTMENT_NAME; ?>">
+                                            <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_ID; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_NAME; ?></td>
+                                            <td>
+                                                <center>
+                                                    <form action="<?= site_url('admin/admin/editDepartment') ?>" method="get">
+                                                        <button name="departmentID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-edit"></i></button>
+                                                    </form>
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    <button class="btn btn-danger  delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
-<div class="table-responsive">
-    <table class="table table-striped table-bordered table-sm" width="100%" cellspacing="0">
-        <thead class="thead-dark">
-            <tr>
-                <th style="text-align: center;">รหัสแผนก</th>
-                <th style="text-align: center;">ชื่อแผนก</th>
-                <th style="text-align: center;  ">แก้ไข</th>
-                <th style="text-align: center;">ลบ</th>
-            </tr>
-        </thead>
-        <tfoot class="thead-dark">
-            <tr>
-                <th style="text-align: center;">รหัสแผนก</th>
-                <th style="text-align: center;">ชื่อแผนก</th>
-                <th style="text-align: center;  ">แก้ไข</th>
-                <th style="text-align: center;">ลบ</th>
-            </tr>
-        </tfoot>
-        <tbody>
-            <?php foreach ($department as $row2) : ?>
-                <tr id="<?= $row2->DEPARTMENT_ID ?>" class="<?= $row2->DEPARTMENT_NAME; ?>">
-                    <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_ID; ?></td>
-                    <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_NAME; ?></td>
-                    <td>
-                        <center>
-                            <form action="<?= site_url('admin/admin/editDepartment') ?>" method="get">
-                                <button name="departmentID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-edit"></i></button>
-                            </form>
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            <button class="btn btn-danger  delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
-                        </center>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+ฺ
+
 <script>
     $(document).ready(function() {
 

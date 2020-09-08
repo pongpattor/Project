@@ -13,14 +13,14 @@
     <script src="<?= base_url('assets\script\node_modules\jquery\dist\jquery.js'); ?>"></script>
     <script src="<?= base_url('assets\bootstrap4\js\bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script> -->
     <script src="<?= base_url('assets\icon_fontawesome\js\all.js'); ?>" crossorigin="anonymous"></script>
 
 </head>
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed sb-sidenav-toggled">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="<?= site_url('admin/admin/home'); ?>">ADMIN FOODSHOP</a>
+        <!-- อาจจะใช้ -->
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
         <!-- div Space-->
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
@@ -42,7 +42,17 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
+                        <a class="nav-link" href="#">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Charts
+                        </a>
+                        <a class="nav-link" href="#">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Tables
+                        </a>
+
+                        <div class="sb-sidenav-menu-heading">ระบบหลังร้าน</div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fa fa-address-card"></i></div>
                             พนักงาน
@@ -56,7 +66,7 @@
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/table'); ?>">
+                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/desk'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-couch"></i></div>
                             โต๊ะ
                         </a>
@@ -80,15 +90,7 @@
                             รับวัตถุดิบ
                         </a>
 
-                        <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="charts.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
-                        </a>
+
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -106,8 +108,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2020</div>
-
+                        <div class="text-muted"><b>Copyright &copy; Your Website 2020</b></div>
                     </div>
                 </div>
             </footer>
