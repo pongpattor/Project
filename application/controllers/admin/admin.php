@@ -25,7 +25,14 @@ class admin extends CI_Controller
 
     public function employee()
     {
-        $data['employee'] = $this->employee_model->fetchEmp();
+        $search = '';
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+            $data['employee'] = $this->employee_model->searchEmployee($search);
+        } else {
+            $data['employee'] = $this->employee_model->fetchEmp();
+        }
+
         $data['page'] = 'employee_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -167,8 +174,14 @@ class admin extends CI_Controller
     // Department Start
     public function Department()
     {
+        $search = '';
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+            $data['department'] = $this->employee_model->searchDepartment($search);
+        } else {
+            $data['department'] = $this->crud_model->findall('department');
+        }
         $data['page'] = 'department_view';
-        $data['department'] = $this->crud_model->findall('department');
         $this->load->view('admin/main_view', $data);
     }
 
@@ -218,7 +231,13 @@ class admin extends CI_Controller
     // Position Start
     public function position()
     {
-        $data['dept_pos'] = $this->employee_model->position();
+        $search = '';
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+            $data['dept_pos'] = $this->employee_model->searchPosition($search);
+        } else {
+            $data['dept_pos'] = $this->employee_model->position();
+        }
         $data['page'] = 'position_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -276,10 +295,14 @@ class admin extends CI_Controller
     // Table Start
     public function desk()
     {
-
-        $data['desk'] =  $this->desk_model->fetchDesk();
+        $search = '';
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+            $data['desk'] =  $this->desk_model->searchDesk($search);
+        } else {
+            $data['desk'] =  $this->desk_model->fetchDesk();
+        }
         $data['page'] = 'desk_view';
-        // print_r($data['desk']);
         $this->load->view('admin/main_view', $data);
     }
 
@@ -378,7 +401,14 @@ class admin extends CI_Controller
     // receiveIngredient start
     public function receiveIngredient()
     {
-        $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive();
+        $search = '';
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+            $data['receive_ingredient'] = $this->receive_ingredient_model->searchReceive($search);
+
+        } else {
+            $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive();
+        }
         $data['page'] = 'receive_ingredient_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -458,7 +488,9 @@ class admin extends CI_Controller
 
     public function test()
     {
-        $data['page'] = 'Test';
-        $this->load->view('admin/main_view', $data);
+        $data['hello'] = $this->employee_model->searchDepartment('30');
+        print_r($data['hello']);
+        // $data['page'] = 'Test';
+        // $this->load->view('admin/main_view', $data);
     }
 }

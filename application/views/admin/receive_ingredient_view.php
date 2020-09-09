@@ -17,7 +17,7 @@
                 <form action="#">
                     <div class="row">
                         <div class="col-6 input-group">
-                            <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
+                            <input type="text" class="form-control" name="search" placeholder="ค้นหา Lot,ปี-เดือน-วัน(2020-09-06),ราคา">
                             <div class="input-group-append">
                                 <button class="input-group-text"><i class="fa fa-search"></i></button>
                             </div>
