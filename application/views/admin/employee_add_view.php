@@ -5,6 +5,7 @@
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
                     <h3 class="d-inline">เพิ่มพนักงาน</h3>
+
                 </div>
             </div>
         </div>
@@ -20,55 +21,43 @@
                     <form action="<?= site_url('admin/admin/insertEmp') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>รหัสบัตรประจำตัวประชาชน13หลัก </label>
-                                <input type="text" name="idcard" class="form-control">
+                                <label>รหัสบัตรประจำตัวประชาชน13หลัก <i style="color: red;">*</i> </label>
+                                <input type="text" name="idcard" class="form-control" minlength="13" maxlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>คำนำหน้า</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input  " type="radio" name="title" id="title1" value="นาย">
-                                    <label class="form-check-label" for="title1">นาย</label>
-                                </div>
-                                <div class="form-check form-check-inline ">
-                                    <input class="form-check-input" type="radio" name="title" id="title2" value="นาง">
-                                    <label class="form-check-label" for="title2">นาง</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="title" id="title3" value="นางสาว">
-                                    <label class="form-check-label" for="title3">นางสาว</label>
-                                </div>
+                                <label>คำนำหน้า <span style="color: red;">*</span> </label>
+                                <select name="title" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกคำนำหน้า</option>
+                                    <option value="1">นาย</option>
+                                    <option value="2">นาง</option>
+                                    <option value="3">นางสาว</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>ชื่อ </label>
-                                <input type="text" name="firstname" class="form-control">
+                                <label>ชื่อ <span style="color: red;">*</span> </label>
+                                <input type="text" name="firstname" id="fname" class="form-control" required>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>นามสกุล </label>
-                                <input type="text" name="lastname" class="form-control">
+                                <label>นามสกุล <span style="color: red;">*</span> </label>
+                                <input type="text" name="lastname" class="form-control" required>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label for="">เพศ</label>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="gender" id="genderM" value="M">
-                                    <label class="form-check-label" for="genderM">ชาย</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="gender" id="genderF" value="F">
-                                    <label class="form-check-label" for="genderF">หญิง</label>
-                                </div>
+                                <label>เพศ <span style="color: red;">*</span></label>
+                                <select name="gender" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกเพศ</option>
+                                    <option value="M">ชาย</option>
+                                    <option value="F">หญิง</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -85,7 +74,7 @@
                                             <td>เบอร์โทร</td>
                                         </tr>
                                         <tr id="row1">
-                                            <td><input type="tel" class="form-control" name="tel[]" maxlength="10" required></td>
+                                            <td><input type="tel" class="form-control" name="tel[]" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                                             <td>
                                                 <button type="button" id="addphone" class="btn btn-info float-right"><i class="fa fa-plus"></i></button>
                                             </td>
@@ -96,20 +85,20 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>วันเกิด </label>
-                                <input type="date" id="bdate" name="bdate" class="form-control">
+                                <label>วันเกิด <span style="color: red;">*</span> </label>
+                                <input type="date" id="bdate" name="bdate" class="form-control" required>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>ที่อยู่ </label>
-                                <textarea name="address" id="address" cols="10" rows="5" class="form-control"></textarea>
+                                <label>ที่อยู่ <span style="color: red;">*</span></label>
+                                <textarea name="address" id="address" cols="10" rows="5" class="form-control" required></textarea>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>จังหวัด </label>
-                                <select name="province" id="province" class="form-control">
+                                <label>จังหวัด <span style="color: red;">*</span></label>
+                                <select name="province" id="province" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกจังหวัด</option>
                                     <?php foreach ($province as $row) : ?>
                                         <option value="<?= $row->PROVINCE_ID ?>"><?= $row->PROVINCE_NAME ?></option>
@@ -119,32 +108,32 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>เขต </label>
-                                <select name="amphur" id="amphur" class="form-control">
+                                <label>เขต <span style="color: red;">*</span></label>
+                                <select name="amphur" id="amphur" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกเขต</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>แขวง </label>
-                                <select name="district" id="district" class="form-control">
+                                <label>แขวง <span style="color: red;">*</span></label>
+                                <select name="district" id="district" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกแขวง</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>รหัสไปรษณีย์ </label>
-                                <select name="postcode" id="postcode" class="form-control">
+                                <label>รหัสไปรษณีย์ <span style="color: red;">*</span></label>
+                                <select name="postcode" id="postcode" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกรหัสไปรษณีย์</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>แผนก </label>
-                                <select name="department" id="department" class="form-control">
+                                <label>แผนก <span style="color: red;">*</span></label>
+                                <select name="department" id="department" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกแผนก</option>
                                     <?php foreach ($department as $row) : ?>
                                         <option value="<?= $row->DEPARTMENT_ID; ?>"><?= $row->DEPARTMENT_NAME; ?></option>
@@ -154,7 +143,7 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>ตำแหน่ง </label>
+                                <label>ตำแหน่ง <span style="color: red;">*</span></label>
                                 <select name="position" id="position" class="form-control">
                                     <option value="" selected disabled>กรุณาเลือกตำแหน่ง</option>
                                 </select>
@@ -166,7 +155,14 @@
                                 <input type="number" name="salary" class="form-control" min="0">
                             </div>
                         </div>
-                        <br>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>เลือกรูปภาพ </label>
+                                <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/*">
+                                <img id="imgPreview" src="#" alt="Image Preview" style="width: 200px; height: 200px;" class="img-thumbnail" />
+                            </div>
+                        </div>
+                        <br><br>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <center>
@@ -189,14 +185,56 @@
 
     <script>
         $(document).ready(function() {
+            $('#btn_regis').on('click', function(e) {
+                if ($('input[name="idcard"]').hasClass('idFalse')) {
+                    alert('กรุณากรอกบัตรประชาชนให้ถูกต้อง');
+                    return false;
+                }
+            });
+
+            $('input[name="idcard"]').on('focusout', function() {
+                var id = $(this).val();
+                $.ajax({
+                    url: "<?= site_url('admin/admin/idcard'); ?>",
+                    method: "POST",
+                    data: {
+                        idcard: id
+                    },
+                    success: function(data) {
+
+                        if (data == true) {
+                            $('input[name="idcard"]').css('background-color', '#83F28E');
+                            $('input[name="idcard"]').css('border-color', '#000000');
+                            $('input[name="idcard"]').removeClass('idFalse');
+                        } else {
+                            $('input[name="idcard"]').css('background-color', '#F9A8A8');
+                            $('input[name="idcard"]').css('border-color', '#000000');
+                            $('input[name="idcard"]').addClass('idFalse');
+                        }
+                    }
+                })
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imgPreview').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#imgEmp").change(function() {
+                readURL(this);
 
 
+            });
 
             $('#province').change(function() {
                 var PROVINCE_ID = $('#province').val();
                 if (PROVINCE_ID != "") {
                     $.ajax({
-                        url: "<?= site_url('user/amphur'); ?>",
+                        url: "<?= site_url('admin/admin/fetchamphur'); ?>",
                         method: "POST",
                         data: {
                             PROVINCE_ID: PROVINCE_ID
@@ -214,7 +252,7 @@
                 var AMPHUR_ID = $('#amphur').val();
                 if (AMPHUR_ID != '') {
                     $.ajax({
-                        url: "<?= site_url('user/district'); ?>",
+                        url: "<?= site_url('admin/admin/fetchdistrict'); ?>",
                         method: "POST",
                         data: {
                             AMPHUR_ID: AMPHUR_ID
@@ -231,7 +269,7 @@
                 var DISTRICT_ID = $('#district').val();
                 if (DISTRICT_ID != '') {
                     $.ajax({
-                        url: "<?= site_url('user/postcode'); ?>",
+                        url: "<?= site_url('admin/admin/fetchpostcode'); ?>",
                         method: "POST",
                         data: {
                             DISTRICT_ID: DISTRICT_ID
@@ -247,7 +285,7 @@
                 var DEPARTMENT_ID = $('#department').val();
                 if (DEPARTMENT_ID != '') {
                     $.ajax({
-                        url: "<?= site_url('user/department'); ?>",
+                        url: "<?= site_url('admin/admin/fetchdepartment'); ?>",
                         method: "POST",
                         data: {
                             DEPARTMENT_ID: DEPARTMENT_ID
@@ -265,17 +303,19 @@
             $('#addphone').click(function() {
                 addphone_id++;
                 var txt = `<tr id="row${addphone_id}">
-                            <td><input type="tel" class="form-control" name="tel[]"></td>
+                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                             <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
                             </tr>`;
                 $('#tablephone').append(txt);
+
                 $('.btn-remove').on('click', function() {
                     var btn_del = $(this).attr("id");
                     $('#row' + btn_del).remove();
                 });
+
             });
         });
     </script>

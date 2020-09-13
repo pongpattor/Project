@@ -7,7 +7,19 @@ class desk_model extends CI_Model
     {
         $sql = "SELECT * FROM desk where DESK_STATUS not in ('3') ORDER BY DESK_STATUS,DESK_ID ASC";
         return $this->db->query($sql)->result();
+
+        // $this->db->limit($limit, $start);
+        // $query = $this->db->get("desk");
+        // return $query->result();
+        // if ($query->num_rows() > 0) {
+        //     foreach ($query->result() as $row) {
+        //         $data[] = $row;
+        //     }
+        //     return $data;
+        // }
+        // return false;
     }
+
 
     public function maxID()
     {
@@ -41,5 +53,14 @@ class desk_model extends CI_Model
         $this->db->or_like('DESK_NUMBER', $search);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    function countDesk()
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM desk";
+        $result = $this->db->query($sql)->result();
+        foreach ($result as $row) {
+            return $row->cnt;
+        }
     }
 }

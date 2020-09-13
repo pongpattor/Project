@@ -17,7 +17,7 @@
 
 </head>
 
-<body class="sb-nav-fixed sb-sidenav-toggled">
+<body class="sb-nav-fixed ">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="<?= site_url('admin/admin/home'); ?>">ADMIN FOODSHOP</a>
         <!-- อาจจะใช้ -->
@@ -78,7 +78,7 @@
                         </a>
                         <div class="collapse" id="ProductcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">สินค้า</a>
+                                <a class="nav-link" href="<?= site_url('admin/product/product'); ?>">สินค้า</a>
                                 <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทอาหาร</a>
                                 <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเครื่องดื่ม</a>
                                 <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเนื้อสัตว์</a>

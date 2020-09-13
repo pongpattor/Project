@@ -96,7 +96,7 @@
                                             $rowid = 1;
                                             foreach ($phone as $rowphone) { ?>
                                                 <tr id="row<?= $rowid; ?>">
-                                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" maxlength="10"></td>
+                                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                                                     <td>
                                                         <?php if ($rowid == 1) { ?>
                                                             <button type="button" id="addphone" class="btn btn-success float-right"><i class="fa fa-plus"></i></button>
@@ -220,14 +220,13 @@
     </div>
 </div>
 
-
 <script>
     $(document).ready(function() {
         $('#province').change(function() {
             var PROVINCE_ID = $('#province').val();
             if (PROVINCE_ID != "") {
                 $.ajax({
-                    url: "<?= site_url('user/amphur'); ?>",
+                    url: "<?= site_url('admin/admin/fetchamphur'); ?>",
                     method: "POST",
                     data: {
                         PROVINCE_ID: PROVINCE_ID
@@ -245,7 +244,7 @@
             var AMPHUR_ID = $('#amphur').val();
             if (AMPHUR_ID != '') {
                 $.ajax({
-                    url: "<?= site_url('user/district'); ?>",
+                    url: "<?= site_url('admin/admin/fetchdistrict'); ?>",
                     method: "POST",
                     data: {
                         AMPHUR_ID: AMPHUR_ID
@@ -262,7 +261,7 @@
             var DISTRICT_ID = $('#district').val();
             if (DISTRICT_ID != '') {
                 $.ajax({
-                    url: "<?= site_url('user/postcode'); ?>",
+                    url: "<?= site_url('admin/admin/fetchpostcode'); ?>",
                     method: "POST",
                     data: {
                         DISTRICT_ID: DISTRICT_ID
@@ -278,7 +277,7 @@
             var DEPARTMENT_ID = $('#department').val();
             if (DEPARTMENT_ID != '') {
                 $.ajax({
-                    url: "<?= site_url('user/department'); ?>",
+                    url: "<?= site_url('admin/admin/fetchdepartment'); ?>",
                     method: "POST",
                     data: {
                         DEPARTMENT_ID: DEPARTMENT_ID
@@ -289,12 +288,14 @@
                 });
             }
         });
-        var addphone_id = 1;
-        $('#addphone').click(function() {
+
+        var id = $('tbody tr .btn-remove:last-child').attr('id');
+        var addphone_id = parseInt(id) + 1;
+        $('#addphone').on('click', function() {
             addphone_id++;
             var txt = `<tr id="row${addphone_id}">
-                            <td><input type="tel" class="form-control" name="tel[]"></td>
-                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right" maxlength="10">
+                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
@@ -305,23 +306,13 @@
                 var btn_del = $(this).attr("id");
                 $('#row' + btn_del).remove();
             });
-            $(function() {
-                $("input[name='tel[]']").on('input', function(e) {
-                    $(this).val($(this).val().replace(/[^0-9]/g, ''));
-                });
-            });
-
         });
+
         $('.btn-remove').on('click', function() {
             var btn_del = $(this).attr("id");
             $('#row' + btn_del).remove();
             console.log(btn_del);
         });
 
-        $(function() {
-            $("input[name='tel[]']").on('input', function(e) {
-                $(this).val($(this).val().replace(/[^0-9]/g, ''));
-            });
-        });
     });
 </script>

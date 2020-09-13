@@ -11,6 +11,12 @@ class product extends CI_Controller
 
     public function product(){
         $data['page'] = 'product_view';
-        $this->load->view('admin/admin/main_view',$data);
+        $this->load->view('admin/main_view',$data);
     }
+
+    public function addProduct(){
+        $data['page'] = 'product_add_view';
+        $this->load->view('admin/main_view',$data);
+    }
+    
 }
