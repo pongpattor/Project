@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/admin/updateDepartment') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/employee/updateDepartment') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
                             <?php foreach ($oldDept as $row) : ?>
                                 <div class="col-sm col-md col-xl-6 ">
@@ -32,7 +32,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/admin/department'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/employee/department'); ?>" class="btn btn-danger">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_update" class="btn btn-success" type="submit" value="บันทึก">

@@ -79,9 +79,15 @@ class employee_model extends CI_Model
 
     function editEmp($id)
     {
-        $sql = "SELECT * FROM employee e inner join position p inner join department d on
-                e.POSITION = p.POSITION_ID and p.DEPT_ID = d.DEPARTMENT_ID WHERE e.ID = $id";
-        return $this->db->query($sql)->result();
+        $sql = "SELECT * FROM employee e 
+                left join position p on e.POSITION = p.POSITION_ID 
+                left join department d on p.DEPT_ID = d.DEPARTMENT_ID 
+                 WHERE e.ID = $id";
+        $query = $this->db->query($sql);
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));   
+        // echo '</pre>' ;
+        return $query->result();
     }
 
 
@@ -170,4 +176,64 @@ class employee_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    function fetch_province()
+    {
+        $sql = "SELECT * FROM province";
+        return $this->db->query($sql)->result();
+    }
+
+    function fetch_amphur($province_id)
+    {
+        $sql = "SELECT * from amphur where PROVINCE_ID = $province_id";
+        $query =  $this->db->query($sql)->result();
+        $output = '<option value="" selected disable>กรุณาเลือกเขต</option>';
+
+        foreach ($query as $row) {
+            $output .= '<option value="' . $row->AMPHUR_ID . '">' . $row->AMPHUR_NAME . '</option>';
+        }
+        return $output;
+    }
+
+    function fetch_district($amphur_id)
+    {
+        $sql = "SELECT * from district where AMPHUR_ID = $amphur_id";
+        $query =  $this->db->query($sql)->result();
+        $output = '<option value="" selected disable >กรุณาเลือกแขวง</option>';
+
+        foreach ($query as $row) {
+            $output .= '<option value="' . $row->DISTRICT_ID . '">' . $row->DISTRICT_NAME . '</option>';
+        }
+        return $output;
+    }
+
+
+    function fetch_postcode($district_id)
+    {
+        $sql = "SELECT POSTCODE from district where DISTRICT_ID = $district_id";
+        $query =  $this->db->query($sql)->result();
+        $output = '<option value="" selected disable>กรุณาเลือกรหัสไปรษณีย์</option>';
+        foreach ($query as $row) {
+            $output = '<option value="' . $row->POSTCODE . '">' . $row->POSTCODE . '</option>';
+        }
+        return $output;
+    }
+
+    function  fetch_department(){
+        $sql = "SELECT * FROM department";
+        return $this->db->query($sql)->result();
+    }
+
+    function fetch_position($department_id)
+    {
+        $sql = "SELECT * from position where DEPT_ID = $department_id ORDER BY POSITION_NAME ASC";
+        $query =  $this->db->query($sql)->result();
+        $output = '<option value="" selected disable>กรุณาเลือกตำแหน่ง</option>';
+        foreach ($query as $row) {
+            $output .= '<option value="' . $row->POSITION_ID . '">' . $row->POSITION_NAME . '</option>';
+        }
+        return $output; 
+    }
+    
+
 }

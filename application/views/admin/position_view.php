@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/admin/addPosition') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/employee/addPosition') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
@@ -46,7 +46,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME; ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/admin/editPosition') ?>" method="get">
+                                                    <form action="<?= site_url('admin/employee/editPosition') ?>" method="get">
                                                         <button name="positionID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->POSITION_ID ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
@@ -76,7 +76,7 @@
             var result = confirm(`ยืนยันการลบ ${NAME}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/deletePosition') ?>",
+                    url: "<?= site_url('admin/employee/deletePosition') ?>",
                     method: "POST",
                     data: {
                         posID: ID

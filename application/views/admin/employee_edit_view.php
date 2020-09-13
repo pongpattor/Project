@@ -17,7 +17,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/admin/updateEmp') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/employee/updateEmp') ?>" method="POST" enctype="multipart/form-data">
                         <?php foreach ($employee as $row) : ?>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
@@ -202,7 +202,7 @@
                                     <center>
                                         <div class="input-group">
                                             <div class="col">
-                                                <a href="<?= site_url('admin/admin/employee'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                                <a href="<?= site_url('admin/employee/employee'); ?>" class="btn btn-danger">ยกเลิก</a>
                                             </div>
 
                                             <div class="col">
@@ -226,7 +226,7 @@
             var PROVINCE_ID = $('#province').val();
             if (PROVINCE_ID != "") {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/fetchamphur'); ?>",
+                    url: "<?= site_url('admin/employee/fetchamphur'); ?>",
                     method: "POST",
                     data: {
                         PROVINCE_ID: PROVINCE_ID
@@ -244,7 +244,7 @@
             var AMPHUR_ID = $('#amphur').val();
             if (AMPHUR_ID != '') {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/fetchdistrict'); ?>",
+                    url: "<?= site_url('admin/employee/fetchdistrict'); ?>",
                     method: "POST",
                     data: {
                         AMPHUR_ID: AMPHUR_ID
@@ -261,7 +261,7 @@
             var DISTRICT_ID = $('#district').val();
             if (DISTRICT_ID != '') {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/fetchpostcode'); ?>",
+                    url: "<?= site_url('admin/employee/fetchpostcode'); ?>",
                     method: "POST",
                     data: {
                         DISTRICT_ID: DISTRICT_ID
@@ -277,7 +277,7 @@
             var DEPARTMENT_ID = $('#department').val();
             if (DEPARTMENT_ID != '') {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/fetchdepartment'); ?>",
+                    url: "<?= site_url('admin/employee/fetchdepartment'); ?>",
                     method: "POST",
                     data: {
                         DEPARTMENT_ID: DEPARTMENT_ID

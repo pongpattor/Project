@@ -14,7 +14,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/admin/employee'); ?>">
+                <form action="<?= site_url('admin/employee/employee'); ?>">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/admin/addEmployee') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/employee/addEmployee') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
@@ -78,7 +78,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
-                                                    <form action="<?= site_url('admin/admin/editEmployee') ?>" method="GET">
+                                                    <form action="<?= site_url('admin/employee/editEmployee') ?>" method="GET">
                                                         <button name="empID" class="btn btn-warning edit" class="btn btn-warning" value="<?= $row->ID ?>"> <i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
@@ -107,7 +107,7 @@
             var result = confirm(`ยืนยันการลบ ${ID}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/deleteEmployee') ?>",
+                    url: "<?= site_url('admin/employee/deleteEmployee') ?>",
                     method: "POST",
                     data: {
                         empID: ID
