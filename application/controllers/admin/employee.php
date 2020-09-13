@@ -8,7 +8,6 @@ class employee extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        $this->load->model('base_data_model');
         $this->load->model('crud_model');
         $this->load->model('employee_model');
         $this->load->library('pagination');
@@ -96,7 +95,6 @@ class employee extends CI_Controller
 
     public function insertEmp()
     {
-
         $config = array();
         $config['upload_path']          =  './assets/image/employee/';
         $config['allowed_types']        = 'jpg|png';
@@ -111,7 +109,7 @@ class employee extends CI_Controller
         if ($num == 0) {
             if (!$this->upload->do_upload('imgEmp')) {
                 echo '<script>';
-                echo 'alert("กรุณาอัพโหลดรูปเท่านั้น");';
+                echo 'alert("กรุณาอัพโหลดรูป");';
                 echo 'window.history.back();';
                 echo '</script>';
             } else {
@@ -207,7 +205,6 @@ class employee extends CI_Controller
         $department_id = $data['employee']['0']->DEPARTMENT_ID;
         $data['position'] = $this->crud_model->findwhere('position', 'DEPT_ID', $department_id);
         $data['phone'] = $this->employee_model->PhoneEmployee($id);
-
         $data['page'] = 'employee_edit_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -215,22 +212,62 @@ class employee extends CI_Controller
     public function updateEmp()
     {
         $idEmp = $this->input->post('idEmp');
-        $employeeDetail = array(
-            'IDCARD' => $this->input->post('idcard'),
-            'TITLENAME' => $this->input->post('title'),
-            'FIRSTNAME' => $this->input->post('firstname'),
-            'LASTNAME' => $this->input->post('lastname'),
-            'GENDER' => $this->input->post('gender'),
-            'EMAIL' => $this->input->post('email'),
-            'BDATE' => $this->input->post('bdate'),
-            'ADDRESS' => $this->input->post('address'),
-            'DISTRICT' => $this->input->post('district'),
-            'AMPHUR' => $this->input->post('amphur'),
-            'PROVINCE' => $this->input->post('province'),
-            'POSTCODE' => $this->input->post('postcode'),
-            'POSITION' => $this->input->post('position'),
-            'SALARY' => $this->input->post('salary'),
-        );
+        if (empty($_FILES['imgEmp']['name'])) {
+            $employeeDetail = array(
+                'IDCARD' => $this->input->post('idcard'),
+                'TITLENAME' => $this->input->post('title'),
+                'FIRSTNAME' => $this->input->post('firstname'),
+                'LASTNAME' => $this->input->post('lastname'),
+                'GENDER' => $this->input->post('gender'),
+                'EMAIL' => $this->input->post('email'),
+                'BDATE' => $this->input->post('bdate'),
+                'ADDRESS' => $this->input->post('address'),
+                'DISTRICT' => $this->input->post('district'),
+                'AMPHUR' => $this->input->post('amphur'),
+                'PROVINCE' => $this->input->post('province'),
+                'POSTCODE' => $this->input->post('postcode'),
+                'POSITION' => $this->input->post('position'),
+                'SALARY' => $this->input->post('salary'),
+            );
+        } else {
+            $config = array();
+            $config['upload_path']          =  './assets/image/employee/';
+            $config['allowed_types']        = 'jpg|png';
+            $config['max_size']             = '2000';
+            $config['max_width']            = '3000';
+            $config['max_height']           = '3000';
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('imgEmp')) {
+                echo '<script>';
+                echo 'alert("กรุณาอัพโหลดรูปเท่านั้น");';
+                echo 'window.history.back();';
+                echo '</script>';
+            } else {
+                $data['img'] = $this->upload->data();
+                $oldImg = $this->input->post('oldImg');
+                $employeeDetail = array(
+                    'IDCARD' => $this->input->post('idcard'),
+                    'TITLENAME' => $this->input->post('title'),
+                    'FIRSTNAME' => $this->input->post('firstname'),
+                    'LASTNAME' => $this->input->post('lastname'),
+                    'GENDER' => $this->input->post('gender'),
+                    'EMAIL' => $this->input->post('email'),
+                    'BDATE' => $this->input->post('bdate'),
+                    'ADDRESS' => $this->input->post('address'),
+                    'DISTRICT' => $this->input->post('district'),
+                    'AMPHUR' => $this->input->post('amphur'),
+                    'PROVINCE' => $this->input->post('province'),
+                    'POSTCODE' => $this->input->post('postcode'),
+                    'POSITION' => $this->input->post('position'),
+                    'SALARY' => $this->input->post('salary'),
+                    'IMG' => $data['img']['file_name'],
+                );
+                if ($oldImg != '') {
+                    unlink('./assets/image/employee/' . $oldImg);
+                }
+            }
+        }
+
         $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmp);
         $tel = $this->input->post('tel');
         $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmp);

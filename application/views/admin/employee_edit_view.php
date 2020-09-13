@@ -28,55 +28,51 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>รหัสบัตรประจำตัวประชาชน13หลัก </label>
-                                    <input type="text" name="idcard" class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13">
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-sm col-md col-xl-6 ">
-                                    <label>คำนำหน้า</label><br>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input  " type="radio" name="title" id="title1" value="นาย" <?php if ($row->TITLENAME == 'นาย') echo 'checked'; ?>>
-                                        <label class="form-check-label" for="title1">นาย</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="title" id="title2" value="นาง" <?php if ($row->TITLENAME == 'นาง') echo 'checked'; ?>>
-                                        <label class="form-check-label" for="title2">นาง</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="title" id="title3" value="นางสาว" <?php if ($row->TITLENAME == 'นางสาว') echo 'checked'; ?>>
-                                        <label class="form-check-label" for="title3">นางสาว</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-sm col-md col-xl-6 ">
-                                    <label>ชื่อ </label>
-                                    <input type="text" name="firstname" class="form-control" value="<?= $row->FIRSTNAME ?>">
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-sm col-md col-xl-6 ">
-                                    <label>นามสกุล </label>
-                                    <input type="text" name="lastname" class="form-control" value="<?= $row->LASTNAME ?>">
+                                    <label>รหัสบัตรประจำตัวประชาชน13หลัก <span style="color: red;">*</span></label>
+                                    <input type="text" name="idcard" class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6">
-                                    <label for="">เพศ</label>
+                                    <label>คำนำหน้า <span style="color: red;">*</span></label>
+                                    <select name="title" class="form-control" required>
+                                        <option value="" disabled>กรุณาเลือกคำนำหน้า</option>
+                                        <option value="1" <?php if ($row->TITLENAME == 1)
+                                                                echo 'selected';
+                                                            ?>>นาย</option>
+                                        <option value="2" <?php if ($row->TITLENAME == 2)
+                                                                echo 'selected';
+                                                            ?>>นาง</option>
+                                        <option value="3" <?php if ($row->TITLENAME == 3)
+                                                                echo 'selected';
+                                                            ?>>นางสาว</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gender" id="genderM" value="M" <?php if ($row->GENDER == 'M') echo 'checked'; ?>>
-                                        <label class="form-check-label" for="genderM">ชาย</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gender" id="genderF" value="F" <?php if ($row->GENDER == 'F') echo 'checked'; ?>>
-                                        <label class="form-check-label" for="genderF">หญิง</label>
-                                    </div>
+                                    <label>ชื่อ <span style="color: red;">*</span></label>
+                                    <input type="text" name="firstname" class="form-control" value="<?= $row->FIRSTNAME ?>" required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>นามสกุล <span style="color: red;">*</span></label>
+                                    <input type="text" name="lastname" class="form-control" value="<?= $row->LASTNAME ?>" required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6">
+                                    <label>เพศ <span style="color: red;">*</span></label>
+                                    <select name="gender" class="form-control" required>
+                                        <option value="" disabled>กรุณาเลือกเพศ</option>
+                                        <option value="M" <?php if ($row->TITLENAME == 'M')
+                                                                echo 'selected';
+                                                            ?>>ชาย</option>
+                                        <option value="F" <?php if ($row->TITLENAME == 'F')
+                                                                echo 'selected';
+                                                            ?>>หญิง</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -90,13 +86,13 @@
                                     <table style="width:100%" id="tablephone">
                                         <tbody>
                                             <tr>
-                                                <td>เบอร์โทร</td>
+                                                <td>เบอร์โทร <span style="color: red;">*</span></td>
                                             </tr>
                                             <?php
                                             $rowid = 1;
                                             foreach ($phone as $rowphone) { ?>
                                                 <tr id="row<?= $rowid; ?>">
-                                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required></td>
                                                     <td>
                                                         <?php if ($rowid == 1) { ?>
                                                             <button type="button" id="addphone" class="btn btn-success float-right"><i class="fa fa-plus"></i></button>
@@ -114,20 +110,20 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>วันเกิด </label>
-                                    <input type="date" id="bdate" name="bdate" class="form-control" value="<?= $row->BDATE ?>">
+                                    <label>วันเกิด <span style="color: red;">*</span></label>
+                                    <input type="date" id="bdate" name="bdate" class="form-control" value="<?= $row->BDATE ?>" required>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>ที่อยู่ </label>
-                                    <textarea name="address" id="address" cols="10" rows="5" class="form-control"><?= $row->ADDRESS ?></textarea>
+                                    <label>ที่อยู่ <span style="color: red;">*</span></label>
+                                    <textarea name="address" id="address" cols="10" rows="5" class="form-control" required><?= $row->ADDRESS ?></textarea>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>จังหวัด </label>
-                                    <select name="province" id="province" class="form-control">
+                                    <label>จังหวัด <span style="color: red;">*</span></label>
+                                    <select name="province" id="province" class="form-control" required>
                                         <option value="" disabled>กรุณาเลือกจังหวัด</option>
                                         <?php foreach ($province as $row2) : ?>
                                             <option value="<?= $row2->PROVINCE_ID ?>" <?php if ($row2->PROVINCE_ID == $row->PROVINCE) echo 'selected'; ?>><?= $row2->PROVINCE_NAME ?></option>
@@ -137,8 +133,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>เขต </label>
-                                    <select name="amphur" id="amphur" class="form-control">
+                                    <label>เขต <span style="color: red;">*</span></label>
+                                    <select name="amphur" id="amphur" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกเขต</option>
                                         <?php foreach ($amphur as $row3) : ?>
                                             <option value="<?= $row3->AMPHUR_ID ?>" <?php if ($row3->AMPHUR_ID == $row->AMPHUR) echo 'selected'; ?>><?= $row3->AMPHUR_NAME ?></option>
@@ -148,8 +144,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>แขวง </label>
-                                    <select name="district" id="district" class="form-control">
+                                    <label>แขวง <span style="color: red;">*</span> </label>
+                                    <select name="district" id="district" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกแขวง</option>
                                         <?php foreach ($district as $row4) : ?>
                                             <option value="<?= $row4->DISTRICT_ID ?>" <?php if ($row4->DISTRICT_ID == $row->DISTRICT) echo 'selected'; ?>><?= $row4->DISTRICT_NAME ?></option>
@@ -159,8 +155,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>รหัสไปรษณีย์ </label>
-                                    <select name="postcode" id="postcode" class="form-control">
+                                    <label>รหัสไปรษณีย์ <span style="color: red;">*</span> </label>
+                                    <select name="postcode" id="postcode" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกรหัสไปรษณีย์</option>
                                         <?php foreach ($district as $row5) : ?>
                                             <option value="<?= $row5->POSTCODE ?>" <?php if ($row5->POSTCODE == $row->POSTCODE) echo 'selected'; ?>><?= $row5->POSTCODE ?></option>
@@ -170,8 +166,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6">
-                                    <label>แผนก </label>
-                                    <select name="department" id="department" class="form-control">
+                                    <label>แผนก <span style="color: red;">*</span></label>
+                                    <select name="department" id="department" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกแผนก</option>
                                         <?php foreach ($department as $row6) : ?>
                                             <option value="<?= $row6->DEPARTMENT_ID; ?>" <?php if ($row6->DEPARTMENT_ID == $row->DEPARTMENT_ID) echo 'selected'; ?>><?= $row6->DEPARTMENT_NAME; ?></option>
@@ -181,8 +177,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label>ตำแหน่ง </label>
-                                    <select name="position" id="position" class="form-control">
+                                    <label>ตำแหน่ง <span style="color: red;">*</span></label>
+                                    <select name="position" id="position" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกตำแหน่ง</option>
                                         <?php foreach ($position as $row7) : ?>
                                             <option value="<?= $row7->POSITION_ID; ?>" <?php if ($row7->POSITION_ID == $row->POSITION) echo 'selected'; ?>><?= $row7->POSITION_NAME; ?></option>
@@ -196,7 +192,15 @@
                                     <input type="number" name="salary" class="form-control" min="0" value="<?= $row->SALARY ?>">
                                 </div>
                             </div>
-                            <br>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>เลือกรูปภาพ </label>
+                                    <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" value="<?= $row->IMG?>">
+                                    <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="Image Preview" style="width: 200px; height: 200px;" class="img-thumbnail" />
+                                    <input type="hidden" name="oldImg" value="<?=$row->IMG?>">;
+                                </div>
+                            </div>
+                            <br><br>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <center>
@@ -222,6 +226,79 @@
 
 <script>
     $(document).ready(function() {
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imgPreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgEmp").change(function() {
+            readURL(this);
+
+
+        });
+
+        $('#btn_regis').on('click', function(e) {
+            if ($('input[name="idcard"]').hasClass('idFalse')) {
+                alert('กรุณากรอกบัตรประชาชนให้ถูกต้อง');
+                return false;
+            }
+        });
+
+        $('input[name="idcard"]').on('focusout', function() {
+            var id = $(this).val();
+            $.ajax({
+                url: "<?= site_url('admin/employee/idcard'); ?>",
+                method: "POST",
+                data: {
+                    idcard: id
+                },
+                success: function(data) {
+
+                    if (data == true) {
+                        $('input[name="idcard"]').css('background-color', '#83F28E');
+                        $('input[name="idcard"]').css('border-color', '#000000');
+                        $('input[name="idcard"]').removeClass('idFalse');
+                    } else {
+                        $('input[name="idcard"]').css('background-color', '#F9A8A8');
+                        $('input[name="idcard"]').css('border-color', '#000000');
+                        $('input[name="idcard"]').addClass('idFalse');
+                    }
+                }
+            })
+        });
+
+
+        var id = $('tbody tr .btn-remove:last-child').attr('id');
+        var addphone_id = parseInt(id) + 1;
+        $('#addphone').on('click', function() {
+            addphone_id++;
+            var txt = `<tr id="row${addphone_id}">
+                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            </tr>`;
+            $('#tablephone').append(txt);
+
+            $('.btn-remove').on('click', function() {
+                var btn_del = $(this).attr("id");
+                $('#row' + btn_del).remove();
+            });
+        });
+
+        $('.btn-remove').on('click', function() {
+            var btn_del = $(this).attr("id");
+            $('#row' + btn_del).remove();
+            console.log(btn_del);
+        });
+
+
         $('#province').change(function() {
             var PROVINCE_ID = $('#province').val();
             if (PROVINCE_ID != "") {
@@ -289,30 +366,7 @@
             }
         });
 
-        var id = $('tbody tr .btn-remove:last-child').attr('id');
-        var addphone_id = parseInt(id) + 1;
-        $('#addphone').on('click', function() {
-            addphone_id++;
-            var txt = `<tr id="row${addphone_id}">
-                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
-                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </td>
-                            </tr>`;
-            $('#tablephone').append(txt);
 
-            $('.btn-remove').on('click', function() {
-                var btn_del = $(this).attr("id");
-                $('#row' + btn_del).remove();
-            });
-        });
-
-        $('.btn-remove').on('click', function() {
-            var btn_del = $(this).attr("id");
-            $('#row' + btn_del).remove();
-            console.log(btn_del);
-        });
 
     });
 </script>
