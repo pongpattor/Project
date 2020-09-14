@@ -61,12 +61,12 @@
                         <div class="collapse" id="EmployeecollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= site_url('admin/employee/employee'); ?>">รายชื่อพนักงาน</a>
-                                <a class="nav-link" href="<?= site_url('admin/employee/department'); ?>">แผนก</a>
+                                <a class="nav-link" href="<?= site_url('admin/department/'); ?>">แผนก</a>
                                 <a class="nav-link" href="<?= site_url('admin/employee/position'); ?>">ตำแหน่ง</a>
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/desk'); ?>">
+                        <a class="nav-link collapsed" href="<?= site_url('admin/desk/desk'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-couch"></i></div>
                             โต๊ะ
                         </a>

@@ -26,8 +26,9 @@
                                             <label>เลือกรูปภาพ <span style="color: red;">* </label>
                                             <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" >
                                         </div>
-                                        <div class="col">
-                                            <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" width="150px" height="150px"   class="float-right  img" />
+                                        <div class="col" >
+                                            <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" width="150px" height="150px"   class="float-right  img"
+                                             style="border-style:inset;" />
                                             <input type="hidden" name="oldImg" value="<?= $row->IMG ?>">
                                         </div>
                                     </div>
@@ -282,7 +283,7 @@
         $('#addphone').on('click', function() {
             addphone_id++;
             var txt = `<tr id="row${addphone_id}">
-                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" required onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                             <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
                                     <i class="fa fa-minus"></i>
                                 </button>

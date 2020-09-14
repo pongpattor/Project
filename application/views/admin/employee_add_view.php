@@ -27,7 +27,7 @@
                                         <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/*" required>
                                     </div>
                                     <div class="col">
-                                        <img id="imgPreview" src="#" width="150px" height="150px" class="float-right" />
+                                        <img id="imgPreview" src="#" width="150px" height="150px" class="float-right img"  style="border-style:inset;"/>
                                     </div>
                                 </div>
                             </div>

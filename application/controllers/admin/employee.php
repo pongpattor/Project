@@ -96,24 +96,6 @@ class employee extends CI_Controller
         }
     }
 
-    // เช็คไฟล์ที่ส่งผ่าน AJAX ยังไม่สมบูรณ์
-    // public function checkImgEmp(){
-    //     $config = array();
-    //     $config['upload_path']          =  './assets/image/employee/';
-    //     $config['allowed_types']        = 'jpg|png';
-    //     $config['max_size']             = '2000';
-    //     $config['max_width']            = '3000';
-    //     $config['max_height']           = '3000';
-    //     $this->load->library('upload', $config);
-    //     if (!$this->upload->do_upload('imgName')) {
-    //         echo 0;
-    //         //ผิด
-    //     }
-    //     else{
-    //         echo 1;
-    //         //ถูก
-    //     }
-    // }
 
     public function insertEmp()
     {
@@ -159,14 +141,17 @@ class employee extends CI_Controller
             // print_r($employee_detail);
             // echo '</pre>';
             $this->crud_model->insert('employee', $employee_detail);
-            $id = $this->employee_model->maxIdEmployee($IDposition);
+            $idEmp = $this->employee_model->maxIdEmployee($IDposition);
             $tel = $this->input->post('tel');
-            foreach ($tel as $row) {
+            foreach ($tel as $phone) {
                 $data = array(
-                    'PHONE' => $row,
-                    'EMPLOYEE_ID' => $id
+                    'PHONE' => $phone,
+                    'EMPLOYEE_ID' => $idEmp
                 );
-                $this->crud_model->insert('employee_telephone', $data);
+                $checkPhone = $this->employee_model->checkPhoneNumber($idEmp, $phone);
+                if ($checkPhone == 0) {
+                    $this->crud_model->insert('employee_telephone', $data);
+                }
             }
             redirect(site_url('admin/employee/employee'));
         }
@@ -178,7 +163,7 @@ class employee extends CI_Controller
         $maxIdEmployee = $this->employee_model->maxIdEmployee($idPosition);
         $firstID = substr($maxIdEmployee, 0, 2);
         $idDept =  $this->employee_model->idDeptGenIdEmp($idPosition);
-        $idDept = substr($idDept,3);
+        $idDept = substr($idDept, 3);
         $date =  date('Y') + 543;
         $Y =  substr($date, 2);
         $middle = 1100;
@@ -198,7 +183,6 @@ class employee extends CI_Controller
             }
             return $Y . $middle . $last;
         }
-       
     }
 
     public function deleteEmployee()
@@ -230,7 +214,6 @@ class employee extends CI_Controller
         $idEmp = $this->input->post('idEmp');
         if (empty($_FILES['imgEmp']['name'])) {
             $employeeDetail = array(
-                'IDCARD' => $this->input->post('idcard'),
                 'TITLENAME' => $this->input->post('title'),
                 'FIRSTNAME' => $this->input->post('firstname'),
                 'LASTNAME' => $this->input->post('lastname'),
@@ -262,7 +245,6 @@ class employee extends CI_Controller
                 $data['img'] = $this->upload->data();
                 $oldImg = $this->input->post('oldImg');
                 $employeeDetail = array(
-                    'IDCARD' => $this->input->post('idcard'),
                     'TITLENAME' => $this->input->post('title'),
                     'FIRSTNAME' => $this->input->post('firstname'),
                     'LASTNAME' => $this->input->post('lastname'),
@@ -285,116 +267,19 @@ class employee extends CI_Controller
         $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmp);
         $tel = $this->input->post('tel');
         $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmp);
-        foreach ($tel as $row) {
+        foreach ($tel as $phone) {
             $data = array(
-                'PHONE' => $row,
+                'PHONE' => $phone,
                 'EMPLOYEE_ID' => $idEmp
             );
-            $this->crud_model->insert('employee_telephone', $data);
+            $checkPhone = $this->employee_model->checkPhoneNumber($idEmp, $phone);
+            if ($checkPhone == 0) {
+                $this->crud_model->insert('employee_telephone', $data);
+            }
         }
         redirect(site_url('admin/employee/employee'));
     }
     // Employee End
-
-
-    // Department Start
-    public function department()
-    {
-
-        $search = $this->input->get('search');
-        $config['base_url'] = site_url('admin/employee/department');
-        $config['total_rows'] = $this->employee_model->countAllDepartment($search);
-        $config['per_page'] = 5;
-        $config['reuse_query_string'] = TRUE;
-        $config['uri_segment'] = 4;
-        $config['full_tag_open'] = '<nav><ul class="pagination">';
-        $config['full_tag_close'] = '</ul></nav>';
-        $config['first_link'] = 'First';
-        $config['last_link'] = 'Last';
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="page-item ">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $config['attributes'] = array('class' => 'page-link');
-        $limit = $config['per_page'];
-        $offset = $this->uri->segment(4, 0);
-        $this->pagination->initialize($config);
-        $data['total'] = $config['total_rows'];
-        $data['department'] = $this->employee_model->Department($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
-        $data['links'] = $this->pagination->create_links();
-        $data['page'] = 'department_view';
-        $this->load->view('admin/main_view', $data);
-    }
-
-    public function genIdDepartment()
-    {
-        $max = $this->employee_model->maxidDepartment();
-        if ($max == '') {
-            $id = 'DEP001';
-            return $id;
-        } else {
-            $id = substr($max, 3);
-            $id += 1;
-            while (strlen($id) < 3) {
-                $id = '0' . $id;
-            }
-            $id = 'DEP' . $id;
-            return $id;
-        }
-    }
-
-    public function addDepartment()
-    {
-        $data['page'] = 'department_add_view';
-        $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
-        $this->load->view('admin/main_view', $data);
-    }
-
-    public function insertDepartment()
-    {
-        $dept = array(
-            'DEPARTMENT_ID' => $this->genIdDepartment(),
-            'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
-        );
-        $this->crud_model->insert('department', $dept);
-
-        redirect(site_url('admin/employee/department'));
-    }
-    public function editDepartment()
-    {
-        $deptID = $this->input->get('departmentID');
-        $data['page'] = 'department_edit_view';
-        $data['oldDept'] = $this->employee_model->editDept($deptID);
-        $this->load->view('admin/main_view', $data);
-    }
-    public function updateDepartment()
-    {
-        $DEPARTMENT_ID = $this->input->post('DEPARTMENT_ID');
-        $department_detail = array(
-            'DEPARTMENT_ID' => $DEPARTMENT_ID,
-            'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
-        );
-        $this->crud_model->update('department', $department_detail, 'DEPARTMENT_ID', $DEPARTMENT_ID);
-        redirect(site_url('admin/employee/department'));
-    }
-
-    public function deleteDepartment()
-    {
-        $dept = $this->input->post('deptID');
-        $this->crud_model->delete('department', 'DEPARTMENT_ID', $dept);
-    }
-    // Department End
 
 
     // Position Start
