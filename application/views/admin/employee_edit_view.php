@@ -24,7 +24,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <label>เลือกรูปภาพ <span style="color: red;">* </label>
-                                            <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" required>
+                                            <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" >
                                         </div>
                                         <div class="col">
                                             <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" width="150px" height="150px"   class="float-right  img" />

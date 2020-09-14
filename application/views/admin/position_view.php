@@ -30,9 +30,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="selectedColumn" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <table id="selectedColumn" class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark">
                                     <tr>
+                                        <th style="text-align: center;">รหัสตำแหน่ง</th>
                                         <th style="text-align: center;">แผนก</th>
                                         <th style="text-align: center;">ตำแหน่ง</th>
                                         <th style="text-align: center;  ">แก้ไข</th>
@@ -41,7 +42,8 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($dept_pos as $row) : ?>
-                                        <tr id="<?= $row->POSITION_ID ?>" class="<?= $row->POSITION_NAME ?>">
+                                        <tr id="<?= $row->POSITION_ID ?>" class=" bgtable">
+                                            <td class="align-middle" style="text-align: center;"><?= $row->POSITION_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME; ?></td>
                                             <td>
@@ -60,6 +62,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <?= $links;?>
                         </div>
                     </div>
                 </div>
@@ -72,8 +75,7 @@
 
         $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
-            var NAME = $(this).parents("tr").attr("class");
-            var result = confirm(`ยืนยันการลบ ${NAME}`);
+            var result = confirm(`ยืนยันการลบตำแหน่ง รหัส ${ID}`);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/employee/deletePosition') ?>",
@@ -82,7 +84,7 @@
                         posID: ID
                     },
                     success: function() {
-                        alert(`ลบ ${NAME} เสร็จสิ้น`);
+                        alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
                         location.reload();
 
                     }
@@ -90,5 +92,13 @@
             }
         });
 
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
     });
 </script>

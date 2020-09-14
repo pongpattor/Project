@@ -4,7 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class employee_model extends CI_Model
 {
 
-    function fetchEmp($search = '', $limit, $offset)
+    //Employee Start 
+    function employee($search = '', $limit, $offset)
     {
         $sql = "SELECT employee.ID,employee.FIRSTNAME,employee.LASTNAME,employee.EMAIL,
         department.DEPARTMENT_NAME,position.POSITION_NAME,employee.SALARY,employee.IMG FROM employee 
@@ -42,7 +43,7 @@ class employee_model extends CI_Model
         return $query->result();
     }
 
-    function countEmployee($search)
+    function countAllEmployee($search)
     {
         $sql = "SELECT COUNT(*) as cnt FROM employee 
         LEFT JOIN position ON position.POSITION_ID = employee.POSITION
@@ -97,13 +98,24 @@ class employee_model extends CI_Model
         return $this->db->query($sql);
     }
 
-    function maxIdEmp($position_id)
+    function maxIdEmployee($position_id)
     {
-        $sql = "SELECT MAX(ID)as'MID'  FROM employee where POSITION = $position_id";
+        $sql = "SELECT MAX(ID)as'MID'  FROM employee where POSITION = '$position_id'";
         $query = $this->db->query($sql)->result();
         foreach ($query as $row) {
             return $row->MID;
         }
+    }
+
+    function idDeptGenIdEmp($position_id){
+        $sql = "SELECT department.DEPARTMENT_ID as DID FROM department
+                INNER JOIN position ON department.DEPARTMENT_ID = position.DEPT_ID
+                WHERE position.POSITION_ID= '$position_id'";
+         $query =$this->db->query($sql);
+        foreach ($query->result() as $row){
+            return $row->DID;
+        }
+        
     }
 
     function checkIdCard($idCard)
@@ -115,54 +127,24 @@ class employee_model extends CI_Model
         }
     }
 
-    function fetctDeptHead()
-    {
-        $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME,DEPARTMENT_HEAD,FIRSTNAME,LASTNAME,ID FROM department LEFT JOIN employee ON DEPARTMENT_HEAD = ID";
-        return $this->db->query($sql)->result();
-    }
-
-    function editDept($id)
-    {
-        $sql = "SELECT * FROM department 
-        WHERE DEPARTMENT_ID = '$id'";
-        return $this->db->query($sql)->result();
-    }
-
-    function position()
-    {
-        $sql = 'SELECT * FROM position inner join department on DEPT_ID = DEPARTMENT_ID ORDER BY DEPARTMENT_NAME,POSITION_NAME';
-        return $this->db->query($sql)->result();
-    }
-
-    function editPos($id)
-    {
-        $sql = "SELECT * FROM position 
-        WHERE POSITION_ID = $id";
-        return $this->db->query($sql)->result();
-    }
-
-    function rowEmployee()
-    {
-        $sql = "SELECT COUNT(*) FROM employee";
-        return $this->db->query($sql)->result();
-    }
-
     function PhoneEmployee($ID)
     {
         $sql = "SELECT PHONE FROM employee_telephone et inner join employee e on et.EMPLOYEE_ID=e.ID WHERE e.ID = $ID";
         return $this->db->query($sql)->result();
     }
+    //Employee End
 
-    //department
-    function fetchDepartment($search = '', $limit, $offset)
+
+    //Department Start
+    function Department($search = '', $limit, $offset)
     {
-        $sql = "SELECT * FROM department 
+        $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME FROM department 
         where
         (
-            department.DEPARTMENT_ID LIKE  ? OR
-            department.DEPARTMENT_NAME LIKE ? 
+            DEPARTMENT_ID LIKE  ? OR
+            DEPARTMENT_NAME LIKE ? 
         )
-        ORDER BY department.DEPARTMENT_ID ASC
+        ORDER BY DEPARTMENT_ID ASC
         LIMIT $offset,$limit
         ";
 
@@ -184,8 +166,8 @@ class employee_model extends CI_Model
         $sql = "SELECT COUNT(*) as cnt FROM department 
         where
         (
-            department.DEPARTMENT_ID LIKE  ? OR
-            department.DEPARTMENT_NAME LIKE ? 
+            DEPARTMENT_ID LIKE  ? OR
+            DEPARTMENT_NAME LIKE ? 
         )
         ";
 
@@ -204,28 +186,101 @@ class employee_model extends CI_Model
         }
     }
 
-    function maxIdDep(){
-        $sql = 'SELECT MAX(DEPARTMENT_ID) as md from department';
+    function maxIdDepartment()
+    {
+        $sql = 'SELECT MAX(DEPARTMENT_ID) as MID from department';
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->MID;
+        }
+    }
+
+    function editDept($id)
+    {
+        $sql = "SELECT * FROM department 
+        WHERE DEPARTMENT_ID = '$id'";
+        return $this->db->query($sql)->result();
+    }
+    //Department End
+
+    //Position Start
+    function position($search = '', $limit, $offset)
+    {
+        $sql = "SELECT position.POSITION_ID,position.POSITION_NAME,department.DEPARTMENT_NAME FROM position
+        LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
+        where
+        (
+            position.POSITION_ID LIKE  ? OR
+            position.POSITION_NAME LIKE ? OR
+            department.DEPARTMENT_NAME LIKE ? 
+        )
+        ORDER BY department.DEPARTMENT_ID ASC, position.POSITION_ID ASC
+        LIMIT $offset,$limit
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
+    }
+
+    function countAllPosition($search = '')
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM position
+        LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
+        where
+        (
+            position.POSITION_ID LIKE  ? OR
+            position.POSITION_NAME LIKE ? OR
+            department.DEPARTMENT_NAME LIKE ? 
+        )
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    function maxIdPosition(){
+        $sql = "SELECT MAX(POSITION_ID) as MID FROM position";
         $query = $this->db->query($sql);
         foreach($query->result() as $row){
-            return $row->md;
+            return $row->MID;
         }
     }
 
 
-    //Position
-    function searchPosition($search = '')
+    function editPos($id)
     {
-        $this->db->select('*');
-        $this->db->from('position');
-        $this->db->join('department', 'position.DEPT_ID = department.DEPARTMENT_ID', 'left');
-        $this->db->like('POSITION_NAME', $search);
-        $this->db->or_like('DEPARTMENT_NAME', $search);
-        $this->db->order_by('DEPARTMENT_ID', 'DESC');
-        $query = $this->db->get();
-        return $query->result();
+        $sql = "SELECT * FROM position 
+        WHERE POSITION_ID = $id";
+        return $this->db->query($sql)->result();
     }
 
+
+    //Position End
+
+
+    //ETC
     function fetch_province()
     {
         $sql = "SELECT * FROM province";

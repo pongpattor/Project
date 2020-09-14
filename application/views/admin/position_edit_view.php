@@ -21,14 +21,14 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ชื่อตำแหน่ง </label>
-                                    <input type="text" name="positionName" class="form-control" value="<?= $row->POSITION_NAME ?>">
+                                    <input type="text" name="positionName" class="form-control" value="<?= $row->POSITION_NAME ?>" required>
                                     <input type="hidden" name="positionID" value="<?= $row->POSITION_ID ?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6  ">
                                     <label>แผนก </label>
-                                    <select name="departmentID" class="form-control">
+                                    <select name="departmentID" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกแผนก</option>
                                         <?php foreach ($department as $row2) : ?>
                                             <option value="<?= $row2->DEPARTMENT_ID; ?>" <?php if ($row->DEPT_ID == $row2->DEPARTMENT_ID) echo 'selected'; ?>><?= $row2->DEPARTMENT_NAME; ?></option>

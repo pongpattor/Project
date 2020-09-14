@@ -20,13 +20,13 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">
                                 <label>ชื่อตำแหน่ง </label>
-                                <input type="text" name="positionName" id="positionName" class="form-control">
+                                <input type="text" name="positionName" id="positionName" class="form-control" required>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>แผนก </label>
-                                <select name="departmentID" class="form-control">
+                                <select name="departmentID" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกแผนก</option>
                                     <?php foreach ($department as $row) : ?>
                                         <option value="<?= $row->DEPARTMENT_ID; ?>"><?= $row->DEPARTMENT_NAME; ?></option>

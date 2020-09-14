@@ -27,6 +27,10 @@ class crud_model extends CI_Model
         return  $this->db->query($sql)->result();
         
     }
+    function findSelectWhere($table,$select,$where,$data){
+        $sql = "SELECT $select FROM $table WHERE $where = $data";
+        return $this->db->query($sql)->result();
+    }
     function findColumns($columns, $table)
     {
            $sql = "SELECT $columns FROM $table";

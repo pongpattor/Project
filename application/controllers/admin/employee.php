@@ -18,7 +18,7 @@ class employee extends CI_Controller
     {
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/employee/employee');
-        $config['total_rows'] = $this->employee_model->countEmployee($search);
+        $config['total_rows'] = $this->employee_model->countAllEmployee($search);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -45,7 +45,7 @@ class employee extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['employee'] = $this->employee_model->fetchEmp($search, $limit, $offset);
+        $data['employee'] = $this->employee_model->employee($search, $limit, $offset);
         $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'employee_view';
@@ -117,6 +117,7 @@ class employee extends CI_Controller
 
     public function insertEmp()
     {
+
         $config = array();
         $config['upload_path']          =  './assets/image/employee/';
         $config['allowed_types']        = 'jpg|png';
@@ -124,18 +125,17 @@ class employee extends CI_Controller
         $config['max_width']            = '3000';
         $config['max_height']           = '3000';
         $this->load->library('upload', $config);
-
         $IDposition = $this->input->post('position');
         if (!$this->upload->do_upload('imgEmp')) {
             echo '<script>';
             echo 'alert("กรุณาอัพโหลดรูป");';
-            echo 'location.href= "'.site_url('admin/employee/addEmployee').'"';
+            echo 'location.href= "' . site_url('admin/employee/addEmployee') . '"';
             echo '</script>';
         } else {
             $data['img'] = $this->upload->data();
             $employee_detail = array(
-                'ID' => $this->genID($IDposition),
-                'PASSWORD' => $this->genID($IDposition),
+                'ID' => $this->genIdEmployee($IDposition),
+                'PASSWORD' => $this->genIdEmployee($IDposition),
                 'IDCARD' => $this->input->post('idcard'),
                 'TITLENAME' => $this->input->post('title'),
                 'FIRSTNAME' => $this->input->post('firstname'),
@@ -159,7 +159,7 @@ class employee extends CI_Controller
             // print_r($employee_detail);
             // echo '</pre>';
             $this->crud_model->insert('employee', $employee_detail);
-            $id = $this->employee_model->maxIdEmp($IDposition);
+            $id = $this->employee_model->maxIdEmployee($IDposition);
             $tel = $this->input->post('tel');
             foreach ($tel as $row) {
                 $data = array(
@@ -173,15 +173,17 @@ class employee extends CI_Controller
     }
 
     //genID Employee 
-    public function genID($posid)
+    public function genIdEmployee($idPosition)
     {
-        $maxId = $this->employee_model->maxIdEmp($posid);
-        $firstID = substr($maxId, 0, 2);
+        $maxIdEmployee = $this->employee_model->maxIdEmployee($idPosition);
+        $firstID = substr($maxIdEmployee, 0, 2);
+        $idDept =  $this->employee_model->idDeptGenIdEmp($idPosition);
+        $idDept = substr($idDept,3);
         $date =  date('Y') + 543;
         $Y =  substr($date, 2);
         $middle = 1100;
-        $middle += $posid;
-
+        $middle += $idDept;
+        $last = '';
         if ($firstID != $Y) {
             $last = 0001;
             while (strlen($last) < 4) {
@@ -189,13 +191,14 @@ class employee extends CI_Controller
             }
             return $Y . $middle . $last;
         } else {
-            $last = substr($maxId, 6);
+            $last = substr($maxIdEmployee, 6);
             $last += 1;
             while (strlen($last) < 4) {
                 $last = '0' . $last;
             }
             return $Y . $middle . $last;
         }
+       
     }
 
     public function deleteEmployee()
@@ -275,9 +278,7 @@ class employee extends CI_Controller
                     'SALARY' => $this->input->post('salary'),
                     'IMG' => $data['img']['file_name'],
                 );
-                if ($oldImg != '') {
-                    unlink('./assets/image/employee/' . $oldImg);
-                }
+                unlink('./assets/image/employee/' . $oldImg);
             }
         }
 
@@ -303,7 +304,7 @@ class employee extends CI_Controller
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/employee/department');
         $config['total_rows'] = $this->employee_model->countAllDepartment($search);
-        $config['per_page'] = 4;
+        $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
         $config['full_tag_open'] = '<nav><ul class="pagination">';
@@ -329,7 +330,7 @@ class employee extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['department'] = $this->employee_model->fetchDepartment($search, $limit, $offset);
+        $data['department'] = $this->employee_model->Department($search, $limit, $offset);
         $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'department_view';
@@ -338,7 +339,7 @@ class employee extends CI_Controller
 
     public function genIdDepartment()
     {
-        $max = $this->employee_model->maxidDep();
+        $max = $this->employee_model->maxidDepartment();
         if ($max == '') {
             $id = 'DEP001';
             return $id;
@@ -399,13 +400,38 @@ class employee extends CI_Controller
     // Position Start
     public function position()
     {
-        $search = '';
-        if ($this->input->get('search')) {
-            $search = $this->input->get('search');
-            $data['dept_pos'] = $this->employee_model->searchPosition($search);
-        } else {
-            $data['dept_pos'] = $this->employee_model->position();
-        }
+        $search = $this->input->get('search');
+        $config['base_url'] = site_url('admin/employee/position');
+        $config['total_rows'] = $this->employee_model->countAllPosition($search);
+        $config['per_page'] = 5;
+        $config['reuse_query_string'] = TRUE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<nav><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item ">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+        $limit = $config['per_page'];
+        $offset = $this->uri->segment(4, 0);
+        $this->pagination->initialize($config);
+        $data['total'] = $config['total_rows'];
+        $data['dept_pos'] = $this->employee_model->position($search, $limit, $offset);
+        $data['total_rows'] = $config['total_rows'];
+        $data['links'] = $this->pagination->create_links();
         $data['page'] = 'position_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -417,9 +443,27 @@ class employee extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
+    public function genIdPosition()
+    {
+        $maxIdPosition = $this->employee_model->maxIdPosition();
+        if ($maxIdPosition == '') {
+            $id = 'POS001';
+            return $id;
+        } else {
+            $id = substr($maxIdPosition, 3);
+            $id += 1;
+            while (strlen($id) < 3) {
+                $id = '0' . $id;
+            }
+            $id = 'POS' . $id;
+            return $id;
+        }
+    }
+
     public function insertPos()
     {
         $position = array(
+            'POSITION_ID' => $this->genIdPosition(),
             'POSITION_NAME' => $this->input->post('positionName'),
             'DEPT_ID' => $this->input->post('departmentID')
         );

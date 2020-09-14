@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="selectedColumn " class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <table id="selectedColumn " class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสโต๊ะ</th>
@@ -42,9 +42,9 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($desk as $row) { ?>
-                                        <tr id="<?= $row->DESK_ID; ?>">
+                                        <tr id="<?= $row->DESK_ID; ?>" class="bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->DESK_ID; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->DESK_NUMBER; ?></td>
+                                            <td id="<?= $row->DESK_NUMBER; ?>" class="align-middle" style="text-align: center;"><?= $row->DESK_NUMBER; ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php if ($row->DESK_STATUS == 0) {
                                                     echo 'ว่าง';
@@ -83,7 +83,7 @@
 
         $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
-            var result = confirm(`ยืนยันการลบโต๊ะหมายเลข ${ID}`);
+            var result = confirm(`ยืนยันการลบโต๊ะ รหัส ${ID}`);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/admin/deleteDesk') ?>",
@@ -92,7 +92,7 @@
                         deskID: ID
                     },
                     success: function() {
-                        alert(`ลบโต๊ะหมายเลข ${ID} เสร็จสิ้น`);
+                        alert(`ลบโต๊ะ รหัส ${ID} เสร็จสิ้น`);
                         location.reload();
 
                     }
@@ -100,6 +100,13 @@
             }
         });
 
-
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
     });
 </script>
