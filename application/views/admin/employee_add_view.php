@@ -212,7 +212,7 @@
                 });
             });
 
-            $('#btn_regis').on('click', function(e) {
+            $('#btn_regis').on('click', function() {
                 if ($('input[name="idcard"]').hasClass('idFalse')) {
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;

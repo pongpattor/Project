@@ -18,9 +18,9 @@
                 <div class="card-body">
                     <form action="<?= site_url('admin/department/insertDepartment') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
+                            <div class="col-sm col-md col-xl-6 " id="rowDeptName">
                                 <label>ชื่อแผนก </label>
-                                <input type="text" name="DEPARTMENT_NAME" class="form-control" required>
+                                <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control" required>
                             </div>
                         </div>
                         <br>
@@ -44,3 +44,38 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#btn_regis').click(function() {
+            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
+
+        });
+        $('#department_name').on('focusout', function() {
+            var deptName = $('#department_name').val();
+            console.log(deptName);
+            $.ajax({
+                url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
+                method: "POST",
+                data: {
+                    departmentName: deptName
+                },
+                success: function(data) {
+                    if (data != 0) {
+                        $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('#rowDeptName').append('<br id="brdept">');
+                        $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
+                    } else {
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
+                    }
+                }
+            });
+        })
+    });
+</script>

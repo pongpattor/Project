@@ -19,9 +19,10 @@
                     <form action="<?= site_url('admin/department/updateDepartment') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
                             <?php foreach ($oldDept as $row) : ?>
-                                <div class="col-sm col-md col-xl-6 ">
+                                <div class="col-sm col-md col-xl-6" id="rowDeptName">
                                     <label>ชื่อแผนก </label>
-                                    <input type="text" name="DEPARTMENT_NAME" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>" required>
+                                    <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>" required>
+                                    <input type="hidden" name="oldDepartment_name" id="oldDepartment_name" value="<?= $row->DEPARTMENT_NAME ?>">
                                     <input type="hidden" name="DEPARTMENT_ID" value="<?= $row->DEPARTMENT_ID ?>">
                                 </div>
                         </div>
@@ -48,3 +49,39 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#btn_update').click(function() {
+            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
+
+        });
+        $('#department_name').on('focusout', function() {
+            var deptName = $('#department_name').val();
+            var oldDeptName = $('#oldDepartment_name').val();
+            $.ajax({
+                url: "<?= site_url('admin/department/checkDepartmentNameUpdate') ?>",
+                method: "POST",
+                data: {
+                    departmentName: deptName,
+                    oldDepartmentName: oldDeptName
+                },
+                success: function(data) {
+                    if (data != 0) {
+                        $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('#rowDeptName').append('<br id="brdept">');
+                        $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
+                    } else {
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
+                    }
+                }
+            });
+        })
+    });
+</script>

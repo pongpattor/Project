@@ -77,6 +77,37 @@ class department extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
+    public function checkDepartmentNameInsert()
+    {
+        $departmentName = $this->input->post("departmentName");
+        $checkName = $this->department_model->checkName($departmentName);
+        if ($checkName != 0) {
+            //ซ้ำ
+            echo 1;
+        } else {
+            //ไม่ซ้ำ
+            echo 0;
+        }
+    }
+
+    public function checkDepartmentNameUpdate()
+    {
+        $departmentName = $this->input->post("departmentName");
+        $oldDepartmentName = $this->input->post("oldDepartmentName");
+        if ($departmentName == $oldDepartmentName) {
+            echo 0;
+        } else {
+            $checkName = $this->department_model->checkName($departmentName);
+            if ($checkName != 0) {
+                //ซ้ำ
+                echo 1;
+            } else {
+                //ไม่ซ้ำ
+                echo 0;
+            }
+        }
+    }
+
     public function insertDepartment()
     {
         $dept = array(

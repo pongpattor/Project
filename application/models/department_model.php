@@ -70,5 +70,20 @@ class department_model extends CI_Model
         WHERE DEPARTMENT_ID = '$id'";
         return $this->db->query($sql)->result();
     }
+
+    function checkName($departmentName)
+    {
+        $sql = "SELECT COUNT(DEPARTMENT_NAME) as cnt FROM department
+        WHERE DEPARTMENT_NAME LIKE ?";
+        $query = $this->db->query(
+            $sql,
+            array(
+                 $this->db->escape_like_str($departmentName)
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
     //Department End
 }
