@@ -66,7 +66,7 @@
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="<?= site_url('admin/desk/desk'); ?>">
+                        <a class="nav-link collapsed" href="<?= site_url('admin/desk/'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-couch"></i></div>
                             โต๊ะ
                         </a>

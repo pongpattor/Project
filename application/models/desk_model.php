@@ -3,23 +3,61 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class desk_model extends CI_Model
 {
-    function fetchDesk()
+  
+    function desk($search = '', $limit, $offset)
     {
-        $sql = "SELECT * FROM desk where DESK_STATUS not in ('3') ORDER BY DESK_STATUS,DESK_ID ASC";
-        return $this->db->query($sql)->result();
+        $sql = "SELECT * FROM desk 
+        where DESK_STATUS IN (0,1,2) and  
+        (
+            DESK_ID LIKE  ? OR
+            DESK_NUMBER LIKE ? OR
+            DESK_STATUS LIKE ? 
 
-        // $this->db->limit($limit, $start);
-        // $query = $this->db->get("desk");
-        // return $query->result();
-        // if ($query->num_rows() > 0) {
-        //     foreach ($query->result() as $row) {
-        //         $data[] = $row;
-        //     }
-        //     return $data;
-        // }
-        // return false;
+        )
+        ORDER BY DESK_STATUS ASC ,DESK_ID ASC
+        LIMIT $offset,$limit
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
     }
 
+    function countAllDesk($search = '')
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM desk 
+        where
+        DESK_STATUS IN(0,1,2) AND
+        (
+            DESK_ID LIKE  ? OR
+            DESK_NUMBER LIKE ? OR
+            DESK_STATUS LIKE ? 
+        )
+        ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
 
     public function maxID()
     {
@@ -45,22 +83,5 @@ class desk_model extends CI_Model
         return $this->db->query($sql);
     }
 
-    function searchDesk($search = '')
-    {
-        $this->db->select('*');
-        $this->db->from('desk');
-        $this->db->like('DESK_ID', $search);
-        $this->db->or_like('DESK_NUMBER', $search);
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    function countDesk()
-    {
-        $sql = "SELECT COUNT(*) as cnt FROM desk";
-        $result = $this->db->query($sql)->result();
-        foreach ($result as $row) {
-            return $row->cnt;
-        }
-    }
+    
 }

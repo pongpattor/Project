@@ -11,7 +11,6 @@ class admin extends CI_Controller
         $this->load->model('crud_model');
         $this->load->model('employee_model');
         $this->load->model('receive_ingredient_model');
-        $this->load->model('desk_model');
         $this->load->library('pagination');
     }
 

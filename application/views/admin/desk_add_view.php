@@ -18,7 +18,7 @@
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
 
-                    <form action="<?= site_url('admin/admin/insertDesk') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/desk/insertDesk') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <label>หมายเลขโต๊ะ</label><br>
@@ -31,7 +31,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/admin/desk'); ?>" class="btn btn-danger  ">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/desk/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_regis" class="btn btn-success " type="submit" value="  เพิ่ม  ">

@@ -19,7 +19,7 @@
                 <div class="card-body">
 
                     <div class="container">
-                        <form action="<?= site_url('admin/admin/updateDesk') ?>" method="POST" enctype="multipart/form-data">
+                        <form action="<?= site_url('admin/desk/updateDesk') ?>" method="POST" enctype="multipart/form-data">
                             <?php foreach ($desk as $row) { ?>
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6">
@@ -46,7 +46,7 @@
                                     <center>
                                         <div class="input-group">
                                             <div class="col">
-                                                <a href="<?= site_url('admin/admin/desk'); ?>" class="btn btn-danger  ">ยกเลิก</a>
+                                                <a href="<?= site_url('admin/desk/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                                             </div>
                                             <div class="col">
                                                 <input id="btn_regis" class="btn btn-success " type="submit" value="  บันทึก  ">

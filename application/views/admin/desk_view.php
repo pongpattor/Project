@@ -9,11 +9,12 @@
     </div>
 </div>
 <br>
+
 <div class="row ">
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="#">
+                <form action="<?= site_url('admin/desk/') ?>">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -22,11 +23,25 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/admin/addDesk') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/desk/addDesk') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
                 <br>
+                <?php
+                echo '<div class="row">';
+                echo '<div class="col-12">';
+                echo '<div class="row">';
+                echo '<div class="col-8">'; ?>
+                <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
+                <?php echo '</div>';
+                echo '<div class="col-4">';
+                echo '<p class="float-right">จำนวน ' . $total . ' ตัว</p>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                ?>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -56,7 +71,7 @@
                                                 ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/admin/editDesk') ?>" method="get">
+                                                    <form action="<?= site_url('admin/desk/editDesk') ?>" method="get">
                                                         <button name="deskID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->DESK_ID; ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
@@ -70,6 +85,8 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <?= $links; ?>
+
                         </div>
                     </div>
                 </div>
