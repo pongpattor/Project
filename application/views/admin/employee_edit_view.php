@@ -21,6 +21,20 @@
                         <?php foreach ($employee as $row) : ?>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>เลือกรูปภาพ <span style="color: red;">* </label>
+                                            <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" required>
+                                        </div>
+                                        <div class="col">
+                                            <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" width="150px" height="150px"   class="float-right  img" />
+                                            <input type="hidden" name="oldImg" value="<?= $row->IMG ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
                                     <label>รหัสประจำตัวพนักงาน </label>
                                     <input type="text" class="form-control" disabled value="<?= $row->ID ?>">
                                     <input type="hidden" name="idEmp" value="<?= $row->ID ?>">
@@ -29,7 +43,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>รหัสบัตรประจำตัวประชาชน13หลัก <span style="color: red;">*</span></label>
-                                    <input type="text" name="idcard" class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                    <input type="text" name="idcard" disabled class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -192,14 +206,6 @@
                                     <input type="number" name="salary" class="form-control" min="0" value="<?= $row->SALARY ?>">
                                 </div>
                             </div>
-                            <div class="row justify-content-center">
-                                <div class="col-sm col-md col-xl-6 ">
-                                    <label>เลือกรูปภาพ </label>
-                                    <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" value="<?= $row->IMG?>">
-                                    <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="Image Preview" style="width: 200px; height: 200px;" class="img-thumbnail" />
-                                    <input type="hidden" name="oldImg" value="<?=$row->IMG?>">;
-                                </div>
-                            </div>
                             <br><br>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
@@ -238,8 +244,6 @@
         }
         $("#imgEmp").change(function() {
             readURL(this);
-
-
         });
 
         $('#btn_regis').on('click', function(e) {

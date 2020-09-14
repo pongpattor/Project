@@ -21,10 +21,21 @@
                     <form action="<?= site_url('admin/employee/insertEmp') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>เลือกรูปภาพ <span style="color: red;">* </label>
+                                        <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/*" required>
+                                    </div>
+                                    <div class="col">
+                                        <img id="imgPreview" src="#" width="150px" height="150px" class="float-right" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 " id="rowidcard">
                                 <label>รหัสบัตรประจำตัวประชาชน13หลัก <i style="color: red;">*</i> </label>
-                                <input type="text" name="idcard" class="form-control" minlength="13" maxlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-                                </tbody>
-                                </table>
+                                <input type="text" name="idcard" id="idcard" class="form-control" minlength="13" maxlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -83,10 +94,11 @@
                                 </table>
                             </div>
                         </div>
+
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <label>วันเกิด <span style="color: red;">*</span> </label>
-                                <input type="date" id="bdate" name="bdate" class="form-control" required>
+                                <input type="date" id="bdate" name="bdate" class="form-control" required max="<?= date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -155,13 +167,7 @@
                                 <input type="number" name="salary" class="form-control" min="0">
                             </div>
                         </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>เลือกรูปภาพ </label>
-                                <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/*">
-                                <img id="imgPreview" src="#" alt="Image Preview" style="width: 200px; height: 200px;" class="img-thumbnail" />
-                            </div>
-                        </div>
+                        <br>
                         <br><br>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
@@ -185,9 +191,30 @@
 
     <script>
         $(document).ready(function() {
+
+
+
+            var addphone_id = 1;
+            $('#addphone').click(function() {
+                addphone_id++;
+                var txt = `<tr id="row${addphone_id}">
+                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" required onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            </tr>`;
+                $('#tablephone').append(txt);
+
+                $('.btn-remove').on('click', function() {
+                    var btn_del = $(this).attr("id");
+                    $('#row' + btn_del).remove();
+                });
+            });
+
             $('#btn_regis').on('click', function(e) {
                 if ($('input[name="idcard"]').hasClass('idFalse')) {
-                    alert('กรุณากรอกบัตรประชาชนให้ถูกต้อง');
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;
                 }
             });
@@ -201,18 +228,42 @@
                         idcard: id
                     },
                     success: function(data) {
-
                         if (data == true) {
-                            $('input[name="idcard"]').css('background-color', '#83F28E');
-                            $('input[name="idcard"]').css('border-color', '#000000');
-                            $('input[name="idcard"]').removeClass('idFalse');
+                            $.ajax({
+                                url: "<?= site_url('admin/employee/checkIdCard') ?>",
+                                method: "POST",
+                                data: {
+                                    idcard: id
+                                },
+                                success: function(data) {
+                                    if (data != 0) {
+                                        // alert('บัตรประชาชนได้ถูกใช้ไปแล้ว');
+                                        $('input[name="idcard"]').css('background-color', '#F9A8A8');
+                                        $('input[name="idcard"]').css('border-color', '#000000');
+                                        $('input[name="idcard"]').addClass('idFalse');
+                                        $('#alertidcard').remove();
+                                        $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
+
+                                    } else {
+                                        $('input[name="idcard"]').css('background-color', '#83F28E');
+                                        $('input[name="idcard"]').css('border-color', '#000000');
+                                        $('input[name="idcard"]').removeClass('idFalse');
+                                        $('#alertidcard').remove();
+                                    }
+                                }
+                            });
+
                         } else {
                             $('input[name="idcard"]').css('background-color', '#F9A8A8');
                             $('input[name="idcard"]').css('border-color', '#000000');
                             $('input[name="idcard"]').addClass('idFalse');
+                            $('#alertidcard').remove();
+                            $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
                         }
                     }
                 })
+
+
             });
 
             function readURL(input) {
@@ -226,8 +277,6 @@
             }
             $("#imgEmp").change(function() {
                 readURL(this);
-
-
             });
 
             $('#province').change(function() {
@@ -299,23 +348,6 @@
 
 
 
-            var addphone_id = 1;
-            $('#addphone').click(function() {
-                addphone_id++;
-                var txt = `<tr id="row${addphone_id}">
-                            <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
-                            <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </td>
-                            </tr>`;
-                $('#tablephone').append(txt);
-
-                $('.btn-remove').on('click', function() {
-                    var btn_del = $(this).attr("id");
-                    $('#row' + btn_del).remove();
-                });
-            });
         });
     </script>
     <br>

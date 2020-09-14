@@ -20,7 +20,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อแผนก </label>
-                                <input type="text" name="DEPARTMENT_NAME" class="form-control">
+                                <input type="text" name="DEPARTMENT_NAME" class="form-control" required>
                             </div>
                         </div>
                         <br>

@@ -92,7 +92,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                            <th><?= $links; ?></th>
+                            <?= $links; ?>
                         </div>
                     </div>
                 </div>

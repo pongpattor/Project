@@ -8,7 +8,6 @@ class admin extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        $this->load->model('base_data_model');
         $this->load->model('crud_model');
         $this->load->model('employee_model');
         $this->load->model('receive_ingredient_model');

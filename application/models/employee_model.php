@@ -124,7 +124,7 @@ class employee_model extends CI_Model
     function editDept($id)
     {
         $sql = "SELECT * FROM department 
-        WHERE DEPARTMENT_ID = $id";
+        WHERE DEPARTMENT_ID = '$id'";
         return $this->db->query($sql)->result();
     }
 
@@ -154,15 +154,64 @@ class employee_model extends CI_Model
     }
 
     //department
-    function searchDepartment($search = '')
+    function fetchDepartment($search = '', $limit, $offset)
     {
-        $this->db->select('*');
-        $this->db->from('department');
-        $this->db->like('DEPARTMENT_ID', $search);
-        $this->db->or_like('DEPARTMENT_NAME', $search);
-        $query = $this->db->get();
+        $sql = "SELECT * FROM department 
+        where
+        (
+            department.DEPARTMENT_ID LIKE  ? OR
+            department.DEPARTMENT_NAME LIKE ? 
+        )
+        ORDER BY department.DEPARTMENT_ID ASC
+        LIMIT $offset,$limit
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
         return $query->result();
     }
+
+    function countAllDepartment($search = '')
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM department 
+        where
+        (
+            department.DEPARTMENT_ID LIKE  ? OR
+            department.DEPARTMENT_NAME LIKE ? 
+        )
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    function maxIdDep(){
+        $sql = 'SELECT MAX(DEPARTMENT_ID) as md from department';
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            return $row->md;
+        }
+    }
+
 
     //Position
     function searchPosition($search = '')
@@ -219,21 +268,20 @@ class employee_model extends CI_Model
         return $output;
     }
 
-    function  fetch_department(){
+    function  fetch_department()
+    {
         $sql = "SELECT * FROM department";
         return $this->db->query($sql)->result();
     }
 
     function fetch_position($department_id)
     {
-        $sql = "SELECT * from position where DEPT_ID = $department_id ORDER BY POSITION_NAME ASC";
+        $sql = "SELECT * from position where DEPT_ID = '$department_id' ORDER BY POSITION_NAME ASC";
         $query =  $this->db->query($sql)->result();
         $output = '<option value="" selected disable>กรุณาเลือกตำแหน่ง</option>';
         foreach ($query as $row) {
             $output .= '<option value="' . $row->POSITION_ID . '">' . $row->POSITION_NAME . '</option>';
         }
-        return $output; 
+        return $output;
     }
-    
-
 }

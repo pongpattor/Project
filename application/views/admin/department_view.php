@@ -29,8 +29,24 @@
                 <br>
                 <div class="row">
                     <div class="col-12">
+                        <?php  
+                            echo '<div class="row">';
+                                echo '<div class="col-12">';
+                                    echo '<div class="row">';
+                                        echo '<div class="col-8">'; ?>
+                                <?php  if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>';?>
+                                <?php        echo '</div>';
+                                        echo '<div class="col-4">';
+                                            echo '<p class="float-right">จำนวนแผนก ' . $total . ' แผนก</p>';
+                                         echo '</div>';
+                                    echo '</div>'; 
+                                echo '</div>';
+                            echo '</div>';
+                         ?>
+                <div class="row">
+                    <div class="col-12">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-sm" width="100%" cellspacing="0">
+                            <table class="table  table-bordered table-sm" width="100%" cellspacing="0">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสแผนก</th>
@@ -60,6 +76,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <?= $links; ?>
                         </div>
                     </div>
                 </div>

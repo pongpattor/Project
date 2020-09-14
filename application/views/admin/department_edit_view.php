@@ -21,7 +21,7 @@
                             <?php foreach ($oldDept as $row) : ?>
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ชื่อแผนก </label>
-                                    <input type="text" name="DEPARTMENT_NAME" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>">
+                                    <input type="text" name="DEPARTMENT_NAME" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>" required>
                                     <input type="hidden" name="DEPARTMENT_ID" value="<?= $row->DEPARTMENT_ID ?>">
                                 </div>
                         </div>
