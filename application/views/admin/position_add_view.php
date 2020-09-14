@@ -16,9 +16,9 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/employee/insertPos') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/position/insertPos') ?>" method="POST" enctype="multipart/form-data">
                         <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6  ">
+                            <div class="col-sm col-md col-xl-6  " id="rowPositionName">
                                 <label>ชื่อตำแหน่ง </label>
                                 <input type="text" name="positionName" id="positionName" class="form-control" required>
                             </div>
@@ -26,7 +26,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>แผนก </label>
-                                <select name="departmentID" class="form-control" required>
+                                <select name="departmentID" id="departmentID" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกแผนก</option>
                                     <?php foreach ($department as $row) : ?>
                                         <option value="<?= $row->DEPARTMENT_ID; ?>"><?= $row->DEPARTMENT_NAME; ?></option>
@@ -40,7 +40,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/employee/position'); ?>" class="btn btn-danger col-7 backPage">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/position/'); ?>" class="btn btn-danger col-7 backPage">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_regis" class="btn btn-success col-7" type="submit" value="บันทึก">
@@ -59,16 +59,78 @@
 
 <script>
     $(document).ready(function() {
-        $('.backPage').click(function() {
-            let positionName = $('#positionName').val();
-            if (positionName != '') {
-                if (confirm('คุณต้องการยกเลิกใช่หรือไม่')) {
-                    return true;
-                } else {
-                    return false;
-                }
+        var departmentId;
+        var positionName;
+        // $('.backPage').click(function() {
+        //     let positionName = $('#positionName').val();
+        //     if (positionName != '') {
+        //         if (confirm('คุณต้องการยกเลิกใช่หรือไม่')) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     }
+
+        // });
+
+        $('#btn_regis').click(function() {
+            if ($('input[name="positionName"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
             }
 
         });
+
+        $('#departmentID').change(function() {
+            departmentId = $(this).val();
+            positionName = $('#positionName').val();
+            $.ajax({
+                url: "<?= site_url('admin/position/checkPositionNameInsert') ?>",
+                method: "POST",
+                data: {
+                    departmentId: departmentId,
+                    positionName: positionName
+                },
+                success: function(data) {
+                    if (data != 0) {
+                        $('input[name="positionName"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('#rowPositionName').append('<br id="brdept">');
+                        $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                    } else {
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('input[name="positionName"]').removeClass('idFalse');
+                    }
+                }
+            });
+        });
+
+        $('#positionName').focusout(function() {
+            departmentId = $('#departmentID').val();
+            positionName = $(this).val();
+            $.ajax({
+                url: "<?= site_url('admin/position/checkPositionNameInsert') ?>",
+                method: "POST",
+                data: {
+                    departmentId: departmentId,
+                    positionName: positionName
+                },
+                success: function(data) {
+                    if (data != 0) {
+                        $('input[name="positionName"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('#rowPositionName').append('<br id="brdept">');
+                        $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                    } else {
+                        $('#alertidcard').remove();
+                        $('#brdept').remove();
+                        $('input[name="positionName"]').removeClass('idFalse');
+                    }
+                }
+            });
+        })
     });
 </script>

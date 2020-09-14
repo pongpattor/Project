@@ -37,7 +37,7 @@
                         <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
                         <?php echo '</div>';
                         echo '<div class="col-4">';
-                        echo '<p class="float-right">จำนวนแผนก ' . $total . ' แผนก</p>';
+                        echo '<p class="float-right">จำนวน ' . $total . ' แผนก</p>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';

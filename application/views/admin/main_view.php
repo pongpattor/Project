@@ -62,7 +62,7 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= site_url('admin/employee/employee'); ?>">รายชื่อพนักงาน</a>
                                 <a class="nav-link" href="<?= site_url('admin/department/'); ?>">แผนก</a>
-                                <a class="nav-link" href="<?= site_url('admin/employee/position'); ?>">ตำแหน่ง</a>
+                                <a class="nav-link" href="<?= site_url('admin/position/'); ?>">ตำแหน่ง</a>
                             </nav>
                         </div>
 
