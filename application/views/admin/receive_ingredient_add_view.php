@@ -27,7 +27,7 @@
                                         </tr>
                                         <tr id="row1">
                                             <td><input type="text" class="form-control" name="ReceiveName[]" id="" required></td>
-                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required step="0.01"></td>
+                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required ></td>
                                             <td><button type="button" class="btn btn-success" id="addData"><i class="fa fa-plus"></i></button></td>
                                         </tr>
                                     </tbody>
