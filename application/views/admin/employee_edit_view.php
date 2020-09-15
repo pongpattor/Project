@@ -107,7 +107,7 @@
                                             $rowid = 1;
                                             foreach ($phone as $rowphone) { ?>
                                                 <tr id="row<?= $rowid; ?>">
-                                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required></td>
+                                                    <td><input type="tel" class="form-control" name="tel[]" value="<?= $rowphone->PHONE; ?>" minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required></td>
                                                     <td>
                                                         <?php if ($rowid == 1) { ?>
                                                             <button type="button" id="addphone" class="btn btn-success float-right"><i class="fa fa-plus"></i></button>

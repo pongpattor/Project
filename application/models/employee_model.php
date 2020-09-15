@@ -7,22 +7,25 @@ class employee_model extends CI_Model
     //Employee Start 
     function employee($search = '', $limit, $offset)
     {
-        $sql = "SELECT employee.ID,employee.FIRSTNAME,employee.LASTNAME,employee.EMAIL,
-        department.DEPARTMENT_NAME,position.POSITION_NAME,employee.SALARY,employee.IMG FROM employee 
-        LEFT JOIN position ON position.POSITION_ID = employee.POSITION
-        LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID
-        WHERE employee.STATUS = 1 AND
-        (
-            employee.ID LIKE  ? OR
-            employee.FIRSTNAME LIKE ? OR
-            employee.LASTNAME LIKE ? OR
-            employee.EMAIL LIKE ? OR
-            employee.salary LIKE ? OR
-            department.DEPARTMENT_NAME LIKE ? OR
-            position.POSITION_NAME LIKE ?
+        $sql = "select e.ID,e.FIRSTNAME,e.LASTNAME,e.EMAIL,e.SALARY,
+        e.IMG,et.PHONE,d.DEPARTMENT_NAME,p.POSITION_NAME
+        from employee e
+        LEFT JOIN employee_telephone et on e.ID = et.EMPLOYEE_ID
+        LEFT JOIN position p on e.POSITION = p.POSITION_ID
+        LEFT JOIN department d on p.DEPT_ID = d.DEPARTMENT_ID
+        WHERE e.STATUS = 1 AND
+        (   e.ID LIKE  ? OR
+            e.FIRSTNAME LIKE  ? OR
+            e.LASTNAME LIKE ?  OR
+            e.EMAIL LIKE ?  OR
+            e.salary LIKE ?  OR
+            d.DEPARTMENT_NAME LIKE ?  OR
+            p.POSITION_NAME LIKE ?  OR
+            et.PHONE LIKE ? 
         )
-        ORDER BY department.DEPARTMENT_ID ASC , employee.ID ASC
-        LIMIT $offset,$limit
+            GROUP BY  e.ID
+            ORDER BY e.ID ASC
+            LIMIT $offset,$limit
         ";
 
         $query = $this->db->query(
@@ -34,7 +37,8 @@ class employee_model extends CI_Model
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%'
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
             )
         );
         // echo '<pre>';
@@ -45,19 +49,26 @@ class employee_model extends CI_Model
 
     function countAllEmployee($search)
     {
-        $sql = "SELECT COUNT(*) as cnt FROM employee 
-        LEFT JOIN position ON position.POSITION_ID = employee.POSITION
-        LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID
-        WHERE employee.STATUS = 1 AND
-        (
-            employee.ID LIKE  ? OR
-            employee.FIRSTNAME LIKE ? OR
-            employee.LASTNAME LIKE ? OR
-            employee.EMAIL LIKE ? OR
-            employee.salary LIKE ? OR
-            department.DEPARTMENT_NAME LIKE ? OR
-            position.POSITION_NAME LIKE ?
-        ) ";
+        $sql ="
+        select count(*) as cnt from (SELECT * FROM employee e
+        left join employee_telephone et on e.ID = et.EMPLOYEE_ID
+        LEFT JOIN position p on e.POSITION = p.POSITION_ID
+        LEFT JOIN department d on p.DEPT_ID = d.DEPARTMENT_ID
+        WHERE e.`STATUS` = 1
+        AND
+        (   
+            e.ID LIKE  ? OR
+            e.FIRSTNAME LIKE  ? OR
+            e.LASTNAME LIKE ?  OR
+            e.EMAIL LIKE ?  OR
+            e.salary LIKE ?  OR
+            d.DEPARTMENT_NAME LIKE ?  OR
+            p.POSITION_NAME LIKE ?  OR
+            et.PHONE LIKE ? 
+        )
+        GROUP BY  e.ID
+        ORDER BY e.ID ASC) t";
+
         $query = $this->db->query(
             $sql,
             array(
@@ -67,7 +78,8 @@ class employee_model extends CI_Model
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%'
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
             )
         );
         // echo '<pre>';
@@ -112,15 +124,15 @@ class employee_model extends CI_Model
 
 
 
-    function idDeptGenIdEmp($position_id){
+    function idDeptGenIdEmp($position_id)
+    {
         $sql = "SELECT department.DEPARTMENT_ID as DID FROM department
                 INNER JOIN position ON department.DEPARTMENT_ID = position.DEPT_ID
                 WHERE position.POSITION_ID= '$position_id'";
-         $query =$this->db->query($sql);
-        foreach ($query->result() as $row){
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
             return $row->DID;
         }
-        
     }
 
     function checkIdCard($idCard)
@@ -138,16 +150,16 @@ class employee_model extends CI_Model
         return $this->db->query($sql)->result();
     }
 
-    function checkPhoneNumber($idEmployee,$Phone){
+    function checkPhoneNumber($idEmployee, $Phone)
+    {
         $sql = "SELECT COUNT(*) as cnt FROM employee_telephone et
         left join employee e ON et.EMPLOYEE_ID = e.ID
         WHERE et.EMPLOYEE_ID = '$idEmployee'
         and et.PHONE = '$Phone'";
         $query = $this->db->query($sql);
-        foreach($query->result() as $row){
+        foreach ($query->result() as $row) {
             return $row->cnt;
         }
-
     }
     //Employee End
 

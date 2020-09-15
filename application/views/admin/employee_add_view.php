@@ -85,7 +85,7 @@
                                             <td>เบอร์โทร<span style="color: red;">*</span></td>
                                         </tr>
                                         <tr id="row1">
-                                            <td><input type="tel" class="form-control" name="tel[]" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' require></td>
+                                            <td><input type="tel" class="form-control" name="tel[]" minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' require></td>
                                             <td>
                                                 <button type="button" id="addphone" class="btn btn-info float-right"><i class="fa fa-plus"></i></button>
                                             </td>

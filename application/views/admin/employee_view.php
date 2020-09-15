@@ -55,6 +55,8 @@
                                         </th>
                                         <th style="text-align: center;">อีเมล
                                         </th>
+                                        <th style="text-align: center;">เบอร์โทรศัทพ์
+                                        </th>
                                         <th style="text-align: center;">แผนก
                                         </th>
                                         <th style="text-align: center;">ตำแหน่ง
@@ -73,6 +75,7 @@
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="" width="80px" height="80px"></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME . ' ' . $row->LASTNAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PHONE ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>
@@ -119,7 +122,7 @@
                 });
             }
         });
-        
+
         $('.bgtable').mouseover(function() {
             var ID = $(this).attr("ID");
             $('#' + ID).css("background-color", "#C6FFF8");
