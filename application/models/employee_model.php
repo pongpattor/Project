@@ -98,14 +98,19 @@ class employee_model extends CI_Model
         return $this->db->query($sql);
     }
 
-    function maxIdEmployee($position_id)
+    function maxIdEmployee($idDept)
     {
-        $sql = "SELECT MAX(ID)as'MID'  FROM employee where POSITION = '$position_id'";
+        $sql = "SELECT MAX(ID)as'MID',d.DEPARTMENT_ID  FROM employee e
+        inner join position p ON e.POSITION = p.POSITION_ID
+        inner join department d ON p.DEPT_ID = d.DEPARTMENT_ID
+        where d.DEPARTMENT_ID = '$idDept'";
         $query = $this->db->query($sql)->result();
         foreach ($query as $row) {
             return $row->MID;
         }
     }
+
+
 
     function idDeptGenIdEmp($position_id){
         $sql = "SELECT department.DEPARTMENT_ID as DID FROM department

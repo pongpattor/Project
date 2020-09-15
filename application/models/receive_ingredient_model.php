@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class receive_ingredient_model extends CI_Model
 {
+
+
     public function fetchReceive()
     {
         $sql = "SELECT * FROM receive_ingredient ORDER BY RECEIVE_INGREDIENT_ID DESC";
@@ -17,7 +19,6 @@ class receive_ingredient_model extends CI_Model
             return $row->ID;
         }
     }
-
     function searchReceive($search = '')
     {
 

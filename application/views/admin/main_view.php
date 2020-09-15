@@ -85,7 +85,7 @@
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="<?= site_url('admin/admin/receiveIngredient'); ?>">
+                        <a class="nav-link collapsed" href="<?= site_url('admin/receiveIngredient/'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-cart-arrow-down"></i></div>
                             รับวัตถุดิบ
                         </a>

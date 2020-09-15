@@ -119,6 +119,7 @@
                 });
             }
         });
+        
         $('.bgtable').mouseover(function() {
             var ID = $(this).attr("ID");
             $('#' + ID).css("background-color", "#C6FFF8");

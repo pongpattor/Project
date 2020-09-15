@@ -99,15 +99,17 @@ class employee extends CI_Controller
 
     public function insertEmp()
     {
-
+        $IDposition = $this->input->post('position');
+        $idEmployee = $this->genIdEmployee($IDposition);
         $config = array();
         $config['upload_path']          =  './assets/image/employee/';
         $config['allowed_types']        = 'jpg|png';
         $config['max_size']             = '2000';
         $config['max_width']            = '3000';
         $config['max_height']           = '3000';
+        $config['file_name']        = $idEmployee;
         $this->load->library('upload', $config);
-        $IDposition = $this->input->post('position');
+
         if (!$this->upload->do_upload('imgEmp')) {
             echo '<script>';
             echo 'alert("กรุณาอัพโหลดรูป");';
@@ -116,8 +118,8 @@ class employee extends CI_Controller
         } else {
             $data['img'] = $this->upload->data();
             $employee_detail = array(
-                'ID' => $this->genIdEmployee($IDposition),
-                'PASSWORD' => $this->genIdEmployee($IDposition),
+                'ID' => $idEmployee,
+                'PASSWORD' => $idEmployee,
                 'IDCARD' => $this->input->post('idcard'),
                 'TITLENAME' => $this->input->post('title'),
                 'FIRSTNAME' => $this->input->post('firstname'),
@@ -141,7 +143,8 @@ class employee extends CI_Controller
             // print_r($employee_detail);
             // echo '</pre>';
             $this->crud_model->insert('employee', $employee_detail);
-            $idEmp = $this->employee_model->maxIdEmployee($IDposition);
+            $idDept =  $this->employee_model->idDeptGenIdEmp($IDposition);
+            $idEmp  = $this->employee_model->maxIdEmployee($idDept);
             $tel = $this->input->post('tel');
             foreach ($tel as $phone) {
                 $data = array(
@@ -160,28 +163,31 @@ class employee extends CI_Controller
     //genID Employee 
     public function genIdEmployee($idPosition)
     {
-        $maxIdEmployee = $this->employee_model->maxIdEmployee($idPosition);
-        $firstID = substr($maxIdEmployee, 0, 2);
         $idDept =  $this->employee_model->idDeptGenIdEmp($idPosition);
+        $maxIdEmployee = $this->employee_model->maxIdEmployee($idDept);
+        $firstID = substr($maxIdEmployee, 0, 2);
         $idDept = substr($idDept, 3);
         $date =  date('Y') + 543;
         $Y =  substr($date, 2);
-        $middle = 1100;
-        $middle += $idDept;
+        $m = date('m');
+        $midfront =  $m;
+        $midback = 00;
+        $midback =+ $idDept;
+        $midback = '0'.$midback;
         $last = '';
         if ($firstID != $Y) {
             $last = 0001;
             while (strlen($last) < 4) {
                 $last = '0' . $last;
             }
-            return $Y . $middle . $last;
+            return $Y .$midfront.   $midback . $last;
         } else {
             $last = substr($maxIdEmployee, 6);
             $last += 1;
             while (strlen($last) < 4) {
                 $last = '0' . $last;
             }
-            return $Y . $middle . $last;
+            return $Y .$midfront.   $midback . $last;
         }
     }
 
@@ -211,7 +217,7 @@ class employee extends CI_Controller
 
     public function updateEmp()
     {
-        $idEmp = $this->input->post('idEmp');
+        $idEmployee = $this->input->post('idEmp');
         if (empty($_FILES['imgEmp']['name'])) {
             $employeeDetail = array(
                 'TITLENAME' => $this->input->post('title'),
@@ -235,6 +241,7 @@ class employee extends CI_Controller
             $config['max_size']             = '2000';
             $config['max_width']            = '3000';
             $config['max_height']           = '3000';
+            $config['file_name']            = $idEmployee;
             $this->load->library('upload', $config);
             if (!$this->upload->do_upload('imgEmp')) {
                 echo '<script>';
@@ -264,15 +271,15 @@ class employee extends CI_Controller
             }
         }
 
-        $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmp);
+        $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmployee);
         $tel = $this->input->post('tel');
-        $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmp);
+        $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmployee);
         foreach ($tel as $phone) {
             $data = array(
                 'PHONE' => $phone,
-                'EMPLOYEE_ID' => $idEmp
+                'EMPLOYEE_ID' => $idEmployee
             );
-            $checkPhone = $this->employee_model->checkPhoneNumber($idEmp, $phone);
+            $checkPhone = $this->employee_model->checkPhoneNumber($idEmployee, $phone);
             if ($checkPhone == 0) {
                 $this->crud_model->insert('employee_telephone', $data);
             }

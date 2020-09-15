@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/admin/addReceiveIngredient') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/receiveIngredient/addReceiveIngredient') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="selectedColumn" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <table id="selectedColumn" class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">Lot</th>
@@ -43,13 +43,13 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($receive_ingredient as $row) : ?>
-                                        <tr id="<?= $row->RECEIVE_INGREDIENT_ID ?>">
+                                        <tr id="<?= $row->RECEIVE_INGREDIENT_ID ?>" class="bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->RECEIVE_INGREDIENT_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DATE_AT . "  " . $row->TIME_AT; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->TOTAL_PRICE; ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/admin/editReceiveIngredient') ?>" method="get">
+                                                    <form action="<?= site_url('admin/receiveIngredient/editReceiveIngredient') ?>" method="get">
                                                         <button name="ReceiveID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->RECEIVE_INGREDIENT_ID ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
@@ -79,7 +79,7 @@
             var result = confirm(`ยืนยันการลบ LOT ที่ ${ID}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/deleteReceiveIngredient') ?>",
+                    url: "<?= site_url('admin/receiveIngredient/deleteReceiveIngredient') ?>",
                     method: "POST",
                     data: {
                         ReceiveID: ID
@@ -93,5 +93,13 @@
 
         });
 
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
     });
 </script>
