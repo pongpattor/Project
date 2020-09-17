@@ -5,7 +5,7 @@ class employee_model extends CI_Model
 {
 
     //Employee Start 
-    function employee($search = '', $limit, $offset)
+    public function employee($search = '', $limit, $offset)
     {
         $sql = "select e.ID,e.FIRSTNAME,e.LASTNAME,e.EMAIL,e.SALARY,
         e.IMG,et.PHONE,d.DEPARTMENT_NAME,p.POSITION_NAME
@@ -47,7 +47,7 @@ class employee_model extends CI_Model
         return $query->result();
     }
 
-    function countAllEmployee($search)
+    public function countAllEmployee($search)
     {
         $sql ="
         select count(*) as cnt from (SELECT * FROM employee e
@@ -90,7 +90,7 @@ class employee_model extends CI_Model
         }
     }
 
-    function editEmp($id)
+    public function editEmp($id)
     {
         $sql = "SELECT e.ID,e.`PASSWORD`,e.IDCARD,e.TITLENAME,e.FIRSTNAME,e.LASTNAME,e.GENDER,e.EMAIL,e.BDATE,
         e.ADDRESS,e.SALARY,e.IMG,p.POSITION_ID,d.DEPARTMENT_ID,di.D_PROVINCE_ID,di.D_AMPHUR_ID,di.DISTRICT_ID,
@@ -108,13 +108,13 @@ class employee_model extends CI_Model
     }
 
 
-    function delEmp($ID, $delete_at)
+    public function delEmp($ID, $delete_at)
     {
         $sql = "UPDATE employee SET STATUS = '0' , DELETE_AT = '$delete_at' WHERE ID = '$ID'";
         return $this->db->query($sql);
     }
 
-    function maxIdEmployee($idDept)
+    public function maxIdEmployee($idDept)
     {
         $sql = "SELECT MAX(ID)as'MID',d.DEPARTMENT_ID  FROM employee e
         inner join position p ON e.POSITION = p.POSITION_ID
@@ -128,7 +128,7 @@ class employee_model extends CI_Model
 
 
 
-    function idDeptGenIdEmp($position_id)
+    public function idDeptGenIdEmp($position_id)
     {
         $sql = "SELECT department.DEPARTMENT_ID as DID FROM department
                 INNER JOIN position ON department.DEPARTMENT_ID = position.DEPT_ID
@@ -139,7 +139,7 @@ class employee_model extends CI_Model
         }
     }
 
-    function checkIdCard($idCard)
+    public function checkIdCard($idCard)
     {
         $sql = "SELECT COUNT(IDCARD) as num FROM employee where IDCARD = $idCard and STATUS = 1";
         $result = $this->db->query($sql)->result();
@@ -148,13 +148,13 @@ class employee_model extends CI_Model
         }
     }
 
-    function PhoneEmployee($ID)
+    public function PhoneEmployee($ID)
     {
         $sql = "SELECT PHONE FROM employee_telephone et inner join employee e on et.EMPLOYEE_ID=e.ID WHERE e.ID = $ID";
         return $this->db->query($sql)->result();
     }
 
-    function checkPhoneNumber($idEmployee, $Phone)
+    public function checkPhoneNumber($idEmployee, $Phone)
     {
         $sql = "SELECT COUNT(*) as cnt FROM employee_telephone et
         left join employee e ON et.EMPLOYEE_ID = e.ID
@@ -168,13 +168,13 @@ class employee_model extends CI_Model
     //Employee End
 
     //ETC
-    function fetch_province()
+    public function fetch_province()
     {
         $sql = "SELECT * FROM province";
         return $this->db->query($sql)->result();
     }
 
-    function fetch_amphur($province_id)
+    public function fetch_amphur($province_id)
     {
         $sql = "SELECT * from amphur where A_PROVINCE_ID = $province_id";
         $query =  $this->db->query($sql)->result();
@@ -186,7 +186,7 @@ class employee_model extends CI_Model
         return $output;
     }
 
-    function fetch_district($amphur_id)
+    public function fetch_district($amphur_id)
     {
         $sql = "SELECT * from district where D_AMPHUR_ID = $amphur_id";
         $query =  $this->db->query($sql)->result();
@@ -199,7 +199,7 @@ class employee_model extends CI_Model
     }
 
 
-    function fetch_postcode($district_id)
+    public function fetch_postcode($district_id)
     {
         $sql = "SELECT POSTCODE from district where DISTRICT_ID = $district_id";
         $query =  $this->db->query($sql)->result();
@@ -210,13 +210,13 @@ class employee_model extends CI_Model
         return $output;
     }
 
-    function  fetch_department()
+    public function  fetch_department()
     {
         $sql = "SELECT * FROM department";
         return $this->db->query($sql)->result();
     }
 
-    function fetch_position($department_id)
+    public function fetch_position($department_id)
     {
         $sql = "SELECT * from position where DEPT_ID = '$department_id' ORDER BY POSITION_NAME ASC";
         $query =  $this->db->query($sql)->result();

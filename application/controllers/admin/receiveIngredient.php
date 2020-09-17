@@ -17,13 +17,39 @@ class receiveIngredient extends CI_Controller
     // receiveIngredient start
     public function index()
     {
-        $search = '';
-        if ($this->input->get('search')) {
-            $search = $this->input->get('search');
-            $data['receive_ingredient'] = $this->receive_ingredient_model->searchReceive($search);
-        } else {
-            $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive();
-        }
+
+        $search = $this->input->get('search');
+        $config['base_url'] = site_url('admin/receiveIngredient/index');
+        $config['total_rows'] = $this->receive_ingredient_model->countAllReceive($search);
+        $config['per_page'] = 5;
+        $config['reuse_query_string'] = TRUE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<nav><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item ">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+        $limit = $config['per_page'];
+        $offset = $this->uri->segment(4, 0);
+        $this->pagination->initialize($config);
+        $data['total'] = $config['total_rows'];
+        $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive($search, $limit, $offset);
+        $data['total_rows'] = $config['total_rows'];
+        $data['links'] = $this->pagination->create_links();
         $data['page'] = 'receive_ingredient_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -34,16 +60,39 @@ class receiveIngredient extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
+    public function genIdReceive(){
+        $Y = date('y')+43;
+        $m = date('m');
+        $d = date('d');
+        $date =$Y.$m.$d;
+        // echo 'LOT'.$Y.$m.$d;
+        $max = $this->receive_ingredient_model->maxIdReceiveIngredien();
+        if($max == ''){
+            return 'LOT'.$date.'001';
+        }
+        else{
+          $max = substr($max,9);
+          $max++;
+          while(strlen($max) <3){
+              $max = '0'.$max;
+          }
+            return 'LOT'.$date.$max;
+        }
+        
+    }
+
     public function InsertReceiveIngredient()
     {
         $receiveName = $this->input->post("ReceiveName");
         $receivePrice = $this->input->post("ReceivePrice");
+        $idReceive = $this->genIdReceive();
         $totalPrice = 0;
         foreach ($receivePrice as $row) {
             $totalPrice += $row;
         }
 
         $Receive = array(
+            'RECEIVE_INGREDIENT_ID' =>   $idReceive,
             'DATE_AT' => date('Y-m-d H:i:s'),
             'TOTAL_PRICE' => $totalPrice,
             'TIME_AT' => date('H:i:s')
@@ -53,7 +102,7 @@ class receiveIngredient extends CI_Controller
 
         for ($i = 0; $i < count($receiveName); $i++) {
             $receiveDetail = array(
-                "INGREDIENT_NO" => $i + 1,
+                "INGREDIENT_NO" => $i+1,
                 "INGREDIENT_RECEIVE_ID" => $receiveID,
                 "INGREDIENT_NAME" => $receiveName[$i],
                 "INGREDIENT_PRICE" => $receivePrice[$i]
@@ -63,7 +112,7 @@ class receiveIngredient extends CI_Controller
 
         redirect(site_url('admin/receiveIngredient/'));
     }
-
+    
     public function editReceiveIngredient()
     {
         $ReceiveID = $this->input->GET("ReceiveID");

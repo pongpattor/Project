@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class desk_model extends CI_Model
 {
   
-    function desk($search = '', $limit, $offset)
+    public function desk($search = '', $limit, $offset)
     {
         $sql = "SELECT * FROM desk 
         where DESK_STATUS IN (0,1,2) and  
@@ -32,7 +32,7 @@ class desk_model extends CI_Model
         return $query->result();
     }
 
-    function countAllDesk($search = '')
+    public function countAllDesk($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM desk 
         where
@@ -68,7 +68,7 @@ class desk_model extends CI_Model
         }
     }
 
-    function checkNumber($number)
+    public function checkNumber($number)
     {
         $sql = "SELECT COUNT(DESK_NUMBER) as CD FROM desk where DESK_NUMBER = '$number'";
         $result = $this->db->query($sql)->result();
@@ -77,7 +77,7 @@ class desk_model extends CI_Model
         }
     }
 
-    function delDesk($ID)
+    public function delDesk($ID)
     {
         $sql = "UPDATE desk SET DESK_STATUS = '3' WHERE DESK_ID = '$ID'";
         return $this->db->query($sql);

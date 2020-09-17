@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class position_model extends CI_Model
 {
     //Position Start
-    function position($search = '', $limit, $offset)
+    public function position($search = '', $limit, $offset)
     {
         $sql = "SELECT position.POSITION_ID,position.POSITION_NAME,department.DEPARTMENT_NAME FROM position
       LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
@@ -32,7 +32,7 @@ class position_model extends CI_Model
         return $query->result();
     }
 
-    function countAllPosition($search = '')
+    public function countAllPosition($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM position
       LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
@@ -60,7 +60,7 @@ class position_model extends CI_Model
         }
     }
 
-    function maxIdPosition()
+    public function maxIdPosition()
     {
         $sql = "SELECT MAX(POSITION_ID) as MID FROM position";
         $query = $this->db->query($sql);
@@ -70,14 +70,14 @@ class position_model extends CI_Model
     }
 
 
-    function editPos($id)
+    public function editPos($id)
     {
         $sql = "SELECT * FROM position 
       WHERE POSITION_ID = $id";
         return $this->db->query($sql)->result();
     }
 
-    function checkName($departmentId, $positionName)
+    public function checkName($departmentId, $positionName)
     {
         $sql = "SELECT COUNT(*) as cnt FROM department
                 INNER JOIN position 

@@ -14,7 +14,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/employee/employee'); ?>">
+                <form action="<?= site_url('admin/employee/employee'); ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -70,18 +70,12 @@
 
                                 <tbody>
                                     <?php foreach ($employee as $row) : ?>
-                                        <?php $first = substr( $row->PHONE,0,3);
-                                              $middle = substr($row->PHONE,3,3);
-                                               $last = substr($row->PHONE,6);
-                                               $phone = $first.'-'.$middle.'-'.$last;
-                                               ?>
-
                                         <tr id="<?= $row->ID ?>" class="bgtable" >
                                             <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="" width="80px" height="80px"></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME . ' ' . $row->LASTNAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $phone;?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PHONE;?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>

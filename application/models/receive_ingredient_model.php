@@ -5,11 +5,59 @@ class receive_ingredient_model extends CI_Model
 {
 
 
-    public function fetchReceive()
+    public function fetchReceive($search='',$limit,$offset)
     {
-        $sql = "SELECT * FROM receive_ingredient ORDER BY RECEIVE_INGREDIENT_ID DESC";
-        return $this->db->query($sql)->result();
+        $sql = "SELECT * FROM receive_ingredient 
+        where   
+        (
+            RECEIVE_INGREDIENT_ID LIKE  ? OR
+            DATE_AT LIKE ? OR
+            TOTAL_PRICE LIKE ? OR
+            TIME_AT LIKE ?
+        )
+        ORDER BY DATE_AT DESC ,TIME_AT DESC
+        LIMIT $offset,$limit
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        return $query->result();
     }
+
+    public function countAllReceive($search=''){
+        $sql = "SELECT COUNT(*) as cnt FROM receive_ingredient 
+        where   
+        (
+            RECEIVE_INGREDIENT_ID LIKE  ? OR
+            DATE_AT LIKE ? OR
+            TOTAL_PRICE LIKE ? OR
+            TIME_AT LIKE ?
+        )
+        ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+    
 
     public function maxIdReceiveIngredien()
     {
@@ -18,17 +66,5 @@ class receive_ingredient_model extends CI_Model
         foreach ($result as $row) {
             return $row->ID;
         }
-    }
-    function searchReceive($search = '')
-    {
-
-        $this->db->select('*');
-        $this->db->from('receive_ingredient');
-        $this->db->like('RECEIVE_INGREDIENT_ID', $search);
-        $this->db->or_like('DATE_AT', $search);
-        $this->db->or_like('TOTAL_PRICE', $search);
-        $this->db->order_by('TIME_AT','ASC');
-        $query = $this->db->get();
-        return $query->result();
     }
 }

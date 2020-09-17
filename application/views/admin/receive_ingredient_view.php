@@ -14,10 +14,10 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="#">
+                <form action="<?=site_url('admin/receiveIngredient/');?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
-                            <input type="text" class="form-control" name="search" placeholder="ค้นหา Lot,ปี-เดือน-วัน(2020-09-06),ราคา">
+                            <input type="text" class="form-control" name="search"  placeholder="กรุณากรอกคำที่ต้องการค้นหา">
                             <div class="input-group-append">
                                 <button class="input-group-text"><i class="fa fa-search"></i></button>
                             </div>
@@ -63,6 +63,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <?= $links;?>
                         </div>
                     </div>
                 </div>

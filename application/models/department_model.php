@@ -5,7 +5,7 @@ class department_model extends CI_Model
 {
 
     //Department Start
-    function Department($search = '', $limit, $offset)
+    public function Department($search = '', $limit, $offset)
     {
         $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME FROM department 
         where
@@ -30,7 +30,7 @@ class department_model extends CI_Model
         return $query->result();
     }
 
-    function countAllDepartment($search = '')
+    public function countAllDepartment($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM department 
         where
@@ -55,7 +55,7 @@ class department_model extends CI_Model
         }
     }
 
-    function maxIdDepartment()
+    public function maxIdDepartment()
     {
         $sql = 'SELECT MAX(DEPARTMENT_ID) as MID from department';
         $query = $this->db->query($sql);
@@ -64,14 +64,14 @@ class department_model extends CI_Model
         }
     }
 
-    function editDept($id)
+    public function editDept($id)
     {
         $sql = "SELECT * FROM department 
         WHERE DEPARTMENT_ID = '$id'";
         return $this->db->query($sql)->result();
     }
 
-    function checkName($departmentName)
+    public function checkName($departmentName)
     {
         $sql = "SELECT COUNT(DEPARTMENT_NAME) as cnt FROM department
         WHERE DEPARTMENT_NAME LIKE ?";
