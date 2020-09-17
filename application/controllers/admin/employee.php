@@ -98,6 +98,26 @@ class employee extends CI_Controller
     }
 
 
+    public function checkIdCardUpdate()
+    {
+        //ตรวจว่าในข้อมูลมีรหัสซ้ำไหม ถ้าซ้ำคนนั้นลาออกไปหรือยัง ถ้ายังไม่ให้เพิ่ม
+        $idcard = $this->input->post('idcard');
+        $oldidcard = $this->input->post('oldidcard');
+        if ($idcard == $oldidcard) {
+            echo 0;
+        } else {
+            $num = $this->employee_model->checkIdCardUpdate($idcard,$oldidcard);
+            if ($num > 0) {
+                //มีแล้ว
+                echo 1;
+            } else {
+                //ยังไม่มี
+                echo 0;
+            }
+        }
+    }
+
+
     public function insertEmp()
     {
         $IDposition = $this->input->post('position');
@@ -232,6 +252,7 @@ class employee extends CI_Controller
         $idEmployee = $this->input->post('idEmp');
         if (empty($_FILES['imgEmp']['name'])) {
             $employeeDetail = array(
+                'IDCARD' => $this->input->post('idcard'),
                 'TITLENAME' => $this->input->post('title'),
                 'FIRSTNAME' => $this->input->post('firstname'),
                 'LASTNAME' => $this->input->post('lastname'),
@@ -264,6 +285,7 @@ class employee extends CI_Controller
                 $data['img'] = $this->upload->data();
                 $oldImg = $this->input->post('oldImg');
                 $employeeDetail = array(
+                    'IDCARD' => $this->input->post('idcard'),
                     'TITLENAME' => $this->input->post('title'),
                     'FIRSTNAME' => $this->input->post('firstname'),
                     'LASTNAME' => $this->input->post('lastname'),

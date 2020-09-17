@@ -91,5 +91,13 @@ class product extends CI_Controller
             return 'TP'.$maxId;
         }
     }
+
+    public function checkTypeProductName(){
+        
+    }
+
+    public function meat(){
+
+    }
     
 }

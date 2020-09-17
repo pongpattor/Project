@@ -222,171 +222,168 @@
             </div>
         </div>
     </div>
+</div>
+<br>
+<script>
+    $(document).ready(function() {
 
-    <script>
-        $(document).ready(function() {
 
 
-
-            var addphone_id = 1;
-            $('#addphone').click(function() {
-                addphone_id++;
-                var txt = `<tr id="row${addphone_id}">
+        var addphone_id = 1;
+        $('#addphone').click(function() {
+            addphone_id++;
+            var txt = `<tr id="row${addphone_id}">
                             <td><input type="tel" class="form-control" name="tel[] minlength="10" maxlength="10" required onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                             <td><button type="button" id="${addphone_id}" class="btn btn-danger btn-remove float-right">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
                             </tr>`;
-                $('#tablephone').append(txt);
+            $('#tablephone').append(txt);
 
-                $('.btn-remove').on('click', function() {
-                    var btn_del = $(this).attr("id");
-                    $('#row' + btn_del).remove();
-                });
+            $('.btn-remove').on('click', function() {
+                var btn_del = $(this).attr("id");
+                $('#row' + btn_del).remove();
             });
+        });
 
-            $('#btn_regis').on('click', function() {
-                if ($('input[name="idcard"]').hasClass('idFalse')) {
-                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                    return false;
-                }
-            });
-
-            $('input[name="idcard"]').on('focusout', function() {
-                var id = $(this).val();
-                $.ajax({
-                    url: "<?= site_url('admin/employee/idcard'); ?>",
-                    method: "POST",
-                    data: {
-                        idcard: id
-                    },
-                    success: function(data) {
-                        if (data == true) {
-                            $.ajax({
-                                url: "<?= site_url('admin/employee/checkIdCard') ?>",
-                                method: "POST",
-                                data: {
-                                    idcard: id
-                                },
-                                success: function(data) {
-                                    if (data != 0) {
-                                        // alert('บัตรประชาชนได้ถูกใช้ไปแล้ว');
-                                        $('input[name="idcard"]').css('background-color', '#F9A8A8');
-                                        $('input[name="idcard"]').css('border-color', '#000000');
-                                        $('input[name="idcard"]').addClass('idFalse');
-                                        $('#alertidcard').remove();
-                                        // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
-                                        $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
-
-                                    } else {
-                                        $('input[name="idcard"]').css('background-color', '#83F28E');
-                                        $('input[name="idcard"]').css('border-color', '#000000');
-                                        $('input[name="idcard"]').removeClass('idFalse');
-                                        $('#alertidcard').remove();
-                                    }
-                                }
-                            });
-
-                        } else {
-                            $('input[name="idcard"]').css('background-color', '#F9A8A8');
-                            $('input[name="idcard"]').css('border-color', '#000000');
-                            $('input[name="idcard"]').addClass('idFalse');
-                            $('#alertidcard').remove();
-                            // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
-                            $('#rowidcard').append(' <p style="color:red" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</p>');
-
-                        }
-                    }
-                })
-
-
-            });
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imgPreview').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
+        $('#btn_regis').on('click', function() {
+            if ($('input[name="idcard"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
             }
-            $("#imgEmp").change(function() {
-                readURL(this);
-            });
+        });
 
-            $('#province').change(function() {
-                var PROVINCE_ID = $('#province').val();
-                if (PROVINCE_ID != "") {
-                    $.ajax({
-                        url: "<?= site_url('admin/employee/fetchamphur'); ?>",
-                        method: "POST",
-                        data: {
-                            PROVINCE_ID: PROVINCE_ID
-                        },
-                        success: function(data) {
-                            $('#amphur').html(data);
-                            $('#district').html('<option value="" disable selected>กรุณาเลือกแขวง</option>');
-                            $('#postcode').html('<option value="" disable selected>กรุณาเลือกรหัสไปรษณีย์</option>');
-                        }
-                    });
+        $('input[name="idcard"]').on('focusout', function() {
+            var id = $(this).val();
+            $.ajax({
+                url: "<?= site_url('admin/employee/idcard'); ?>",
+                method: "POST",
+                data: {
+                    idcard: id
+                },
+                success: function(data) {
+                    if (data == true) {
+                        $.ajax({
+                            url: "<?= site_url('admin/employee/checkIdCard') ?>",
+                            method: "POST",
+                            data: {
+                                idcard: id
+                            },
+                            success: function(data) {
+                                if (data != 0) {
+                                    // alert('บัตรประชาชนได้ถูกใช้ไปแล้ว');
+                                    $('input[name="idcard"]').css('background-color', '#F9A8A8');
+                                    $('input[name="idcard"]').css('border-color', '#000000');
+                                    $('input[name="idcard"]').addClass('idFalse');
+                                    $('#alertidcard').remove();
+                                    // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
+                                    $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
+
+                                } else {
+                                    $('input[name="idcard"]').css('background-color', '#83F28E');
+                                    $('input[name="idcard"]').css('border-color', '#000000');
+                                    $('input[name="idcard"]').removeClass('idFalse');
+                                    $('#alertidcard').remove();
+                                }
+                            }
+                        });
+
+                    } else {
+                        $('input[name="idcard"]').css('background-color', '#F9A8A8');
+                        $('input[name="idcard"]').css('border-color', '#000000');
+                        $('input[name="idcard"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
+                        $('#rowidcard').append(' <p style="color:red" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</p>');
+
+                    }
                 }
-            });
-
-            $('#amphur').change(function() {
-                var AMPHUR_ID = $('#amphur').val();
-                if (AMPHUR_ID != '') {
-                    $.ajax({
-                        url: "<?= site_url('admin/employee/fetchdistrict'); ?>",
-                        method: "POST",
-                        data: {
-                            AMPHUR_ID: AMPHUR_ID
-                        },
-                        success: function(data) {
-                            $('#district').html(data);
-                            $('#postcode').html('<option value="" disable selected>กรุณาเลือกรหัสไปรษณีย์</option>');
-                        }
-                    });
-                }
-            });
-
-            $('#district').change(function() {
-                var DISTRICT_ID = $('#district').val();
-                if (DISTRICT_ID != '') {
-                    $.ajax({
-                        url: "<?= site_url('admin/employee/fetchpostcode'); ?>",
-                        method: "POST",
-                        data: {
-                            DISTRICT_ID: DISTRICT_ID
-                        },
-                        success: function(data) {
-                            $('#postcode').html(data);
-                        }
-                    });
-                }
-            });
-
-            $('#department').change(function() {
-                var DEPARTMENT_ID = $('#department').val();
-                if (DEPARTMENT_ID != '') {
-                    $.ajax({
-                        url: "<?= site_url('admin/employee/fetchdepartment'); ?>",
-                        method: "POST",
-                        data: {
-                            DEPARTMENT_ID: DEPARTMENT_ID
-                        },
-                        success: function(data) {
-                            $('#position').html(data);
-                        }
-                    });
-                }
-            });
-
-
+            })
 
         });
-    </script>
-    <br>
-</div>
-<br>
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imgPreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgEmp").change(function() {
+            readURL(this);
+        });
+
+        $('#province').change(function() {
+            var PROVINCE_ID = $('#province').val();
+            if (PROVINCE_ID != "") {
+                $.ajax({
+                    url: "<?= site_url('admin/employee/fetchamphur'); ?>",
+                    method: "POST",
+                    data: {
+                        PROVINCE_ID: PROVINCE_ID
+                    },
+                    success: function(data) {
+                        $('#amphur').html(data);
+                        $('#district').html('<option value="" disable selected>กรุณาเลือกแขวง</option>');
+                        $('#postcode').html('<option value="" disable selected>กรุณาเลือกรหัสไปรษณีย์</option>');
+                    }
+                });
+            }
+        });
+
+        $('#amphur').change(function() {
+            var AMPHUR_ID = $('#amphur').val();
+            if (AMPHUR_ID != '') {
+                $.ajax({
+                    url: "<?= site_url('admin/employee/fetchdistrict'); ?>",
+                    method: "POST",
+                    data: {
+                        AMPHUR_ID: AMPHUR_ID
+                    },
+                    success: function(data) {
+                        $('#district').html(data);
+                        $('#postcode').html('<option value="" disable selected>กรุณาเลือกรหัสไปรษณีย์</option>');
+                    }
+                });
+            }
+        });
+
+        $('#district').change(function() {
+            var DISTRICT_ID = $('#district').val();
+            if (DISTRICT_ID != '') {
+                $.ajax({
+                    url: "<?= site_url('admin/employee/fetchpostcode'); ?>",
+                    method: "POST",
+                    data: {
+                        DISTRICT_ID: DISTRICT_ID
+                    },
+                    success: function(data) {
+                        $('#postcode').html(data);
+                    }
+                });
+            }
+        });
+
+        $('#department').change(function() {
+            var DEPARTMENT_ID = $('#department').val();
+            if (DEPARTMENT_ID != '') {
+                $.ajax({
+                    url: "<?= site_url('admin/employee/fetchdepartment'); ?>",
+                    method: "POST",
+                    data: {
+                        DEPARTMENT_ID: DEPARTMENT_ID
+                    },
+                    success: function(data) {
+                        $('#position').html(data);
+                    }
+                });
+            }
+        });
+
+
+
+    });
+</script>

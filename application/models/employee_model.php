@@ -148,6 +148,18 @@ class employee_model extends CI_Model
         }
     }
 
+    public function checkIdCardUpdate($idCard,$oldidcard)
+    {
+        $sql = "SELECT COUNT(*) as num FROM employee 
+        where IDCARD = $idCard 
+        and IDCARD NOT LIKE $oldidcard
+        and STATUS = 1";
+        $result = $this->db->query($sql)->result();
+        foreach ($result as $row) {
+            return $row->num;
+        }
+    }
+
     public function PhoneEmployee($ID)
     {
         $sql = "SELECT PHONE FROM employee_telephone et inner join employee e on et.EMPLOYEE_ID=e.ID WHERE e.ID = $ID";

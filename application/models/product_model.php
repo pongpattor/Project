@@ -10,7 +10,8 @@ class product_model extends CI_Model
         where 
         (
             TYPEPRODUCT_ID LIKE  ? OR
-            TYPEPRODUCT_NAME LIKE ? 
+            TYPEPRODUCT_NAME LIKE ? OR
+            TYPEPRODUCT_GROUP LIKE ?
 
         )
         LIMIT $offset,$limit
@@ -21,6 +22,8 @@ class product_model extends CI_Model
             array(
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+
             )
         );
         // echo '<pre>';
@@ -37,7 +40,8 @@ class product_model extends CI_Model
         where
         (
             TYPEPRODUCT_ID LIKE  ? OR
-            TYPEPRODUCT_NAME LIKE ? 
+            TYPEPRODUCT_NAME LIKE ? OR
+            TYPEPRODUCT_GROUP LIKE ?
         )
         ";
         $query = $this->db->query(
@@ -45,6 +49,8 @@ class product_model extends CI_Model
             array(
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+
             )
         );
         // echo '<pre>';

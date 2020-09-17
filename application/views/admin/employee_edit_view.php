@@ -42,9 +42,10 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                <div class="col-sm col-md col-xl-6 ">
+                                <div class="col-sm col-md col-xl-6 " id="rowidcard">
                                     <label>รหัสบัตรประจำตัวประชาชน13หลัก <span style="color: red;">*</span></label>
-                                    <input type="text" name="idcard" disabled class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                    <input type="text" name="idcard"  class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                    <input type="hidden" name="oldidcard" id="oldidcard" value="<?= $row->IDCARD ?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -264,7 +265,7 @@
         </div>
     </div>
 </div>
-
+<br>
 <script>
     $(document).ready(function() {
 
@@ -288,8 +289,33 @@
             }
         });
 
+        // $('input[name="idcard"]').on('focusout', function() {
+        //     var id = $(this).val();
+        //     $.ajax({
+        //         url: "<?= site_url('admin/employee/idcard'); ?>",
+        //         method: "POST",
+        //         data: {
+        //             idcard: id
+        //         },
+        //         success: function(data) {
+
+        //             if (data == true) {
+        //                 $('input[name="idcard"]').css('background-color', '#83F28E');
+        //                 $('input[name="idcard"]').css('border-color', '#000000');
+        //                 $('input[name="idcard"]').removeClass('idFalse');
+        //             } else {
+        //                 $('input[name="idcard"]').css('background-color', '#F9A8A8');
+        //                 $('input[name="idcard"]').css('border-color', '#000000');
+        //                 $('input[name="idcard"]').addClass('idFalse');
+        //             }
+        //         }
+        //     })
+        // });
+
         $('input[name="idcard"]').on('focusout', function() {
             var id = $(this).val();
+            var oldid = $('#oldidcard').val();
+            console.log(oldid)
             $.ajax({
                 url: "<?= site_url('admin/employee/idcard'); ?>",
                 method: "POST",
@@ -297,20 +323,45 @@
                     idcard: id
                 },
                 success: function(data) {
-
                     if (data == true) {
-                        $('input[name="idcard"]').css('background-color', '#83F28E');
-                        $('input[name="idcard"]').css('border-color', '#000000');
-                        $('input[name="idcard"]').removeClass('idFalse');
+                        $.ajax({
+                            url: "<?= site_url('admin/employee/checkIdCardUpdate') ?>",
+                            method: "POST",
+                            data: {
+                                idcard: id,
+                                oldidcard : oldid
+                            },
+                            success: function(data) {
+                                if (data != 0) {
+                                    // alert('บัตรประชาชนได้ถูกใช้ไปแล้ว');
+                                    $('input[name="idcard"]').css('background-color', '#F9A8A8');
+                                    $('input[name="idcard"]').css('border-color', '#000000');
+                                    $('input[name="idcard"]').addClass('idFalse');
+                                    $('#alertidcard').remove();
+                                    // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
+                                    $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
+
+                                } else {
+                                    $('input[name="idcard"]').css('background-color', '#83F28E');
+                                    $('input[name="idcard"]').css('border-color', '#000000');
+                                    $('input[name="idcard"]').removeClass('idFalse');
+                                    $('#alertidcard').remove();
+                                }
+                            }
+                        });
+
                     } else {
                         $('input[name="idcard"]').css('background-color', '#F9A8A8');
                         $('input[name="idcard"]').css('border-color', '#000000');
                         $('input[name="idcard"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
+                        $('#rowidcard').append(' <p style="color:red" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</p>');
+
                     }
                 }
             })
         });
-
 
         var id = $('tbody tr .btn-remove:last-child').attr('id');
         var addphone_id = parseInt(id) + 1;

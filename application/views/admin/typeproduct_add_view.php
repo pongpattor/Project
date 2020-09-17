@@ -29,9 +29,9 @@
                                 <label>กลุ่มสินค้า</label><br>
                                 <select name="typeProductGroup" id="typeProductGroup" class="form-control">
                                     <option value="" selected disabled>กรุณาเลือกลุ่มสินค้า</option>
-                                    <option value="1">อาหาร</option>
-                                    <option value="2">เครื่องดื่ม</option>
-                                    <option value="3">ท็อปปิ้ง</option>
+                                    <option value="อาหาร">อาหาร</option>
+                                    <option value="เครื่องดื่ม">เครื่องดื่ม</option>
+                                    <option value="ท็อปปิ้ง">ท็อปปิ้ง</option>
                                 </select>
                             </div>
                         </div>
@@ -58,3 +58,14 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#typeProductName').focusout(function(){
+            var typeProductName = $('#typeProductName').val();
+            $.ajax({
+                url : "<?=site_url('admin/product/checkTypeProductName')?>",
+                method : "POST",
+            });
+        });
+    });
+</script>

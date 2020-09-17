@@ -48,6 +48,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสประเภทสินค้า</th>
+                                        <th style="text-align: center;">ชื่อกลุ่มสินค้า</th>
                                         <th style="text-align: center;">ชื่อประเภทสินค้า</th>
                                         <th style="text-align: center;">แก้ไข</th>
                                         <th style="text-align: center;">ลบ</th>
@@ -57,6 +58,7 @@
                                     <?php foreach ($typeProduct as $row) { ?>
                                         <tr id="<?= $row->TYPEPRODUCT_ID; ?>" class="bgtable">
                                             <td class="align-middle " style="text-align: center;"><?= $row->TYPEPRODUCT_ID; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_GROUP; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
                                             <td>
                                                 <center>
@@ -75,7 +77,6 @@
                                 </tbody>
                             </table>
                             <?= $links; ?>
-
                         </div>
                     </div>
                 </div>
