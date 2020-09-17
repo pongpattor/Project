@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <h3 class="d-inline">เพิ่มโต๊ะ</h3>
+                    <h3 class="d-inline">เพิ่มประเภทสินค้า</h3>
                 </div>
             </div>
         </div>
@@ -17,12 +17,22 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-
-                    <form action="<?= site_url('admin/desk/insertDesk') ?>" method="POST" >
+                    <form action="<?=site_url('admin/product/insertTypeProduct')?>" method="POST">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>หมายเลขโต๊ะ</label><br>
-                                <input type="text" class="form-control" name="deskNumber" id="deskNumber">
+                                <label>ชื่อประเภทสินค้า</label><br>
+                                <input type="text" class="form-control" name="typeProductName" id="typeProductName">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6">
+                                <label>กลุ่มสินค้า</label><br>
+                                <select name="typeProductGroup" id="typeProductGroup" class="form-control">
+                                    <option value="" selected disabled>กรุณาเลือกลุ่มสินค้า</option>
+                                    <option value="1">อาหาร</option>
+                                    <option value="2">เครื่องดื่ม</option>
+                                    <option value="3">ท็อปปิ้ง</option>
+                                </select>
                             </div>
                         </div>
                         <br>
@@ -31,7 +41,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/desk/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/product/typeProduct/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_regis" class="btn btn-success " type="submit" value="  เพิ่ม  ">

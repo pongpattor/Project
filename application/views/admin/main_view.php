@@ -78,9 +78,8 @@
                         </a>
                         <div class="collapse" id="ProductcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= site_url('admin/product/product'); ?>">สินค้า</a>
-                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทอาหาร</a>
-                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเครื่องดื่ม</a>
+                                <a class="nav-link" href="<?= site_url('admin/product/'); ?>">สินค้า</a>
+                                <a class="nav-link" href="<?= site_url('admin/product/typeProduct'); ?>">ประเภทสินค้า</a>
                                 <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเนื้อสัตว์</a>
                             </nav>
                         </div>
@@ -88,6 +87,11 @@
                         <a class="nav-link collapsed" href="<?= site_url('admin/receiveIngredient/'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-cart-arrow-down"></i></div>
                             รับวัตถุดิบ
+                        </a>
+                        
+                        <a class="nav-link collapsed" href="#">
+                            <div class="sb-nav-link-icon"><i class="fa fa-gifts"></i></div>
+                            โปรโมชั่น
                         </a>
 
 

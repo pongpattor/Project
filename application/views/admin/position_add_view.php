@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/position/insertPos') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/position/insertPos') ?>" method="POST" >
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  " id="rowPositionName">
                                 <label>ชื่อตำแหน่ง </label>
@@ -96,11 +96,13 @@
                         $('input[name="positionName"]').addClass('idFalse');
                         $('#alertidcard').remove();
                         $('#brdept').remove();
-                        $('#rowPositionName').append('<br id="brdept">');
-                        $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        // $('#rowPositionName').append('<br id="brdept">');
+                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
+
                     } else {
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
+                        // $('#brdept').remove();
                         $('input[name="positionName"]').removeClass('idFalse');
                     }
                 }
@@ -122,8 +124,9 @@
                         $('input[name="positionName"]').addClass('idFalse');
                         $('#alertidcard').remove();
                         $('#brdept').remove();
-                        $('#rowPositionName').append('<br id="brdept">');
-                        $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        // $('#rowPositionName').append('<br id="brdept">');
+                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
                     } else {
                         $('#alertidcard').remove();
                         $('#brdept').remove();

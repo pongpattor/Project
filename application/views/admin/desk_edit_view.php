@@ -19,7 +19,7 @@
                 <div class="card-body">
 
                     <div class="container">
-                        <form action="<?= site_url('admin/desk/updateDesk') ?>" method="POST" enctype="multipart/form-data">
+                        <form action="<?= site_url('admin/desk/updateDesk') ?>" method="POST" >
                             <?php foreach ($desk as $row) { ?>
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6">

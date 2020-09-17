@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/department/updateDepartment') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/department/updateDepartment') ?>" method="POST" >
                         <div class="row justify-content-center">
                             <?php foreach ($oldDept as $row) : ?>
                                 <div class="col-sm col-md col-xl-6" id="rowDeptName">
@@ -72,12 +72,14 @@
                     if (data != 0) {
                         $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        $('#rowDeptName').append('<br id="brdept">');
-                        $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
+                        // $('#brdept').remove();
+                        // $('#rowDeptName').append('<br id="brdept">');
+                        // $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
+                        $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
+
                     } else {
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
+                        // $('#brdept').remove();
                         $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
                     }
                 }

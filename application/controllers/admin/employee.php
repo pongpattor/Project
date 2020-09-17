@@ -144,15 +144,18 @@ class employee extends CI_Controller
             // print_r($employee_detail);
             // echo '</pre>';
             $this->crud_model->insert('employee', $employee_detail);
-            $idDept =  $this->employee_model->idDeptGenIdEmp($IDposition);
-            $idEmp  = $this->employee_model->maxIdEmployee($idDept);
+            // $idDept =  $this->employee_model->idDeptGenIdEmp($IDposition);
+            // $idEmp  = $this->employee_model->maxIdEmployee($idDept);
             $tel = $this->input->post('tel');
+            // echo $idEmployee.'<br>';
+            // echo $idDept.'<br>';
+            // echo $idEmp.'<br>';
             foreach ($tel as $phone) {
                 $data = array(
                     'PHONE' => $phone,
-                    'EMPLOYEE_ID' => $idEmp
+                    'EMPLOYEE_ID' => $idEmployee
                 );
-                $checkPhone = $this->employee_model->checkPhoneNumber($idEmp, $phone);
+                $checkPhone = $this->employee_model->checkPhoneNumber($idEmployee, $phone);
                 if ($checkPhone == 0) {
                     $this->crud_model->insert('employee_telephone', $data);
                 }

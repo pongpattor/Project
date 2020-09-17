@@ -276,7 +276,8 @@
                                         $('input[name="idcard"]').css('border-color', '#000000');
                                         $('input[name="idcard"]').addClass('idFalse');
                                         $('#alertidcard').remove();
-                                        $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
+                                        // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
+                                        $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
 
                                     } else {
                                         $('input[name="idcard"]').css('background-color', '#83F28E');
@@ -292,7 +293,9 @@
                             $('input[name="idcard"]').css('border-color', '#000000');
                             $('input[name="idcard"]').addClass('idFalse');
                             $('#alertidcard').remove();
-                            $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
+                            // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
+                            $('#rowidcard').append(' <p style="color:red" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</p>');
+
                         }
                     }
                 })

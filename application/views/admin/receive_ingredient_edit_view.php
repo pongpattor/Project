@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/receiveIngredient/UpdateReceiveIngredient') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/receiveIngredient/UpdateReceiveIngredient') ?>" method="POST">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">
                                 <table style="width:100%;" id="tableReceive">

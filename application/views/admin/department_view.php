@@ -84,38 +84,39 @@
                 </div>
             </div>
         </div>
-        ฺ
+    </div>
+</div>
 
-        <script>
-            $(document).ready(function() {
+<script>
+    $(document).ready(function() {
 
 
-                $('.delete').click(function(e) {
-                    var ID = $(this).parents("tr").attr("id");
-                    var result = confirm(`ยืนยันการลบแผนก รหัส ${ID}`);
-                    if (result) {
-                        $.ajax({
-                            url: "<?= site_url('admin/department/deleteDepartment') ?>",
-                            method: "POST",
-                            data: {
-                                deptID: ID
-                            },
-                            success: function() {
-                                alert(`ลบแผนก รหัส ${ID} เสร็จสิ้น`);
-                                location.reload();
+        $('.delete').click(function(e) {
+            var ID = $(this).parents("tr").attr("id");
+            var result = confirm(`ยืนยันการลบแผนก รหัส ${ID}`);
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/department/deleteDepartment') ?>",
+                    method: "POST",
+                    data: {
+                        deptID: ID
+                    },
+                    success: function() {
+                        alert(`ลบแผนก รหัส ${ID} เสร็จสิ้น`);
+                        location.reload();
 
-                            }
-                        });
                     }
                 });
+            }
+        });
 
-                $('.bgtable').mouseover(function() {
-                    var ID = $(this).attr("ID");
-                    $('#' + ID).css("background-color", "#C6FFF8");
-                });
-                $('.bgtable').mouseout(function() {
-                    var ID = $(this).attr("ID");
-                    $('#' + ID).css("background-color", "");
-                });
-            });
-        </script>
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
+    });
+</script>
