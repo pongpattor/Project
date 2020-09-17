@@ -92,10 +92,14 @@ class employee_model extends CI_Model
 
     function editEmp($id)
     {
-        $sql = "SELECT * FROM employee e 
-                left join position p on e.POSITION = p.POSITION_ID 
-                left join department d on p.DEPT_ID = d.DEPARTMENT_ID 
-                 WHERE e.ID = $id";
+        $sql = "SELECT e.ID,e.`PASSWORD`,e.IDCARD,e.TITLENAME,e.FIRSTNAME,e.LASTNAME,e.GENDER,e.EMAIL,e.BDATE,
+        e.ADDRESS,e.SALARY,e.IMG,p.POSITION_ID,d.DEPARTMENT_ID,di.D_PROVINCE_ID,di.D_AMPHUR_ID,di.DISTRICT_ID,
+        di.POSTCODE,e.BLOOD,e.NATIONALITY,.e.RELIGION
+        FROM employee e 
+        left join position p on e.POSITION = p.POSITION_ID 
+        left join department d on p.DEPT_ID = d.DEPARTMENT_ID 
+        left join district di on e.DISTRICT = di.DISTRICT_ID
+        WHERE e.ID = $id";
         $query = $this->db->query($sql);
         // echo '<pre>';
         // print_r($this->db->last_query($query));   
@@ -172,7 +176,7 @@ class employee_model extends CI_Model
 
     function fetch_amphur($province_id)
     {
-        $sql = "SELECT * from amphur where PROVINCE_ID = $province_id";
+        $sql = "SELECT * from amphur where A_PROVINCE_ID = $province_id";
         $query =  $this->db->query($sql)->result();
         $output = '<option value="" selected disable>กรุณาเลือกเขต</option>';
 
@@ -184,7 +188,7 @@ class employee_model extends CI_Model
 
     function fetch_district($amphur_id)
     {
-        $sql = "SELECT * from district where AMPHUR_ID = $amphur_id";
+        $sql = "SELECT * from district where D_AMPHUR_ID = $amphur_id";
         $query =  $this->db->query($sql)->result();
         $output = '<option value="" selected disable >กรุณาเลือกแขวง</option>';
 

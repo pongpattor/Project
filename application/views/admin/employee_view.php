@@ -44,7 +44,7 @@
                                 echo '</div>';
                             echo '</div>';
                          ?>
-                        <div class="table-responsive">
+                        <div class="table-responsive" >
                             <table id="selectedColumn " class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark ">
                                     <tr>
@@ -70,12 +70,18 @@
 
                                 <tbody>
                                     <?php foreach ($employee as $row) : ?>
-                                        <tr id="<?= $row->ID ?>" class="bgtable">
+                                        <?php $first = substr( $row->PHONE,0,3);
+                                              $middle = substr($row->PHONE,3,3);
+                                               $last = substr($row->PHONE,6);
+                                               $phone = $first.'-'.$middle.'-'.$last;
+                                               ?>
+
+                                        <tr id="<?= $row->ID ?>" class="bgtable" >
                                             <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="" width="80px" height="80px"></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME . ' ' . $row->LASTNAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PHONE ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $phone;?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->SALARY ?></td>

@@ -130,6 +130,40 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>กรุ๊ปเลือด <span style="color: red;">*</span></label>
+                                <select name="blood" id="blood" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกกรุ๊ปเลือด</option>
+                                    <option value="AB" <?php if($row->BLOOD == "AB")echo 'selected';?>>AB</option>
+                                    <option value="A" <?php if($row->BLOOD == "A")echo 'selected';?>>A</option>
+                                    <option value="B" <?php if($row->BLOOD == "B")echo 'selected';?>>B</option>
+                                    <option value="O" <?php if($row->BLOOD == "O")echo 'selected';?>>O</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>สัญชาติ <span style="color: red;">*</span></label>
+                                <select name="nationality" id="nationality" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกสัญชาติ</option>
+                                    <?php foreach ($nationality as $row2) { ?>
+                                        <option value="<?= $row2->NATIONALITY_ID; ?>" <?php if($row->NATIONALITY == $row2->NATIONALITY_ID)echo 'selected';?>><?= $row2->NATIONALITY_NAME; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>ศาสนา <span style="color: red;">*</span></label>
+                                <select name="religion" id="religion" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกศาสนา</option>
+                                    <?php foreach ($religion as $row2) { ?>
+                                        <option value="<?= $row2->RELIGION_ID; ?>" <?php if($row->RELIGION == $row2->RELIGION_ID)echo 'selected';?>><?= $row2->RELIGION_NAME; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                            <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ที่อยู่ <span style="color: red;">*</span></label>
                                     <textarea name="address" id="address" cols="10" rows="5" class="form-control" required><?= $row->ADDRESS ?></textarea>
@@ -141,7 +175,7 @@
                                     <select name="province" id="province" class="form-control" required>
                                         <option value="" disabled>กรุณาเลือกจังหวัด</option>
                                         <?php foreach ($province as $row2) : ?>
-                                            <option value="<?= $row2->PROVINCE_ID ?>" <?php if ($row2->PROVINCE_ID == $row->PROVINCE) echo 'selected'; ?>><?= $row2->PROVINCE_NAME ?></option>
+                                            <option value="<?= $row2->PROVINCE_ID ?>" <?php if ($row2->PROVINCE_ID == $row->D_PROVINCE_ID) echo 'selected'; ?>><?= $row2->PROVINCE_NAME ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -152,7 +186,7 @@
                                     <select name="amphur" id="amphur" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกเขต</option>
                                         <?php foreach ($amphur as $row3) : ?>
-                                            <option value="<?= $row3->AMPHUR_ID ?>" <?php if ($row3->AMPHUR_ID == $row->AMPHUR) echo 'selected'; ?>><?= $row3->AMPHUR_NAME ?></option>
+                                            <option value="<?= $row3->AMPHUR_ID ?>" <?php if ($row3->AMPHUR_ID == $row->D_AMPHUR_ID) echo 'selected'; ?>><?= $row3->AMPHUR_NAME ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -163,7 +197,7 @@
                                     <select name="district" id="district" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกแขวง</option>
                                         <?php foreach ($district as $row4) : ?>
-                                            <option value="<?= $row4->DISTRICT_ID ?>" <?php if ($row4->DISTRICT_ID == $row->DISTRICT) echo 'selected'; ?>><?= $row4->DISTRICT_NAME ?></option>
+                                            <option value="<?= $row4->DISTRICT_ID ?>" <?php if ($row4->DISTRICT_ID == $row->DISTRICT_ID) echo 'selected'; ?>><?= $row4->DISTRICT_NAME ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -173,7 +207,7 @@
                                     <label>รหัสไปรษณีย์ <span style="color: red;">*</span> </label>
                                     <select name="postcode" id="postcode" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกรหัสไปรษณีย์</option>
-                                        <?php foreach ($district as $row5) : ?>
+                                        <?php foreach ($postcode as $row5) : ?>
                                             <option value="<?= $row5->POSTCODE ?>" <?php if ($row5->POSTCODE == $row->POSTCODE) echo 'selected'; ?>><?= $row5->POSTCODE ?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -196,7 +230,7 @@
                                     <select name="position" id="position" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกตำแหน่ง</option>
                                         <?php foreach ($position as $row7) : ?>
-                                            <option value="<?= $row7->POSITION_ID; ?>" <?php if ($row7->POSITION_ID == $row->POSITION) echo 'selected'; ?>><?= $row7->POSITION_NAME; ?></option>
+                                            <option value="<?= $row7->POSITION_ID; ?>" <?php if ($row7->POSITION_ID == $row->POSITION_ID) echo 'selected'; ?>><?= $row7->POSITION_NAME; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

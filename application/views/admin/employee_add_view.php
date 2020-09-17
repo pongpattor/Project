@@ -27,7 +27,7 @@
                                         <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/*" required>
                                     </div>
                                     <div class="col">
-                                        <img id="imgPreview" src="#" width="150px" height="150px" class="float-right img"  style="border-style:inset;"/>
+                                        <img id="imgPreview" src="#" width="150px" height="150px" class="float-right img" style="border-style:inset;" />
                                     </div>
                                 </div>
                             </div>
@@ -99,6 +99,40 @@
                             <div class="col-sm col-md col-xl-6">
                                 <label>วันเกิด <span style="color: red;">*</span> </label>
                                 <input type="date" id="bdate" name="bdate" class="form-control" required max="<?= date('Y-m-d'); ?>">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>กรุ๊ปเลือด <span style="color: red;">*</span></label>
+                                <select name="blood" id="blood" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกกรุ๊ปเลือด</option>
+                                    <option value="AB">AB</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="O">O</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>สัญชาติ <span style="color: red;">*</span></label>
+                                <select name="nationality" id="nationality" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกสัญชาติ</option>
+                                    <?php foreach ($nationality as $row2) { ?>
+                                        <option value="<?= $row2->NATIONALITY_ID; ?>"><?= $row2->NATIONALITY_NAME; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>ศาสนา <span style="color: red;">*</span></label>
+                                <select name="religion" id="religion" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกศาสนา</option>
+                                    <?php foreach ($religion as $row2) { ?>
+                                        <option value="<?= $row2->RELIGION_ID; ?>"><?= $row2->RELIGION_NAME; ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">

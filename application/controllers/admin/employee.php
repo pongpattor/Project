@@ -54,8 +54,9 @@ class employee extends CI_Controller
 
     public function addEmployee()
     {
-
-        $data['province'] = $this->crud_model->find('province', 'PROVINCE_ID,PROVINCE_NAME');
+        $data['nationality'] = $this->crud_model->findall('nationality');
+        $data['religion'] = $this->crud_model->findall('religion');
+        $data['province'] = $this->crud_model->findall('province');
         $data['department'] = $this->crud_model->findall('department');
         $data['page'] = 'employee_add_view';
         $this->load->view('admin/main_view', $data);
@@ -130,12 +131,12 @@ class employee extends CI_Controller
                 'ADDRESS' => $this->input->post('img'),
                 'ADDRESS' => $this->input->post('address'),
                 'DISTRICT' => $this->input->post('district'),
-                'AMPHUR' => $this->input->post('amphur'),
-                'PROVINCE' => $this->input->post('province'),
-                'POSTCODE' => $this->input->post('postcode'),
                 'POSITION' =>  $IDposition,
                 'SALARY' => $this->input->post('salary'),
                 'IMG' => $data['img']['file_name'],
+                'BLOOD' => $this->input->post('blood'),
+                'NATIONALITY' => $this->input->post('nationality'),
+                'RELIGION' => $this->input->post('religion'),
                 'CREATE_AT' => date('Y-m-d H:i:s'),
                 'STATUS' => 1
             );
@@ -172,22 +173,22 @@ class employee extends CI_Controller
         $m = date('m');
         $midfront =  $m;
         $midback = 00;
-        $midback =+ $idDept;
-        $midback = '0'.$midback;
+        $midback = +$idDept;
+        $midback = '0' . $midback;
         $last = '';
         if ($firstID != $Y) {
             $last = 0001;
             while (strlen($last) < 4) {
                 $last = '0' . $last;
             }
-            return $Y .$midfront.   $midback . $last;
+            return $Y . $midfront .   $midback . $last;
         } else {
             $last = substr($maxIdEmployee, 6);
             $last += 1;
             while (strlen($last) < 4) {
                 $last = '0' . $last;
             }
-            return $Y .$midfront.   $midback . $last;
+            return $Y . $midfront .   $midback . $last;
         }
     }
 
@@ -201,17 +202,25 @@ class employee extends CI_Controller
     public function editEmployee()
     {
         $id = $this->input->get('empID');
+
         $data['employee'] = $this->employee_model->editEmp($id);
+        $data['nationality'] = $this->crud_model->findall('nationality');
+        $data['religion'] = $this->crud_model->findall('religion');
         $data['province']  = $this->employee_model->fetch_province();
-        $province_id = $data['employee']['0']->PROVINCE;
-        $data['amphur'] = $this->crud_model->findwhere('amphur', 'PROVINCE_ID', $province_id);
-        $amphur_id =  $data['employee']['0']->AMPHUR;
-        $data['district'] = $this->crud_model->findwhere('district', 'AMPHUR_ID', $amphur_id);
+        $province_id = $data['employee']['0']->D_PROVINCE_ID;
+        $data['amphur'] = $this->crud_model->findwhere('amphur', 'A_PROVINCE_ID', $province_id);
+        $amphur_id =  $data['employee']['0']->D_AMPHUR_ID;
+        $data['district'] = $this->crud_model->findwhere('district', 'D_AMPHUR_ID', $amphur_id);
+        $district_id =  $data['employee']['0']->DISTRICT_ID;
+        $data['postcode'] = $this->crud_model->findwhere('district', 'DISTRICT_ID', $district_id);
         $data['department'] = $this->crud_model->findall('department');
         $department_id = $data['employee']['0']->DEPARTMENT_ID;
         $data['position'] = $this->crud_model->findwhere('position', 'DEPT_ID', $department_id);
         $data['phone'] = $this->employee_model->PhoneEmployee($id);
         $data['page'] = 'employee_edit_view';
+        // echo '<pre>';
+        // print_r( $data['employee']);
+        // echo '</pre>';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -228,11 +237,11 @@ class employee extends CI_Controller
                 'BDATE' => $this->input->post('bdate'),
                 'ADDRESS' => $this->input->post('address'),
                 'DISTRICT' => $this->input->post('district'),
-                'AMPHUR' => $this->input->post('amphur'),
-                'PROVINCE' => $this->input->post('province'),
-                'POSTCODE' => $this->input->post('postcode'),
                 'POSITION' => $this->input->post('position'),
                 'SALARY' => $this->input->post('salary'),
+                'BLOOD' => $this->input->post('blood'),
+                'NATIONALITY' => $this->input->post('nationality'),
+                'RELIGION' => $this->input->post('religion'),
             );
         } else {
             $config = array();
@@ -260,11 +269,11 @@ class employee extends CI_Controller
                     'BDATE' => $this->input->post('bdate'),
                     'ADDRESS' => $this->input->post('address'),
                     'DISTRICT' => $this->input->post('district'),
-                    'AMPHUR' => $this->input->post('amphur'),
-                    'PROVINCE' => $this->input->post('province'),
-                    'POSTCODE' => $this->input->post('postcode'),
                     'POSITION' => $this->input->post('position'),
                     'SALARY' => $this->input->post('salary'),
+                    'BLOOD' => $this->input->post('blood'),
+                    'NATIONALITY' => $this->input->post('nationality'),
+                    'RELIGION' => $this->input->post('religion'),
                     'IMG' => $data['img']['file_name'],
                 );
                 unlink('./assets/image/employee/' . $oldImg);
