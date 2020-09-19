@@ -117,7 +117,7 @@
                     },
                     success: function() {
                         alert(`ลบ ${ID} เสร็จสิ้น`);
-                        location.reload();
+                        window.location.href ="<?=site_url('admin/employee/')?>";
                     }
                 });
             }

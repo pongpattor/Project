@@ -103,7 +103,7 @@
                     },
                     success: function() {
                         alert(`ลบแผนก รหัส ${ID} เสร็จสิ้น`);
-                        location.reload();
+                        window.location.href ="<?=site_url('admin/department/')?>";
 
                     }
                 });

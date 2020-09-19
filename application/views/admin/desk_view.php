@@ -102,15 +102,14 @@
             var result = confirm(`ยืนยันการลบโต๊ะ รหัส ${ID}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/admin/deleteDesk') ?>",
+                    url: "<?= site_url('admin/desk/deleteDesk') ?>",
                     method: "POST",
                     data: {
                         deskID: ID
                     },
                     success: function() {
                         alert(`ลบโต๊ะ รหัส ${ID} เสร็จสิ้น`);
-                        location.reload();
-
+                        window.location.href ="<?=site_url('admin/desk/')?>";
                     }
                 });
             }

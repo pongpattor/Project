@@ -49,7 +49,7 @@
                                                 <a href="<?= site_url('admin/desk/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                                             </div>
                                             <div class="col">
-                                                <input id="btn_regis" class="btn btn-success " type="submit" value="  บันทึก  ">
+                                                <input id="btn_regis" class="btn btn-success " type="submit" value="บันทึก">
                                             </div>
                                         </div>
                                     </center>

@@ -48,7 +48,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสประเภทสินค้า</th>
-                                        <th style="text-align: center;">ชื่อกลุ่มสินค้า</th>
+                                        <th style="text-align: center;">หมวดหมู่สินค้า</th>
                                         <th style="text-align: center;">ชื่อประเภทสินค้า</th>
                                         <th style="text-align: center;">แก้ไข</th>
                                         <th style="text-align: center;">ลบ</th>
@@ -62,8 +62,8 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/desk/editDesk') ?>" method="get">
-                                                        <button name="deskID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->TYPEPRODUCT_ID; ?>"><i class="fa fa-edit"></i></button>
+                                                    <form action="<?= site_url('admin/product/editTypeProduct') ?>" method="get">
+                                                        <button name="typeProductId" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->TYPEPRODUCT_ID; ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
                                             </td>
@@ -84,3 +84,35 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+
+        $('.delete').click(function() {
+            var id = $(this).parents('tr').attr('id');
+            var result = confirm(`ยืนยันการลบ LOT ที่ ${id}`);
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/product/deleteTypeProduct') ?>",
+                    method: "POST",
+                    data: {
+                        typeProductId: id,
+                    },
+                    success: function(data) {
+                        alert(`ลบ ${id} เสร็จสิ้น`);
+                        window.location.href ="<?=site_url('admin/product/typeproduct')?>";
+                    }
+                });
+            }
+        });
+
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
+
+    });
+</script>

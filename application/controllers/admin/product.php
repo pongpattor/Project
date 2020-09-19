@@ -10,20 +10,22 @@ class product extends CI_Controller
         $this->load->model('product_model');
         $this->load->model('crud_model');
         $this->load->library('pagination');
-
     }
 
-    public function index(){
+    public function index()
+    {
         $data['page'] = 'product_view';
-        $this->load->view('admin/main_view',$data);
+        $this->load->view('admin/main_view', $data);
     }
 
-    public function addProduct(){
+    public function addProduct()
+    {
         $data['page'] = 'product_add_view';
-        $this->load->view('admin/main_view',$data);
+        $this->load->view('admin/main_view', $data);
     }
 
-    public function typeProduct(){
+    public function typeProduct()
+    {
 
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/product/typeProduct');
@@ -59,45 +61,99 @@ class product extends CI_Controller
         $data['links'] = $this->pagination->create_links();
         //print_r($data['typeProduct']);
         $data['page'] = 'typeproduct_view';
-        $this->load->view('admin/main_view',$data);
+        $this->load->view('admin/main_view', $data);
     }
 
-    public function addTypeProduct(){
+    public function addTypeProduct()
+    {
         $data['page'] = 'typeproduct_add_view';
-        $this->load->view('admin/main_view',$data);
+        $this->load->view('admin/main_view', $data);
     }
 
-    public function insertTypeProduct(){
+    public function insertTypeProduct()
+    {
         $typeProductDetail = array(
             'TYPEPRODUCT_ID'  => $this->genIdTypeProduct(),
             'TYPEPRODUCT_NAME' => $this->input->post('typeProductName'),
             'TYPEPRODUCT_GROUP' =>  $this->input->post('typeProductGroup'),
-        ); 
-        $this->db->insert('typeproduct',$typeProductDetail);
-        
+        );
+        $this->db->insert('typeproduct', $typeProductDetail);
+
         redirect(site_url('admin/product/typeproduct'));
     }
 
-    public function genIdTypeProduct(){
+    public function genIdTypeProduct()
+    {
         $maxId = $this->product_model->maxTypeProductId();
-        if($maxId == ''){
+        if ($maxId == '') {
             return 'TP001';
-        }else{
-            $maxId = substr($maxId,2);
+        } else {
+            $maxId = substr($maxId, 2);
             $maxId++;
-            while(strlen($maxId) <3 ){
-                $maxId = '0'.$maxId;
+            while (strlen($maxId) < 3) {
+                $maxId = '0' . $maxId;
             }
-            return 'TP'.$maxId;
+            return 'TP' . $maxId;
         }
     }
 
-    public function checkTypeProductName(){
-        
+    public function checkTypeProductName()
+    {
+        $typeProductName = $this->input->post('typeProductName');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $check = $this->product_model->checkTypeProductName($typeProductName, $typeProductGroup);
+        if ($check > 0) {
+            echo 1;
+        } else {
+            echo 0;
+        }
     }
 
-    public function meat(){
-
+    public function checkTypeProductNameUpdate()
+    {
+        $typeProductName = $this->input->post('typeProductName');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $typeProductOldName = $this->input->post('typeProductOldName');
+        if($typeProductName  == $typeProductOldName){
+            echo 0;
+        }
+        else{
+            $check = $this->product_model->checkTypeProductNameUpdate($typeProductName, $typeProductGroup);
+            if ($check > 0) {
+                echo 1;
+            } else {
+                echo 0;
+            }
+        }
+       
     }
-    
+
+    public function editTypeProduct()
+    {
+        $typeId = $this->input->get('typeProductId');
+        $data['typeProduct'] = $this->product_model->editTypeProduct($typeId);
+        // echo '<pre>';
+        // print_r($data['typeProductId']);
+        // echo'</pre>';
+        $data['page'] = 'typeproduct_edit_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function updateTypeProduct()
+    {
+        $typeId = $this->input->post('typeProductId');
+        echo $typeId;
+    }
+
+
+
+    public function deleteTypeProduct()
+    {
+        $id = $this->input->post('typeProductId');
+        $this->crud_model->delete('typeproduct', 'TYPEPRODUCT_ID', $id);
+    }
+
+    public function meat()
+    {
+    }
 }

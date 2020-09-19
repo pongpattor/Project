@@ -69,4 +69,31 @@ class product_model extends CI_Model
         }
     }
 
+    public function checkTypeProductName($typeProductName,$typeProductGroup){
+        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
+                WHERE TYPEPRODUCT_NAME = '$typeProductName'
+                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            return $row->cnt;
+        }
+    }
+
+    public function checkTypeProductNameUpdate($typeProductName,$typeProductGroup){
+        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
+                WHERE TYPEPRODUCT_NAME = '$typeProductName'
+                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            return $row->cnt;
+        }
+    }
+
+    
+    public function editTypeProduct($typeProductId){
+        $sql = "SELECT * FROM typeproduct WHERE TYPEPRODUCT_ID = '$typeProductId'";
+        return $this->db->query($sql)->result();
+    }
+
+    
 }

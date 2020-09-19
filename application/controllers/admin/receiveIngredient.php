@@ -115,7 +115,7 @@ class receiveIngredient extends CI_Controller
     
     public function editReceiveIngredient()
     {
-        $ReceiveID = $this->input->GET("ReceiveID");
+        $ReceiveID = $this->input->get("ReceiveID");
         $data['ingredient'] = $this->crud_model->findwhere('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $ReceiveID);
         // print_r($data['ingredient']);
         $data['page'] = 'receive_ingredient_edit_view';

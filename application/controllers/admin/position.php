@@ -104,7 +104,7 @@ class position extends CI_Controller
 
     public function updatePosition()
     {
-        $POSITION_ID = $this->input->post('positionID');
+        $POSITION_ID = $this->input->get('positionID');
         $position_detail = array(
             'POSITION_NAME' => $this->input->post('positionName'),
             'DEPT_ID' => $this->input->post('departmentID'),

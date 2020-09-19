@@ -99,7 +99,7 @@
                     },
                     success: function() {
                         alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
-                        location.reload();
+                        window.location.href ="<?=site_url('admin/position/')?>";
 
                     }
                 });

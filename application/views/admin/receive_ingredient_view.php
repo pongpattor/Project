@@ -14,10 +14,10 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?=site_url('admin/receiveIngredient/');?>" method="GET">
+                <form action="<?= site_url('admin/receiveIngredient/'); ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
-                            <input type="text" class="form-control" name="search"  placeholder="กรุณากรอกคำที่ต้องการค้นหา">
+                            <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
                             <div class="input-group-append">
                                 <button class="input-group-text"><i class="fa fa-search"></i></button>
                             </div>
@@ -28,6 +28,20 @@
                     </div>
                 </form>
                 <br>
+                <?php
+                echo '<div class="row">';
+                echo '<div class="col-12">';
+                echo '<div class="row">';
+                echo '<div class="col-8">'; ?>
+                <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
+                <?php echo '</div>';
+                echo '<div class="col-4">';
+                echo '<p class="float-right">จำนวน ' . $total . ' ตำแหน่ง</p>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                ?>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -63,7 +77,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                            <?= $links;?>
+                            <?= $links; ?>
                         </div>
                     </div>
                 </div>
