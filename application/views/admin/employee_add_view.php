@@ -278,13 +278,15 @@
                                     $('input[name="idcard"]').addClass('idFalse');
                                     $('#alertidcard').remove();
                                     // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
-                                    $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
+                                    $('#rowidcard').append('<p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
 
                                 } else {
                                     $('input[name="idcard"]').css('background-color', '#83F28E');
                                     $('input[name="idcard"]').css('border-color', '#000000');
                                     $('input[name="idcard"]').removeClass('idFalse');
                                     $('#alertidcard').remove();
+                                    $('#rowidcard').append(' <p style="color:green" id="alertidcard">บัตรประชาชนนี้สามารถใช้ได้</p>');
+
                                 }
                             }
                         });

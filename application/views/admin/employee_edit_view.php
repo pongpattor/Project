@@ -24,11 +24,10 @@
                                     <div class="row">
                                         <div class="col">
                                             <label>เลือกรูปภาพ <span style="color: red;">* </label>
-                                            <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg" >
+                                            <input type="file" name="imgEmp" class="form-control-file" id="imgEmp" accept="image/png,image/jpeg">
                                         </div>
-                                        <div class="col" >
-                                            <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" width="150px" height="150px"   class="float-right  img"
-                                             style="border-style:inset;" />
+                                        <div class="col">
+                                            <img id="imgPreview" src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" width="150px" height="150px" class="float-right  img" style="border-style:inset;" />
                                             <input type="hidden" name="oldImg" value="<?= $row->IMG ?>">
                                         </div>
                                     </div>
@@ -44,7 +43,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 " id="rowidcard">
                                     <label>รหัสบัตรประจำตัวประชาชน13หลัก <span style="color: red;">*</span></label>
-                                    <input type="text" name="idcard"  class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                    <input type="text" name="idcard" class="form-control" value="<?= $row->IDCARD ?>" maxlength="13" minlength="13" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                     <input type="hidden" name="oldidcard" id="oldidcard" value="<?= $row->IDCARD ?>">
                                 </div>
                             </div>
@@ -131,39 +130,39 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>กรุ๊ปเลือด <span style="color: red;">*</span></label>
-                                <select name="blood" id="blood" class="form-control" required>
-                                    <option value="" selected disabled>กรุณาเลือกกรุ๊ปเลือด</option>
-                                    <option value="AB" <?php if($row->BLOOD == "AB")echo 'selected';?>>AB</option>
-                                    <option value="A" <?php if($row->BLOOD == "A")echo 'selected';?>>A</option>
-                                    <option value="B" <?php if($row->BLOOD == "B")echo 'selected';?>>B</option>
-                                    <option value="O" <?php if($row->BLOOD == "O")echo 'selected';?>>O</option>
-                                </select>
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>กรุ๊ปเลือด <span style="color: red;">*</span></label>
+                                    <select name="blood" id="blood" class="form-control" required>
+                                        <option value="" selected disabled>กรุณาเลือกกรุ๊ปเลือด</option>
+                                        <option value="AB" <?php if ($row->BLOOD == "AB") echo 'selected'; ?>>AB</option>
+                                        <option value="A" <?php if ($row->BLOOD == "A") echo 'selected'; ?>>A</option>
+                                        <option value="B" <?php if ($row->BLOOD == "B") echo 'selected'; ?>>B</option>
+                                        <option value="O" <?php if ($row->BLOOD == "O") echo 'selected'; ?>>O</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>สัญชาติ <span style="color: red;">*</span></label>
-                                <select name="nationality" id="nationality" class="form-control" required>
-                                    <option value="" selected disabled>กรุณาเลือกสัญชาติ</option>
-                                    <?php foreach ($nationality as $row2) { ?>
-                                        <option value="<?= $row2->NATIONALITY_ID; ?>" <?php if($row->NATIONALITY == $row2->NATIONALITY_ID)echo 'selected';?>><?= $row2->NATIONALITY_NAME; ?></option>
-                                    <?php } ?>
-                                </select>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>สัญชาติ <span style="color: red;">*</span></label>
+                                    <select name="nationality" id="nationality" class="form-control" required>
+                                        <option value="" selected disabled>กรุณาเลือกสัญชาติ</option>
+                                        <?php foreach ($nationality as $row2) { ?>
+                                            <option value="<?= $row2->NATIONALITY_ID; ?>" <?php if ($row->NATIONALITY == $row2->NATIONALITY_ID) echo 'selected'; ?>><?= $row2->NATIONALITY_NAME; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>ศาสนา <span style="color: red;">*</span></label>
-                                <select name="religion" id="religion" class="form-control" required>
-                                    <option value="" selected disabled>กรุณาเลือกศาสนา</option>
-                                    <?php foreach ($religion as $row2) { ?>
-                                        <option value="<?= $row2->RELIGION_ID; ?>" <?php if($row->RELIGION == $row2->RELIGION_ID)echo 'selected';?>><?= $row2->RELIGION_NAME; ?></option>
-                                    <?php } ?>
-                                </select>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>ศาสนา <span style="color: red;">*</span></label>
+                                    <select name="religion" id="religion" class="form-control" required>
+                                        <option value="" selected disabled>กรุณาเลือกศาสนา</option>
+                                        <?php foreach ($religion as $row2) { ?>
+                                            <option value="<?= $row2->RELIGION_ID; ?>" <?php if ($row->RELIGION == $row2->RELIGION_ID) echo 'selected'; ?>><?= $row2->RELIGION_NAME; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ที่อยู่ <span style="color: red;">*</span></label>
@@ -329,7 +328,7 @@
                             method: "POST",
                             data: {
                                 idcard: id,
-                                oldidcard : oldid
+                                oldidcard: oldid
                             },
                             success: function(data) {
                                 if (data != 0) {
@@ -342,10 +341,18 @@
                                     $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
 
                                 } else {
-                                    $('input[name="idcard"]').css('background-color', '#83F28E');
-                                    $('input[name="idcard"]').css('border-color', '#000000');
                                     $('input[name="idcard"]').removeClass('idFalse');
                                     $('#alertidcard').remove();
+                                    if (id != oldid) {
+                                        $('#rowidcard').append(' <p style="color:green" id="alertidcard">บัตรประชาชนนี้สามารถใช้ได้</p>');
+                                        $('input[name="idcard"]').css('background-color', '#83F28E');
+                                        $('input[name="idcard"]').css('border-color', '#000000');
+                                    }
+                                    else{
+                                        $('input[name="idcard"]').css('background-color', '');
+                                        $('input[name="idcard"]').css('border-color', '');
+                                    }
+
                                 }
                             }
                         });
@@ -363,8 +370,10 @@
             })
         });
 
-        var id = $('tbody tr .btn-remove:last-child').attr('id');
-        var addphone_id = parseInt(id) + 1;
+        var id = $('tbody tr:last-child').attr('id');
+        id = id.substr(3);
+        var addphone_id = parseInt(id) ;
+    
         $('#addphone').on('click', function() {
             addphone_id++;
             var txt = `<tr id="row${addphone_id}">

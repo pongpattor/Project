@@ -70,7 +70,9 @@
 
 <script>
     $(document).ready(function() {
-        var row = 1;
+        var id = $('tbody tr:last-child').attr('id');
+        id = id.substr(3);
+        var row = parseInt(id);
         $('#addData').click(function() {
             row++;
             var txt = `<tr id="row${row}">
