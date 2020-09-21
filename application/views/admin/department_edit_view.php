@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/department/updateDepartment') ?>" method="POST" >
+                    <form action="<?= site_url('admin/department/updateDepartment') ?>" method="POST" id="formDepartment">
                         <div class="row justify-content-center">
                             <?php foreach ($oldDept as $row) : ?>
                                 <div class="col-sm col-md col-xl-6" id="rowDeptName">
@@ -51,6 +51,30 @@
 </div>
 <script>
     $(document).ready(function() {
+
+        // $('#btn_update').click(function(e) {
+        //     e.preventDefault();
+        //     var deptName = $('#department_name').val();
+        //     var oldDeptName = $('#oldDepartment_name').val();
+        //     $.ajax({
+        //         url: "<?= site_url('admin/department/checkDepartmentNameUpdate') ?>",
+        //         method: "POST",
+        //         data: {
+        //             departmentName: deptName,
+        //             oldDepartmentName: oldDeptName
+        //         },
+        //         success: function(data) {
+        //             if (data != 0) {
+        //                 alert('ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว');
+        //             } else {
+        //                 $('#formDepartment').submit();
+        //             }
+        //         }
+        //     });
+        // });
+
+
+
         $('#btn_update').click(function() {
             if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
@@ -58,6 +82,7 @@
             }
 
         });
+
         $('#department_name').on('focusout', function() {
             var deptName = $('#department_name').val();
             var oldDeptName = $('#oldDepartment_name').val();
@@ -72,18 +97,14 @@
                     if (data != 0) {
                         $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
                         $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        // $('#rowDeptName').append('<br id="brdept">');
-                        // $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
                         $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
 
                     } else {
                         $('#alertidcard').remove();
-                        // $('#brdept').remove();
                         $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
                     }
                 }
             });
-        })
+        });
     });
 </script>

@@ -93,12 +93,14 @@
                     if (data != 0) {
                         $('input[name="positionName"]').addClass('idFalse');
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        $('#rowPositionName').append('<br id="brdept">');
-                        $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        // $('#brdept').remove();
+                        // $('#rowPositionName').append('<br id="brdept">');
+                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
+
                     } else {
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
+                        // $('#brdept').remove();
                         $('input[name="positionName"]').removeClass('idFalse');
                     }
                 }
@@ -122,12 +124,14 @@
                     if (data != 0) {
                         $('input[name="positionName"]').addClass('idFalse');
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        $('#rowPositionName').append('<br id="brdept">');
-                        $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        // $('#brdept').remove();
+                        // $('#rowPositionName').append('<br id="brdept">');
+                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+                        $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
+
                     } else {
                         $('#alertidcard').remove();
-                        $('#brdept').remove();
+                        // $('#brdept').remove();
                         $('input[name="positionName"]').removeClass('idFalse');
                     }
                 }

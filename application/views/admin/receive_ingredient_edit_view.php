@@ -28,8 +28,8 @@
                                         <?php $rowid = 1;
                                         foreach ($ingredient as $row) { ?>
                                             <tr id="row<?= $rowid; ?>">
-                                                <td><input type="text" class="form-control" name="ReceiveName[]" value="<?= $row->INGREDIENT_NAME; ?>" required></td>
-                                                <td><input type="number" class="form-control" name="ReceivePrice[]" value="<?= $row->INGREDIENT_PRICE; ?>" required></td>
+                                                <td><input type="text" class="form-control" name="ReceiveName[]" value="<?= $row->INGREDIENT_NAME; ?>" required  ></td>
+                                                <td><input type="number" class="form-control" name="ReceivePrice[]" value="<?= $row->INGREDIENT_PRICE; ?>" required step="0.01"></td>
                                                 <?php if ($rowid == 1) { ?>
                                                     <td><button type="button" class="btn btn-success" id="addData"><i class="fa fa-plus"></i></button></td>
                                                 <?php } else { ?>
@@ -76,8 +76,8 @@
         $('#addData').click(function() {
             row++;
             var txt = `<tr id="row${row}">
-                            <td><input type="text" class="form-control" name="ReceiveName[]" id="" required></td>
-                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required></td>
+                            <td><input type="text" class="form-control" name="ReceiveName[]" id="" required ></td>
+                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required step="0.01"></td>
                             <td><button type="button" id="${row}" class="btn btn-danger btn-remove">
                                     <i class="fa fa-minus"></i>
                                 </button>
@@ -90,6 +90,8 @@
                 console.log(btn_del);
             });
         });
+
+
 
         $('.btn-remove').on('click', function() {
             var btn_del = $(this).attr("id");

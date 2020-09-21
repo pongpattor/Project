@@ -89,8 +89,9 @@ class receiveIngredient extends CI_Controller
         $totalPrice = 0;
         foreach ($receivePrice as $row) {
             $totalPrice += $row;
+          
         }
-
+        echo $totalPrice;
         $Receive = array(
             'RECEIVE_INGREDIENT_ID' =>   $idReceive,
             'DATE_AT' => date('Y-m-d H:i:s'),
@@ -110,7 +111,7 @@ class receiveIngredient extends CI_Controller
             $this->crud_model->insert('receive_ingredient_detail', $receiveDetail);
         }
 
-        redirect(site_url('admin/receiveIngredient/'));
+        // redirect(site_url('admin/receiveIngredient/'));
     }
     
     public function editReceiveIngredient()

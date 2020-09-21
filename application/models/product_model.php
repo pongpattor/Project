@@ -61,39 +61,113 @@ class product_model extends CI_Model
         }
     }
 
-    public function maxTypeProductId(){
+    public function maxTypeProductId()
+    {
         $sql = "SELECT MAX(TYPEPRODUCT_ID) as MID from typeproduct";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->MID;
+        }
+    }
+
+    public function checkTypeProductName($typeProductName, $typeProductGroup)
+    {
+        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
+                WHERE TYPEPRODUCT_NAME = '$typeProductName'
+                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function checkTypeProductNameUpdate($typeProductName, $typeProductGroup)
+    {
+        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
+                WHERE TYPEPRODUCT_NAME = '$typeProductName'
+                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+
+    public function editTypeProduct($typeProductId)
+    {
+        $sql = "SELECT * FROM typeproduct WHERE TYPEPRODUCT_ID = '$typeProductId'";
+        return $this->db->query($sql)->result();
+    }
+
+    public function meat($search = '', $limit, $offset)
+    {
+        $sql = "SELECT * FROM meat
+        where 
+        (
+            MEAT_ID LIKE  ? OR
+            MEAT_NAME LIKE ? 
+
+        )
+        LIMIT $offset,$limit
+        ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
+    }
+
+    public function countAllMeat($search = '')
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM meat
+        where
+        (
+            MEAT_ID LIKE  ? OR
+            MEAT_NAME LIKE ? 
+        )
+        ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function checkMeatName($meatName)
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM meat 
+                WHERE MEAT_NAME LIKE ?";
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($meatName) . '%',
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function maxMeatID(){
+        $sql = "SELECT MAX(MEAT_ID) as MID FROM meat";
         $query = $this->db->query($sql);
         foreach($query->result() as $row){
             return $row->MID;
         }
     }
-
-    public function checkTypeProductName($typeProductName,$typeProductGroup){
-        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
-                WHERE TYPEPRODUCT_NAME = '$typeProductName'
-                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
-        $query = $this->db->query($sql);
-        foreach($query->result() as $row){
-            return $row->cnt;
-        }
-    }
-
-    public function checkTypeProductNameUpdate($typeProductName,$typeProductGroup){
-        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
-                WHERE TYPEPRODUCT_NAME = '$typeProductName'
-                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
-        $query = $this->db->query($sql);
-        foreach($query->result() as $row){
-            return $row->cnt;
-        }
-    }
-
-    
-    public function editTypeProduct($typeProductId){
-        $sql = "SELECT * FROM typeproduct WHERE TYPEPRODUCT_ID = '$typeProductId'";
-        return $this->db->query($sql)->result();
-    }
-
-    
 }

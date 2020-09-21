@@ -80,7 +80,7 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= site_url('admin/product/'); ?>">สินค้า</a>
                                 <a class="nav-link" href="<?= site_url('admin/product/typeProduct'); ?>">ประเภทสินค้า</a>
-                                <a class="nav-link" href="<?= site_url('admin/admin/'); ?>">ประเภทเนื้อสัตว์</a>
+                                <a class="nav-link" href="<?= site_url('admin/product/meat'); ?>">ประเภทเนื้อสัตว์</a>
                             </nav>
                         </div>
 

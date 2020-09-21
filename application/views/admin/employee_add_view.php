@@ -94,7 +94,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <label>วันเกิด <span style="color: red;">*</span> </label>
@@ -227,8 +226,6 @@
 <script>
     $(document).ready(function() {
 
-
-
         var addphone_id = 1;
         $('#addphone').click(function() {
             addphone_id++;
@@ -245,7 +242,9 @@
                 var btn_del = $(this).attr("id");
                 $('#row' + btn_del).remove();
             });
+
         });
+
 
         $('#btn_regis').on('click', function() {
             if ($('input[name="idcard"]').hasClass('idFalse')) {

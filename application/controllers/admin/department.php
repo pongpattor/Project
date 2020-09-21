@@ -127,7 +127,7 @@ class department extends CI_Controller
     }
     public function updateDepartment()
     {
-        $DEPARTMENT_ID = $this->input->get('DEPARTMENT_ID');
+        $DEPARTMENT_ID = $this->input->post('DEPARTMENT_ID');
         $department_detail = array(
             'DEPARTMENT_ID' => $DEPARTMENT_ID,
             'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
