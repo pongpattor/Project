@@ -47,30 +47,6 @@
 <script>
     $(document).ready(function() {
 
-        // $('#btn_regis').click(function(e) {
-        //     e.preventDefault();
-        //     var deptName = $('#department_name').val();
-        //     if(deptName == ""){
-        //         alert('ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว')   ;               
-        //     }
-        //     else{
-        //         $.ajax({
-        //             url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
-        //             method: "POST",
-        //             data: {
-        //                 departmentName: deptName
-        //             },
-        //             success: function(data) {
-        //                 if (data != 0) {
-        //                     alert('ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว')                  
-        //                 } else {
-        //                     $('#formDepartment').submit();
-        //                 }
-        //             }
-        //         });
-        //     }
-               
-        // });
 
         $('#btn_regis').click(function() {
             if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
@@ -79,7 +55,8 @@
             }
         });
 
-        $('#department_name').on('focusout', function() {
+        
+         $('#department_name').on('focusout', function() {
             var deptName = $('#department_name').val();
             $.ajax({
                 url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
@@ -94,7 +71,9 @@
                         // $('#brdept').remove();
                         // $('#rowDeptName').append('<br id="brdept">');
                         // $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
+                        alert('ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว');
                         $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
+                        return false;
 
                     } else {
                         $('#alertidcard').remove();
@@ -104,5 +83,11 @@
                 }
             });
         })
+
+
+        $('#formDepartment').submit(function(){
+
+        },2000);
+        
     });
 </script>

@@ -20,6 +20,7 @@ class employee extends CI_Controller
         $config['base_url'] = site_url('admin/employee/employee');
         $config['total_rows'] = $this->employee_model->countAllEmployee($search);
         $config['per_page'] = 5;
+
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
         $config['full_tag_open'] = '<nav><ul class="pagination">';

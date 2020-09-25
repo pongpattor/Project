@@ -76,33 +76,38 @@
         //     });
         // }); 
 
-        
-        $('#btn_regis').click(function() {
-            var meatName = $('#meatName').val();
+
+        $('#formMeat').on('submit',function(e){
+            e.preventDefault();
             $.ajax({
-                url: "<?= site_url('admin/product/checkMeatName') ?>",
-                method: "POST",
-                data: {
-                    meatName: meatName
-                },
-                success: function(data) {
-                    if (data != 0) {
-                        $('#alertidcard').remove();
-                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                        $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');        
-                        return false;  
-                    } 
+                url :"<?= site_url('admin/product/test')?>",
+                method : "POST",
+                data : $('#formMeat').serialize(),
+                success:function(data){
+                        console.log(data);
                 }
-            });
+            })
         });
-
-        // $('input[name="meatName"]').addClass('idFalse');
-
-        // else {
+        
+        // $('#btn_regis').click(function() {
+        //     var meatName = $('#meatName').val();
+        //     $.ajax({
+        //         url: "<?= site_url('admin/product/checkMeatName') ?>",
+        //         method: "POST",
+        //         data: {
+        //             meatName: meatName
+        //         },
+        //         success: function(data) {
+        //             if (data != 0) {
         //                 $('#alertidcard').remove();
-        //                 // $('#brdept').remove();
-        //                 $('input[name="meatName"]').removeClass('idFalse');
-        //             }
+        //                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+        //                 $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');        
+        //                 return false;  
+        //             } 
+        //         }
+        //     });
+        // });
+
 
         $('#meatName').on('focusout', function() {
             // var meatName = $('#meatName').val();

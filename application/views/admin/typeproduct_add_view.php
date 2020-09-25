@@ -17,7 +17,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/product/insertTypeProduct') ?>" method="POST">
+                    <form action="<?= site_url('admin/product/insertTypeProduct') ?>" method="POST" id="formTypeProduct">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                 <label>ชื่อประเภทสินค้า</label><br>
@@ -61,9 +61,12 @@
 <script>
     $(document).ready(function() {
 
-        $('#btn_update').click(function() {
+   
+
+
+        $('#btn_regis').click(function() {
             if ($('input[name="typeProductName"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                 alert('มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว');
                 return false;
             }
 
@@ -89,6 +92,8 @@
                         // $('#rowPositionName').append('<br id="brdept">');
                         // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
                         $('#rowTypeProductName').append(' <p style="color:red" id="alertidcard">มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว</p>');
+
+                        return false;
 
                     } else {
                         $('#alertidcard').remove();
@@ -129,5 +134,8 @@
             });
         });
 
+        $('#formTypeProduct').submit(function(){
+
+        },2000);
     });
 </script>
