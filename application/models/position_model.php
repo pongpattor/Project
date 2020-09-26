@@ -97,5 +97,17 @@ class position_model extends CI_Model
     }
 
 
+    public function updatePosition($positionID, $positionName, $deptID, $permission)
+    {
+        $sql = "UPDATE position SET POSITION_NAME = ? ,DEPT_ID = ? ,PERMISSION = ? WHERE POSITION_ID = '$positionID' ";
+         $this->db->query($sql,array(
+            $this->db->escape_like_str($positionName),
+            $this->db->escape_like_str($deptID),
+            $this->db->escape_like_str($permission)
+        ));
+        return true;
+
+    }
+
     //Position End
 }

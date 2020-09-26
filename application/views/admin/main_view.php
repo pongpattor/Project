@@ -87,8 +87,8 @@
                         <div class="collapse" id="ProductcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= site_url('admin/product/'); ?>">รายการสินค้า</a>
-                                <a class="nav-link" href="<?= site_url('admin/product/typeProduct'); ?>">ประเภทสินค้า</a>
-                                <a class="nav-link" href="<?= site_url('admin/product/meat'); ?>">ประเภทเนื้อสัตว์</a>
+                                <a class="nav-link" href="<?= site_url('admin/typeproduct/'); ?>">ประเภทสินค้า</a>
+                                <a class="nav-link" href="<?= site_url('admin/meat/'); ?>">ประเภทเนื้อสัตว์</a>
                             </nav>
                         </div>
 

@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/product/insertMeat') ?>" method="POST" id="formMeat">
+                    <form action="<?= site_url('admin/meat/') ?>" method="POST" id="formMeat">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 " id="rowMeat">
                                 <label>ชื่อเนื้อสัตว์</label>
@@ -29,7 +29,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/product/meat'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/meat/'); ?>" class="btn btn-danger">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_regis" class="btn btn-success" type="submit" value="  เพิ่ม  ">

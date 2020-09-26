@@ -17,7 +17,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/product/updateTypeProduct') ?>" method="POST">
+                    <form action="<?= site_url('admin/typeproduct/updateTypeProduct') ?>" method="POST">
                         <?php foreach ($typeProduct as $row) { ?>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
@@ -52,7 +52,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/product/typeProduct/'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/typeproduct/'); ?>" class="btn btn-danger">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_update" class="btn btn-success " type="submit" value="บันทึก">
@@ -86,7 +86,7 @@
             var tpOldName = $('#oldTPName').val();
 
             $.ajax({
-                url: "<?= site_url('admin/product/checkTypeProductNameUpdate') ?>",
+                url: "<?= site_url('admin/typeproduct/checkTypeProductNameUpdate') ?>",
                 method: "POST",
                 data: {
                     typeProductName: tpName,
@@ -116,7 +116,7 @@
             var tpGroup = $('#typeProductGroup').val();
             var tpOldName = $('#oldTPName').val();
             $.ajax({
-                url: "<?= site_url('admin/product/checkTypeProductNameUpdate') ?>",
+                url: "<?= site_url('admin/typeproduct/checkTypeProductNameUpdate') ?>",
                 method: "POST",
                 data: {
                     typeProductName: tpName,

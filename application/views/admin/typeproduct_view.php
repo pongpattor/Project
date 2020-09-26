@@ -13,7 +13,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/product/typeProduct') ?>" method="GET">
+                <form action="<?= site_url('admin/typeproduct/') ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/product/addTypeProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/typeproduct/addTypeProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
@@ -62,7 +62,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/product/editTypeProduct') ?>" method="get">
+                                                    <form action="<?= site_url('admin/typeproduct/editTypeProduct') ?>" method="get">
                                                         <button name="typeProductId" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->TYPEPRODUCT_ID; ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>

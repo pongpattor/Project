@@ -15,7 +15,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/product/meat') ?>" method="GET">
+                <form action="<?= site_url('admin/meat/') ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/product/addMeat') ?>" class="btn btn-info float-right" ><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/meat/addMeat') ?>" class="btn btn-info float-right" ><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
@@ -68,7 +68,7 @@
                                                                                                         } ?></td>
                                                 <td>
                                                     <center>
-                                                        <form action="<?= site_url('admin/product/editmeat') ?>" method="get">
+                                                        <form action="<?= site_url('admin/meat/editmeat') ?>" method="get">
                                                             <button name="meatID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->MEAT_ID ?>"><i class="fa fa-edit"></i></button>
                                                         </form>
                                                     </center>

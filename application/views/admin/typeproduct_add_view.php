@@ -17,7 +17,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/product/insertTypeProduct') ?>" method="POST" id="formTypeProduct">
+                    <form action="<?= site_url('admin/typeproduct/insertTypeProduct') ?>" method="POST" id="formTypeProduct">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                 <label>ชื่อประเภทสินค้า</label><br>
@@ -41,7 +41,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/product/typeProduct/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/typeproduct/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_regis" class="btn btn-success " type="submit" value="  เพิ่ม  ">
@@ -68,7 +68,7 @@
             // console.log(tpGroup);
             // console.log(tpName);
             $.ajax({
-                url: "<?= site_url('admin/product/checkTypeProductName') ?>",
+                url: "<?= site_url('admin/typeproduct/checkTypeProductName') ?>",
                 method: "POST",
                 data: {
                     typeProductName: tpName,
@@ -99,7 +99,7 @@
             // console.log(tpGroup);
             // console.log(tpName);
             $.ajax({
-                url: "<?= site_url('admin/product/checkTypeProductName') ?>",
+                url: "<?= site_url('admin/typeproduct/checkTypeProductName') ?>",
                 method: "POST",
                 data: {
                     typeProductName: tpName,
