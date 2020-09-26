@@ -247,7 +247,7 @@
                                     <center>
                                         <div class="input-group">
                                             <div class="col">
-                                                <a href="<?= site_url('admin/employee/employee'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                                <a href="<?= site_url('admin/employee/'); ?>" class="btn btn-danger">ยกเลิก</a>
                                             </div>
 
                                             <div class="col">

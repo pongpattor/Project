@@ -14,7 +14,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/employee/employee'); ?>" method="GET">
+                <form action="<?= site_url('admin/employee/'); ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">

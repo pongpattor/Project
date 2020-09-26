@@ -23,10 +23,10 @@ class employee extends CI_Controller
     }
 
     // Employee Start
-    public function employee()
+    public function index()
     {
         $search = $this->input->get('search');
-        $config['base_url'] = site_url('admin/employee/employee');
+        $config['base_url'] = site_url('admin/employee/index');
         $config['total_rows'] = $this->employee_model->countAllEmployee($search);
         $config['per_page'] = 5;
 
@@ -190,7 +190,8 @@ class employee extends CI_Controller
                     $this->crud_model->insert('employee_telephone', $data);
                 }
             }
-            redirect(site_url('admin/employee/employee'));
+
+            // redirect(site_url('admin/employee/'));
         }
     }
 
@@ -328,7 +329,17 @@ class employee extends CI_Controller
                 $this->crud_model->insert('employee_telephone', $data);
             }
         }
-        redirect(site_url('admin/employee/employee'));
+
+        // $data['session'] = $this->employee_model->newSession($idEmployee);
+        // $session = explode(',',$data['session'][0]->PERMISSION);
+        // echo '<pre>';
+        // print_r($_SESSION['permission']);
+        // echo '</pre>';
+        // $_SESSION['permission'] = $session;
+        // echo '<pre>';
+        // print_r($_SESSION['permission']);
+        // echo '</pre>';
+        redirect(site_url('admin/employee/'));
     }
     // Employee End
 
