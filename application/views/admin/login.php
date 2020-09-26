@@ -1,72 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Page Title - SB Admin</title>
-        <link href="../../../assets/css/styles.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="bg-dark">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label class="small mb-1" for="inputEmailAddress">Email</label>
-                                                <input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- CSS JQUERY -->
+    <link href="<?= base_url('assets/css/styles.css'); ?>" rel="stylesheet" />
+    <script src="<?= base_url('assets\script\node_modules\jquery\dist\jquery.js'); ?>"></script>
+    <script src="<?= base_url('assets\bootstrap4\js\bootstrap.bundle.min.js'); ?>"></script>
+    <!-- Icon -->
+    <script src="<?= base_url('assets\icon_fontawesome\js\all.js'); ?>" crossorigin="anonymous"></script>
+</head>
+
+<body style="background-color: #AEDAD7;" class="container-fluid text-center">
+    <div class=" row h-100 justify-content-center  align-items-center">
+        <div class="col-6">
+            <div class="card boder-0 shadow-lg ">
+                <div class="card-header">
+                    <h3>Login</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 ">
+                            <img src="<?= base_url('assets/image/logo.jpg') ?>" alt="" width="150px" height="150px" class="justify-content-center">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="<?= site_url('admin/login/Login') ?>" method="POST">
+
+                                <div class="row justify-content-center">
+                                    <div class="col-sm col-md col-xl-6 ">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="small mb-1" for="inputPassword">Password</label>
-                                                <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" />
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                                                    <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Forgot Password?</a>
-                                                <a class="btn btn-primary" href="index.html">Login</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                                            <input type="text" class="form-control" placeholder="Username" name="username" id="username" maxlength="10" required>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-sm col-md col-xl-6 ">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                            </div>
+                                            <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-sm col-md col-xl-6 ">
+                                        <input type="submit" value="เข้าสู่ระบบ" class="btn btn-success" id="Login">
+                                    </div>
+                                </div>
+                                <!-- <button id="btnc">Click</button> -->
+                            </form>
                         </div>
                     </div>
-                </main>
-            </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="../../../assets/script/scripts.js"></script>
-    </body>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+
+            // $('#btnc').click(function(){
+            //     $.ajax({
+            //         url : "<?=site_url('admin/login/destroySession')?>",
+            //         success:function(data){
+            //             console.log(data);
+            //         }
+            //     });
+            // });
+
+            $("#username").keypress(function(event) {
+                var ew = event.which;
+                if (ew == 32)
+                    return true;
+                if (48 <= ew && ew <= 57)
+                    return true;
+                if (65 <= ew && ew <= 90)
+                    return true;
+                if (97 <= ew && ew <= 122)
+                    return true;
+                return false;
+            });
+
+            $("#password").keypress(function(event) {
+                var ew = event.which;
+                if (ew == 32)
+                    return true;
+                if (48 <= ew && ew <= 57)
+                    return true;
+                if (65 <= ew && ew <= 90)
+                    return true;
+                if (97 <= ew && ew <= 122)
+                    return true;
+                return false;
+            });
+
+
+
+
+        });
+    </script>
+
+</body>
+
 </html>

@@ -8,19 +8,27 @@ class admin extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if(empty($_SESSION['login'])){
+            return redirect(site_url('admin/login'));
+        }
         $this->load->model('crud_model');
         $this->load->model('employee_model');
         $this->load->model('receive_ingredient_model');
         $this->load->library('pagination');
     }
 
-
+    
     public function home()
     {
         $data['page'] = 'home';
         $this->load->view('admin/main_view', $data);
     }
 
+
+    public function logout(){
+        $this->session->sess_destroy();
+       redirect(site_url('admin/login'));
+    }
 
     public function test()
     {

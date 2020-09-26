@@ -82,12 +82,17 @@ class position extends CI_Controller
         $position = array(
             'POSITION_ID' => $this->genIdPosition(),
             'POSITION_NAME' => $this->input->post('positionName'),
-            'DEPT_ID' => $this->input->post('departmentID')
+            'DEPT_ID' => $this->input->post('departmentID'),
+            'PERMISSION' =>  $this->input->post('perPosition')
         );
 
         $this->crud_model->insert('position', $position);
 
         redirect(site_url('admin/position/'));
+
+        // Convert String to Array
+        // $array = explode(",",$d);
+        // print_r($array);
     }
 
     public function editPosition()

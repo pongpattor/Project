@@ -27,12 +27,12 @@
         <!-- div Space-->
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown input-group-append">
-                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i>user</a>
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?php echo $_SESSION['Empname'];?></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">Settings</a>
                     <a class="dropdown-item" href="#">Activity Log</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?= site_url('admin/admin/login'); ?>">Logout</a>
+                    <a class="dropdown-item" href="<?= site_url('admin/admin/logout'); ?>">Logout</a>
                 </div>
             </li>
         </ul>
@@ -43,14 +43,22 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
+
                         <a class="nav-link" href="#">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
+                            <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
+                            ระบบจัดการหน้าร้าน
                         </a>
+
                         <a class="nav-link" href="#">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
+                            <div class="sb-nav-link-icon"><i class="fa fa-utensils"></i></div>
+                            ระบบห้องครัว
                         </a>
+
+                        <a class="nav-link" href="#">
+                            <div class="sb-nav-link-icon"><i class="fa fa-book-open"></i></div>
+                            ระบบจองคิว
+                        </a>
+
 
                         <div class="sb-sidenav-menu-heading">ระบบหลังร้าน</div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts">
@@ -72,13 +80,13 @@
                         </a>
 
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fa fa-utensils"></i></div>
-                            อาหารและเครื่องดื่ม
+                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                            สินค้า
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="ProductcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= site_url('admin/product/'); ?>">สินค้า</a>
+                                <a class="nav-link" href="<?= site_url('admin/product/'); ?>">รายการสินค้า</a>
                                 <a class="nav-link" href="<?= site_url('admin/product/typeProduct'); ?>">ประเภทสินค้า</a>
                                 <a class="nav-link" href="<?= site_url('admin/product/meat'); ?>">ประเภทเนื้อสัตว์</a>
                             </nav>
@@ -88,18 +96,16 @@
                             <div class="sb-nav-link-icon"><i class="fa fa-cart-arrow-down"></i></div>
                             รับวัตถุดิบ
                         </a>
-                        
+
                         <a class="nav-link collapsed" href="#">
                             <div class="sb-nav-link-icon"><i class="fa fa-gifts"></i></div>
                             โปรโมชั่น
                         </a>
-
-
+                        <a class="nav-link collapsed" href="#">
+                            <div class="sb-nav-link-icon"><i class="fa fa-file-medical-alt"></i></div>
+                            รีพอร์ท
+                        </a>
                     </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    Start Bootstrap
                 </div>
             </nav>
         </div>

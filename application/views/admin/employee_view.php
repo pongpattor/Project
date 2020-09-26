@@ -103,6 +103,7 @@
         </div>
     </div>
 </div>
+<br>
 <script>
     $(document).ready(function() {
         $('.delete').click(function(e) {

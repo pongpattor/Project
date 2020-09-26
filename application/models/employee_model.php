@@ -49,7 +49,7 @@ class employee_model extends CI_Model
 
     public function countAllEmployee($search)
     {
-        $sql ="
+        $sql = "
         select count(*) as cnt from (SELECT * FROM employee e
         left join employee_telephone et on e.ID = et.EMPLOYEE_ID
         LEFT JOIN position p on e.POSITION = p.POSITION_ID
@@ -148,7 +148,7 @@ class employee_model extends CI_Model
         }
     }
 
-    public function checkIdCardUpdate($idCard,$oldidcard)
+    public function checkIdCardUpdate($idCard, $oldidcard)
     {
         $sql = "SELECT COUNT(*) as num FROM employee 
         where IDCARD = $idCard 
@@ -178,6 +178,36 @@ class employee_model extends CI_Model
         }
     }
     //Employee End
+
+    public function checklogin($username, $password)
+    {
+        $sql = " SELECT COUNT(*) as cnt FROM employee
+        WHERE ID = ? and PASSWORD = ?";
+
+        $query = $this->db->query($sql, array(
+            $this->db->escape_like_str($username),
+            $this->db->escape_like_str($password),
+        ));
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    //Login
+    public function login($username,$password)
+    {
+        $sql = " SELECT employee.FIRSTNAME,employee.LASTNAME,position.PERMISSION FROM employee 
+        LEFT JOIN position ON employee.POSITION = position.POSITION_ID
+        WHERE ID = ? and PASSWORD = ?";
+
+        $query = $this->db->query($sql, array(
+            $this->db->escape_like_str($username),
+            $this->db->escape_like_str($password),
+        ));
+        return $query->result();
+    }
+
+
 
     //ETC
     public function fetch_province()
