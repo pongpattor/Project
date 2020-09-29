@@ -16,17 +16,19 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/product/insertProduct') ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= site_url('admin/product/updateProduct') ?>" method="POST" enctype="multipart/form-data">
                         <?php foreach ($product as $row) { ?>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <div class="row">
                                         <div class="col">
                                             <label>เลือกรูปภาพสินค้า <span style="color: red;">* </label>
-                                            <input type="file" name="imgProduct" class="form-control-file" id="imgProduct" accept="image/*" required>
+                                            <input type="file" name="imgProduct" class="form-control-file" id="imgProduct" accept="image/*" >
                                         </div>
                                         <div class="col">
                                             <img id="imgPreview" src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMG) ?>" width="150px" height="150px" class="float-right img" style="border-style:inset;" />
+                                            <input type="hidden" name="oldImg" value="<?= $row->PRODUCT_IMG ?>">
+
                                         </div>
                                     </div>
                                 </div>
@@ -35,7 +37,8 @@
                                 <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                     <label>ชื่อสินค้า</label><br>
                                     <input type="text" class="form-control" name="productName" id="productName" value="<?= $row->PRODUCT_NAME; ?>" required>
-                                    <input type="hidden" name="productID">
+                                    <input type="hidden" name="productID" value="<?=$row->PRODUCT_ID?>">
+                                    <input type="hidden" name="oldName" value="<?=$row->PRODUCT_NAME?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">

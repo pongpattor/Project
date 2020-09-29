@@ -89,17 +89,17 @@
 
         $('.delete').click(function() {
             var id = $(this).parents('tr').attr('id');
-            var result = confirm(`ยืนยันการลบ LOT ที่ ${id}`);
+            var result = confirm(`ยืนยันการลบ รหัสประเภท ${id}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/product/deleteTypeProduct') ?>",
+                    url: "<?= site_url('admin/typeProduct/deleteTypeProduct') ?>",
                     method: "POST",
                     data: {
                         typeProductId: id,
                     },
                     success: function(data) {
                         alert(`ลบ ${id} เสร็จสิ้น`);
-                        window.location.href ="<?=site_url('admin/product/typeproduct')?>";
+                        window.location.href ="<?=site_url('admin/typeproduct/')?>";
                     }
                 });
             }

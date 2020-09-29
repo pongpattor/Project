@@ -52,36 +52,6 @@
 <script>
     $(document).ready(function() {
 
-        // $('#btn_update').click(function(e) {
-        //     e.preventDefault();
-        //     var deptName = $('#department_name').val();
-        //     var oldDeptName = $('#oldDepartment_name').val();
-        //     $.ajax({
-        //         url: "<?= site_url('admin/department/checkDepartmentNameUpdate') ?>",
-        //         method: "POST",
-        //         data: {
-        //             departmentName: deptName,
-        //             oldDepartmentName: oldDeptName
-        //         },
-        //         success: function(data) {
-        //             if (data != 0) {
-        //                 alert('ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว');
-        //             } else {
-        //                 $('#formDepartment').submit();
-        //             }
-        //         }
-        //     });
-        // });
-
-
-
-        $('#btn_update').click(function() {
-            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            }
-
-        });
 
         $('#department_name').on('focusout', function() {
             var deptName = $('#department_name').val();
@@ -98,13 +68,23 @@
                         $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
                         $('#alertidcard').remove();
                         $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
-
+                        return false;
                     } else {
                         $('#alertidcard').remove();
                         $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
                     }
                 }
             });
+        });
+
+
+
+        $('#btn_update').click(function() {
+            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
+
         });
     });
 </script>

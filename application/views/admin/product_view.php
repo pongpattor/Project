@@ -60,7 +60,7 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($product as $row) : ?>
-                                        <tr id="<?= $row->PRODUCT_ID ?>" class="<?= $row->PRODUCT_NAME ?>">
+                                        <tr id="<?= $row->PRODUCT_ID ?>" class=" bgtable" >
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMG); ?>" alt="" width="120px" height="120px"></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
@@ -91,3 +91,36 @@
         </div>
     </div>
 </div>
+<br>
+<script>
+    $(document).ready(function() {
+
+        $('.delete').click(function() {
+            var id = $(this).parents('tr').attr('id');
+            var result = confirm(`ยืนยันการลบ รหัสสินค้า ${id}`);
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/product/deleteProduct') ?>",
+                    method: "POST",
+                    data: {
+                        productID: id,
+                    },
+                    success: function(data) {
+                        alert(`ลบ ${id} เสร็จสิ้น`);
+                        window.location.href = "<?= site_url('admin/product/') ?>";
+                    }
+                });
+            }
+        });
+
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
+
+    });
+</script>

@@ -121,25 +121,15 @@ class product extends CI_Controller
         }
     }
 
-    public function editProduct(){
+    public function editProduct()
+    {
         $productID = $this->input->get('productID');
-    //   echo  $this->input->get('productID');
         $data['product'] = $this->product_model->editProduct($productID);
         $typeProductGroup = $data['product']['0']->TYPEPRODUCT_GROUP;
-        $data['typeproduct'] = $this->crud_model->findwhere('typeproduct','TYPEPRODUCT_GROUP',$typeProductGroup);
-        $data['meat'] = $this->crud_model->find('meat','MEAT_ID,MEAT_NAME');
-        // echo '<pre>';
-        // print_r($data['product']);
-        // echo '</pre>';
-        // echo '<pre>';
-        // print_r($data['typeproduct']);
-        // echo '</pre>';
-        // echo '<pre>';
-        // print_r($data['meat']);
-        // echo '</pre>';
+        $data['typeproduct'] = $this->crud_model->findwhere('typeproduct', 'TYPEPRODUCT_GROUP', $typeProductGroup);
+        $data['meat'] = $this->crud_model->find('meat', 'MEAT_ID,MEAT_NAME');
         $data['page'] = 'product_edit_view';
-        $this->load->view('admin/main_view',$data);
-        
+        $this->load->view('admin/main_view', $data);
     }
 
     public function genProductID()
@@ -158,9 +148,83 @@ class product extends CI_Controller
     }
 
 
+    public function updateProduct()
+    {
+        $productID = $this->input->post('productID');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        if (empty($_FILES['imgProduct']['name'])) {
+            $productDetail = array(
+                'PRODUCT_NAME' => $this->input->post('productName'),
+                'PRODUCT_TYPE' => $this->input->post('typeProductName'),
+                'PRODUCT_COSTPRICE' => $this->input->post('costPrice'),
+                'PRODUCT_SELLPRICE' => $this->input->post('sellPrice'),
+            );
+        } else {
+            $config = array();
+            $config['upload_path']          =  './assets/image/employee/';
+            $config['allowed_types']        = 'jpg|png';
+            $config['max_size']             = '2000';
+            $config['max_width']            = '3000';
+            $config['max_height']           = '3000';
+            $config['file_name']            = $productID;
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('imgProduct')) {
+                echo '<script>';
+                echo 'alert("กรุณาอัพโหลดรูปเท่านั้น");';
+                echo 'window.history.back();';
+                echo '</script>';
+            } else {
+                $oldImg = $this->input->post('oldImg');
+                unlink('./assets/image/product/' . $oldImg);
+                $data['img'] = $this->upload->data();
+                $productDetail = array(
+                    'PRODUCT_NAME' => $this->input->post('productName'),
+                    'PRODUCT_TYPE' => $this->input->post('typeProductName'),
+                    'PRODUCT_COSTPRICE' => $this->input->post('costPrice'),
+                    'PRODUCT_SELLPRICE' => $this->input->post('sellPrice'),
+                    'PRODUCT_IMG' => $data['img']['file_name'],
+                );
+            }
+            $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
+            if ($typeProductGroup == 'อาหาร') {
+                $foodDetail = array(
+                    'PRODUCT_FOOD_ID' => $productID,
+                    'MEAT_FOOD_ID' => $this->input->post('meatName'),
+                );
+                
+                $this->crud_model->update('food', $foodDetail, 'PRODUCT_FOOD_ID', $productID);
+            } else if ($typeProductGroup == 'เครื่องดื่ม') {
+                $drinkDetail = array(
+                    'PRODUCT_DRINK_ID' => $productID,
+                );
+                $this->crud_model->update('drink', $drinkDetail, 'PRODUCT_DRINK_ID', $productID);
+            } else if ($typeProductGroup == 'ท็อปปิ้ง') {
+                $ToppingDetail = array(
+                    'PRODUCT_TOPPING_ID' => $productID,
+                );
+                $this->crud_model->update('topping', $ToppingDetail, 'PRODUCT_TOPPING_ID', $productID);
+            }
+        }
+        // echo '<pre>';
+        // print_r($productDetail);
+        // echo '</pre>';
+        // echo '<pre>';
+        // print_r($foodDetail);
+        // echo '</pre>';
+        // echo '<pre>';
+        // print_r($drinkDetail);
+        // echo '</pre>';
+        // echo '<pre>';
+        // print_r($ToppingDetail);
+        // echo '</pre>';
+        // redirect(site_url('admin/product/'));
+    }
 
-    
-
+    public function deleteProduct()
+    {
+        $id = $this->input->post('productID');
+        $this->crud_model->delete('product', 'PRODUCT_ID', $id);
+    }
 
 
     public function fetchTypeProductName()

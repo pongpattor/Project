@@ -135,7 +135,6 @@
 
         });
 
-
       
         $('#formTypeProduct').submit(function() {
 

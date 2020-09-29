@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/meat/') ?>" method="POST" id="formMeat">
+                    <form action="<?= site_url('admin/meat/insertMeat') ?>" method="POST" id="formMeat">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 " id="rowMeat">
                                 <label>ชื่อเนื้อสัตว์</label>
@@ -48,88 +48,42 @@
 <script>
     $(document).ready(function() {
 
-        // TEST
-        // $('#btn_regis').on('click', function(e) {
-        //     e.preventDefault();
-        //     var meatName = $('#meatName').val();
-        //     console.log(meatName);
-        //     $.ajax({
-        //         url: "<?= site_url('admin/product/checkMeatName') ?>",
-        //         method: "POST",
-        //         data: {
-        //             meatName: meatName
-        //         },
-        //         success: function(data) {
-        //             if (data != 0) {
-        //                 // alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-        //                 // $('input[name="meatName"]').addClass('idFalse');
-        //                 $('#alertidcard').remove();
-        //                 $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อชนิดนี้มีในระบบแล้ว</p>');
-        //                 console.log(data);
-        //             } else {
-        //                 $('#alertidcard').remove();
-        //                 console.log(data);
-        //                 $('#formMeat').submit();
-        //                 // $('input[name="meatName"]').removeClass('idFalse');
-        //             }
-        //         },
-        //     });
-        // }); 
-
-
-        $('#formMeat').on('submit',function(e){
-            e.preventDefault();
-            $.ajax({
-                url :"<?= site_url('admin/product/test')?>",
-                method : "POST",
-                data : $('#formMeat').serialize(),
-                success:function(data){
-                        console.log(data);
-                }
-            })
-        });
-        
-        // $('#btn_regis').click(function() {
-        //     var meatName = $('#meatName').val();
-        //     $.ajax({
-        //         url: "<?= site_url('admin/product/checkMeatName') ?>",
-        //         method: "POST",
-        //         data: {
-        //             meatName: meatName
-        //         },
-        //         success: function(data) {
-        //             if (data != 0) {
-        //                 $('#alertidcard').remove();
-        //                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-        //                 $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');        
-        //                 return false;  
-        //             } 
-        //         }
-        //     });
-        // });
 
 
         $('#meatName').on('focusout', function() {
-            // var meatName = $('#meatName').val();
-            // $.ajax({
-            //     url: "<?= site_url('admin/product/checkMeatName') ?>",
-            //     method: "POST",
-            //     data: {
-            //         meatName: meatName
-            //     },
-            //     success: function(data) {
-            //         if (data != 0) {
-            //             $('input[name="meatName"]').addClass('idFalse');
-            //             $('#alertidcard').remove();
-            //             alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-            //             $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');          
-            //         } else {
-            //             $('#alertidcard').remove();
-            //             // $('#brdept').remove();
-            //             $('input[name="meatName"]').removeClass('idFalse');
-            //         }
-            //     }
-            // });
+            var meatName = $('#meatName').val();
+            $.ajax({
+                url: "<?= site_url('admin/meat/checkMeatName') ?>",
+                method: "POST",
+                data: {
+                    meatName: meatName
+                },
+                success: function(data) {
+                    if (data != 0) {
+                        $('input[name="meatName"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');
+                    } else {
+                        $('#alertidcard').remove();
+                        // $('#brdept').remove();
+                        $('input[name="meatName"]').removeClass('idFalse');
+                        return false;
+
+                    }
+                }
+            });
         });
+
+        $('#btn_regis').click(function() {
+            if ($('input[name="meatName"]').hasClass('idFalse')) {
+                alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
+                return false;
+            }
+
+        });
+
+        $('#formMeat').submit(function(){
+
+        },2000);
     });
 </script>

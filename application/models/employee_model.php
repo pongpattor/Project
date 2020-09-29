@@ -198,7 +198,7 @@ class employee_model extends CI_Model
     {
         $sql = " SELECT employee.FIRSTNAME,employee.LASTNAME,position.PERMISSION FROM employee 
         LEFT JOIN position ON employee.POSITION = position.POSITION_ID
-        WHERE ID = ? and PASSWORD = ? and STATUS IN (1,9)";
+        WHERE ID = ? and PASSWORD = ? and STATUS IN (1,9)";  //9 is test system
 
         $query = $this->db->query($sql, array(
             $this->db->escape_like_str($username),

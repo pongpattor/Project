@@ -24,7 +24,7 @@
                                     <label>ชื่อเนื้อสัตว์</label>
                                     <input type="text" name="meatName" id="meatName" class="form-control" value="<?= $row->MEAT_NAME ?>" required>
                                     <input type="hidden" name="meatID" value="<?= $row->MEAT_ID; ?>">
-                                    <input type="hidden" name="oldName" value="<?= $row->MEAT_NAME; ?>">
+                                    <input type="hidden" name="oldName" value="<?= $row->MEAT_NAME; ?>" id="oldMeatName">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -64,3 +64,44 @@
     </div>
 </div>
 <br>
+
+<script>
+    $(document).ready(function() {
+
+
+
+        $('#meatName').on('focusout',function() {
+            var meatName = $('#meatName').val();
+            var oldName = $('#oldMeatName').val();
+            $.ajax({
+                url: "<?= site_url('admin/meat/updateCheckMeatName') ?>",
+                method: "POST",
+                data: {
+                    meatName: meatName,
+                    oldName: oldName
+                },
+                success: function(data) {
+                    if (data != 0) {
+                        $('input[name="meatName"]').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');
+                        return false;
+                    } else {
+                        $('#alertidcard').remove();
+                        // $('#brdept').remove();
+                        $('input[name="meatName"]').removeClass('idFalse');
+                    }
+                }
+            });
+        });
+
+        $('#btn_regis').click(function() {
+            if ($('input[name="meatName"]').hasClass('idFalse')) {
+                alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
+                return false;
+            }
+
+        });
+
+    });
+</script>

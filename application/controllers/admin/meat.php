@@ -106,6 +106,22 @@ class meat extends CI_Controller
         }
     }
 
+    public function updateCheckMeatName()
+    {
+        $meatName = $this->input->post('meatName');
+        $oldMeatName = $this->input->post('oldName');
+        if ($oldMeatName == $meatName) {
+            echo 0;
+        } else {
+            $check = $this->product_model->updateCheckMeatName($meatName,$oldMeatName);
+            if ($check != 0) {
+                echo 1;
+            } else {
+                echo 0;
+            }
+        }
+    }
+
     public function editMeat()
     {
         $meatId = $this->input->get('meatID');
@@ -125,5 +141,11 @@ class meat extends CI_Controller
         );
         $this->crud_model->update('meat', $meatDetail, 'MEAT_ID', $meatID);
         return redirect(site_url('admin/meat/'));
+    }
+
+    public function deleteMeat()
+    {
+        $id = $this->input->post('meatId');
+        $this->crud_model->delete('meat', 'MEAT_ID', $id);
     }
 }

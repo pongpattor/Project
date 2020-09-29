@@ -72,13 +72,7 @@
 <script>
     $(document).ready(function() {
 
-        $('#btn_update').click(function() {
-            
-            if ($('input[name="typeProductName"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            }
-        });
+  
 
         $('#typeProductName').focusout(function() {
             var tpName = $('#typeProductName').val();
@@ -139,6 +133,14 @@
                     }
                 }
             });
+        });
+
+        $('#btn_update').click(function() {
+            
+            if ($('input[name="typeProductName"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
         });
     });
 </script>

@@ -47,16 +47,7 @@
 <script>
     $(document).ready(function() {
 
-
-        $('#btn_regis').click(function() {
-            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            }
-        });
-
-        
-         $('#department_name').on('focusout', function() {
+        $('#department_name').on('focusout', function() {
             var deptName = $('#department_name').val();
             $.ajax({
                 url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
@@ -85,9 +76,16 @@
         })
 
 
-        $('#formDepartment').submit(function(){
+        $('#btn_regis').click(function() {
+            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
+        });
 
-        },2000);
-        
+        $('#formDepartment').submit(function() {
+
+        }, 2000);
+
     });
 </script>

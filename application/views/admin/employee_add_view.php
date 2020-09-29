@@ -246,12 +246,6 @@
         });
 
 
-        $('#btn_regis').on('click', function() {
-            if ($('input[name="idcard"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            }
-        });
 
         $('input[name="idcard"]').on('focusout', function() {
             var id = $(this).val();
@@ -381,6 +375,13 @@
                         $('#position').html(data);
                     }
                 });
+            }
+        });
+
+        $('#btn_regis').on('click', function() {
+            if ($('input[name="idcard"]').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
             }
         });
 

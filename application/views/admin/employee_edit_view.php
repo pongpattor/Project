@@ -281,35 +281,7 @@
             readURL(this);
         });
 
-        $('#btn_regis').on('click', function(e) {
-            if ($('input[name="idcard"]').hasClass('idFalse')) {
-                alert('กรุณากรอกบัตรประชาชนให้ถูกต้อง');
-                return false;
-            }
-        });
 
-        // $('input[name="idcard"]').on('focusout', function() {
-        //     var id = $(this).val();
-        //     $.ajax({
-        //         url: "<?= site_url('admin/employee/idcard'); ?>",
-        //         method: "POST",
-        //         data: {
-        //             idcard: id
-        //         },
-        //         success: function(data) {
-
-        //             if (data == true) {
-        //                 $('input[name="idcard"]').css('background-color', '#83F28E');
-        //                 $('input[name="idcard"]').css('border-color', '#000000');
-        //                 $('input[name="idcard"]').removeClass('idFalse');
-        //             } else {
-        //                 $('input[name="idcard"]').css('background-color', '#F9A8A8');
-        //                 $('input[name="idcard"]').css('border-color', '#000000');
-        //                 $('input[name="idcard"]').addClass('idFalse');
-        //             }
-        //         }
-        //     })
-        // });
 
         $('input[name="idcard"]').on('focusout', function() {
             var id = $(this).val();
@@ -347,8 +319,7 @@
                                         $('#rowidcard').append(' <p style="color:green" id="alertidcard">บัตรประชาชนนี้สามารถใช้ได้</p>');
                                         $('input[name="idcard"]').css('background-color', '#83F28E');
                                         $('input[name="idcard"]').css('border-color', '#000000');
-                                    }
-                                    else{
+                                    } else {
                                         $('input[name="idcard"]').css('background-color', '');
                                         $('input[name="idcard"]').css('border-color', '');
                                     }
@@ -372,8 +343,8 @@
 
         var id = $('tbody tr:last-child').attr('id');
         id = id.substr(3);
-        var addphone_id = parseInt(id) ;
-    
+        var addphone_id = parseInt(id);
+
         $('#addphone').on('click', function() {
             addphone_id++;
             var txt = `<tr id="row${addphone_id}">
@@ -465,7 +436,12 @@
             }
         });
 
-
+        $('#btn_regis').on('click', function(e) {
+            if ($('input[name="idcard"]').hasClass('idFalse')) {
+                alert('กรุณากรอกบัตรประชาชนให้ถูกต้อง');
+                return false;
+            }
+        });
 
     });
 </script>

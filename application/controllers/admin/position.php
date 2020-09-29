@@ -114,6 +114,7 @@ class position extends CI_Controller
         } else {
             $data['permission'] = explode(',', $data['oldPos']['0']->PERMISSION);
         }
+        // print_r($data['permission']);
         $this->load->view('admin/main_view', $data);
     }
 

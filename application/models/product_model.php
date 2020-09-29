@@ -255,6 +255,22 @@ class product_model extends CI_Model
         }
     }
 
+    public function updateCheckMeatName($meatName,$oldname)
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM meat 
+                WHERE MEAT_NAME LIKE ? and MEAT_NAME NOT LIKE ?";
+        $query = $this->db->query(
+            $sql,
+            array(
+                '%' . $this->db->escape_like_str($meatName) . '%',
+                '%' . $this->db->escape_like_str($oldname) . '%',
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
     public function maxMeatID()
     {
         $sql = "SELECT MAX(MEAT_ID) as MID FROM meat";

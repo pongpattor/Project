@@ -191,7 +191,7 @@ class employee extends CI_Controller
                 }
             }
 
-            // redirect(site_url('admin/employee/'));
+            redirect(site_url('admin/employee/'));
         }
     }
 
@@ -293,8 +293,9 @@ class employee extends CI_Controller
                 echo 'window.history.back();';
                 echo '</script>';
             } else {
-                $data['img'] = $this->upload->data();
                 $oldImg = $this->input->post('oldImg');
+                unlink('./assets/image/employee/' . $oldImg);
+                $data['img'] = $this->upload->data();
                 $employeeDetail = array(
                     'IDCARD' => $this->input->post('idcard'),
                     'TITLENAME' => $this->input->post('title'),
@@ -312,7 +313,6 @@ class employee extends CI_Controller
                     'RELIGION' => $this->input->post('religion'),
                     'IMG' => $data['img']['file_name'],
                 );
-                unlink('./assets/image/employee/' . $oldImg);
             }
         }
 
