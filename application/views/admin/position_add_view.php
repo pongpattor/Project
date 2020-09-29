@@ -38,7 +38,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="">สิทธิ์การเข้าใช้งานระบบ</label>
-                                <input type="hidden" name="perPosition" id="perPosition">
+                                <input type="hidden" name="perPosition" id="perPosition" value="0,0,0,0,0,0,0,0,0,0,0,0,0">
                                 <div class="card boder-0 ">
                                     <div class="card-body">
                                         <div class="form-check">
@@ -124,33 +124,44 @@
 <script>
     $(document).ready(function() {
 
-
-        $('#positionName').focusout(function() {
+        //Test Start
+        function chkName() {
             departmentId = $('#departmentID').val();
-            positionName = $(this).val();
-            $.ajax({
+            positionName = $('#positionName').val();
+            return $.ajax({
                 url: "<?= site_url('admin/position/checkPositionNameInsert') ?>",
                 method: "POST",
+                async :false,
                 data: {
                     departmentId: departmentId,
                     positionName: positionName
                 },
                 success: function(data) {
                     if (data != 0) {
-                        $('input[name="positionName"]').addClass('idFalse');
+                        $('#btn_regis').addClass('idFalse');
                         $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        // $('#rowPositionName').append('<br id="brdept">');
-                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
                         $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
                     } else {
                         $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="positionName"]').removeClass('idFalse');
+                        $('#btn_regis').removeClass('idFalse');
                     }
                 }
             });
+        }
+
+        $('#btn_regis').on('click',function() {
+            chkName();
+            if ($('#btn_regis').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            } else {
+                alert('เพิ่มตำแหน่งเรียบร้อย');
+            }
+
         });
+
+        //Test End
+
 
 
 
@@ -166,7 +177,7 @@
                 },
                 success: function(data) {
                     if (data != 0) {
-                        $('input[name="positionName"]').addClass('idFalse');
+                        $('#btn_regis').addClass('idFalse');
                         $('#alertidcard').remove();
                         $('#brdept').remove();
                         // $('#rowPositionName').append('<br id="brdept">');
@@ -176,7 +187,7 @@
                     } else {
                         $('#alertidcard').remove();
                         // $('#brdept').remove();
-                        $('input[name="positionName"]').removeClass('idFalse');
+                        $('#btn_regis').removeClass('idFalse');
                     }
                 }
             });
@@ -193,16 +204,42 @@
             });
             $('#perPosition').val(perList);
             // console.log(perList);
-
         });
 
 
-        $('#btn_regis').click(function() {
-            if ($('input[name="positionName"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            }
+        // $('#btn_regis').click(function() {
+        //     if ($('input[name="positionName"]').hasClass('idFalse')) {
+        //         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+        //         return false;
+        //     }
 
-        });
+        // });
+        
+        // $('#positionName').focusout(function() {
+        //     departmentId = $('#departmentID').val();
+        //     positionName = $(this).val();
+        //     $.ajax({
+        //         url: "<?= site_url('admin/position/checkPositionNameInsert') ?>",
+        //         method: "POST",
+        //         data: {
+        //             departmentId: departmentId,
+        //             positionName: positionName
+        //         },
+        //         success: function(data) {
+        //             if (data != 0) {
+        //                 $('input[name="positionName"]').addClass('idFalse');
+        //                 $('#alertidcard').remove();
+        //                 // $('#brdept').remove();
+        //                 // $('#rowPositionName').append('<br id="brdept">');
+        //                 // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
+        //                 $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
+        //             } else {
+        //                 $('#alertidcard').remove();
+        //                 // $('#brdept').remove();
+        //                 $('input[name="positionName"]').removeClass('idFalse');
+        //             }
+        //         }
+        //     });
+        // });
     });
 </script>

@@ -85,6 +85,7 @@ class position extends CI_Controller
 
     public function insertPos()
     {
+
         $position = array(
             'POSITION_ID' => $this->genIdPosition(),
             'POSITION_NAME' => $this->input->post('positionName'),
@@ -93,8 +94,8 @@ class position extends CI_Controller
         );
 
         $this->crud_model->insert('position', $position);
-
         redirect(site_url('admin/position/'));
+
 
         // Convert String to Array
         // $array = explode(",",$d);
