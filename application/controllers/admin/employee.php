@@ -7,10 +7,9 @@ class employee extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if(empty($_SESSION['login'])){
+        if (empty($_SESSION['login'])) {
             return redirect(site_url('admin/login'));
-        }
-        else if($_SESSION['permission'][0] != 1){
+        } else if ($_SESSION['permission'][0] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/home'));
         }
@@ -18,8 +17,6 @@ class employee extends CI_Controller
         $this->load->model('crud_model');
         $this->load->model('employee_model');
         $this->load->library('pagination');
-        
-       
     }
 
     // Employee Start
@@ -116,7 +113,7 @@ class employee extends CI_Controller
         if ($idcard == $oldidcard) {
             echo 0;
         } else {
-            $num = $this->employee_model->checkIdCardUpdate($idcard,$oldidcard);
+            $num = $this->employee_model->checkIdCardUpdate($idcard, $oldidcard);
             if ($num > 0) {
                 //มีแล้ว
                 echo 1;
@@ -185,10 +182,7 @@ class employee extends CI_Controller
                     'PHONE' => $phone,
                     'EMPLOYEE_ID' => $idEmployee
                 );
-                $checkPhone = $this->employee_model->checkPhoneNumber($idEmployee, $phone);
-                if ($checkPhone == 0) {
-                    $this->crud_model->insert('employee_telephone', $data);
-                }
+                $this->crud_model->insert('employee_telephone', $data);
             }
 
             redirect(site_url('admin/employee/'));
