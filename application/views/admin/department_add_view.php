@@ -20,7 +20,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 " id="rowDeptName">
                                 <label>ชื่อแผนก </label>
-                                <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control" required>
+                                <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control " required>
                             </div>
                         </div>
                         <br>
@@ -47,45 +47,85 @@
 <script>
     $(document).ready(function() {
 
-        $('#department_name').on('focusout', function() {
+        function chkName() {
             var deptName = $('#department_name').val();
-            $.ajax({
+            return $.ajax({
                 url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
                 method: "POST",
+                async : false,
                 data: {
                     departmentName: deptName
                 },
                 success: function(data) {
                     if (data != 0) {
-                        $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
+                        $('#btn_regis').removeClass('idTrue');
+                        $('#btn_regis').addClass('idFalse');
                         $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        // $('#rowDeptName').append('<br id="brdept">');
-                        // $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
-                        alert('ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว');
                         $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
-                        return false;
-
                     } else {
                         $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
+                        $('#btn_regis').removeClass('idFalse');
+                        $('#btn_regis').addClass('idTrue');
                     }
                 }
             });
-        })
+        }
 
 
-        $('#btn_regis').click(function() {
-            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            }
-        });
 
-        $('#formDepartment').submit(function() {
+            $('#btn_regis').on('click', function() {
+                 chkName();
+                if ($('#btn_regis').hasClass('idFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                }
+                else{
+                    alert('hello');
+                }
+            });
 
-        }, 2000);
+
+        // $('#department_name').on('focusout', function() {
+        //     var deptName = $('#department_name').val();
+        //     $.ajax({
+        //         url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
+        //         method: "POST",
+        //         data: {
+        //             departmentName: deptName
+        //         },
+        //         success: function(data) {
+        //             if (data != 0) {
+        //                 $('input[name="DEPARTMENT_NAME"]').removeClass('idTrue');
+        //                 $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
+        //                 $('#alertidcard').remove();
+        //                 // $('#brdept').remove();
+        //                 // $('#rowDeptName').append('<br id="brdept">');
+        //                 // $('#rowDeptName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</div>');
+        //                 $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
+        //                 return false;
+
+        //             } else {
+        //                 $('#alertidcard').remove();
+        //                 // $('#brdept').remove();
+        //                 $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
+        //                 $('input[name="DEPARTMENT_NAME"]').addClass('idTrue');
+
+        //             }
+        //         }
+        //     });
+        // });
+
+
+
+        // $('#btn_regis').on('click', function() {
+        //     if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+        //         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+        //         return false;
+        //     } else {
+        //         return true;
+        //     }
+        // });
+
 
     });
 </script>

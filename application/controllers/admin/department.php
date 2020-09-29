@@ -7,10 +7,9 @@ class department extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if(empty($_SESSION['login'])){
+        if (empty($_SESSION['login'])) {
             return redirect(site_url('admin/login'));
-        }
-        else if($_SESSION['permission'][1] != 1){
+        } else if ($_SESSION['permission'][1] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/home'));
         }
@@ -115,8 +114,34 @@ class department extends CI_Controller
         }
     }
 
+    //Test
+    // public function insertDepartment()
+    // {
+    //     $departmentID =  $this->genIdDepartment();
+    //     $departmentName =  $this->input->post('DEPARTMENT_NAME');
+
+    //     $chk = $this->department_model->checkName($departmentName);
+
+    //     if ($chk != 0) {
+    //         echo '<script>';
+    //         echo 'alert("แผนกนี้ได้มีการใช้แล้ว");';
+    //         echo 'window.history.back();';
+    //         echo '</script>';
+    //     } else {
+    //         // $dept = array(
+    //         //     'DEPARTMENT_ID' => $departmentID,
+    //         //     'DEPARTMENT_NAME' => $departmentName,
+    //         // );
+    //         // $this->crud_model->insert('department', $dept);
+
+    //         // redirect(site_url('admin/department/'));
+    //         echo 'success';
+    //     }
+    // }
+
     public function insertDepartment()
     {
+
         $dept = array(
             'DEPARTMENT_ID' => $this->genIdDepartment(),
             'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
@@ -125,6 +150,8 @@ class department extends CI_Controller
 
         redirect(site_url('admin/department/'));
     }
+
+
     public function editDepartment()
     {
         $deptID = $this->input->get('departmentID');
