@@ -33,7 +33,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger" id="btn_cancel">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_update" class="btn btn-success" type="submit" value="บันทึก">
@@ -53,38 +53,83 @@
     $(document).ready(function() {
 
 
-        $('#department_name').on('focusout', function() {
+        function chkName() {
             var deptName = $('#department_name').val();
             var oldDeptName = $('#oldDepartment_name').val();
-            $.ajax({
+            return $.ajax({
                 url: "<?= site_url('admin/department/checkDepartmentNameUpdate') ?>",
                 method: "POST",
+                async: false,
                 data: {
                     departmentName: deptName,
                     oldDepartmentName: oldDeptName
                 },
                 success: function(data) {
                     if (data != 0) {
-                        $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
+                        $('#btn_update').addClass('idFalse');
                         $('#alertidcard').remove();
                         $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
-                        return false;
                     } else {
                         $('#alertidcard').remove();
-                        $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
+                        $('#btn_update').removeClass('idFalse');
                     }
                 }
             });
-        });
+        }
 
 
 
-        $('#btn_update').click(function() {
-            if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+        $('#btn_update').on('click', function() {
+            chkName();
+            if ($('#btn_update').hasClass('idFalse')) {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                 return false;
+            } else {
+                alert('แก้ไขเสร็จสิ้น');
             }
-
         });
+
+        $('#btn_cancel').on('click', function() {
+            var deptName = $('#department_name').val();
+            var oldDeptName = $('#oldDepartment_name').val();
+            if(deptName != oldDeptName){
+                confirm("คุณต้องการยกเลิกการแก้ไขใช่หรือไม่?");
+            }
+        });
+
+
+        // $('#department_name').on('focusout', function() {
+        //     var deptName = $('#department_name').val();
+        //     var oldDeptName = $('#oldDepartment_name').val();
+        //     $.ajax({
+        //         url: "<?= site_url('admin/department/checkDepartmentNameUpdate') ?>",
+        //         method: "POST",
+        //         data: {
+        //             departmentName: deptName,
+        //             oldDepartmentName: oldDeptName
+        //         },
+        //         success: function(data) {
+        //             if (data != 0) {
+        //                 $('input[name="DEPARTMENT_NAME"]').addClass('idFalse');
+        //                 $('#alertidcard').remove();
+        //                 $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
+        //                 return false;
+        //             } else {
+        //                 $('#alertidcard').remove();
+        //                 $('input[name="DEPARTMENT_NAME"]').removeClass('idFalse');
+        //             }
+        //         }
+        //     });
+        // });
+
+
+
+        // $('#btn_update').click(function() {
+        //     if ($('input[name="DEPARTMENT_NAME"]').hasClass('idFalse')) {
+        //         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+        //         return false;
+        //     }
+
+        // });
     });
 </script>

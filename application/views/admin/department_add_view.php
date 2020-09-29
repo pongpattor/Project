@@ -29,7 +29,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger" id="btn_cancel">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input id="btn_regis" class="btn btn-success" type="submit" value="  เพิ่ม  ">
@@ -80,9 +80,17 @@
                     return false;
                 }
                 else{
-                    alert('hello');
+                    alert('เพิ่มแผนกเรียบร้อย');
                 }
             });
+
+            $('#btn_cancel').on('click',function(){
+                var deptName = $('#department_name').val();
+                if(deptName != ""){
+                    confirm("คุณต้องการยกเลิกการเพิ่มข้อมูลใช่หรือไม่?");
+                }
+            })
+            
 
 
         // $('#department_name').on('focusout', function() {
