@@ -248,15 +248,13 @@
 
         });
 
-        function chktel() {
-            var telList = [];
-            var breaker;
+        function chkiIdCard() {
 
             var id = $('#idcard').val();
             $.ajax({
                 url: "<?= site_url('admin/employee/idcard'); ?>",
                 method: "POST",
-                async : false,
+                async: false,
                 data: {
                     idcard: id
                 },
@@ -268,7 +266,7 @@
                             data: {
                                 idcard: id
                             },
-                            async : false,
+                            async: false,
 
                             success: function(data) {
                                 if (data != 0) {
@@ -301,7 +299,12 @@
 
                     }
                 }
-            })
+            });
+        }
+
+        function chktel() {
+            var telList = [];
+            var breaker;
 
             $('input[type="tel"]').each(function() {
                 if ($(this).val == "") {
@@ -310,26 +313,30 @@
                     telList.push($(this).val())
                 }
             });
+            // console.log(telList);
             for (var i = 0; i < telList.length; i++) {
                 for (var j = 0; j < telList.length; j++) {
                     if (i == j) {
                         // console.log('continue');
                         continue;
                     }
-                    if (telList[i] == telList[j]) {
+                    else if (telList[i] == telList[j]) {
                         // console.log(i + " :" + telList[i] + ": " + telList[j] + ': Found same');
                         $('#alerttel').remove();
-                        $('#bodyTel').append('<p style="color:red" id="alerttel">กรุณาอย่ากรอกเบอร์ซ้ำ</p>');
+                        $('#tablephone').append('<p style="color:red" id="alerttel">กรุณาอย่ากรอกเบอร์ซ้ำ</p>');
                         $('#btn_regis').addClass('telFalse');
                         breaker = 1;
                         break;
                     }
                 }
                 if (breaker == 1) {
+                    // console.log('if break');
                     break;
                 } else {
+                    // console.log('else break');
                     $('#btn_regis').removeClass('telFalse');
                     $('#alerttel').remove();
+                    break;
                 }
             }
             // console.log(telList);
@@ -339,7 +346,7 @@
 
 
         $('#btn_regis').on('click', function() {
-
+            chkiIdCard();
             chktel();
             if ($('#btn_regis').hasClass('idFalse')) {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');

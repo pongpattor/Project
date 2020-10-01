@@ -313,26 +313,16 @@ class employee extends CI_Controller
         $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmployee);
         $tel = $this->input->post('tel');
         $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmployee);
+        
         foreach ($tel as $phone) {
             $data = array(
                 'PHONE' => $phone,
                 'EMPLOYEE_ID' => $idEmployee
             );
-            $checkPhone = $this->employee_model->checkPhoneNumber($idEmployee, $phone);
-            if ($checkPhone == 0) {
                 $this->crud_model->insert('employee_telephone', $data);
-            }
         }
 
-        // $data['session'] = $this->employee_model->newSession($idEmployee);
-        // $session = explode(',',$data['session'][0]->PERMISSION);
-        // echo '<pre>';
-        // print_r($_SESSION['permission']);
-        // echo '</pre>';
-        // $_SESSION['permission'] = $session;
-        // echo '<pre>';
-        // print_r($_SESSION['permission']);
-        // echo '</pre>';
+            
         redirect(site_url('admin/employee/'));
     }
     // Employee End
