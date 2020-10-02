@@ -238,7 +238,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>เงินเดือน </label>
-                                    <input type="number" name="salary" class="form-control" min="0" value="<?= $row->SALARY ?>">
+                                    <input type="number" name="salary" class="form-control" min="0" max="9999999.99" step="0.01" value="<?= $row->SALARY ?>" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                 </div>
                             </div>
                             <br><br>
@@ -411,63 +411,6 @@
         });
 
 
-        // $('input[name="idcard"]').on('focusout', function() {
-        //     var id = $(this).val();
-        //     var oldid = $('#oldidcard').val();
-        //     console.log(oldid)
-        //     $.ajax({
-        //         url: "<?= site_url('admin/employee/idcard'); ?>",
-        //         method: "POST",
-        //         data: {
-        //             idcard: id
-        //         },
-        //         success: function(data) {
-        //             if (data == true) {
-        //                 $.ajax({
-        //                     url: "<?= site_url('admin/employee/checkIdCardUpdate') ?>",
-        //                     method: "POST",
-        //                     data: {
-        //                         idcard: id,
-        //                         oldidcard: oldid
-        //                     },
-        //                     success: function(data) {
-        //                         if (data != 0) {
-        //                             // alert('บัตรประชาชนได้ถูกใช้ไปแล้ว');
-        //                             $('input[name="idcard"]').css('background-color', '#F9A8A8');
-        //                             $('input[name="idcard"]').css('border-color', '#000000');
-        //                             $('input[name="idcard"]').addClass('idFalse');
-        //                             $('#alertidcard').remove();
-        //                             // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
-        //                             $('#rowidcard').append(' <p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
-
-        //                         } else {
-        //                             $('input[name="idcard"]').removeClass('idFalse');
-        //                             $('#alertidcard').remove();
-        //                             if (id != oldid) {
-        //                                 $('#rowidcard').append(' <p style="color:green" id="alertidcard">บัตรประชาชนนี้สามารถใช้ได้</p>');
-        //                                 $('input[name="idcard"]').css('background-color', '#83F28E');
-        //                                 $('input[name="idcard"]').css('border-color', '#000000');
-        //                             } else {
-        //                                 $('input[name="idcard"]').css('background-color', '');
-        //                                 $('input[name="idcard"]').css('border-color', '');
-        //                             }
-
-        //                         }
-        //                     }
-        //                 });
-
-        //             } else {
-        //                 $('input[name="idcard"]').css('background-color', '#F9A8A8');
-        //                 $('input[name="idcard"]').css('border-color', '#000000');
-        //                 $('input[name="idcard"]').addClass('idFalse');
-        //                 $('#alertidcard').remove();
-        //                 // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
-        //                 $('#rowidcard').append(' <p style="color:red" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</p>');
-
-        //             }
-        //         }
-        //     })
-        // });
 
         var id = $('tbody tr:last-child').attr('id');
         id = id.substr(3);
@@ -482,7 +425,7 @@
                                 </button>
                             </td>
                             </tr>`;
-            $('#tablephone').append(txt);
+            $('#bodyTel').append(txt);
 
             $('.btn-remove').on('click', function() {
                 var btn_del = $(this).attr("id");
@@ -564,12 +507,7 @@
             }
         });
 
-        // $('#btn_regis').on('click', function(e) {
-        //     if ($('input[name="idcard"]').hasClass('idFalse')) {
-        //         alert('กรุณากรอกบัตรประชาชนให้ถูกต้อง');
-        //         return false;
-        //     }
-        // });
+
 
     });
 </script>

@@ -23,8 +23,10 @@
                                 <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                     <label>ชื่อประเภทสินค้า</label><br>
                                     <input type="text" class="form-control" name="typeProductName" id="typeProductName" value="<?= $row->TYPEPRODUCT_NAME ?>" required>
-                                    <input type="hidden" name="typeProductId" value="<?=$row->TYPEPRODUCT_ID;?>">
-                                    <input type="hidden" name="oldTPName"  id="oldTPName" value="<?=$row->TYPEPRODUCT_NAME;?>">
+                                    <input type="hidden" name="typeProductId" value="<?= $row->TYPEPRODUCT_ID; ?>">
+                                    <input type="hidden" name="oldTPName" id="oldTPName" value="<?= $row->TYPEPRODUCT_NAME; ?>">
+                                    <input type="hidden" name="oldGPName" id="oldGPName" value="<?= $row->TYPEPRODUCT_GROUP; ?>">
+
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -72,72 +74,46 @@
 <script>
     $(document).ready(function() {
 
-  
+        function chkTypeName() {
+            tpName = $('#typeProductName').val();
+            OldName = $('#oldTPName').val();
+            tpGroup = $('#typeProductGroup').val();
 
-        $('#typeProductName').focusout(function() {
-            var tpName = $('#typeProductName').val();
-            var tpGroup = $('#typeProductGroup').val();
-            var tpOldName = $('#oldTPName').val();
-
+            gOldName = $('#oldGPName').val();
+            console.log(tpName);
+            console.log(OldName);
+            console.log(tpGroup);
+            console.log(gOldName);
             $.ajax({
                 url: "<?= site_url('admin/typeproduct/checkTypeProductNameUpdate') ?>",
                 method: "POST",
                 data: {
                     typeProductName: tpName,
+                    typeProductOldName: OldName,
                     typeProductGroup: tpGroup,
-                    typeProductOldName : tpOldName
+                    typeProductOldGroup: gOldName,
                 },
+                async: false,
                 success: function(data) {
+                    console.log(data);
                     if (data != 0) {
-                        $('input[name="typeProductName"]').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        // $('#rowPositionName').append('<br id="brdept">');
-                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
-                        $('#rowTypeProductName').append(' <p style="color:red" id="alertidcard">มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว</p>');
-
+                        $('#btn_update').removeClass('typeTrue');
+                        $('#btn_update').addClass('typeFalse');
+                        $('#alertTypeName').remove();
+                        $('#rowTypeProductName').append(' <p style="color:red" id="alertTypeName">ชื่อประเภทสินค้านี้ได้ถูกใช้ไปแล้ว</p>');
                     } else {
-                        $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="typeProductName"]').removeClass('idFalse');
+                        $('#alertTypeName').remove();
+                        $('#btn_update').removeClass('typeFalse');
+                        $('#btn_update').addClass('typeTrue');
                     }
                 }
             });
-        });
+        };
 
-        $('#typeProductGroup').change(function() {
-            var tpName = $('#typeProductName').val();
-            var tpGroup = $('#typeProductGroup').val();
-            var tpOldName = $('#oldTPName').val();
-            $.ajax({
-                url: "<?= site_url('admin/typeproduct/checkTypeProductNameUpdate') ?>",
-                method: "POST",
-                data: {
-                    typeProductName: tpName,
-                    typeProductGroup: tpGroup,
-                    typeProductOldName : tpOldName
-                },
-                success: function(data) {
-                    if (data != 0) {
-                        $('input[name="typeProductName"]').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        // $('#rowPositionName').append('<br id="brdept">');
-                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
-                        $('#rowTypeProductName').append(' <p style="color:red" id="alertidcard">มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว</p>');
 
-                    } else {
-                        $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="typeProductName"]').removeClass('idFalse');
-                    }
-                }
-            });
-        });
-
-        $('#btn_update').click(function() {
-            
-            if ($('input[name="typeProductName"]').hasClass('idFalse')) {
+        $('#btn_update').on('click', function() {
+            chkTypeName();
+            if ($('#btn_update').hasClass('typeFalse')) {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                 return false;
             }

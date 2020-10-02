@@ -6,10 +6,9 @@ class desk extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if(empty($_SESSION['login'])){
+        if (empty($_SESSION['login'])) {
             return redirect(site_url('admin/login'));
-        }
-        else if($_SESSION['permission'][3] != 1){
+        } else if ($_SESSION['permission'][3] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/home'));
         }
@@ -22,7 +21,7 @@ class desk extends CI_Controller
     // Table Start
     public function index()
     {
-        
+
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/desk/index');
         $config['total_rows'] = $this->desk_model->countAllDesk($search);
@@ -68,21 +67,15 @@ class desk extends CI_Controller
     public function insertDesk()
     {
         $deskNumber = $this->input->post('deskNumber');
-        $count = $this->checkDeskNumber($deskNumber);
-        if ($count > 0) {
-            echo '<script>';
-            echo 'alert("เลขโต๊ะนี้ได้มีการใช้แล้ว");';
-            echo 'window.history.back();';
-            echo '</script>';
-        } else {
-            $detailDesk = array(
-                'DESK_ID' => $this->genDeskID(),
-                'DESK_NUMBER' => $deskNumber,
-                'DESK_STATUS' => '0'
-            );
-            $this->crud_model->insert('desk', $detailDesk);
-            redirect(site_url('admin/desk/'));
-        }
+
+
+        $detailDesk = array(
+            'DESK_ID' => $this->genDeskID(),
+            'DESK_NUMBER' => $deskNumber,
+            'DESK_STATUS' => '0'
+        );
+        $this->crud_model->insert('desk', $detailDesk);
+        redirect(site_url('admin/desk/'));
     }
 
     public function genDeskID()
@@ -97,10 +90,11 @@ class desk extends CI_Controller
         return $deskID;
     }
 
-    public function checkDeskNumber($number)
+    public function checkDeskNumber()
     {
+        $number = $this->input->post('deskNumber');
         $count = $this->desk_model->checkNumber($number);
-        return $count;
+        echo $count;
     }
 
     public function editDesk()
@@ -116,28 +110,29 @@ class desk extends CI_Controller
         $deskNumber = $this->input->post('deskNumber');
         $deskStatus = $this->input->post('status');
         $deskID = $this->input->post('deskID');
+
+        $deskDetail = array(
+            'DESK_NUMBER' => $deskNumber,
+            'DESK_STATUS' => $deskStatus
+        );
+        $this->crud_model->update('desk', $deskDetail, 'DESK_ID', $deskID);
+        redirect(site_url('admin/desk/'));
+    }
+
+    public function checkDeskNumberUpdate()
+    {
+        $deskNumber = $this->input->post('deskNumber');
         $oldNumber = $this->input->post('oldNumber');
         if ($oldNumber == $deskNumber) {
-            $deskDetail = array(
-                'DESK_NUMBER' => $deskNumber,
-                'DESK_STATUS' => $deskStatus
-            );
-            $this->crud_model->update('desk', $deskDetail, 'DESK_ID', $deskID);
-            redirect(site_url('admin/desk/'));
-        } else {
-            $count = $this->checkDeskNumber($deskNumber);
-            if ($count > 0) {
-                echo '<script>';
-                echo 'alert("เลขโต๊ะนี้ได้มีการใช้แล้ว");';
-                echo 'window.history.back();';
-                echo '</script>';
-            } else {
-                $deskDetail = array(
-                    'DESK_NUMBER' => $deskNumber,
-                    'DESK_STATUS' => $deskStatus
-                );
-                $this->crud_model->update('desk', $deskDetail, 'DESK_ID', $deskID);
-                redirect(site_url('admin/desk/'));
+            echo 0;
+        } 
+        else {
+            $count = $this->desk_model->checkNumber($deskNumber);
+            if($count != 0){
+                echo 1;
+            }
+            else{
+                echo 0;
             }
         }
     }

@@ -113,7 +113,7 @@ class meat extends CI_Controller
         if ($oldMeatName == $meatName) {
             echo 0;
         } else {
-            $check = $this->product_model->updateCheckMeatName($meatName,$oldMeatName);
+            $check = $this->product_model->checkMeatName($meatName);
             if ($check != 0) {
                 echo 1;
             } else {

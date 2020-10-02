@@ -20,14 +20,14 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">
                                 <table style="width:100%;" id="tableReceive">
-                                    <tbody>
+                                    <tbody id="bodyReceive">
                                         <tr>
                                             <td>ชื่อรายการวัตถุดิบ</td>
                                             <td>ราคาวัตถุดิบ</td>
                                         </tr>
                                         <tr id="row1">
-                                            <td><input type="text" class="form-control" name="ReceiveName[]" id="" required ></td>
-                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required  step="0.01"></td>
+                                            <td><input type="text" class="form-control" name="ReceiveName[]" id="" required></td>
+                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required min="0" max="9999999.99" step="0.01" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                                             <td><button type="button" class="btn btn-success" id="addData"><i class="fa fa-plus"></i></button></td>
                                         </tr>
                                     </tbody>
@@ -43,7 +43,7 @@
                                             <a href="<?= site_url('admin/receiveIngredient/'); ?>" class="btn btn-danger col-7 backPage">ยกเลิก</a>
                                         </div>
                                         <div class="col">
-                                            <input id="btn_regis" class="btn btn-success col-7" type="submit" value="บันทึก">
+                                            <input id="btn_regis" class="btn btn-success col-7" type="submit" value="เพิ่ม">
                                         </div>
                                     </div>
                                 </center>
@@ -64,17 +64,64 @@
             row++;
             var txt = `<tr id="row${row}">
                             <td><input type="text" class="form-control" name="ReceiveName[]" id="" required ></td>
-                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required step="0.01"></td>
+                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required  min="0"  max="9999999.99"  step="0.01" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
                             <td><button type="button" id="${row}" class="btn btn-danger btn-remove">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
                         </tr>`;
-            $('#tableReceive').append(txt);
+            $('#bodyReceive').append(txt);
             $('.btn-remove').on('click', function() {
                 var btn_del = $(this).attr("id");
                 $('#row' + btn_del).remove();
             });
+        });
+
+        function chkReceiveName() {
+            var nameList = [];
+            var breaker;
+
+            $('input[type="text"]').each(function() {
+                if ($(this).val == "") {
+                    nameList.push($(this).val())
+                } else {
+                    nameList.push($(this).val())
+                }
+            });
+            // console.log(nameList);
+            for (var i = 0; i < nameList.length; i++) {
+                for (var j = 0; j < nameList.length; j++) {
+                    if (i == j) {
+                        // console.log('continue');
+                        continue;
+                    } else if (nameList[i] == nameList[j]) {
+                        // console.log(i + " :" + nameList[i] + ": " + nameList[j] + ': Found same');
+                        $('#alertReceive').remove();
+                        $('#tableReceive').append('<p style="color:red" id="alertReceive">กรุณาอย่ากรอกรายการรับซ้ำ</p>');
+                        $('#btn_regis').addClass('nameFalse');
+                        breaker = 1;
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    // console.log('if break');
+                    break;
+                } else {
+                    // console.log('else break');
+                    $('#btn_regis').removeClass('nameFalse');
+                    $('#alertReceive').remove();
+                    break;
+                }
+            }
+        }
+
+        $('#btn_regis').on('click', function() {
+            chkReceiveName();
+            if ($('#btn_regis').hasClass('nameFalse')) {
+                // console.log('btn_regis')
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
         });
     });
 </script>

@@ -19,14 +19,14 @@
                 <div class="card-body">
 
                     <div class="container">
-                        <form action="<?= site_url('admin/desk/updateDesk') ?>" method="POST" >
+                        <form action="<?= site_url('admin/desk/updateDesk') ?>" method="POST">
                             <?php foreach ($desk as $row) { ?>
                                 <div class="row justify-content-center">
-                                    <div class="col-sm col-md col-xl-6">
+                                    <div class="col-sm col-md col-xl-6" id="rowDeskNumber">
                                         <label>หมายเลขโต๊ะ</label><br>
                                         <input type="text" class="form-control" name="deskNumber" id="deskNumber" value="<?= $row->DESK_NUMBER; ?>">
                                         <input type="hidden" name="deskID" value="<?= $row->DESK_ID; ?>">
-                                        <input type="hidden" name="oldNumber" value="<?= $row->DESK_NUMBER; ?>">
+                                        <input type="hidden" name="oldNumber" id="oldNumber" value="<?= $row->DESK_NUMBER; ?>">
                                     </div>
                                 </div>
                                 <div class="row justify-content-center">
@@ -49,7 +49,7 @@
                                                 <a href="<?= site_url('admin/desk/'); ?>" class="btn btn-danger  ">ยกเลิก</a>
                                             </div>
                                             <div class="col">
-                                                <input id="btn_regis" class="btn btn-success " type="submit" value="บันทึก">
+                                                <input id="btn_update" class="btn btn-success " type="submit" value="บันทึก">
                                             </div>
                                         </div>
                                     </center>
@@ -64,3 +64,47 @@
         </div>
     </div>
 </div>
+<br>
+
+<script>
+    $(document).ready(function() {
+
+        function chkDesk() {
+
+            var deskNumber = $('#deskNumber').val();
+            var oldNumber =  $('#oldNumber').val();
+            $.ajax({
+                url: "<?= site_url('admin/desk/checkDeskNumberUpdate') ?>",
+                method: "POST",
+                data: {
+                    deskNumber: deskNumber,
+                    oldNumber : oldNumber
+                },
+                async: false,
+                success: function(data) {
+                    if (data != 0) {
+                        // console.log(data);
+                        $('#btn_update').removeClass('idTrue');
+                        $('#btn_update').addClass('idFalse');
+                        $('#alertidcard').remove();
+                        $('#rowDeskNumber').append(' <p style="color:red" id="alertidcard">โต๊ะหมายเลขนี้ได้ถูกใช้ไปแล้ว</p>');
+                    } else {
+                        // console.log(data);
+                        $('#alertidcard').remove();
+                        $('#btn_update').removeClass('idFalse');
+                        $('#btn_update').addClass('idTrue');
+                    }
+                }
+            });
+        }
+
+        $('#btn_update').on('click', function() {
+   
+            chkDesk();
+            if ($('#btn_update').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
+        });
+    });
+</script>

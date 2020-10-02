@@ -24,7 +24,7 @@
                                     <label>ชื่อเนื้อสัตว์</label>
                                     <input type="text" name="meatName" id="meatName" class="form-control" value="<?= $row->MEAT_NAME ?>" required>
                                     <input type="hidden" name="meatID" value="<?= $row->MEAT_ID; ?>">
-                                    <input type="hidden" name="oldName" value="<?= $row->MEAT_NAME; ?>" id="oldMeatName">
+                                    <input type="hidden" name="oldName" id="oldName" value="<?= $row->MEAT_NAME; ?>" id="oldMeatName">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -51,7 +51,7 @@
                                             <a href="<?= site_url('admin/meat/'); ?>" class="btn btn-danger">ยกเลิก</a>
                                         </div>
                                         <div class="col">
-                                            <input id="btn_regis" class="btn btn-success" type="submit" value="  เพิ่ม  ">
+                                            <input id="btn_update" class="btn btn-success" type="submit" value="บันทึก">
                                         </div>
                                     </div>
                                 </center>
@@ -69,34 +69,36 @@
     $(document).ready(function() {
 
 
-
-        $('#meatName').on('focusout',function() {
+        function chkMeat() {
             var meatName = $('#meatName').val();
-            var oldName = $('#oldMeatName').val();
+            var oldName  = $('#oldName').val();
             $.ajax({
                 url: "<?= site_url('admin/meat/updateCheckMeatName') ?>",
                 method: "POST",
                 data: {
                     meatName: meatName,
-                    oldName: oldName
+                    oldName : oldName
                 },
+                async: false,
                 success: function(data) {
                     if (data != 0) {
-                        $('input[name="meatName"]').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');
-                        return false;
+                        $('#btn_update').removeClass('meatTrue');
+                        $('#btn_update').addClass('meatFalse');
+                        $('#alertMeat').remove();
+                        $('#rowMeat').append(' <p style="color:red" id="alertMeat">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
                     } else {
-                        $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="meatName"]').removeClass('idFalse');
+                        $('#alertMeat').remove();
+                        $('#btn_update').removeClass('meatFalse');
+                        $('#btn_update').addClass('meatTrue');
                     }
                 }
             });
-        });
+        };
 
-        $('#btn_regis').click(function() {
-            if ($('input[name="meatName"]').hasClass('idFalse')) {
+        $('#btn_update').on('click', function() {
+
+            chkMeat();
+            if ($('#btn_update').hasClass('meatFalse')) {
                 alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
                 return false;
             }

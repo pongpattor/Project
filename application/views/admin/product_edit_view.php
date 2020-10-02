@@ -94,13 +94,15 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                     <label>ราคาทุน</label><br>
-                                    <input type="number" class="form-control" name="costPrice" id="costPrice" required step="0.01" min="0" value="<?= $row->PRODUCT_COSTPRICE; ?>">
+                                    <input type="number" class="form-control" name="costPrice" id="costPrice" 
+                                    required step="0.01" min="0"  max="9999999.99"   value="<?= $row->PRODUCT_COSTPRICE; ?>" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                     <label>ราคาขาย</label><br>
-                                    <input type="number" class="form-control" name="sellPrice" id="sellPrice" required min="0" value="<?= $row->PRODUCT_SELLPRICE; ?>">
+                                    <input type="number" class="form-control" name="sellPrice" id="sellPrice" 
+                                    required  step="0.01" min="0"  max="9999999.99"  value="<?= $row->PRODUCT_SELLPRICE; ?>" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                 </div>
                             </div>
                         <?php } ?>

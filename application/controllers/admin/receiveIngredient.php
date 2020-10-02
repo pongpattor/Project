@@ -66,25 +66,24 @@ class receiveIngredient extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
-    public function genIdReceive(){
-        $Y = date('y')+43;
+    public function genIdReceive()
+    {
+        $Y = date('y') + 43;
         $m = date('m');
         $d = date('d');
-        $date =$Y.$m.$d;
+        $date = $Y . $m . $d;
         // echo 'LOT'.$Y.$m.$d;
         $max = $this->receive_ingredient_model->maxIdReceiveIngredien();
-        if($max == ''){
-            return 'LOT'.$date.'001';
+        if ($max == '') {
+            return 'LOT' . $date . '001';
+        } else {
+            $max = substr($max, 9);
+            $max++;
+            while (strlen($max) < 3) {
+                $max = '0' . $max;
+            }
+            return 'LOT' . $date . $max;
         }
-        else{
-          $max = substr($max,9);
-          $max++;
-          while(strlen($max) <3){
-              $max = '0'.$max;
-          }
-            return 'LOT'.$date.$max;
-        }
-        
     }
 
     public function InsertReceiveIngredient()
@@ -95,7 +94,6 @@ class receiveIngredient extends CI_Controller
         $totalPrice = 0;
         foreach ($receivePrice as $row) {
             $totalPrice += $row;
-          
         }
         // echo $totalPrice;
         $Receive = array(
@@ -109,7 +107,7 @@ class receiveIngredient extends CI_Controller
 
         for ($i = 0; $i < count($receiveName); $i++) {
             $receiveDetail = array(
-                "INGREDIENT_NO" => $i+1,
+                "INGREDIENT_NO" => $i + 1,
                 "INGREDIENT_RECEIVE_ID" => $receiveID,
                 "INGREDIENT_NAME" => $receiveName[$i],
                 "INGREDIENT_PRICE" => $receivePrice[$i]
@@ -119,7 +117,7 @@ class receiveIngredient extends CI_Controller
 
         redirect(site_url('admin/receiveIngredient/'));
     }
-    
+
     public function editReceiveIngredient()
     {
         $ReceiveID = $this->input->get("ReceiveID");
@@ -131,11 +129,17 @@ class receiveIngredient extends CI_Controller
 
     public function UpdateReceiveIngredient()
     {
-
+        $totalPrice = 0;
         $receiveID =  $this->input->POST('receiveID');
         $receiveName = $this->input->POST('ReceiveName');
         $receivePrice = $this->input->POST('ReceivePrice');
-
+        foreach ($receivePrice as $row) {
+            $totalPrice += $row;
+        }
+        $receive_total = array(
+            'TOTAL_PRICE' => $totalPrice,
+        );
+        $this->crud_model->update('receive_ingredient',$receive_total,'RECEIVE_INGREDIENT_ID',$receiveID);
         $this->crud_model->delete('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $receiveID);
         for ($i = 0; $i < count($receiveName); $i++) {
             $receiveDetail = array(

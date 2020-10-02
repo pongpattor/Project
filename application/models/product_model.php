@@ -173,16 +173,7 @@ class product_model extends CI_Model
         }
     }
 
-    public function checkTypeProductNameUpdate($typeProductName, $typeProductGroup)
-    {
-        $sql = " SELECT COUNT(*) as cnt FROM  typeproduct
-                WHERE TYPEPRODUCT_NAME = '$typeProductName'
-                and TYPEPRODUCT_GROUP = '$typeProductGroup'";
-        $query = $this->db->query($sql);
-        foreach ($query->result() as $row) {
-            return $row->cnt;
-        }
-    }
+
 
 
     public function editTypeProduct($typeProductId)
@@ -255,21 +246,7 @@ class product_model extends CI_Model
         }
     }
 
-    public function updateCheckMeatName($meatName,$oldname)
-    {
-        $sql = "SELECT COUNT(*) as cnt FROM meat 
-                WHERE MEAT_NAME LIKE ? and MEAT_NAME NOT LIKE ?";
-        $query = $this->db->query(
-            $sql,
-            array(
-                '%' . $this->db->escape_like_str($meatName) . '%',
-                '%' . $this->db->escape_like_str($oldname) . '%',
-            )
-        );
-        foreach ($query->result() as $row) {
-            return $row->cnt;
-        }
-    }
+
 
     public function maxMeatID()
     {

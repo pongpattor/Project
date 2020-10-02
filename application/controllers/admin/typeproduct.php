@@ -96,7 +96,7 @@ class typeproduct extends CI_Controller
         $typeProductName = $this->input->post('typeProductName');
         $typeProductGroup = $this->input->post('typeProductGroup');
         $check = $this->product_model->checkTypeProductName($typeProductName, $typeProductGroup);
-        if ($check > 0) {
+        if ($check != 0) {
             echo 1;
         } else {
             echo 0;
@@ -106,16 +106,20 @@ class typeproduct extends CI_Controller
     public function checkTypeProductNameUpdate()
     {
         $typeProductName = $this->input->post('typeProductName');
-        $typeProductGroup = $this->input->post('typeProductGroup');
         $typeProductOldName = $this->input->post('typeProductOldName');
-        if ($typeProductName  == $typeProductOldName) {
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $typeProductOldGroup =  $this->input->post('typeProductOldGroup');
+        if ($typeProductName  == $typeProductOldName && $typeProductGroup == $typeProductOldGroup) {
             echo 0;
+            // echo "same";
         } else {
-            $check = $this->product_model->checkTypeProductNameUpdate($typeProductName, $typeProductGroup);
-            if ($check > 0) {
+            $check = $this->product_model->checkTypeProductName($typeProductName, $typeProductGroup);
+            if ($check != 0) {
+                // echo "FALSE";
                 echo 1;
             } else {
                 echo 0;
+                // echo "TRUE";
             }
         }
     }

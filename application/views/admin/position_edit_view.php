@@ -24,6 +24,7 @@
                                     <input type="text" name="positionName" class="form-control" id="positionName" value="<?= $row->POSITION_NAME ?>" required>
                                     <input type="hidden" name="oldPositionName" id="oldPositionName" value="<?= $row->POSITION_NAME ?>">
                                     <input type="hidden" name="positionID" value="<?= $row->POSITION_ID ?>">
+                                    <input type="hidden" name="oldDepartment" id="oldDepartment" value="<?=$row->DEPT_ID?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -158,14 +159,12 @@
     $(document).ready(function() {
 
 
-        var departmentId;
-        var positionName;
-        var oldPositionName;
-        function chkName() {
-            departmentId = $('#departmentID').val();
-            positionName = $('#positionName').val();
-            oldname = $('#oldPositionName').val();
 
+        function chkName() {
+            var positionName = $('#positionName').val();
+            var oldname = $('#oldPositionName').val();
+            var departmentId = $('#departmentID').val();
+            var oldDepartment =   $('#oldDepartment').val();
             return $.ajax({
                 url: "<?= site_url('admin/position/checkPositionNameUpdate') ?>",
                 method: "POST",
@@ -173,7 +172,8 @@
                 data: {
                     departmentId: departmentId,
                     positionName: positionName,
-                    oldPositionName: oldname
+                    oldPositionName: oldname,
+                    oldDepartment :oldDepartment
                 },
                 success: function(data) {
                     // console.log(data);

@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/meat/insertMeat') ?>" method="POST" id="formMeat">
+                    <form action="<?= site_url('admin/meat/insertMeat') ?>" method="POST">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 " id="rowMeat">
                                 <label>ชื่อเนื้อสัตว์</label>
@@ -50,7 +50,7 @@
 
 
 
-        $('#meatName').on('focusout', function() {
+    function chkMeat() {
             var meatName = $('#meatName').val();
             $.ajax({
                 url: "<?= site_url('admin/meat/checkMeatName') ?>",
@@ -58,32 +58,31 @@
                 data: {
                     meatName: meatName
                 },
+                async: false,
                 success: function(data) {
                     if (data != 0) {
-                        $('input[name="meatName"]').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#rowMeat').append(' <p style="color:red" id="alertidcard">ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว</p>');
+                        $('#btn_regis').removeClass('meatTrue');
+                        $('#btn_regis').addClass('meatFalse');
+                        $('#alertMeat').remove();
+                        $('#rowMeat').append(' <p style="color:red" id="alertMeat">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
                     } else {
-                        $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="meatName"]').removeClass('idFalse');
-                        return false;
-
+                        $('#alertMeat').remove();
+                        $('#btn_regis').removeClass('meatFalse');
+                        $('#btn_update').addClass('meatTrue');
                     }
                 }
             });
-        });
+        };
 
-        $('#btn_regis').click(function() {
-            if ($('input[name="meatName"]').hasClass('idFalse')) {
+        $('#btn_regis').on('click',function() {
+            chkMeat();
+            if ($('#btn_regis').hasClass('meatFalse')) {
                 alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
                 return false;
             }
 
         });
 
-        $('#formMeat').submit(function(){
 
-        },2000);
     });
 </script>

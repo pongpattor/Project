@@ -156,7 +156,8 @@ class position extends CI_Controller
         $departmentId = $this->input->post("departmentId");
         $positionName = $this->input->post("positionName");
         $oldname = $this->input->post("oldPositionName");
-        if ($oldname == $positionName) {
+       $oldDepartment = $this->input->post("oldDepartment");
+        if ($oldname == $positionName && $departmentId == $oldDepartment) {
             echo 0;
         } else {
             $check = $this->position_model->checkName($departmentId, $positionName);

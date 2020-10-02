@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class desk_model extends CI_Model
 {
-  
+
     public function desk($search = '', $limit, $offset)
     {
         $sql = "SELECT * FROM desk 
@@ -77,11 +77,11 @@ class desk_model extends CI_Model
         }
     }
 
+
+
     public function delDesk($ID)
     {
         $sql = "UPDATE desk SET DESK_STATUS = '3' WHERE DESK_ID = '$ID'";
         return $this->db->query($sql);
     }
-
-    
 }

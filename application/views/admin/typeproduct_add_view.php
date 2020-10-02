@@ -61,40 +61,8 @@
 <script>
     $(document).ready(function() {
 
-
-        $('#typeProductName').focusout(function() {
+        function chkTypeName() {
             tpGroup = $('#typeProductGroup').val();
-            tpName = $(this).val();
-            // console.log(tpGroup);
-            // console.log(tpName);
-            $.ajax({
-                url: "<?= site_url('admin/typeproduct/checkTypeProductName') ?>",
-                method: "POST",
-                data: {
-                    typeProductName: tpName,
-                    typeProductGroup: tpGroup
-                },
-                success: function(data) {
-                    if (data != 0) {
-                        $('input[name="typeProductName"]').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        // $('#rowPositionName').append('<br id="brdept">');
-                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
-                        $('#rowTypeProductName').append(' <p style="color:red" id="alertidcard">มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว</p>');
-
-                    } else {
-                        $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="typeProductName"]').removeClass('idFalse');
-                    }
-                }
-            });
-        });
-
-        
-        $('#typeProductGroup').change(function() {
-            tpGroup = $(this).val();
             tpName = $('#typeProductName').val();
             // console.log(tpGroup);
             // console.log(tpName);
@@ -105,39 +73,34 @@
                     typeProductName: tpName,
                     typeProductGroup: tpGroup
                 },
+                async : false,
                 success: function(data) {
+                    console.log(data);
                     if (data != 0) {
-                        $('input[name="typeProductName"]').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#brdept').remove();
-                        // $('#rowPositionName').append('<br id="brdept">');
-                        // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
-                        $('#rowTypeProductName').append(' <p style="color:red" id="alertidcard">มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว</p>');
-
-                        return false;
-
+                        $('#btn_regis').removeClass('typeTrue');
+                        $('#btn_regis').addClass('typeFalse');
+                        $('#alertTypeName').remove();
+                        $('#rowTypeProductName').append(' <p style="color:red" id="alertTypeName">ชื่อประเภทสินค้านี้ได้ถูกใช้ไปแล้ว</p>');
                     } else {
-                        $('#alertidcard').remove();
-                        // $('#brdept').remove();
-                        $('input[name="typeProductName"]').removeClass('idFalse');
+                        $('#alertTypeName').remove();
+                        $('#btn_regis').removeClass('typeFalse');
+                        $('#btn_regis').addClass('typeTrue');
                     }
                 }
             });
-        });
+        };
 
 
-
-        $('#btn_regis').click(function() {
-            if ($('input[name="typeProductName"]').hasClass('idFalse')) {
+        $('#btn_regis').on('click', function() {
+            chkTypeName();
+            if ($('#btn_regis').hasClass('typeFalse')) {
                 alert('มีชื่อประเภทนี้ในหมวดหมู่สินค้าแล้ว');
                 return false;
             }
 
         });
 
-      
-        $('#formTypeProduct').submit(function() {
 
-        }, 2000);
+
     });
 </script>
