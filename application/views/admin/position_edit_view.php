@@ -157,7 +157,10 @@
 <script>
     $(document).ready(function() {
 
-        //Test Start
+
+        var departmentId;
+        var positionName;
+        var oldPositionName;
         function chkName() {
             departmentId = $('#departmentID').val();
             positionName = $('#positionName').val();
@@ -173,7 +176,7 @@
                     oldPositionName: oldname
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data != 0) {
                         $('#btn_update').addClass('idFalse');
                         $('#alertidcard').remove();
@@ -197,43 +200,9 @@
 
         });
 
-        //Test End
 
 
-
-        var departmentId;
-        var positionName;
-        var oldPositionName;
-
-
-        $('#departmentID').change(function() {
-            departmentId = $(this).val();
-            positionName = $('#positionName').val();
-            oldname = $('#oldPositionName').val();
-            console.log(oldname);
-            $.ajax({
-                url: "<?= site_url('admin/position/checkPositionNameUpdate') ?>",
-                method: "POST",
-                data: {
-                    departmentId: departmentId,
-                    positionName: positionName,
-                    oldPositionName: oldname
-                },
-                success: function(data) {
-                    if (data != 0) {
-                        $('#btn_update').addClass('idFalse');
-                        $('#alertidcard').remove();     
-                        $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
-
-                    } else {
-                        $('#alertidcard').remove();
-                        $('#btn_update').removeClass('idFalse');
-                    }
-                }
-            });
-        });
-
-        $('.chkper').on('click',function() {
+        $('.chkper').on('click', function() {
             var perList = [];
             $('input[type=checkbox]').each(function() {
                 if ($(this).prop("checked") == true) {
@@ -246,47 +215,6 @@
             // console.log(perList);
 
         });
-
-
-        // $('#positionName').focusout(function() {
-        //     departmentId = $('#departmentID').val();
-        //     positionName = $(this).val();
-        //     oldname = $('#oldPositionName').val();
-        //     console.log(oldname);
-        //     $.ajax({
-        //         url: "<?= site_url('admin/position/checkPositionNameUpdate') ?>",
-        //         method: "POST",
-        //         data: {
-        //             departmentId: departmentId,
-        //             positionName: positionName,
-        //             oldPositionName: oldname
-        //         },
-        //         success: function(data) {
-        //             if (data != 0) {
-        //                 $('input[name="positionName"]').addClass('idFalse');
-        //                 $('#alertidcard').remove();
-        //                 // $('#brdept').remove();
-        //                 // $('#rowPositionName').append('<br id="brdept">');
-        //                 // $('#rowPositionName').append(' <div class="alert alert-danger" role="alert" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</div>');
-        //                 $('#rowPositionName').append(' <p style="color:red" id="alertidcard">มีตำแหน่งนี้ในแผนกแล้ว</p>');
-
-        //             } else {
-        //                 $('#alertidcard').remove();
-        //                 // $('#brdept').remove();
-        //                 $('input[name="positionName"]').removeClass('idFalse');
-        //             }
-        //         }
-        //     });
-        // });
-
-
-        // $('#btn_update').click(function() {
-        //     if ($('input[name="positionName"]').hasClass('idFalse')) {
-        //         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-        //         return false;
-        //     }
-
-        // });
 
     });
 </script>

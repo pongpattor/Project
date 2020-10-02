@@ -50,7 +50,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6">
                                     <label>คำนำหน้า <span style="color: red;">*</span></label>
-                                    <select name="title" class="form-control" required>
+                                    <select name="title" class="form-control" required id="title">
                                         <option value="" disabled>กรุณาเลือกคำนำหน้า</option>
                                         <option value="1" <?php if ($row->TITLENAME == 1)
                                                                 echo 'selected';
@@ -79,7 +79,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6">
                                     <label>เพศ <span style="color: red;">*</span></label>
-                                    <select name="gender" class="form-control" required>
+                                    <select name="gender" class="form-control" required id="gender">
                                         <option value="" disabled>กรุณาเลือกเพศ</option>
                                         <option value="M" <?php if ($row->TITLENAME == 'M')
                                                                 echo 'selected';
@@ -353,11 +353,11 @@
 
             for (var i = 0; i < telList.length; i++) {
                 for (var j = 0; j < telList.length; j++) {
-                    if(i==j){
+                    if (i == j) {
                         // console.log( i+" : "+j); 
                         continue;
                     }
-                    if(telList[i] == telList[j]){
+                    if (telList[i] == telList[j]) {
                         // console.log( telList[i]+" :if2: "+telList[j]); 
                         $('#alerttel').remove();
                         $('#tablephone').append('<p style="color:red" id="alerttel">กรุณาอย่ากรอกเบอร์ซ้ำ</p>');
@@ -380,6 +380,20 @@
         }
 
 
+
+        $('#title').change(function() {
+            var titleName = $('#title').val();
+            // console.log(titleName);
+            if (titleName == '1') {
+                $("select#gender option[value*='M']").prop('disabled', true);
+                $("select#gender option[value*='M']").prop('selected', true);
+                $("select#gender option[value*='F']").prop('disabled', true);
+            } else {
+                $("select#gender option[value*='F']").prop('disabled', false);
+                $("select#gender option[value*='F']").prop('selected', true);
+                $("select#gender option[value*='M']").prop('disabled', true);
+            }
+        });
 
 
         $('#btn_update').on('click', function() {

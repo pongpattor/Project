@@ -41,7 +41,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <label>คำนำหน้า <span style="color: red;">*</span> </label>
-                                <select name="title" class="form-control" required>
+                                <select name="title" class="form-control" required id="title">
                                     <option value="" selected disabled>กรุณาเลือกคำนำหน้า</option>
                                     <option value="1">นาย</option>
                                     <option value="2">นาง</option>
@@ -64,7 +64,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <label>เพศ <span style="color: red;">*</span></label>
-                                <select name="gender" class="form-control" required>
+                                <select name="gender" class="form-control" required id="gender">
                                     <option value="" selected disabled>กรุณาเลือกเพศ</option>
                                     <option value="M">ชาย</option>
                                     <option value="F">หญิง</option>
@@ -358,56 +358,6 @@
         });
 
 
-        // $('input[name="idcard"]').on('focusout', function() {
-        //     var id = $('#idcard').val();
-        //     $.ajax({
-        //         url: "<?= site_url('admin/employee/idcard'); ?>",
-        //         method: "POST",
-        //         data: {
-        //             idcard: id
-        //         },
-        //         success: function(data) {
-        //             if (data == true) {
-        //                 $.ajax({
-        //                     url: "<?= site_url('admin/employee/checkIdCard') ?>",
-        //                     method: "POST",
-        //                     data: {
-        //                         idcard: id
-        //                     },
-        //                     success: function(data) {
-        //                         if (data != 0) {
-        //                             // alert('บัตรประชาชนได้ถูกใช้ไปแล้ว');
-        //                             $('input[name="idcard"]').css('background-color', '#F9A8A8');
-        //                             $('input[name="idcard"]').css('border-color', '#000000');
-        //                             $('#btn_regis').addClass('idFalse');
-        //                             $('#alertidcard').remove();
-        //                             // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</div>');
-        //                             $('#rowidcard').append('<p style="color:red" id="alertidcard">บัตรประชาชนนี้ถูกใช้ไปแล้ว</p>');
-
-        //                         } else {
-        //                             $('input[name="idcard"]').css('background-color', '#83F28E');
-        //                             $('input[name="idcard"]').css('border-color', '#000000');
-        //                             $('#btn_regis').removeClass('idFalse');
-        //                             $('#alertidcard').remove();
-        //                             $('#rowidcard').append(' <p style="color:green" id="alertidcard">บัตรประชาชนนี้สามารถใช้ได้</p>');
-
-        //                         }
-        //                     }
-        //                 });
-
-        //             } else {
-        //                 $('input[name="idcard"]').css('background-color', '#F9A8A8');
-        //                 $('input[name="idcard"]').css('border-color', '#000000');
-        //                 $('#btn_regis').addClass('idFalse');
-        //                 $('#alertidcard').remove();
-        //                 // $('#rowidcard').append(' <div class="alert alert-danger" role="alert" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</div>');
-        //                 $('#rowidcard').append(' <p style="color:red" id="alertidcard">กรุณากรอกบัตรประชาชนให้ถูกต้อง</p>');
-
-        //             }
-        //         }
-        //     })
-
-        // });
 
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -489,12 +439,21 @@
             }
         });
 
-        // $('#btn_regis').on('click', function() {
-        //     if ($('input[name="idcard"]').hasClass('idFalse')) {
-        //         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-        //         return false;
-        //     }
-        // });
+
+        $('#title').change(function(){
+            var titleName = $('#title').val();
+            // console.log(titleName);
+           if(titleName == '1'){
+            $("select#gender option[value*='M']").prop('disabled',true);
+            $("select#gender option[value*='M']").prop('selected',true);
+            $("select#gender option[value*='F']").prop('disabled',true);
+           }
+           else{
+            $("select#gender option[value*='F']").prop('disabled',false);
+            $("select#gender option[value*='F']").prop('selected',true);
+            $("select#gender option[value*='M']").prop('disabled',true);
+           }  
+        });
 
 
 
