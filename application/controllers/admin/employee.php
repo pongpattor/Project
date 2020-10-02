@@ -325,6 +325,10 @@ class employee extends CI_Controller
             
         redirect(site_url('admin/employee/'));
     }
+
+
+
+
     // Employee End
 
 

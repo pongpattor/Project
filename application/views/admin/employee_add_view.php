@@ -319,8 +319,7 @@
                     if (i == j) {
                         // console.log('continue');
                         continue;
-                    }
-                    else if (telList[i] == telList[j]) {
+                    } else if (telList[i] == telList[j]) {
                         // console.log(i + " :" + telList[i] + ": " + telList[j] + ': Found same');
                         $('#alerttel').remove();
                         $('#tablephone').append('<p style="color:red" id="alerttel">กรุณาอย่ากรอกเบอร์ซ้ำ</p>');

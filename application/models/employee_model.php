@@ -182,7 +182,7 @@ class employee_model extends CI_Model
     public function checklogin($username, $password)
     {
         $sql = " SELECT COUNT(*) as cnt FROM employee
-        WHERE ID = ? and PASSWORD = ?";
+        WHERE ID = ? and PASSWORD = ? and STATUS IN (1,9)";
 
         $query = $this->db->query($sql, array(
             $this->db->escape_like_str($username),
@@ -196,7 +196,7 @@ class employee_model extends CI_Model
     //Login
     public function login($username,$password)
     {
-        $sql = " SELECT employee.FIRSTNAME,employee.LASTNAME,position.PERMISSION FROM employee 
+        $sql = " SELECT employee.ID,employee.FIRSTNAME,employee.LASTNAME,position.PERMISSION FROM employee 
         LEFT JOIN position ON employee.POSITION = position.POSITION_ID
         WHERE ID = ? and PASSWORD = ? and STATUS IN (1,9)";  //9 is test system
 

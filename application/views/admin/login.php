@@ -51,15 +51,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6 ">
                                         <input type="submit" value="เข้าสู่ระบบ" class="btn btn-success" id="Login">
                                     </div>
                                 </div>
-                                <!-- <button id="btnc">Click</button> -->
+                                <br>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -70,7 +72,7 @@
 
             // $('#btnc').click(function(){
             //     $.ajax({
-            //         url : "<?=site_url('admin/login/destroySession')?>",
+            //         url : "<?= site_url('admin/login/destroySession') ?>",
             //         success:function(data){
             //             console.log(data);
             //         }
