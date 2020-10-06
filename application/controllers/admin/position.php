@@ -169,6 +169,7 @@ class position extends CI_Controller
                 echo 0;
             }
         }
+     
     }
     // Position End
 

@@ -97,6 +97,7 @@ class product extends CI_Controller
                 'PRODUCT_COSTPRICE' => $productCostPrice,
                 'PRODUCT_SELLPRICE' => $productSellPrice,
                 'PRODUCT_IMG' =>  $productImgName,
+                'PRODUCT_STATUS' => 1,
             );
             $this->crud_model->insert('product', $productDetail);
             if ($typeProductGroup == 'อาหาร') {
@@ -129,6 +130,9 @@ class product extends CI_Controller
         $data['typeproduct'] = $this->crud_model->findwhere('typeproduct', 'TYPEPRODUCT_GROUP', $typeProductGroup);
         $data['meat'] = $this->crud_model->find('meat', 'MEAT_ID,MEAT_NAME');
         $data['page'] = 'product_edit_view';
+        // echo '<pre>';
+        // print_r($data['product']);
+        // echo '</pre>';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -150,8 +154,14 @@ class product extends CI_Controller
 
     public function updateProduct()
     {
+        // echo '<pre>';
+        // print_r($this->input->post());
+        // echo '</pre>';
+
         $productID = $this->input->post('productID');
+        // echo $productID;
         $typeProductGroup = $this->input->post('typeProductGroup');
+        $oldProductGroup = $this->input->post('oldTpGroup');
         if (empty($_FILES['imgProduct']['name'])) {
             $productDetail = array(
                 'PRODUCT_NAME' => $this->input->post('productName'),
@@ -161,7 +171,7 @@ class product extends CI_Controller
             );
         } else {
             $config = array();
-            $config['upload_path']          =  './assets/image/employee/';
+            $config['upload_path']          =  './assets/image/product/';
             $config['allowed_types']        = 'jpg|png';
             $config['max_size']             = '2000';
             $config['max_width']            = '3000';
@@ -185,25 +195,36 @@ class product extends CI_Controller
                     'PRODUCT_IMG' => $data['img']['file_name'],
                 );
             }
-            $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
-            if ($typeProductGroup == 'อาหาร') {
-                $foodDetail = array(
-                    'PRODUCT_FOOD_ID' => $productID,
-                    'MEAT_FOOD_ID' => $this->input->post('meatName'),
-                );
-                
-                $this->crud_model->update('food', $foodDetail, 'PRODUCT_FOOD_ID', $productID);
-            } else if ($typeProductGroup == 'เครื่องดื่ม') {
-                $drinkDetail = array(
-                    'PRODUCT_DRINK_ID' => $productID,
-                );
-                $this->crud_model->update('drink', $drinkDetail, 'PRODUCT_DRINK_ID', $productID);
-            } else if ($typeProductGroup == 'ท็อปปิ้ง') {
-                $ToppingDetail = array(
-                    'PRODUCT_TOPPING_ID' => $productID,
-                );
-                $this->crud_model->update('topping', $ToppingDetail, 'PRODUCT_TOPPING_ID', $productID);
-            }
+        }
+        
+        $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
+
+
+        if ($oldProductGroup == 'อาหาร') {
+            $this->crud_model->delete('food', 'PRODUCT_FOOD_ID', $productID);
+        } else if ($oldProductGroup == 'เครื่องดื่ม') {
+            $this->crud_model->delete('drink', 'PRODUCT_DRINK_ID', $productID);
+        } else if ($oldProductGroup == 'ท็อปปิ้ง') {
+            $this->crud_model->delete('topping', 'PRODUCT_TOPPING_ID', $productID);
+        }
+
+        if ($typeProductGroup == 'อาหาร') {
+
+            $foodDetail = array(
+                'PRODUCT_FOOD_ID' => $productID,
+                'MEAT_FOOD_ID' => $this->input->post('meatName'),
+            );
+            $this->crud_model->insert('food', $foodDetail);
+        } else if ($typeProductGroup == 'เครื่องดื่ม') {
+            $drinkDetail = array(
+                'PRODUCT_DRINK_ID' => $productID,
+            );
+            $this->crud_model->insert('drink', $drinkDetail);
+        } else if ($typeProductGroup == 'ท็อปปิ้ง') {
+            $ToppingDetail = array(
+                'PRODUCT_TOPPING_ID' => $productID,
+            );
+            $this->crud_model->insert('topping', $ToppingDetail);
         }
         // echo '<pre>';
         // print_r($productDetail);
@@ -217,13 +238,18 @@ class product extends CI_Controller
         // echo '<pre>';
         // print_r($ToppingDetail);
         // echo '</pre>';
-        // redirect(site_url('admin/product/'));
+
+        redirect(site_url('admin/product/'));
     }
 
     public function deleteProduct()
     {
-        $id = $this->input->post('productID');
-        $this->crud_model->delete('product', 'PRODUCT_ID', $id);
+        $productID = $this->input->post('productID');
+        $productDetail = array(
+            'PRODUCT_STATUS' => '0',
+        );
+        $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
+
     }
 
 
@@ -233,4 +259,6 @@ class product extends CI_Controller
         $data['TypeProductName'] = $this->product_model->fetch_typeProductName($typeProductGroup);
         echo $data['TypeProductName'];
     }
+
+
 }

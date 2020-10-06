@@ -29,7 +29,6 @@
                     <div class="row">
                         <div class="col-12">
                             <form action="<?= site_url('admin/login/Login') ?>" method="POST">
-
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6 ">
                                         <div class="input-group mb-3">
@@ -40,7 +39,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6 ">
                                         <div class="input-group mb-3">
@@ -61,7 +59,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

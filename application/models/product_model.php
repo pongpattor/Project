@@ -8,7 +8,7 @@ class product_model extends CI_Model
     {
         $sql = "SELECT * FROM product 
         LEFT JOIN typeproduct  ON product.PRODUCT_TYPE = typeproduct.TYPEPRODUCT_ID
-        WHERE 
+        WHERE PRODUCT_STATUS = 1 AND
         (
             product.PRODUCT_ID LIKE  ? OR
             product.PRODUCT_NAME LIKE ? OR
@@ -46,7 +46,7 @@ class product_model extends CI_Model
     {
         $sql = "SELECT COUNT(*) as cnt FROM product 
         LEFT JOIN typeproduct  ON product.PRODUCT_TYPE = typeproduct.TYPEPRODUCT_ID
-        WHERE 
+        WHERE PRODUCT_STATUS = 1 AND
         (
             product.PRODUCT_ID LIKE  ? OR
             product.PRODUCT_NAME LIKE ? OR

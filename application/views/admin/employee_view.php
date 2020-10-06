@@ -78,7 +78,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->PHONE;?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= number_format( $row->SALARY ,2);?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->SALARY;?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
                                                     <form action="<?= site_url('admin/employee/editEmployee') ?>" method="GET">
