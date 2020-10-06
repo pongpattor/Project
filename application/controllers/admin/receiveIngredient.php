@@ -122,9 +122,16 @@ class receiveIngredient extends CI_Controller
     {
         $ReceiveID = $this->input->get("ReceiveID");
         $data['ingredient'] = $this->crud_model->findwhere('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $ReceiveID);
-        // print_r($data['ingredient']);
-        $data['page'] = 'receive_ingredient_edit_view';
-        $this->load->view('admin/main_view', $data);
+        if ($data['ingredient'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลเนื้อสัตว์รหัส ' . $ReceiveID . '");';
+            echo 'location.href= "' . site_url('admin/receiveIngredient/') . '"';
+            echo '</script>';
+        } else {
+            // print_r($data['ingredient']);
+            $data['page'] = 'receive_ingredient_edit_view';
+            $this->load->view('admin/main_view', $data);
+        }
     }
 
     public function UpdateReceiveIngredient()
@@ -139,7 +146,7 @@ class receiveIngredient extends CI_Controller
         $receive_total = array(
             'TOTAL_PRICE' => $totalPrice,
         );
-        $this->crud_model->update('receive_ingredient',$receive_total,'RECEIVE_INGREDIENT_ID',$receiveID);
+        $this->crud_model->update('receive_ingredient', $receive_total, 'RECEIVE_INGREDIENT_ID', $receiveID);
         $this->crud_model->delete('receive_ingredient_detail', 'INGREDIENT_RECEIVE_ID', $receiveID);
         for ($i = 0; $i < count($receiveName); $i++) {
             $receiveDetail = array(

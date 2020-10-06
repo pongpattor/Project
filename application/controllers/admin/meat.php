@@ -126,8 +126,15 @@ class meat extends CI_Controller
     {
         $meatId = $this->input->get('meatID');
         $data['meat'] = $this->crud_model->findwhere('meat', 'MEAT_ID', $meatId);
-        $data['page'] = 'meat_edit_view';
-        $this->load->view('admin/main_view', $data);
+        if ($data['meat'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลเนื้อสัตว์รหัส ' . $meatId . '");';
+            echo 'location.href= "' . site_url('admin/meat/') . '"';
+            echo '</script>';
+        } else {
+            $data['page'] = 'meat_edit_view';
+            $this->load->view('admin/main_view', $data);
+        }
     }
 
     public function updateMeat()

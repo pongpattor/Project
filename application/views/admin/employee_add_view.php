@@ -66,8 +66,8 @@
                                 <label>เพศ <span style="color: red;">*</span></label>
                                 <select name="gender" class="form-control" required id="gender">
                                     <option value="" selected disabled>กรุณาเลือกเพศ</option>
-                                    <option value="M">ชาย</option>
-                                    <option value="F">หญิง</option>
+                                    <option value="M" disabled>ชาย</option>
+                                    <option value="F" disabled>หญิง</option>
                                 </select>
                             </div>
                         </div>
@@ -444,7 +444,7 @@
             var titleName = $('#title').val();
             // console.log(titleName);
            if(titleName == '1'){
-            $("select#gender option[value*='M']").prop('disabled',true);
+            $("select#gender option[value*='M']").prop('disabled',false);
             $("select#gender option[value*='M']").prop('selected',true);
             $("select#gender option[value*='F']").prop('disabled',true);
            }

@@ -128,11 +128,18 @@ class typeproduct extends CI_Controller
     {
         $typeId = $this->input->get('typeProductId');
         $data['typeProduct'] = $this->product_model->editTypeProduct($typeId);
-        // echo '<pre>';
-        // print_r($data['typeProductId']);
-        // echo'</pre>';
-        $data['page'] = 'typeproduct_edit_view';
-        $this->load->view('admin/main_view', $data);
+        if ($data['typeProduct'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลประเภทสินค้ารหัส ' . $typeId . '");';
+            echo 'location.href= "' . site_url('admin/typeproduct/') . '"';
+            echo '</script>';
+        } else {
+            // echo '<pre>';
+            // print_r($data['typeProductId']);
+            // echo'</pre>';
+            $data['page'] = 'typeproduct_edit_view';
+            $this->load->view('admin/main_view', $data);
+        }
     }
 
     public function updateTypeProduct()

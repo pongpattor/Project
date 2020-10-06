@@ -155,9 +155,16 @@ class department extends CI_Controller
     public function editDepartment()
     {
         $deptID = $this->input->get('departmentID');
-        $data['page'] = 'department_edit_view';
         $data['oldDept'] = $this->department_model->editDept($deptID);
-        $this->load->view('admin/main_view', $data);
+        if ($data['oldDept'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลแผนกรหัส '.$deptID.'");';
+            echo 'location.href= "' . site_url('admin/department/') . '"';
+            echo '</script>';
+        } else {
+            $data['page'] = 'department_edit_view';
+            $this->load->view('admin/main_view', $data);
+        }
     }
     public function updateDepartment()
     {

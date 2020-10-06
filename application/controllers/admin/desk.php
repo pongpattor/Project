@@ -101,8 +101,15 @@ class desk extends CI_Controller
     {
         $deskID = $this->input->get('deskID');
         $data['desk'] = $this->crud_model->findwhere('desk', 'DESK_ID', $deskID);
-        $data['page'] = 'desk_edit_view';
-        $this->load->view('admin/main_view', $data);
+        if ($data['desk'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลโต๊ะรหัส ' . $deskID . '");';
+            echo 'location.href= "' . site_url('admin/desk/') . '"';
+            echo '</script>';
+        } else {
+            $data['page'] = 'desk_edit_view';
+            $this->load->view('admin/main_view', $data);
+        }
     }
 
     public function updateDesk()
@@ -125,13 +132,11 @@ class desk extends CI_Controller
         $oldNumber = $this->input->post('oldNumber');
         if ($oldNumber == $deskNumber) {
             echo 0;
-        } 
-        else {
+        } else {
             $count = $this->desk_model->checkNumber($deskNumber);
-            if($count != 0){
+            if ($count != 0) {
                 echo 1;
-            }
-            else{
+            } else {
                 echo 0;
             }
         }

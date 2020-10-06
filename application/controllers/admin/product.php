@@ -126,14 +126,21 @@ class product extends CI_Controller
     {
         $productID = $this->input->get('productID');
         $data['product'] = $this->product_model->editProduct($productID);
-        $typeProductGroup = $data['product']['0']->TYPEPRODUCT_GROUP;
-        $data['typeproduct'] = $this->crud_model->findwhere('typeproduct', 'TYPEPRODUCT_GROUP', $typeProductGroup);
-        $data['meat'] = $this->crud_model->find('meat', 'MEAT_ID,MEAT_NAME');
-        $data['page'] = 'product_edit_view';
-        // echo '<pre>';
-        // print_r($data['product']);
-        // echo '</pre>';
-        $this->load->view('admin/main_view', $data);
+        if ($data['product'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลสินค้ารหัส ' . $productID . '");';
+            echo 'location.href= "' . site_url('admin/product/') . '"';
+            echo '</script>';
+        } else {
+            $typeProductGroup = $data['product']['0']->TYPEPRODUCT_GROUP;
+            $data['typeproduct'] = $this->crud_model->findwhere('typeproduct', 'TYPEPRODUCT_GROUP', $typeProductGroup);
+            $data['meat'] = $this->crud_model->find('meat', 'MEAT_ID,MEAT_NAME');
+            $data['page'] = 'product_edit_view';
+            // echo '<pre>';
+            // print_r($data['product']);
+            // echo '</pre>';
+            $this->load->view('admin/main_view', $data);
+        }
     }
 
     public function genProductID()
@@ -196,7 +203,7 @@ class product extends CI_Controller
                 );
             }
         }
-        
+
         $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
 
 
@@ -249,7 +256,6 @@ class product extends CI_Controller
             'PRODUCT_STATUS' => '0',
         );
         $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
-
     }
 
 
@@ -259,6 +265,4 @@ class product extends CI_Controller
         $data['TypeProductName'] = $this->product_model->fetch_typeProductName($typeProductGroup);
         echo $data['TypeProductName'];
     }
-
-
 }

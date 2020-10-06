@@ -127,6 +127,12 @@ class employee extends CI_Controller
 
     public function insertEmp()
     {
+
+        // echo '<pre>';
+        // print_r($this->input->post());
+        // echo '</pre>';
+
+        echo $this->input->post('gender');
         $IDposition = $this->input->post('position');
         $idEmployee = $this->genIdEmployee($IDposition);
         $config = array();
@@ -171,12 +177,7 @@ class employee extends CI_Controller
             // print_r($employee_detail);
             // echo '</pre>';
             $this->crud_model->insert('employee', $employee_detail);
-            // $idDept =  $this->employee_model->idDeptGenIdEmp($IDposition);
-            // $idEmp  = $this->employee_model->maxIdEmployee($idDept);
             $tel = $this->input->post('tel');
-            // echo $idEmployee.'<br>';
-            // echo $idDept.'<br>';
-            // echo $idEmp.'<br>';
             foreach ($tel as $phone) {
                 $data = array(
                     'PHONE' => $phone,
@@ -230,26 +231,36 @@ class employee extends CI_Controller
     public function editEmployee()
     {
         $id = $this->input->get('empID');
-
         $data['employee'] = $this->employee_model->editEmp($id);
-        $data['nationality'] = $this->crud_model->findall('nationality');
-        $data['religion'] = $this->crud_model->findall('religion');
-        $data['province']  = $this->employee_model->fetch_province();
-        $province_id = $data['employee']['0']->D_PROVINCE_ID;
-        $data['amphur'] = $this->crud_model->findwhere('amphur', 'A_PROVINCE_ID', $province_id);
-        $amphur_id =  $data['employee']['0']->D_AMPHUR_ID;
-        $data['district'] = $this->crud_model->findwhere('district', 'D_AMPHUR_ID', $amphur_id);
-        $district_id =  $data['employee']['0']->DISTRICT_ID;
-        $data['postcode'] = $this->crud_model->findwhere('district', 'DISTRICT_ID', $district_id);
-        $data['department'] = $this->crud_model->findall('department');
-        $department_id = $data['employee']['0']->DEPARTMENT_ID;
-        $data['position'] = $this->crud_model->findwhere('position', 'DEPT_ID', $department_id);
-        $data['phone'] = $this->employee_model->PhoneEmployee($id);
-        $data['page'] = 'employee_edit_view';
         // echo '<pre>';
-        // print_r( $data['employee']);
+        // print_r($data['employee']);
         // echo '</pre>';
-        $this->load->view('admin/main_view', $data);
+        if ($data['employee'] == null) {
+                echo '<script>';
+                echo 'alert("ไม่มีข้อมูลพนักงานรหัส '.$id.'");';
+                echo 'location.href= "' . site_url('admin/employee/') . '"';
+                echo '</script>';
+        } else {
+            $data['nationality'] = $this->crud_model->findall('nationality');
+            $data['religion'] = $this->crud_model->findall('religion');
+            $data['province']  = $this->employee_model->fetch_province();
+            $province_id = $data['employee']['0']->D_PROVINCE_ID;
+            $data['amphur'] = $this->crud_model->findwhere('amphur', 'A_PROVINCE_ID', $province_id);
+            $amphur_id =  $data['employee']['0']->D_AMPHUR_ID;
+            $data['district'] = $this->crud_model->findwhere('district', 'D_AMPHUR_ID', $amphur_id);
+            $district_id =  $data['employee']['0']->DISTRICT_ID;
+            $data['postcode'] = $this->crud_model->findwhere('district', 'DISTRICT_ID', $district_id);
+            $data['department'] = $this->crud_model->findall('department');
+            $department_id = $data['employee']['0']->DEPARTMENT_ID;
+            $data['position'] = $this->crud_model->findwhere('position', 'DEPT_ID', $department_id);
+            $data['phone'] = $this->employee_model->PhoneEmployee($id);
+            $data['page'] = 'employee_edit_view';
+
+            $this->load->view('admin/main_view', $data);
+        }
+
+       
+   
     }
 
     public function updateEmp()
@@ -313,16 +324,16 @@ class employee extends CI_Controller
         $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmployee);
         $tel = $this->input->post('tel');
         $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmployee);
-        
+
         foreach ($tel as $phone) {
             $data = array(
                 'PHONE' => $phone,
                 'EMPLOYEE_ID' => $idEmployee
             );
-                $this->crud_model->insert('employee_telephone', $data);
+            $this->crud_model->insert('employee_telephone', $data);
         }
 
-            
+
         redirect(site_url('admin/employee/'));
     }
 

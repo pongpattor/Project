@@ -29,7 +29,7 @@ class login extends CI_Controller
             $data['user'] = $this->employee_model->login($username, $password);
             if ($data['user']['0']->PERMISSION == NULL) {
                 $data['user']['0']->PERMISSION =  '0,0,0,0,0,0,0,0,0,0,0,0,0';
-                echo    $data['user']['0']->PERMISSION;
+                // echo    $data['user']['0']->PERMISSION;
             }
             $permission = explode(',', $data['user']['0']->PERMISSION);
             $sessions = array(

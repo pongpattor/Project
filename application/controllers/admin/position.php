@@ -105,18 +105,26 @@ class position extends CI_Controller
     public function editPosition()
     {
         $posID = $this->input->get('positionID');
-        $data['page'] = 'position_edit_view';
         $data['oldPos'] = $this->crud_model->findwhere('position', 'POSITION_ID', $posID);
-        $data['department'] = $this->crud_model->findall('department');
 
-
-        if ($data['oldPos'][0]->PERMISSION == "") {
-            $data['permission'] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
+        if ($data['oldPos'] == null) {
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลตำแหน่งรหัส ' . $posID . '");';
+            echo 'location.href= "' . site_url('admin/position/') . '"';
+            echo '</script>';
         } else {
-            $data['permission'] = explode(',', $data['oldPos']['0']->PERMISSION);
+            $data['page'] = 'position_edit_view';
+            $data['department'] = $this->crud_model->findall('department');
+
+
+            if ($data['oldPos'][0]->PERMISSION == "") {
+                $data['permission'] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
+            } else {
+                $data['permission'] = explode(',', $data['oldPos']['0']->PERMISSION);
+            }
+            // print_r($data['permission']);
+            $this->load->view('admin/main_view', $data);
         }
-        // print_r($data['permission']);
-        $this->load->view('admin/main_view', $data);
     }
 
     public function updatePosition()
@@ -156,7 +164,7 @@ class position extends CI_Controller
         $departmentId = $this->input->post("departmentId");
         $positionName = $this->input->post("positionName");
         $oldname = $this->input->post("oldPositionName");
-       $oldDepartment = $this->input->post("oldDepartment");
+        $oldDepartment = $this->input->post("oldDepartment");
         if ($oldname == $positionName && $departmentId == $oldDepartment) {
             echo 0;
         } else {
@@ -169,7 +177,6 @@ class position extends CI_Controller
                 echo 0;
             }
         }
-     
     }
     // Position End
 
