@@ -50,7 +50,7 @@ class product extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['product'] = $this->product_model->product($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         // print_r($data['product']);
         $data['page'] = 'product_view';
@@ -63,6 +63,16 @@ class product extends CI_Controller
         $data['page'] = 'product_add_view';
         $this->load->view('admin/main_view', $data);
     }
+
+    public function checkProductName(){
+         $productName = $this->input->post('productName');
+         $typeProductGroup = $this->input->post('typeProductGroup');
+         $typeProductName = $this->input->post('typeProductName');
+         $meatName = $this->input->post('meatName');
+
+        $check = $this->product_model->checkProductName($productName,$typeProductGroup,$typeProductName,$meatName);
+        echo $check;
+        }
 
     public function insertProduct()
     {
@@ -141,6 +151,9 @@ class product extends CI_Controller
             // echo '</pre>';
             $this->load->view('admin/main_view', $data);
         }
+        // echo '<pre>';
+        // print_r($data['product']);
+        // echo '</pre>';
     }
 
     public function genProductID()

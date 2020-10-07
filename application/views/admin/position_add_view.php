@@ -127,7 +127,7 @@
         function chkName() {
             departmentId = $('#departmentID').val();
             positionName = $('#positionName').val();
-            return $.ajax({
+             $.ajax({
                 url: "<?= site_url('admin/position/checkPositionNameInsert') ?>",
                 method: "POST",
                 async: false,

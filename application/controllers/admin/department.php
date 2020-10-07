@@ -53,7 +53,7 @@ class department extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['department'] = $this->department_model->Department($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'department_view';
         $this->load->view('admin/main_view', $data);
@@ -114,30 +114,7 @@ class department extends CI_Controller
         }
     }
 
-    //Test
-    // public function insertDepartment()
-    // {
-    //     $departmentID =  $this->genIdDepartment();
-    //     $departmentName =  $this->input->post('DEPARTMENT_NAME');
-
-    //     $chk = $this->department_model->checkName($departmentName);
-
-    //     if ($chk != 0) {
-    //         echo '<script>';
-    //         echo 'alert("แผนกนี้ได้มีการใช้แล้ว");';
-    //         echo 'window.history.back();';
-    //         echo '</script>';
-    //     } else {
-    //         // $dept = array(
-    //         //     'DEPARTMENT_ID' => $departmentID,
-    //         //     'DEPARTMENT_NAME' => $departmentName,
-    //         // );
-    //         // $this->crud_model->insert('department', $dept);
-
-    //         // redirect(site_url('admin/department/'));
-    //         echo 'success';
-    //     }
-    // }
+    
 
     public function insertDepartment()
     {

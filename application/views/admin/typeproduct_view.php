@@ -76,7 +76,15 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <?= $links; ?>
+                            <?php if ($links != null) {
+                                echo $links;
+                            } else { ?>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item active"><a class="page-link " >1</a></li>
+                                    </ul>
+                                </nav>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -99,7 +107,7 @@
                     },
                     success: function(data) {
                         alert(`ลบ ${id} เสร็จสิ้น`);
-                        window.location.href ="<?=site_url('admin/typeproduct/')?>";
+                        window.location.href = "<?= site_url('admin/typeproduct/') ?>";
                     }
                 });
             }

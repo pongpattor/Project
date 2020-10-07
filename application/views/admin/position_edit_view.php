@@ -165,7 +165,7 @@
             var oldname = $('#oldPositionName').val();
             var departmentId = $('#departmentID').val();
             var oldDepartment =   $('#oldDepartment').val();
-            return $.ajax({
+             $.ajax({
                 url: "<?= site_url('admin/position/checkPositionNameUpdate') ?>",
                 method: "POST",
                 async: false,

@@ -26,7 +26,6 @@ class employee extends CI_Controller
         $config['base_url'] = site_url('admin/employee/index');
         $config['total_rows'] = $this->employee_model->countAllEmployee($search);
         $config['per_page'] = 5;
-
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
         $config['full_tag_open'] = '<nav><ul class="pagination">';
@@ -53,7 +52,7 @@ class employee extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['employee'] = $this->employee_model->employee($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'employee_view';
         $this->load->view('admin/main_view', $data);

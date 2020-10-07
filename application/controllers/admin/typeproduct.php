@@ -49,9 +49,9 @@ class typeproduct extends CI_Controller
         $limit = $config['per_page'];
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
-        $data['total'] = $config['total_rows'];
         $data['typeProduct'] = $this->product_model->typeProduct($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
+        $data['total'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         //print_r($data['typeProduct']);
         $data['page'] = 'typeproduct_view';

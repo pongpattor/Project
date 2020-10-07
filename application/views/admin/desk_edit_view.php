@@ -24,7 +24,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6" id="rowDeskNumber">
                                         <label>หมายเลขโต๊ะ</label><br>
-                                        <input type="text" class="form-control" name="deskNumber" id="deskNumber" value="<?= $row->DESK_NUMBER; ?>">
+                                        <input type="text" class="form-control" name="deskNumber" id="deskNumber" value="<?= $row->DESK_NUMBER; ?>" maxlength="3">
                                         <input type="hidden" name="deskID" value="<?= $row->DESK_ID; ?>">
                                         <input type="hidden" name="oldNumber" id="oldNumber" value="<?= $row->DESK_NUMBER; ?>">
                                     </div>
@@ -33,6 +33,7 @@
                                     <div class="col-sm col-md col-xl-6">
                                         <label>สถานะ</label><br>
                                         <select name="status" class="form-control">
+                                            <option value=""  disabled>กรุณาเลือกสถานะ</option>
                                             <option value="0" <?php if ($row->DESK_STATUS == 0) echo 'selected'; ?>>ว่าง</option>
                                             <option value="1" <?php if ($row->DESK_STATUS == 1) echo 'selected'; ?>>ไม่ว่าง</option>
                                             <option value="2" <?php if ($row->DESK_STATUS == 2) echo 'selected'; ?>>ปรับปรุง</option>
@@ -72,13 +73,13 @@
         function chkDesk() {
 
             var deskNumber = $('#deskNumber').val();
-            var oldNumber =  $('#oldNumber').val();
+            var oldNumber = $('#oldNumber').val();
             $.ajax({
                 url: "<?= site_url('admin/desk/checkDeskNumberUpdate') ?>",
                 method: "POST",
                 data: {
                     deskNumber: deskNumber,
-                    oldNumber : oldNumber
+                    oldNumber: oldNumber
                 },
                 async: false,
                 success: function(data) {
@@ -99,7 +100,7 @@
         }
 
         $('#btn_update').on('click', function() {
-   
+
             chkDesk();
             if ($('#btn_update').hasClass('idFalse')) {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');

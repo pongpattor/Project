@@ -13,7 +13,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?=site_url('admin/position/')?>" method="GET">
+                <form action="<?= site_url('admin/position/') ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -28,19 +28,19 @@
                 </form>
                 <br>
                 <?php
-                        echo '<div class="row">';
-                        echo '<div class="col-12">';
-                        echo '<div class="row">';
-                        echo '<div class="col-8">'; ?>
-                        <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
-                        <?php echo '</div>';
-                        echo '<div class="col-4">';
-                        echo '<p class="float-right">จำนวน ' . $total . ' ตำแหน่ง</p>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                        ?>
+                echo '<div class="row">';
+                echo '<div class="col-12">';
+                echo '<div class="row">';
+                echo '<div class="col-8">'; ?>
+                <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
+                <?php echo '</div>';
+                echo '<div class="col-4">';
+                echo '<p class="float-right">จำนวน ' . $total . ' ตำแหน่ง</p>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                ?>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -76,7 +76,16 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                            <?= $links;?>
+                            <?php if ($links != null) {
+                                echo $links;
+                            } else { ?>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item active"><a class="page-link " >1</a></li>
+
+                                    </ul>
+                                </nav>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -99,7 +108,7 @@
                     },
                     success: function() {
                         alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
-                        window.location.href ="<?=site_url('admin/position/')?>";
+                        window.location.href = "<?= site_url('admin/position/') ?>";
 
                     }
                 });

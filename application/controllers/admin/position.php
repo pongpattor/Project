@@ -26,7 +26,7 @@ class position extends CI_Controller
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/position/index');
         $config['total_rows'] = $this->position_model->countAllPosition($search);
-        $config['per_page'] = 5;
+        $config['per_page'] = 5; 
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
         $config['full_tag_open'] = '<nav><ul class="pagination">';
@@ -53,10 +53,11 @@ class position extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['dept_pos'] = $this->position_model->position($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'position_view';
         $this->load->view('admin/main_view', $data);
+        // echo $config['total_rows'];
     }
 
     public function addPosition()

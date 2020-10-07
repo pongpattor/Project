@@ -52,13 +52,13 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อ <span style="color: red;">*</span> </label>
-                                <input type="text" name="firstname" id="fname" class="form-control" required>
+                                <input type="text" name="firstname" id="fname" class="form-control" required maxlength="30">
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>นามสกุล <span style="color: red;">*</span> </label>
-                                <input type="text" name="lastname" class="form-control" required>
+                                <input type="text" name="lastname" class="form-control" required maxlength="30">
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -74,7 +74,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>อีเมล </label>
-                                <input type="email" class="form-control" name="email" placeholder="mut@example.com">
+                                <input type="email" class="form-control" name="email" placeholder="mut@example.com" maxlength="50">
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -137,7 +137,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
                                 <label>ที่อยู่ <span style="color: red;">*</span></label>
-                                <textarea name="address" id="address" cols="10" rows="5" class="form-control" required></textarea>
+                                <textarea name="address" id="address" cols="10" rows="5" class="form-control" required maxlength="50"></textarea>
                             </div>
                         </div>
                         <div class="row justify-content-center">

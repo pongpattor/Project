@@ -21,12 +21,11 @@
                             <?php foreach ($oldDept as $row) : ?>
                                 <div class="col-sm col-md col-xl-6" id="rowDeptName">
                                     <label>ชื่อแผนก </label>
-                                    <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>" required>
+                                    <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>" required maxlength="50">
                                     <input type="hidden" name="oldDepartment_name" id="oldDepartment_name" value="<?= $row->DEPARTMENT_NAME ?>">
                                     <input type="hidden" name="DEPARTMENT_ID" value="<?= $row->DEPARTMENT_ID ?>">
                                 </div>
                         </div>
-
                         <br>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">
@@ -56,7 +55,7 @@
         function chkName() {
             var deptName = $('#department_name').val();
             var oldDeptName = $('#oldDepartment_name').val();
-            return $.ajax({
+            $.ajax({
                 url: "<?= site_url('admin/department/checkDepartmentNameUpdate') ?>",
                 method: "POST",
                 async: false,
@@ -92,12 +91,12 @@
         $('#btn_cancel').on('click', function() {
             var deptName = $('#department_name').val();
             var oldDeptName = $('#oldDepartment_name').val();
-            if(deptName != oldDeptName){
+            if (deptName != oldDeptName) {
                 confirm("คุณต้องการยกเลิกการแก้ไขใช่หรือไม่?");
             }
         });
 
 
-      
+
     });
 </script>

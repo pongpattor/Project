@@ -54,7 +54,7 @@ class receiveIngredient extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['receive_ingredient'] = $this->receive_ingredient_model->fetchReceive($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'receive_ingredient_view';
         $this->load->view('admin/main_view', $data);

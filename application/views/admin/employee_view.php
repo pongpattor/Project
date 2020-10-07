@@ -30,21 +30,21 @@
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <?php  
-                            echo '<div class="row">';
-                                echo '<div class="col-12">';
-                                    echo '<div class="row">';
-                                        echo '<div class="col-8">'; ?>
-                                <?php  if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>';?>
-                                <?php        echo '</div>';
-                                        echo '<div class="col-4">';
-                                            echo '<p class="float-right">จำนวนพนักงาน ' . $total . ' คน</p>';
-                                         echo '</div>';
-                                    echo '</div>'; 
-                                echo '</div>';
-                            echo '</div>';
-                         ?>
-                        <div class="table-responsive" >
+                        <?php
+                        echo '<div class="row">';
+                        echo '<div class="col-12">';
+                        echo '<div class="row">';
+                        echo '<div class="col-8">'; ?>
+                        <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
+                        <?php echo '</div>';
+                        echo '<div class="col-4">';
+                        echo '<p class="float-right">จำนวนพนักงาน ' . $total . ' คน</p>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                        ?>
+                        <div class="table-responsive">
                             <table id="selectedColumn " class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark ">
                                     <tr>
@@ -70,15 +70,15 @@
 
                                 <tbody>
                                     <?php foreach ($employee as $row) : ?>
-                                        <tr id="<?= $row->ID ?>" class="bgtable" >
+                                        <tr id="<?= $row->ID ?>" class="bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="" width="80px" height="80px"></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME . ' ' . $row->LASTNAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PHONE;?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PHONE; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->SALARY;?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->SALARY; ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
                                                     <form action="<?= site_url('admin/employee/editEmployee') ?>" method="GET">
@@ -95,7 +95,16 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                            <?= $links; ?>
+                            <?php if ($links != null) {
+                                echo $links;
+                            } else { ?>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item active"><a class="page-link" >1</a></li>
+
+                                    </ul>
+                                </nav>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -118,7 +127,7 @@
                     },
                     success: function() {
                         alert(`ลบ ${ID} เสร็จสิ้น`);
-                        window.location.href ="<?=site_url('admin/employee/')?>";
+                        window.location.href = "<?= site_url('admin/employee/') ?>";
                     }
                 });
             }

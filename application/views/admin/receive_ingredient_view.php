@@ -77,7 +77,16 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                            <?= $links; ?>
+                            <?php if ($links != null) {
+                                echo $links;
+                            } else { ?>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item active"><a class="page-link " >1</a></li>
+
+                                    </ul>
+                                </nav>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -101,7 +110,7 @@
                     },
                     success: function() {
                         alert(`ลบ ${ID} เสร็จสิ้น`);
-                        location.reload();
+                        window.location.href = "<?= site_url('admin/receiveIngredient/') ?>";
                     }
                 });
             }

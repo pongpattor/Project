@@ -78,7 +78,35 @@ class product_model extends CI_Model
     }
 
 
-    public function editProduct($productID){
+    public function checkProductName($productName, $typeProductGroup, $typeProductName, $meatName = "")
+    {
+        if ($meatName == "") {
+            $sql = "SELECT  COUNT(*) as cnt FROM product 
+            LEFT JOIN food ON product.PRODUCT_ID = food.PRODUCT_FOOD_ID
+            LEFT JOIN meat ON food.MEAT_FOOD_ID = meat.MEAT_ID
+            LEFT JOIN typeproduct ON product.PRODUCT_TYPE = typeproduct.TYPEPRODUCT_ID
+            WHERE  product.PRODUCT_NAME = '$productName'
+            AND typeproduct.TYPEPRODUCT_GROUP = '$typeProductGroup'
+            AND product.PRODUCT_TYPE = '$typeProductName'";
+        } else {
+            $sql = "SELECT COUNT(*) as cnt FROM product 
+            LEFT JOIN food ON product.PRODUCT_ID = food.PRODUCT_FOOD_ID
+            LEFT JOIN meat ON food.MEAT_FOOD_ID = meat.MEAT_ID
+            LEFT JOIN typeproduct ON product.PRODUCT_TYPE = typeproduct.TYPEPRODUCT_ID
+            WHERE  product.PRODUCT_NAME = '$productName'
+            AND typeproduct.TYPEPRODUCT_GROUP = '$typeProductGroup'
+            AND product.PRODUCT_TYPE = '$typeProductName'
+            AND meat.MEAT_ID = '$meatName'";
+        }
+
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function editProduct($productID)
+    {
         $sql = "SELECT * FROM product 
         LEFT JOIN typeproduct ON typeproduct.TYPEPRODUCT_ID = product.PRODUCT_TYPE
         LEFT JOIN food ON food.PRODUCT_FOOD_ID = product.PRODUCT_ID

@@ -71,15 +71,13 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                 <label>ราคาทุน</label><br>
-                                <input type="number" class="form-control" name="costPrice" id="costPrice" required 
-                                step="0.01" min="0"  max="9999999.99"   >
+                                <input type="number" class="form-control" name="costPrice" id="costPrice" required step="0.01" min="0" max="9999999.99">
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                 <label>ราคาขาย</label><br>
-                                <input type="number" class="form-control" name="sellPrice" id="sellPrice" required  
-                                step="0.01" min="0"  max="9999999.99" >
+                                <input type="number" class="form-control" name="sellPrice" id="sellPrice" required step="0.01" min="0" max="9999999.99">
                             </div>
                         </div>
                         <br>
@@ -131,6 +129,47 @@
             });
         });
 
+        function checkProductName() {
+            var productName = $('#productName').val();
+            var typeProductGroup = $('#typeProductGroup').val();
+            var typeProductName = $('#typeProductName').val();
+            var meatName = $('#meatName').val();
+
+            //    console.log(productName);
+            //    console.log(typeProductGroup);
+            //    console.log(typeProductName);
+            //    console.log(meatName);
+
+            $.ajax({
+                url: "<?= site_url("admin/product/checkProductName"); ?>",
+                method: "POST",
+                data: {
+                    productName: productName,
+                    typeProductGroup: typeProductGroup,
+                    typeProductName: typeProductName,
+                    meatName: meatName,
+                },
+                async: false,
+                success: function(data) {
+                    if (data == 0) {
+                        $('#alertProduct').remove();
+                        $('#btn_regis').removeClass('False');
+                    } else {
+                        $('#btn_regis').addClass('False');
+                        $('#alertProduct').remove();
+                        $('#rowTypeProductName').append(' <p style="color:red" id="alertProduct">ชื่อสินค้านี้ได้ถูกใช้ไปแล้ว</p>');
+                    }
+                }
+            });
+        }
+
+        $('#btn_regis').on('click', function() {
+            checkProductName();
+            if($('#btn_regis').hasClass('False')){
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
+        });
 
         function readURL(input) {
             if (input.files && input.files[0]) {

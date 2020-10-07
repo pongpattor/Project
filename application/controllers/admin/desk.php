@@ -52,10 +52,12 @@ class desk extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['desk'] = $this->desk_model->desk($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'desk_view';
         $this->load->view('admin/main_view', $data);
+
+        
     }
 
     public function addDesk()

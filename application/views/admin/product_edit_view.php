@@ -32,8 +32,8 @@
                                             <input type="hidden" name="productID" value="<?= $row->PRODUCT_ID ?>">
                                             <input type="hidden" name="oldName" value="<?= $row->PRODUCT_NAME ?>">
                                             <input type="hidden" name="oldType" value="<?= $row->TYPEPRODUCT_ID ?>">
-                                            <input type="hidden" name="oldTpGroup" value="<?= $row->TYPEPRODUCT_GROUP?>">
-                                            <input type="hidden" name="oldMeat" value="<?=$row->MEAT_FOOD_ID?>">
+                                            <input type="hidden" name="oldTpGroup" value="<?= $row->TYPEPRODUCT_GROUP ?>">
+                                            <input type="hidden" name="oldMeat" value="<?= $row->MEAT_FOOD_ID ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6" id="rowMeat">
                                     <label>เนื้อสัตว์</label><br>
-                                    <select name="meatName" id="meatName" class="form-control"  required <?php if ($row->TYPEPRODUCT_GROUP != 'อาหาร') {
+                                    <select name="meatName" id="meatName" class="form-control" required <?php if ($row->TYPEPRODUCT_GROUP != 'อาหาร') {
                                                                                                             echo 'disabled';
                                                                                                         } ?>>
                                         <option value="" selected disabled>กรุณาเลือกเนื้อสัตว์</option>
@@ -98,7 +98,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                     <label>ราคาทุน</label><br>
-                                    <input type="number" class="form-control" name="costPrice" id="costPrice" required step="0.01" min="0" max="9999999.99" value="<?= $row->PRODUCT_COSTPRICE; ?>" >
+                                    <input type="number" class="form-control" name="costPrice" id="costPrice" required step="0.01" min="0" max="9999999.99" value="<?= $row->PRODUCT_COSTPRICE; ?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -117,7 +117,7 @@
                                             <a href="<?= site_url('admin/product/'); ?>" class="btn btn-danger col-7 backPage">ยกเลิก</a>
                                         </div>
                                         <div class="col">
-                                            <input id="btn_regis" class="btn btn-success col-7" type="submit" value="บันทึก">
+                                            <input id="btn_update" class="btn btn-success col-7" type="submit" value="บันทึก">
                                         </div>
                                     </div>
                                 </center>
@@ -155,6 +155,49 @@
                     $('#typeProductName').html(data);
                 }
             });
+        });
+
+
+        function checkProductName() {
+            var productName = $('#productName').val();
+            var typeProductGroup = $('#typeProductGroup').val();
+            var typeProductName = $('#typeProductName').val();
+            var meatName = $('#meatName').val();
+
+            //    console.log(productName);
+            //    console.log(typeProductGroup);
+            //    console.log(typeProductName);
+            //    console.log(meatName);
+
+            $.ajax({
+                url: "<?= site_url("admin/product/checkProductName"); ?>",
+                method: "POST",
+                data: {
+                    productName: productName,
+                    typeProductGroup: typeProductGroup,
+                    typeProductName: typeProductName,
+                    meatName: meatName,
+                },
+                async: false,
+                success: function(data) {
+                    if (data == 0) {
+                        $('#alertProduct').remove();
+                        $('#btn_regis').removeClass('False');
+                    } else {
+                        $('#btn_regis').addClass('False');
+                        $('#alertProduct').remove();
+                        $('#rowTypeProductName').append(' <p style="color:red" id="alertProduct">ชื่อสินค้านี้ได้ถูกใช้ไปแล้ว</p>');
+                    }
+                }
+            });
+        }
+
+        $('#btn_update').on('click', function() {
+            checkProductName();
+            if ($('#btn_update').hasClass('False')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            }
         });
 
 

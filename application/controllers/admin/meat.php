@@ -51,7 +51,7 @@ class meat extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['meat'] = $this->product_model->meat($search, $limit, $offset);
-        $data['total_rows'] = $config['total_rows'];
+        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'meat_view';
         $this->load->view('admin/main_view', $data);
