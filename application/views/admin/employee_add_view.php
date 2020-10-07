@@ -197,7 +197,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>เงินเดือน </label>
-                                <input type="number" name="salary" class="form-control" min="0" max="9999999" step="0.01" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                <input type="number" name="salary" class="form-control" min="0" max="9999999" step="0.01" >
                             </div>
                         </div>
                         <br>

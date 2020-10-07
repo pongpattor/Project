@@ -27,7 +27,7 @@
                                         </tr>
                                         <tr id="row1">
                                             <td><input type="text" class="form-control" name="ReceiveName[]" id="" required></td>
-                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required min="0" max="9999999.99" step="0.01" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required min="0" max="9999999.99" step="0.01" ></td>
                                             <td><button type="button" class="btn btn-success" id="addData"><i class="fa fa-plus"></i></button></td>
                                         </tr>
                                     </tbody>
@@ -64,7 +64,7 @@
             row++;
             var txt = `<tr id="row${row}">
                             <td><input type="text" class="form-control" name="ReceiveName[]" id="" required ></td>
-                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required  min="0"  max="9999999.99"  step="0.01" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required  min="0"  max="9999999.99"  step="0.01"></td>
                             <td><button type="button" id="${row}" class="btn btn-danger btn-remove">
                                     <i class="fa fa-minus"></i>
                                 </button>

@@ -59,7 +59,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowMeat">
                                 <label>เนื้อสัตว์</label><br>
-                                <select name="meatName" id="meatName" class="form-control" required>
+                                <select name="meatName" id="meatName" class="form-control" required disabled>
                                     <option value="" selected disabled>กรุณาเลือกเนื้อสัตว์</option>
                                     <?php foreach ($meat as $row) { ?>
                                         <option value="<?= $row->MEAT_ID ?>"><?= $row->MEAT_NAME ?></option>
@@ -72,14 +72,14 @@
                             <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                 <label>ราคาทุน</label><br>
                                 <input type="number" class="form-control" name="costPrice" id="costPrice" required 
-                                step="0.01" min="0"  max="9999999.99"   onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                step="0.01" min="0"  max="9999999.99"   >
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowTypeProductName">
                                 <label>ราคาขาย</label><br>
                                 <input type="number" class="form-control" name="sellPrice" id="sellPrice" required  
-                                step="0.01" min="0"  max="9999999.99" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                step="0.01" min="0"  max="9999999.99" >
                             </div>
                         </div>
                         <br>
