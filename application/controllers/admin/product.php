@@ -64,15 +64,16 @@ class product extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
-    public function checkProductName(){
-         $productName = $this->input->post('productName');
-         $typeProductGroup = $this->input->post('typeProductGroup');
-         $typeProductName = $this->input->post('typeProductName');
-         $meatName = $this->input->post('meatName');
+    public function checkProductName()
+    {
+        $productName = $this->input->post('productName');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $typeProductName = $this->input->post('typeProductName');
+        $meatName = $this->input->post('meatName');
 
-        $check = $this->product_model->checkProductName($productName,$typeProductGroup,$typeProductName,$meatName);
+        $check = $this->product_model->checkProductName($productName, $typeProductGroup, $typeProductName, $meatName);
         echo $check;
-        }
+    }
 
     public function insertProduct()
     {
@@ -171,6 +172,24 @@ class product extends CI_Controller
         }
     }
 
+    public function checkProductNameUpdate()
+    {
+        $productName = $this->input->post('productName');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $typeProductName = $this->input->post('typeProductName');
+        $meatName = $this->input->post('meatName');
+        $oldName = $this->input->post('oldName');
+        $oldTpGroup = $this->input->post('oldTpGroup');
+        $oldType = $this->input->post('oldType');
+        $oldMeat = $this->input->post('oldMeat');
+        // echo $productName.$typeProductGroup.$typeProductName.$meatName."ค่าเก่า".$oldName.$oldTpGroup.$oldType.$oldMeat;
+        if ($productName == $oldName && $typeProductGroup == $oldTpGroup && $typeProductName == $oldType && $meatName == $oldMeat) {
+            echo 0;
+        } else {
+            $check = $this->product_model->checkProductName($productName, $typeProductGroup, $typeProductName, $meatName);
+            echo $check;
+        }
+    }
 
     public function updateProduct()
     {

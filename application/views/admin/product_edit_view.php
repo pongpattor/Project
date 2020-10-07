@@ -28,12 +28,12 @@
                                         </div>
                                         <div class="col">
                                             <img id="imgPreview" src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMG) ?>" width="150px" height="150px" class="float-right img" style="border-style:inset;" />
-                                            <input type="hidden" name="oldImg" value="<?= $row->PRODUCT_IMG ?>">
-                                            <input type="hidden" name="productID" value="<?= $row->PRODUCT_ID ?>">
-                                            <input type="hidden" name="oldName" value="<?= $row->PRODUCT_NAME ?>">
-                                            <input type="hidden" name="oldType" value="<?= $row->TYPEPRODUCT_ID ?>">
-                                            <input type="hidden" name="oldTpGroup" value="<?= $row->TYPEPRODUCT_GROUP ?>">
-                                            <input type="hidden" name="oldMeat" value="<?= $row->MEAT_FOOD_ID ?>">
+                                            <input type="hidden" name="oldImg" id="oldImg" value="<?= $row->PRODUCT_IMG ?>">
+                                            <input type="hidden" name="productID" id="productID" value="<?= $row->PRODUCT_ID ?>">
+                                            <input type="hidden" name="oldName" id="oldName" value="<?= $row->PRODUCT_NAME ?>">
+                                            <input type="hidden" name="oldType" id="oldType" value="<?= $row->TYPEPRODUCT_ID ?>">
+                                            <input type="hidden" name="oldTpGroup" id="oldTpGroup" value="<?= $row->TYPEPRODUCT_GROUP ?>">
+                                            <input type="hidden" name="oldMeat" id="oldMeat" value="<?= $row->MEAT_FOOD_ID ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -159,35 +159,45 @@
 
 
         function checkProductName() {
+            var productID = $('#productID').val();
             var productName = $('#productName').val();
             var typeProductGroup = $('#typeProductGroup').val();
             var typeProductName = $('#typeProductName').val();
             var meatName = $('#meatName').val();
+            var oldName = $('#oldName').val();
+            var oldTpGroup = $('#oldTpGroup').val();
+            var oldType = $('#oldType').val();
+            var oldMeat = $('#oldMeat').val();
 
-            //    console.log(productName);
-            //    console.log(typeProductGroup);
-            //    console.log(typeProductName);
-            //    console.log(meatName);
+            // console.log(oldName);
+            // console.log(oldTpGroup);
+            // console.log(oldType);
+            // console.log(oldMeat);
 
             $.ajax({
-                url: "<?= site_url("admin/product/checkProductName"); ?>",
+                url: "<?= site_url("admin/product/checkProductNameUpdate"); ?>",
                 method: "POST",
                 data: {
                     productName: productName,
                     typeProductGroup: typeProductGroup,
                     typeProductName: typeProductName,
                     meatName: meatName,
+                    oldName : oldName,
+                    oldTpGroup : oldTpGroup,
+                    oldType : oldType,
+                    oldMeat : oldMeat,
                 },
                 async: false,
                 success: function(data) {
                     if (data == 0) {
                         $('#alertProduct').remove();
-                        $('#btn_regis').removeClass('False');
+                        $('#btn_update').removeClass('False');
                     } else {
-                        $('#btn_regis').addClass('False');
+                        $('#btn_update').addClass('False');
                         $('#alertProduct').remove();
                         $('#rowTypeProductName').append(' <p style="color:red" id="alertProduct">ชื่อสินค้านี้ได้ถูกใช้ไปแล้ว</p>');
                     }
+                    // console.log(data);
                 }
             });
         }
