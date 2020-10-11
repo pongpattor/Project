@@ -96,7 +96,7 @@
                             รับวัตถุดิบ
                         </a>
 
-                        <a class="nav-link collapsed" href="#">
+                        <a class="nav-link collapsed" href="<?= site_url('admin/promotion/');?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-gifts"></i></div>
                             โปรโมชั่น
                         </a>

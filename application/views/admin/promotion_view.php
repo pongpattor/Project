@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg">
             <div class="card-body">
-                <h3 class="d-inline">สินค้า</h3>
+                <h3 class="d-inline">โปรโมชั่น</h3>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <?php
+                        <!-- <?php
                         echo '<div class="row">';
                         echo '<div class="col-12">';
                         echo '<div class="row">';
@@ -42,24 +42,22 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        ?>
+                        ?> -->
                         <div class="table-responsive">
                             <table id="selectedColumn" class="table table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th style="text-align: center;">รหัสสินค้า</th>
-                                        <th style="text-align: center;">รูปภาพ</th>
-                                        <th style="text-align: center;">ชื่อสินค้า</th>
-                                        <th style="text-align: center;">หมวดหมู่สินค้า</th>
-                                        <th style="text-align: center;">ประเภทสินค้า</th>
-                                        <th style="text-align: center;">ราคาทุน</th>
-                                        <th style="text-align: center;">ราคาขาย</th>
+                                        <th style="text-align: center;">รหัสโปรโมชั่น</th>
+                                        <th style="text-align: center;">ชื่อโปรโมชั่น</th>
+                                        <th style="text-align: center;">วันที่เริ่ม</th>
+                                        <th style="text-align: center;">วันที่สิ้นสุด</th>
+                                        <th style="text-align: center;">สถานะ</th>
                                         <th style="text-align: center; ">แก้ไข</th>
                                         <th style="text-align: center;">ลบ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($product as $row) : ?>
+                                    <!-- <?php foreach ($product as $row) : ?>
                                         <tr id="<?= $row->PRODUCT_ID ?>" class=" bgtable" >
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMG); ?>" alt="" width="120px" height="120px"></td>
@@ -81,19 +79,9 @@
                                                 </center>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
+                                    <?php endforeach; ?> -->
                                 </tbody>
                             </table>
-                            <?php if ($links != null) {
-                                echo $links;
-                            } else { ?>
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <li class="page-item active"><a class="page-link " >1</a></li>
-
-                                    </ul>
-                                </nav>
-                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -102,35 +90,3 @@
     </div>
 </div>
 <br>
-<script>
-    $(document).ready(function() {
-
-        $('.delete').click(function() {
-            var id = $(this).parents('tr').attr('id');
-            var result = confirm(`ยืนยันการลบ รหัสสินค้า ${id}`);
-            if (result) {
-                $.ajax({
-                    url: "<?= site_url('admin/product/deleteProduct') ?>",
-                    method: "POST",
-                    data: {
-                        productID: id,
-                    },
-                    success: function(data) {
-                        alert(`ลบ ${id} เสร็จสิ้น`);
-                        window.location.href = "<?= site_url('admin/product/') ?>";
-                    }
-                });
-            }
-        });
-
-        $('.bgtable').mouseover(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "#C6FFF8");
-        });
-        $('.bgtable').mouseout(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "");
-        });
-
-    });
-</script>

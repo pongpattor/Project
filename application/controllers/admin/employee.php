@@ -131,7 +131,7 @@ class employee extends CI_Controller
         // print_r($this->input->post());
         // echo '</pre>';
 
-        echo $this->input->post('gender');
+        // echo $this->input->post('gender');
         $IDposition = $this->input->post('position');
         $idEmployee = $this->genIdEmployee($IDposition);
         $config = array();
