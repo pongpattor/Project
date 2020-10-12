@@ -63,7 +63,7 @@ class position extends CI_Controller
     public function addPosition()
     {
         $data['page'] = 'position_add_view';
-        $data['department'] = $this->crud_model->findall('department');
+        $data['department'] = $this->position_model->showDepartment();
         $this->load->view('admin/main_view', $data);
     }
 
@@ -115,7 +115,7 @@ class position extends CI_Controller
             echo '</script>';
         } else {
             $data['page'] = 'position_edit_view';
-            $data['department'] = $this->crud_model->findall('department');
+            $data['department'] = $this->position_model->showDepartment();
 
 
             if ($data['oldPos'][0]->PERMISSION == "") {

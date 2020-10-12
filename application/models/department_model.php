@@ -8,7 +8,7 @@ class department_model extends CI_Model
     public function Department($search = '', $limit, $offset)
     {
         $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME FROM department 
-        where
+        where DEPARTMENT_ID != 'DEP000' AND
         (
             DEPARTMENT_ID LIKE  ? OR
             DEPARTMENT_NAME LIKE ? 
@@ -33,7 +33,7 @@ class department_model extends CI_Model
     public function countAllDepartment($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM department 
-        where
+        where DEPARTMENT_ID != 'DEP000' AND
         (
             DEPARTMENT_ID LIKE  ? OR
             DEPARTMENT_NAME LIKE ? 

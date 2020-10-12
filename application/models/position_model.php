@@ -8,7 +8,7 @@ class position_model extends CI_Model
     {
         $sql = "SELECT position.POSITION_ID,position.POSITION_NAME,department.DEPARTMENT_NAME FROM position
       LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
-      where
+      where department.DEPARTMENT_ID != 'DEP000' AND
       (
           position.POSITION_ID LIKE  ? OR
           position.POSITION_NAME LIKE ? OR
@@ -36,7 +36,7 @@ class position_model extends CI_Model
     {
         $sql = "SELECT COUNT(*) as cnt FROM position
       LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
-      where
+      where department.DEPARTMENT_ID != 'DEP000' AND
       (
           position.POSITION_ID LIKE  ? OR
           position.POSITION_NAME LIKE ? OR
@@ -58,6 +58,11 @@ class position_model extends CI_Model
         foreach ($query->result() as $row) {
             return $row->cnt;
         }
+    }
+
+    public function showDepartment(){
+        $sql = "SELECT * FROM department WHERE DEPARTMENT_ID != 'DEP000' ";
+        return $this->db->query($sql)->result();
     }
 
     public function maxIdPosition()

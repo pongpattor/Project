@@ -60,10 +60,11 @@ class employee extends CI_Controller
 
     public function addEmployee()
     {
+        $this->load->model('position_model');
         $data['nationality'] = $this->crud_model->findall('nationality');
         $data['religion'] = $this->crud_model->findall('religion');
         $data['province'] = $this->crud_model->findall('province');
-        $data['department'] = $this->crud_model->findall('department');
+        $data['department'] = $this->position_model->showDepartment();
         $data['page'] = 'employee_add_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -229,6 +230,7 @@ class employee extends CI_Controller
 
     public function editEmployee()
     {
+        $this->load->model('position_model');
         $id = $this->input->get('empID');
         $data['employee'] = $this->employee_model->editEmp($id);
         // echo '<pre>';
@@ -249,7 +251,7 @@ class employee extends CI_Controller
             $data['district'] = $this->crud_model->findwhere('district', 'D_AMPHUR_ID', $amphur_id);
             $district_id =  $data['employee']['0']->DISTRICT_ID;
             $data['postcode'] = $this->crud_model->findwhere('district', 'DISTRICT_ID', $district_id);
-            $data['department'] = $this->crud_model->findall('department');
+            $data['department'] = $this->position_model->showDepartment();
             $department_id = $data['employee']['0']->DEPARTMENT_ID;
             $data['position'] = $this->crud_model->findwhere('position', 'DEPT_ID', $department_id);
             $data['phone'] = $this->employee_model->PhoneEmployee($id);
