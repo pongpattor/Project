@@ -237,10 +237,10 @@ class employee extends CI_Controller
         // print_r($data['employee']);
         // echo '</pre>';
         if ($data['employee'] == null) {
-                echo '<script>';
-                echo 'alert("ไม่มีข้อมูลพนักงานรหัส '.$id.'");';
-                echo 'location.href= "' . site_url('admin/employee/') . '"';
-                echo '</script>';
+            echo '<script>';
+            echo 'alert("ไม่มีข้อมูลพนักงานรหัส ' . $id . '");';
+            echo 'location.href= "' . site_url('admin/employee/') . '"';
+            echo '</script>';
         } else {
             $data['nationality'] = $this->crud_model->findall('nationality');
             $data['religion'] = $this->crud_model->findall('religion');
@@ -259,13 +259,11 @@ class employee extends CI_Controller
 
             $this->load->view('admin/main_view', $data);
         }
-
-       
-   
     }
 
     public function updateEmp()
     {
+        $check = true;
         $idEmployee = $this->input->post('idEmp');
         if (empty($_FILES['imgEmp']['name'])) {
             $employeeDetail = array(
@@ -298,6 +296,7 @@ class employee extends CI_Controller
                 echo 'alert("กรุณาอัพโหลดรูปเท่านั้น");';
                 echo 'window.history.back();';
                 echo '</script>';
+                $check = false;
             } else {
                 $oldImg = $this->input->post('oldImg');
                 unlink('./assets/image/employee/' . $oldImg);
@@ -322,20 +321,22 @@ class employee extends CI_Controller
             }
         }
 
-        $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmployee);
-        $tel = $this->input->post('tel');
-        $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmployee);
+        if ($check) {
+            $this->crud_model->update('employee', $employeeDetail, 'ID', $idEmployee);
+            $tel = $this->input->post('tel');
+            $this->crud_model->delete('employee_telephone', 'EMPLOYEE_ID', $idEmployee);
 
-        foreach ($tel as $phone) {
-            $data = array(
-                'PHONE' => $phone,
-                'EMPLOYEE_ID' => $idEmployee
-            );
-            $this->crud_model->insert('employee_telephone', $data);
+            foreach ($tel as $phone) {
+                $data = array(
+                    'PHONE' => $phone,
+                    'EMPLOYEE_ID' => $idEmployee
+                );
+                $this->crud_model->insert('employee_telephone', $data);
+            }
+
+
+            redirect(site_url('admin/employee/'));
         }
-
-
-        redirect(site_url('admin/employee/'));
     }
 
 

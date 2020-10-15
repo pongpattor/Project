@@ -13,7 +13,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/product/'); ?>" method="GET">
+                <form action="<?= site_url('admin/promotion/'); ?>" method="GET">
                     <div class="row">
                         <div class="col-6 input-group">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
@@ -22,14 +22,14 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="<?= site_url('admin/product/addProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/promotion/addPromotion') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <!-- <?php
+                        <?php
                         echo '<div class="row">';
                         echo '<div class="col-12">';
                         echo '<div class="row">';
@@ -42,13 +42,14 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        ?> -->
+                        ?>
                         <div class="table-responsive">
                             <table id="selectedColumn" class="table table-bordered table-sm" cellspacing="0" width="100%">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสโปรโมชั่น</th>
                                         <th style="text-align: center;">ชื่อโปรโมชั่น</th>
+                                        <th style="text-align: center;">ส่วนลด %</th>
                                         <th style="text-align: center;">วันที่เริ่ม</th>
                                         <th style="text-align: center;">วันที่สิ้นสุด</th>
                                         <th style="text-align: center;">สถานะ</th>
@@ -57,19 +58,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <?php foreach ($product as $row) : ?>
-                                        <tr id="<?= $row->PRODUCT_ID ?>" class=" bgtable" >
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_ID; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMG); ?>" alt="" width="120px" height="120px"></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_GROUP; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_COSTPRICE; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_SELLPRICE; ?></td>
+                                    <?php foreach ($promotion as $row) : ?>
+                                        <tr id="<?= $row->PROMOTION_ID ?>" class=" bgtable">
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTION_ID ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTION_NAME; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTION_DISCOUNT_PERCENT; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTION_START; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTION_END; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?php if ($row->PROMOTION_STATUS == 0) {
+                                                                                                        echo 'รอดำเนินการ';
+                                                                                                    } else if ($row->PROMOTION_STATUS == 1) {
+                                                                                                        echo 'กำลังใช้งาน';
+                                                                                                    } else if ($row->PROMOTION_STATUS == 2) {
+                                                                                                        echo 'หมดอายุการใช้งาน';
+                                                                                                    } else {
+                                                                                                        echo 'เลิกใช้งาน';
+                                                                                                    } ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
-                                                    <form action="<?= site_url('admin/product/editProduct') ?>" method="get">
-                                                        <button name="productID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->PRODUCT_ID ?>"><i class="fa fa-edit"></i></button>
+                                                    <form action="<?php echo site_url('admin/promotion/editpromotion')
+                                                                    ?>" method="get">
+                                                        <button name="promotionID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->PROMOTION_ID ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
                                             </td>
@@ -79,9 +88,19 @@
                                                 </center>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?> -->
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <?php if ($links != null) {
+                                echo $links;
+                            } else { ?>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item active"><a class="page-link " >1</a></li>
+
+                                    </ul>
+                                </nav>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -90,3 +109,23 @@
     </div>
 </div>
 <br>
+<script>
+    $('.delete').click(function(e) {
+        var ID = $(this).parents("tr").attr("id");
+        var result = confirm(`ยืนยันการลบโปรโมชั่น รหัส ${ID}`);
+        if (result) {
+            $.ajax({
+                url: "<?= site_url('admin/promotion/deletePromotion') ?>",
+                method: "POST",
+                data: {
+                    promotionID: ID
+                },
+                success: function() {
+                    alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
+                    window.location.href = "<?= site_url('admin/promotion/') ?>";
+
+                }
+            });
+        }
+    });
+</script>

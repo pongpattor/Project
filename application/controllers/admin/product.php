@@ -196,6 +196,7 @@ class product extends CI_Controller
         // echo '<pre>';
         // print_r($this->input->post());
         // echo '</pre>';
+        $check = true;
 
         $productID = $this->input->post('productID');
         // echo $productID;
@@ -222,6 +223,7 @@ class product extends CI_Controller
                 echo 'alert("กรุณาอัพโหลดรูปเท่านั้น");';
                 echo 'window.history.back();';
                 echo '</script>';
+                $check = false;
             } else {
                 $oldImg = $this->input->post('oldImg');
                 unlink('./assets/image/product/' . $oldImg);
@@ -236,49 +238,40 @@ class product extends CI_Controller
             }
         }
 
-        $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
+        if ($check) {
+            $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
 
 
-        if ($oldProductGroup == 'อาหาร') {
-            $this->crud_model->delete('food', 'PRODUCT_FOOD_ID', $productID);
-        } else if ($oldProductGroup == 'เครื่องดื่ม') {
-            $this->crud_model->delete('drink', 'PRODUCT_DRINK_ID', $productID);
-        } else if ($oldProductGroup == 'ท็อปปิ้ง') {
-            $this->crud_model->delete('topping', 'PRODUCT_TOPPING_ID', $productID);
+            if ($oldProductGroup == 'อาหาร') {
+                $this->crud_model->delete('food', 'PRODUCT_FOOD_ID', $productID);
+            } else if ($oldProductGroup == 'เครื่องดื่ม') {
+                $this->crud_model->delete('drink', 'PRODUCT_DRINK_ID', $productID);
+            } else if ($oldProductGroup == 'ท็อปปิ้ง') {
+                $this->crud_model->delete('topping', 'PRODUCT_TOPPING_ID', $productID);
+            }
+
+            if ($typeProductGroup == 'อาหาร') {
+
+                $foodDetail = array(
+                    'PRODUCT_FOOD_ID' => $productID,
+                    'MEAT_FOOD_ID' => $this->input->post('meatName'),
+                );
+                $this->crud_model->insert('food', $foodDetail);
+            } else if ($typeProductGroup == 'เครื่องดื่ม') {
+                $drinkDetail = array(
+                    'PRODUCT_DRINK_ID' => $productID,
+                );
+                $this->crud_model->insert('drink', $drinkDetail);
+            } else if ($typeProductGroup == 'ท็อปปิ้ง') {
+                $ToppingDetail = array(
+                    'PRODUCT_TOPPING_ID' => $productID,
+                );
+                $this->crud_model->insert('topping', $ToppingDetail);
+            }
+
+
+            redirect(site_url('admin/product/'));
         }
-
-        if ($typeProductGroup == 'อาหาร') {
-
-            $foodDetail = array(
-                'PRODUCT_FOOD_ID' => $productID,
-                'MEAT_FOOD_ID' => $this->input->post('meatName'),
-            );
-            $this->crud_model->insert('food', $foodDetail);
-        } else if ($typeProductGroup == 'เครื่องดื่ม') {
-            $drinkDetail = array(
-                'PRODUCT_DRINK_ID' => $productID,
-            );
-            $this->crud_model->insert('drink', $drinkDetail);
-        } else if ($typeProductGroup == 'ท็อปปิ้ง') {
-            $ToppingDetail = array(
-                'PRODUCT_TOPPING_ID' => $productID,
-            );
-            $this->crud_model->insert('topping', $ToppingDetail);
-        }
-        // echo '<pre>';
-        // print_r($productDetail);
-        // echo '</pre>';
-        // echo '<pre>';
-        // print_r($foodDetail);
-        // echo '</pre>';
-        // echo '<pre>';
-        // print_r($drinkDetail);
-        // echo '</pre>';
-        // echo '<pre>';
-        // print_r($ToppingDetail);
-        // echo '</pre>';
-
-        redirect(site_url('admin/product/'));
     }
 
     public function deleteProduct()
