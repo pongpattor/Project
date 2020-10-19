@@ -158,11 +158,11 @@
 
 
 
-        $('#btn_regis').on('click', function(e) {
-            e.preventDefault();
-            var promotionName = $('#promotionName').val();
-            var dateStart = $('#dateStart').val();
-            var dateEnd = $('#dateEnd').val();
-        });
+        // $('#btn_regis').on('click', function(e) {
+        //     e.preventDefault();
+        //     var promotionName = $('#promotionName').val();
+        //     var dateStart = $('#dateStart').val();
+        //     var dateEnd = $('#dateEnd').val();
+        // });
     });
 </script>

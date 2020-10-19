@@ -194,7 +194,7 @@ class employee_model extends CI_Model
     }
 
     //Login
-    public function login($username,$password)
+    public function login($username, $password)
     {
         $sql = " SELECT employee.ID,employee.FIRSTNAME,employee.LASTNAME,position.PERMISSION FROM employee 
         LEFT JOIN position ON employee.POSITION = position.POSITION_ID
@@ -208,7 +208,8 @@ class employee_model extends CI_Model
     }
 
 
-    public function newSession($employeeID){
+    public function newSession($employeeID)
+    {
         $sql = "SELECT position.PERMISSION FROM employee LEFT JOIN position ON employee.POSITION = position.POSITION_ID
         WHERE ID = '$employeeID'";
         return $this->db->query($sql)->result();
@@ -272,5 +273,26 @@ class employee_model extends CI_Model
             $output .= '<option value="' . $row->POSITION_ID . '">' . $row->POSITION_NAME . '</option>';
         }
         return $output;
+    }
+
+    public function checkOldPass($empID)
+    {
+        $sql = "SELECT PASSWORD as pass FROM employee WHERE ID ='$empID'";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->pass;
+        }
+    }
+
+    public function rePassword($empID, $newPass)
+    {
+        $sql = "UPDATE employee SET PASSWORD = ? WHERE ID = ?";
+        $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($newPass),
+                $this->db->escape_like_str($empID),
+            )
+        );
     }
 }

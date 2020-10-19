@@ -67,7 +67,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_GROUP; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_COSTPRICE; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_SELLPRICE; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->PRODUCT_SELLPRICE,2); ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
                                                     <form action="<?= site_url('admin/product/editProduct') ?>" method="get">

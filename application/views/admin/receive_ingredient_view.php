@@ -60,7 +60,7 @@
                                         <tr id="<?= $row->RECEIVE_INGREDIENT_ID ?>" class="bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->RECEIVE_INGREDIENT_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DATE_AT . "  " . $row->TIME_AT; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->TOTAL_PRICE; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?=  number_format( $row->TOTAL_PRICE,2) ; ?></td>
                                             <td>
                                                 <center>
                                                     <form action="<?= site_url('admin/receiveIngredient/editReceiveIngredient') ?>" method="get">

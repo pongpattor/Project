@@ -30,10 +30,30 @@ class admin extends CI_Controller
        redirect(site_url('admin/login'));
     }
 
+    public function repassword(){
+        $data['page'] = 'repassword';
+        $this->load->view('admin/main_view',$data);
+    }
+
+    public function checkOldPass(){
+    //    $oldpass = $this->input->post('oldpass');
+       $empID = $this->input->post('empID');
+       $pass = $this->employee_model->checkOldPass($empID);
+        echo $pass;
+
+    }
+
+    public function repass(){
+        $newPass = $this->input->post('newPass');
+        $empID = $this->input->post('empID');
+        $this->employee_model->rePassword($empID, $newPass);
+        return redirect(site_url('admin/admin/home'));
+    }
+
     public function test()
     {
-        $data['hello'] = $this->employee_model->searchDepartment('30');
-        print_r($data['hello']);
+        // $data['hello'] = $this->employee_model->searchDepartment('30');
+        // print_r($data['hello']);
         // $data['page'] = 'Test';
         // $this->load->view('admin/main_view', $data);
     }
