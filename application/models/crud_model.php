@@ -37,8 +37,6 @@ class crud_model extends CI_Model
            return $this->db->query($sql)->result();
     }
 
-
-
     public function countAll($table)
     {
            $sql = "SELECT COUNT(*) as row FROM $table";

@@ -140,10 +140,18 @@
         }
 
         $('#btn_update').on('click', function() {
-            chkReceiveName();
-            if ($('#btn_update').hasClass('nameFalse')) {
-                // console.log('btn_regis')
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            if (confirm('ยืนยันการแก้ไขข้อมูลรับวัตถุดิบ')) {
+                chkReceiveName();
+                if ($('#btn_update').hasClass('nameFalse')) {
+                    // console.log('btn_regis')
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                }
+                else{
+                    alert('แก้ไขข้อมูลรับวัตถุดิบเสร็จสิ้น');
+                }
+            }
+            else{
                 return false;
             }
         });

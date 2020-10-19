@@ -59,7 +59,7 @@
                                         <tr id="<?= $row->POSITION_ID ?>" class=" bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?php echo $row->POSITION_NAME; ?></td>
                                             <td>
                                                 <center>
                                                     <form action="<?= site_url('admin/position/editPosition') ?>" method="get">

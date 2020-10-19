@@ -156,27 +156,13 @@
             }
         });
 
-        $('#addProduct').on('click', function() {
 
+
+        $('#btn_regis').on('click', function(e) {
+            e.preventDefault();
             var promotionName = $('#promotionName').val();
-            var promotionDiscount = $('#promotionDiscount').val();
-            var typePromotion = $('#typePromotion').val();
             var dateStart = $('#dateStart').val();
             var dateEnd = $('#dateEnd').val();
-            $.ajax({
-                url: "<?= site_url('admin/promotion/setPromotionDetail') ?>",
-                method: "POST",
-                data: {
-                    promotionName: promotionName,
-                    promotionDiscount: promotionDiscount,
-                    typePromotion: typePromotion,
-                    dateStart: dateStart,
-                    dateEnd: dateEnd
-                },
-                success: function(data) {
-                    console.log(data);
-                }
-            });
         });
     });
 </script>

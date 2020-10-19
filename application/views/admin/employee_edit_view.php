@@ -238,7 +238,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>เงินเดือน </label>
-                                    <input type="number" name="salary" class="form-control" min="0" max="9999999.99" step="0.01" value="<?= $row->SALARY ?>" >
+                                    <input type="number" name="salary" class="form-control" min="0" max="9999999.99" step="0.01" value="<?= $row->SALARY ?>">
                                 </div>
                             </div>
                             <br><br>
@@ -400,13 +400,22 @@
             // e.preventDefault();
             chkiIdCard();
             chktel();
-            if ($('#btn_update').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            } else if ($('#btn_update').hasClass('telFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            if (confirm('ยืนยันการแก้ไขข้อมูลพนักงาน')) {
+                if ($('#btn_update').hasClass('idFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                } else if ($('#btn_update').hasClass('telFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                } else {
+                    alert('แก้ไขข้อมูลพนักงานเสร็จสิ้น');
+                }
+            }
+            else{
                 return false;
             }
+
+
 
         });
 

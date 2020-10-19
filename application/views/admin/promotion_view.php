@@ -96,7 +96,7 @@
                             } else { ?>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
-                                        <li class="page-item active"><a class="page-link " >1</a></li>
+                                        <li class="page-item active"><a class="page-link ">1</a></li>
 
                                     </ul>
                                 </nav>
@@ -110,22 +110,32 @@
 </div>
 <br>
 <script>
-    $('.delete').click(function(e) {
-        var ID = $(this).parents("tr").attr("id");
-        var result = confirm(`ยืนยันการลบโปรโมชั่น รหัส ${ID}`);
-        if (result) {
-            $.ajax({
-                url: "<?= site_url('admin/promotion/deletePromotion') ?>",
-                method: "POST",
-                data: {
-                    promotionID: ID
-                },
-                success: function() {
-                    alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
-                    window.location.href = "<?= site_url('admin/promotion/') ?>";
+    $(document).ready(function() {
+        $('.delete').click(function(e) {
+            var ID = $(this).parents("tr").attr("id");
+            var result = confirm(`ยืนยันการลบโปรโมชั่น รหัส ${ID}`);
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/promotion/deletePromotion') ?>",
+                    method: "POST",
+                    data: {
+                        promotionID: ID
+                    },
+                    success: function() {
+                        alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
+                        window.location.href = "<?= site_url('admin/promotion/') ?>";
 
-                }
-            });
-        }
+                    }
+                });
+            }
+        });
+        $('.bgtable').mouseover(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "#C6FFF8");
+        });
+        $('.bgtable').mouseout(function() {
+            var ID = $(this).attr("ID");
+            $('#' + ID).css("background-color", "");
+        });
     });
 </script>

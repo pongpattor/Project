@@ -49,10 +49,10 @@
 
         function chkName() {
             var deptName = $('#department_name').val();
-             $.ajax({
+            $.ajax({
                 url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
                 method: "POST",
-                async : false,
+                async: false,
                 data: {
                     departmentName: deptName
                 },
@@ -73,27 +73,26 @@
 
 
 
-            $('#btn_regis').on('click', function() {
-                 chkName();
-                if ($('#btn_regis').hasClass('idFalse')) {
-                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                    return false;
-                }
-                else{
-                    alert('เพิ่มแผนกเรียบร้อย');
-                }
-            });
+        $('#btn_regis').on('click', function() {
+            chkName();
+            if ($('#btn_regis').hasClass('idFalse')) {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                return false;
+            } else {
+                alert('เพิ่มแผนกเสร็จสิ้น');
+            }
+        });
 
-            $('#btn_cancel').on('click',function(){
-                var deptName = $('#department_name').val();
-                if(deptName != ""){
-                    confirm("คุณต้องการยกเลิกการเพิ่มข้อมูลใช่หรือไม่?");
-                }
-            })
-            
+        // $('#btn_cancel').on('click', function() {
+        //     var deptName = $('#department_name').val();
+        //     if (deptName != "") {
+        //         confirm("คุณต้องการยกเลิกการเพิ่มข้อมูลใช่หรือไม่?");
+        //     }
+        // })
 
 
-      
+
+
 
 
     });

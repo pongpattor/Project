@@ -24,7 +24,7 @@
                                     <input type="text" name="positionName" class="form-control" id="positionName" value="<?= $row->POSITION_NAME ?>" required>
                                     <input type="hidden" name="oldPositionName" id="oldPositionName" value="<?= $row->POSITION_NAME ?>">
                                     <input type="hidden" name="positionID" value="<?= $row->POSITION_ID ?>">
-                                    <input type="hidden" name="oldDepartment" id="oldDepartment" value="<?=$row->DEPT_ID?>">
+                                    <input type="hidden" name="oldDepartment" id="oldDepartment" value="<?= $row->DEPT_ID ?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -164,8 +164,8 @@
             var positionName = $('#positionName').val();
             var oldname = $('#oldPositionName').val();
             var departmentId = $('#departmentID').val();
-            var oldDepartment =   $('#oldDepartment').val();
-             $.ajax({
+            var oldDepartment = $('#oldDepartment').val();
+            $.ajax({
                 url: "<?= site_url('admin/position/checkPositionNameUpdate') ?>",
                 method: "POST",
                 async: false,
@@ -173,7 +173,7 @@
                     departmentId: departmentId,
                     positionName: positionName,
                     oldPositionName: oldname,
-                    oldDepartment :oldDepartment
+                    oldDepartment: oldDepartment
                 },
                 success: function(data) {
                     // console.log(data);
@@ -191,11 +191,17 @@
 
         $('#btn_update').on('click', function() {
             chkName();
-            if ($('#btn_update').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            if (confirm('ยืนยันการแก้ไขข้อมูลตำแหน่ง')) {
+                if ($('#btn_update').hasClass('idFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                } else {
+                    alert('แก้ไขตำแหน่งเรียบร้อย');
+                }
+
+            }
+            else{
                 return false;
-            } else {
-                alert('แก้ไขตำแหน่งเรียบร้อย');
             }
 
         });

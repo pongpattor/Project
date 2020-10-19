@@ -182,10 +182,10 @@
                     typeProductGroup: typeProductGroup,
                     typeProductName: typeProductName,
                     meatName: meatName,
-                    oldName : oldName,
-                    oldTpGroup : oldTpGroup,
-                    oldType : oldType,
-                    oldMeat : oldMeat,
+                    oldName: oldName,
+                    oldTpGroup: oldTpGroup,
+                    oldType: oldType,
+                    oldMeat: oldMeat,
                 },
                 async: false,
                 success: function(data) {
@@ -203,11 +203,20 @@
         }
 
         $('#btn_update').on('click', function() {
-            checkProductName();
-            if ($('#btn_update').hasClass('False')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            if (confirm('ยืนยันการแก้ไขข้อมูลสินค้า')) {
+                checkProductName();
+                if ($('#btn_update').hasClass('False')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                }
+                else{
+                    alert('แก้ไขข้อมูลสินค้าเสร็จสิ้น');
+                }
+            }
+            else{
                 return false;
             }
+
         });
 
 

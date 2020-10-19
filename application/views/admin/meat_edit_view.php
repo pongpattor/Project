@@ -71,13 +71,13 @@
 
         function chkMeat() {
             var meatName = $('#meatName').val();
-            var oldName  = $('#oldName').val();
+            var oldName = $('#oldName').val();
             $.ajax({
                 url: "<?= site_url('admin/meat/updateCheckMeatName') ?>",
                 method: "POST",
                 data: {
                     meatName: meatName,
-                    oldName : oldName
+                    oldName: oldName
                 },
                 async: false,
                 success: function(data) {
@@ -97,12 +97,19 @@
 
         $('#btn_update').on('click', function() {
 
-            chkMeat();
-            if ($('#btn_update').hasClass('meatFalse')) {
-                alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
+            if (confirm('ยืนยันการแก้ไขข้อมูลเนื้อสัตว์')) {
+                chkMeat();
+                if ($('#btn_update').hasClass('meatFalse')) {
+                    alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
+                    return false;
+                }
+                else{
+                    alert('แก้ไขข้อมูลเนื้อสัตว์เสร็จสิ้น');
+                }
+            }
+            else{
                 return false;
             }
-
         });
 
     });

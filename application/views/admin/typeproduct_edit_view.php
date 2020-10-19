@@ -112,11 +112,20 @@
 
 
         $('#btn_update').on('click', function() {
-            chkTypeName();
-            if ($('#btn_update').hasClass('typeFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            if (confirm('ยืนยันการแก้ไขข้อมูลประเภทสินค้า')) {
+                chkTypeName();
+                if ($('#btn_update').hasClass('typeFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                }
+                else{
+                    alert('แก้ไขข้อมูลประเภทสินค้าเสร็จสิ้น');
+                }
+            }
+            else{
                 return false;
             }
+
         });
     });
 </script>

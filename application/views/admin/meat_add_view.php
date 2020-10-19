@@ -50,7 +50,7 @@
 
 
 
-    function chkMeat() {
+        function chkMeat() {
             var meatName = $('#meatName').val();
             $.ajax({
                 url: "<?= site_url('admin/meat/checkMeatName') ?>",
@@ -74,11 +74,13 @@
             });
         };
 
-        $('#btn_regis').on('click',function() {
+        $('#btn_regis').on('click', function() {
             chkMeat();
             if ($('#btn_regis').hasClass('meatFalse')) {
                 alert('ชื่อเนื้อสัตว์นี้ได้ถูกใช้ไปแล้ว');
                 return false;
+            } else {
+                alert('เพิ่มข้อมูลเนื้อสัตว์เสร็จสิ้น');
             }
 
         });

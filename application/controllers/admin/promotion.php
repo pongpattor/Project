@@ -84,7 +84,13 @@ class promotion extends CI_Controller
         // print_r($this->input->post('product'));
         // echo '</pre>';
         $allProduct = $this->promotion_model->CountAllProduct();
-        $amount =  count($product);
+
+        if ($product == null) {
+            $amount = 0;
+        } else {
+            $amount =  count($product);
+        }
+
 
         if ($allProduct ==  $amount) {
             $typePromotion = 0;
@@ -106,15 +112,18 @@ class promotion extends CI_Controller
             'PROMOTION_STATUS' =>  $status,
         );
         $this->crud_model->insert('promotion', $promotion_detail);
-        if ($typePromotion == 1) {
-            for ($i = 0; $i < count($product); $i++) {
-                $promotionDetail_product = array(
-                    'DETAIL_PROMOTION_NUMBER' => $i,
-                    'DETAIL_PROMOTION_PRODUCT' => $product[$i],
-                    'DETAIL_PROMOTION_ID' =>  $promotionID,
 
-                );
-                $this->crud_model->insert('promotiondetail', $promotionDetail_product);
+        if ($typePromotion == 1) {
+            if ($amount != 0) {
+                for ($i = 0; $i < count($product); $i++) {
+                    $promotionDetail_product = array(
+                        'DETAIL_PROMOTION_NUMBER' => $i,
+                        'DETAIL_PROMOTION_PRODUCT' => $product[$i],
+                        'DETAIL_PROMOTION_ID' =>  $promotionID,
+
+                    );
+                    $this->crud_model->insert('promotiondetail', $promotionDetail_product);
+                }
             }
         }
 
@@ -183,11 +192,15 @@ class promotion extends CI_Controller
         // print_r($product);
         // echo '</pre>';
         $allProduct = $this->promotion_model->CountAllProduct();
-        $amount =  count($product);
+        if ($product == null) {
+            $amount = 0;
+        } else {
+            $amount =  count($product);
+        }
         if ($allProduct ==  $amount) {
             $typePromotion = 0;
         }
-        echo $typePromotion;
+        // echo $typePromotion;
         $datenow = date('Y-m-d');
         if ($datenow >=  $dateStart && $datenow <=  $dateEnd) {
             $status = 1;
@@ -205,21 +218,24 @@ class promotion extends CI_Controller
         $this->crud_model->delete('promotiondetail', 'DETAIL_PROMOTION_ID', $promotionID);
 
         if ($typePromotion == 1) {
-            for ($i = 0; $i < count($product); $i++) {
-                $promotionDetail_product = array(
-                    'DETAIL_PROMOTION_NUMBER' => $i,
-                    'DETAIL_PROMOTION_PRODUCT' => $product[$i],
-                    'DETAIL_PROMOTION_ID' =>  $promotionID,
+            if ($amount != 0) {
+                for ($i = 0; $i < count($product); $i++) {
+                    $promotionDetail_product = array(
+                        'DETAIL_PROMOTION_NUMBER' => $i,
+                        'DETAIL_PROMOTION_PRODUCT' => $product[$i],
+                        'DETAIL_PROMOTION_ID' =>  $promotionID,
 
-                );
-                $this->crud_model->insert('promotiondetail', $promotionDetail_product);
+                    );
+                    $this->crud_model->insert('promotiondetail', $promotionDetail_product);
+                }
             }
         }
 
         return redirect(site_url('admin/promotion/'));
     }
 
-    public function deletePromotion(){
+    public function deletePromotion()
+    {
         $promotionID = $this->input->post('promotionID');
         $this->promotion_model->deletePromotion($promotionID);
     }

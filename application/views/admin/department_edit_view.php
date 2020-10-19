@@ -79,22 +79,29 @@
 
 
         $('#btn_update').on('click', function() {
-            chkName();
-            if ($('#btn_update').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            } else {
-                alert('แก้ไขเสร็จสิ้น');
+
+            if (confirm('ยืนยันการแก้ไขข้อมูลแผนก')) {
+                chkName();
+                if ($('#btn_update').hasClass('idFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                } else {
+                    alert('แก้ไขเสร็จสิ้น');
+                }
             }
+            else{
+                return false;
+            }
+
         });
 
-        $('#btn_cancel').on('click', function() {
-            var deptName = $('#department_name').val();
-            var oldDeptName = $('#oldDepartment_name').val();
-            if (deptName != oldDeptName) {
-                confirm("คุณต้องการยกเลิกการแก้ไขใช่หรือไม่?");
-            }
-        });
+        // $('#btn_cancel').on('click', function() {
+        //     var deptName = $('#department_name').val();
+        //     var oldDeptName = $('#oldDepartment_name').val();
+        //     if (deptName != oldDeptName) {
+        //         confirm("คุณต้องการยกเลิกการแก้ไขใช่หรือไม่?");
+        //     }
+        // });
 
 
 

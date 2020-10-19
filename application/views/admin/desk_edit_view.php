@@ -33,7 +33,7 @@
                                     <div class="col-sm col-md col-xl-6">
                                         <label>สถานะ</label><br>
                                         <select name="status" class="form-control">
-                                            <option value=""  disabled>กรุณาเลือกสถานะ</option>
+                                            <option value="" disabled>กรุณาเลือกสถานะ</option>
                                             <option value="0" <?php if ($row->DESK_STATUS == 0) echo 'selected'; ?>>ว่าง</option>
                                             <option value="1" <?php if ($row->DESK_STATUS == 1) echo 'selected'; ?>>ไม่ว่าง</option>
                                             <option value="2" <?php if ($row->DESK_STATUS == 2) echo 'selected'; ?>>ปรับปรุง</option>
@@ -101,11 +101,21 @@
 
         $('#btn_update').on('click', function() {
 
-            chkDesk();
-            if ($('#btn_update').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            if (confirm('ยืนยันการแก้ไขข้อมูลโต๊ะ')) {
+                chkDesk();
+                if ($('#btn_update').hasClass('idFalse')) {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    return false;
+                }
+                else{
+                    alert('แก้ไขข้อมูลโต๊ะเสร็จสิ้น');
+
+                }
+            }
+            else{
                 return false;
             }
+
         });
     });
 </script>
