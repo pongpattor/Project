@@ -407,9 +407,7 @@
                 } else if ($('#btn_update').hasClass('telFalse')) {
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;
-                } else {
-                    alert('แก้ไขข้อมูลพนักงานเสร็จสิ้น');
-                }
+                } 
             }
             else{
                 return false;

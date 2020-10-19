@@ -195,9 +195,7 @@
                 if ($('#btn_update').hasClass('idFalse')) {
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;
-                } else {
-                    alert('แก้ไขตำแหน่งเรียบร้อย');
-                }
+                } 
 
             }
             else{

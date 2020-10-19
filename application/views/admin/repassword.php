@@ -99,11 +99,7 @@
                 $('#btn_regis').removeClass('newPassFalse');
                 $('#alertNewPass').remove();
             }
-            // if (newPass.length < 8 && reNewPass.length < 8) {
-            //     $('#btn_regis').addClass('RenewPassFalse');
-            // } else {
-            //     $('#btn_regis').removeClass('RenewPassFalse');
-            // }
+          
         }
 
         $('#btn_regis').on('click', function() {

@@ -85,9 +85,7 @@
                 if ($('#btn_update').hasClass('idFalse')) {
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;
-                } else {
-                    alert('แก้ไขเสร็จสิ้น');
-                }
+                } 
             }
             else{
                 return false;

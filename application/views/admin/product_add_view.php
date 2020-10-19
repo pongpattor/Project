@@ -169,10 +169,7 @@
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                 return false;
             }
-            else{
-                alert('เพิ่มข้อมูลสินค้าเสร็จสิ้น');
-
-            }
+            
         });
 
         function readURL(input) {

@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/receiveIngredient/InsertReceiveIngredient') ?>" method="POST">
+                    <form action="<?= site_url('admin/receiveIngredient/InsertReceiveIngredient') ?>" method="POST" id="formReceive">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">
                                 <table style="width:100%;" id="tableReceive">
@@ -26,8 +26,8 @@
                                             <td>ราคาวัตถุดิบ</td>
                                         </tr>
                                         <tr id="row1">
-                                            <td><input type="text" class="form-control" name="ReceiveName[]" id="" required></td>
-                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required min="0" max="9999999.99" step="0.01" ></td>
+                                            <td><input type="text" class="form-control receive" name="ReceiveName[]" id="" required></td>
+                                            <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required min="0" max="9999999.99" step="0.01"></td>
                                             <td><button type="button" class="btn btn-success" id="addData"><i class="fa fa-plus"></i></button></td>
                                         </tr>
                                     </tbody>
@@ -59,11 +59,58 @@
 
 <script>
     $(document).ready(function() {
+
+        function chkReceiveName() {
+            var nameList = [];
+            var breaker;
+
+            $('.receive').each(function() {
+                if ($(this).val == "") {
+                    nameList.push($(this).val())
+                } else {
+                    nameList.push($(this).val())
+                }
+            });
+            // console.log(nameList);
+            for (var i = 0; i < nameList.length; i++) {
+                //  console.log(nameList[i]);
+                for (var j = 0; j < nameList.length; j++) {
+                    // console.log(nameList[j]);
+                    if (i == j) {
+                        // console.log('continue');
+                        continue;
+                    }
+                    if (nameList[i] == nameList[j]) {
+                        console.log(i + " :" + nameList[i] + ": " + nameList[j] + ': Found same');
+                        $('#alertReceive').remove();
+                        $('#tableReceive').append('<p style="color:red" id="alertReceive">กรุณาอย่ากรอกรายการรับซ้ำ</p>');
+                        $('#btn_regis').addClass('nameFalse');
+                        breaker = 1;
+                        console.log(breaker);
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    console.log(breaker);
+                    // console.log('if break');
+                    break;
+                } else {
+                    console.log(breaker);
+                    // console.log('else break');
+                    $('#btn_regis').removeClass('nameFalse');
+                    $('#btn_regis').addClass('nameTrue');
+                    $('#alertReceive').remove();
+                }
+            }
+        }
+
         var row = 1;
         $('#addData').click(function() {
+
             row++;
+            isClick = 1;
             var txt = `<tr id="row${row}">
-                            <td><input type="text" class="form-control" name="ReceiveName[]" id="" required ></td>
+                            <td><input type="text" class="form-control receive" name="ReceiveName[]" id="" required ></td>
                             <td><input type="number" class="form-control" name="ReceivePrice[]" id="" required  min="0"  max="9999999.99"  step="0.01"></td>
                             <td><button type="button" id="${row}" class="btn btn-danger btn-remove">
                                     <i class="fa fa-minus"></i>
@@ -75,45 +122,11 @@
                 var btn_del = $(this).attr("id");
                 $('#row' + btn_del).remove();
             });
+
         });
 
-        function chkReceiveName() {
-            var nameList = [];
-            var breaker;
 
-            $('input[type="text"]').each(function() {
-                if ($(this).val == "") {
-                    nameList.push($(this).val())
-                } else {
-                    nameList.push($(this).val())
-                }
-            });
-            // console.log(nameList);
-            for (var i = 0; i < nameList.length; i++) {
-                for (var j = 0; j < nameList.length; j++) {
-                    if (i == j) {
-                        // console.log('continue');
-                        continue;
-                    } else if (nameList[i] == nameList[j]) {
-                        // console.log(i + " :" + nameList[i] + ": " + nameList[j] + ': Found same');
-                        $('#alertReceive').remove();
-                        $('#tableReceive').append('<p style="color:red" id="alertReceive">กรุณาอย่ากรอกรายการรับซ้ำ</p>');
-                        $('#btn_regis').addClass('nameFalse');
-                        breaker = 1;
-                        break;
-                    }
-                }
-                if (breaker == 1) {
-                    // console.log('if break');
-                    break;
-                } else {
-                    // console.log('else break');
-                    $('#btn_regis').removeClass('nameFalse');
-                    $('#alertReceive').remove();
-                    break;
-                }
-            }
-        }
+
 
         $('#btn_regis').on('click', function() {
             chkReceiveName();
@@ -122,9 +135,8 @@
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                 return false;
             }
-            else{
-                alert('เพิ่มข้อมูลรับวัตถุดิบเสร็จสิ้น');
-            }
+
         });
+
     });
 </script>

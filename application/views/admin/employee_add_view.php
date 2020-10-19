@@ -225,7 +225,7 @@
 <br>
 <script>
     $(document).ready(function() {
-
+        
         var addphone_id = 1;
         $('#addphone').click(function() {
             addphone_id++;
@@ -335,7 +335,6 @@
                     // console.log('else break');
                     $('#btn_regis').removeClass('telFalse');
                     $('#alerttel').remove();
-                    break;
                 }
             }
             // console.log(telList);
@@ -354,9 +353,7 @@
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                 return false;
             }
-            else{
-                alert('เพิ่มพนักงานเสร็จสิ้น');
-            }
+
 
         });
 

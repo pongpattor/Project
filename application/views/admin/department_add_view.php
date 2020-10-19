@@ -78,9 +78,7 @@
             if ($('#btn_regis').hasClass('idFalse')) {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                 return false;
-            } else {
-                alert('เพิ่มแผนกเสร็จสิ้น');
-            }
+            } 
         });
 
         // $('#btn_cancel').on('click', function() {

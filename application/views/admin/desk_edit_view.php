@@ -107,10 +107,7 @@
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;
                 }
-                else{
-                    alert('แก้ไขข้อมูลโต๊ะเสร็จสิ้น');
-
-                }
+               
             }
             else{
                 return false;

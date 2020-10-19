@@ -134,7 +134,7 @@
                     // console.log('else break');
                     $('#btn_update').removeClass('nameFalse');
                     $('#alertReceive').remove();
-                    break;
+
                 }
             }
         }
@@ -147,9 +147,7 @@
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     return false;
                 }
-                else{
-                    alert('แก้ไขข้อมูลรับวัตถุดิบเสร็จสิ้น');
-                }
+
             }
             else{
                 return false;
