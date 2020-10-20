@@ -72,8 +72,8 @@ class typeproduct extends CI_Controller
             'TYPEPRODUCT_GROUP' =>  $this->input->post('typeProductGroup'),
         );
         $this->db->insert('typeproduct', $typeProductDetail);
-
-        redirect(site_url('admin/typeproduct/'));
+        echo '<script>alert("เพิ่มข้อมูลประเภทสินค้าสำเร็จ")</script>';
+        return redirect(site_url('admin/typeproduct/'));
     }
 
     public function genIdTypeProduct()
@@ -154,7 +154,8 @@ class typeproduct extends CI_Controller
         );
 
         $this->crud_model->update('typeproduct', $typeProductDetail, 'TYPEPRODUCT_ID', $typeID);
-        redirect(site_url('admin/typeproduct/'));
+        echo '<script>alert("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")</script>';
+        return redirect(site_url('admin/typeproduct/'));
     }
 
     public function deleteTypeProduct()

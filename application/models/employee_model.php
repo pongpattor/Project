@@ -295,4 +295,9 @@ class employee_model extends CI_Model
             )
         );
     }
+
+    public function ResetPassword($empID,$newPass){
+        $sql ="UPDATE employee SET PASSWORD = '$newPass' WHERE ID = '$empID'";
+        $this->db->query($sql);
+    }
 }

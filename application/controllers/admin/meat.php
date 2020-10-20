@@ -92,6 +92,7 @@ class meat extends CI_Controller
             'MEAT_STATUS' => 1,
         );
         $this->crud_model->insert('meat', $meatDetail);
+        echo '<script>alert("เพิ่มข้อมูลเนื้อสัตว์สำเร็จ")</script>';
         return redirect(site_url('admin/meat/'));
     }
 
@@ -147,6 +148,7 @@ class meat extends CI_Controller
             'MEAT_STATUS' => $meatStatus,
         );
         $this->crud_model->update('meat', $meatDetail, 'MEAT_ID', $meatID);
+        echo '<script>alert("แก้ไขข้อมูลเนื้อสัตว์สำเร็จ")</script>';
         return redirect(site_url('admin/meat/'));
     }
 

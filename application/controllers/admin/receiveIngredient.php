@@ -114,8 +114,8 @@ class receiveIngredient extends CI_Controller
             );
             $this->crud_model->insert('receive_ingredient_detail', $receiveDetail);
         }
-
-        redirect(site_url('admin/receiveIngredient/'));
+        echo '<script>alert("เพิ่มข้อมูลรับวัตถุดิบสำเร็จ")</script>';
+        return redirect(site_url('admin/receiveIngredient/'));
     }
 
     public function editReceiveIngredient()
@@ -157,7 +157,8 @@ class receiveIngredient extends CI_Controller
             );
             $this->crud_model->insert('receive_ingredient_detail', $receiveDetail);
         }
-        redirect(site_url('admin/receiveIngredient/'));
+        echo '<script>alert("แก้ไขข้อมูลรับวัตถุดิบสำเร็จ")</script>';
+       return redirect(site_url('admin/receiveIngredient/'));
     }
 
     public function deleteReceiveIngredient()

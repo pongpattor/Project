@@ -63,6 +63,7 @@
                                         </th>
                                         <th style="text-align: center;">เงินเดือน
                                         </th>
+                                        <th style="text-align: center;">ลืมรหัส</th>
                                         <th style="text-align: center;">แก้ไข</th>
                                         <th style="text-align: center;">ลบ</th>
                                     </tr>
@@ -78,7 +79,12 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->PHONE; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= number_format( $row->SALARY,2); ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->SALARY, 2); ?></td>
+                                            <td class="align-middle" style="text-align: center;">
+                                                <center>
+                                                    <button name="resetPass" class="btn btn-info resetPass" value="<?= $row->ID ?>"> <i class="fa fa-key"></i></button>
+                                                </center>
+                                            </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
                                                     <form action="<?= site_url('admin/employee/editEmployee') ?>" method="GET">
@@ -100,7 +106,7 @@
                             } else { ?>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
-                                        <li class="page-item active"><a class="page-link" >1</a></li>
+                                        <li class="page-item active"><a class="page-link">1</a></li>
 
                                     </ul>
                                 </nav>
@@ -115,6 +121,27 @@
 <br>
 <script>
     $(document).ready(function() {
+
+        $('.resetPass').on('click', function() {
+            var empID = $(this).parents("tr").attr("id");
+            var result = confirm('ยืนยันการรีเซ็ทรหัสผ่านของ ' + empID);
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/employee/resetPassword'); ?>",
+                    method: "POST",
+                    data: {
+                        empID: empID
+                    },
+                    success: function(data) {
+                        alert(`กรุณาจดรหัสผ่านใหม่ของ ${empID} \nรหัสผ่านใหม่คือ ${data}`);
+
+                    }
+                });
+            }
+
+
+        });
+
         $('.delete').click(function(e) {
             var ID = $(this).parents("tr").attr("id");
             var result = confirm(`ยืนยันการลบ ${ID}`);

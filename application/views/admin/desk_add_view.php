@@ -22,7 +22,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6" id="rowDeskNumber">
                                 <label>หมายเลขโต๊ะ</label><br>
-                                <input type="text" class="form-control" name="deskNumber" id="deskNumber" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="3">
+                                <input type="text" class="form-control" name="deskNumber" id="deskNumber"  maxlength="3" required>
                             </div>
                         </div>
                         <br>

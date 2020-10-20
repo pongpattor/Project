@@ -128,8 +128,8 @@ class product extends CI_Controller
                 );
                 $this->crud_model->insert('topping', $ToppingDetail);
             }
-
-            redirect(site_url('admin/product/'));
+            echo '<script>alert("เพิ่มข้อมูลสินค้าสำเร็จ")</script>';
+           return redirect(site_url('admin/product/'));
         }
     }
 
@@ -269,8 +269,8 @@ class product extends CI_Controller
                 $this->crud_model->insert('topping', $ToppingDetail);
             }
 
-
-            redirect(site_url('admin/product/'));
+            echo '<script>alert("แก้ไขข้อมูลสินค้าสำเร็จ")</script>';
+            return redirect(site_url('admin/product/'));
         }
     }
 

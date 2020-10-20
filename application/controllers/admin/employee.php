@@ -186,7 +186,8 @@ class employee extends CI_Controller
                 $this->crud_model->insert('employee_telephone', $data);
             }
 
-            redirect(site_url('admin/employee/'));
+            echo '<script>alert("เพิ่มข้อมูลพนักงานสำเร็จ")</script>';
+            return redirect(site_url('admin/employee/'));
         }
     }
 
@@ -334,9 +335,25 @@ class employee extends CI_Controller
                 $this->crud_model->insert('employee_telephone', $data);
             }
 
-
-            redirect(site_url('admin/employee/'));
+        echo '<script>alert("แก้ไขข้อมูลพนักงานสำเร็จ")</script>';
+           return redirect(site_url('admin/employee/'));
         }
+    }
+
+    public  function resetPassword()
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 10; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[$i] = $alphabet[$n];
+        }
+        $pass = implode($pass); //turn the array into a string
+       
+        $empID = $this->input->post('empID');
+        $this->employee_model->ResetPassword($empID,$pass);
+        echo $pass;
     }
 
 

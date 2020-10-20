@@ -24,7 +24,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6" id="rowDeskNumber">
                                         <label>หมายเลขโต๊ะ</label><br>
-                                        <input type="text" class="form-control" name="deskNumber" id="deskNumber" value="<?= $row->DESK_NUMBER; ?>" maxlength="3">
+                                        <input type="text" class="form-control" name="deskNumber" id="deskNumber" required  value="<?= $row->DESK_NUMBER; ?>" maxlength="3">
                                         <input type="hidden" name="deskID" value="<?= $row->DESK_ID; ?>">
                                         <input type="hidden" name="oldNumber" id="oldNumber" value="<?= $row->DESK_NUMBER; ?>">
                                     </div>

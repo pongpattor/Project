@@ -118,14 +118,14 @@ class department extends CI_Controller
 
     public function insertDepartment()
     {
-
         $dept = array(
             'DEPARTMENT_ID' => $this->genIdDepartment(),
             'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
         );
         $this->crud_model->insert('department', $dept);
+        echo '<script>alert("เพิ่มข้อมูลแผนกสำเร็จ")</script>';
 
-        redirect(site_url('admin/department/'));
+        return redirect(site_url('admin/department/'));
     }
 
 
@@ -151,7 +151,9 @@ class department extends CI_Controller
             'DEPARTMENT_NAME' => $this->input->post('DEPARTMENT_NAME'),
         );
         $this->crud_model->update('department', $department_detail, 'DEPARTMENT_ID', $DEPARTMENT_ID);
-        redirect(site_url('admin/department/'));
+        echo '<script>alert("แก้ไขข้อมูลแผนกสำเร็จ")</script>';
+
+        return redirect(site_url('admin/department/'));
     }
 
     public function deleteDepartment()

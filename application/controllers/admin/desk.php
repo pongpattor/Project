@@ -77,6 +77,7 @@ class desk extends CI_Controller
             'DESK_STATUS' => '0'
         );
         $this->crud_model->insert('desk', $detailDesk);
+        echo '<script>alert("เพิ่มข้อมูลโต๊ะสำเร็จ")</script>';
         redirect(site_url('admin/desk/'));
     }
 
@@ -125,6 +126,7 @@ class desk extends CI_Controller
             'DESK_STATUS' => $deskStatus
         );
         $this->crud_model->update('desk', $deskDetail, 'DESK_ID', $deskID);
+        echo '<script>alert("แก้ไขข้อมูลโต๊ะสำเร็จ")</script>';
         redirect(site_url('admin/desk/'));
     }
 

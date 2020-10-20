@@ -126,6 +126,7 @@ class promotion extends CI_Controller
                 }
             }
         }
+        echo '<script>alert("เพิ่มข้อมูลโปรโมชั่นสำเร็จ")</script>';
 
         return redirect(site_url('admin/promotion/'));
     }
@@ -230,7 +231,7 @@ class promotion extends CI_Controller
                 }
             }
         }
-
+        echo '<script>alert("แก้ไขข้อมูลโปรโมชั่นสำเร็จ")</script>';
         return redirect(site_url('admin/promotion/'));
     }
 

@@ -95,8 +95,8 @@ class position extends CI_Controller
         );
 
         $this->crud_model->insert('position', $position);
-        redirect(site_url('admin/position/'));
-
+        echo '<script>alert("เพิ่มข้อมูลตำแหน่งสำเร็จ")</script>';
+        return redirect(site_url('admin/position/'));
 
         // Convert String to Array
         // $array = explode(",",$d);
@@ -135,6 +135,7 @@ class position extends CI_Controller
         $deptID = $this->input->post('departmentID');
         $permission =  $this->input->post('perPosition');
         $this->position_model->updatePosition($positionID, $positionName, $deptID, $permission);
+        echo '<script>alert("แก้ไขข้อมูลตำแหน่งสำเร็จ")</script>';
 
         return redirect(site_url('admin/position/'));
     }
