@@ -8,12 +8,15 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
+
     <!-- CSS JQUERY -->
     <link href="<?= base_url('assets/css/styles.css'); ?>" rel="stylesheet" />
-    <script src="<?= base_url('assets\script\node_modules\jquery\dist\jquery.js'); ?>"></script>
-    <script src="<?= base_url('assets\bootstrap4\js\bootstrap.bundle.min.js'); ?>"></script>
+    <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.js'); ?>"></script>
+    <script src="<?= base_url('assets/bootstrap4/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
-    <script src="<?= base_url('assets\icon_fontawesome\js\all.js'); ?>" crossorigin="anonymous"></script>
+    <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
+    <!-- script -->
+    <script src="<?= base_url('assets/script.js')?>"></script>
 
 </head>
 
@@ -57,7 +60,7 @@
                         <div class="collapse" id="CustomercollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="">รายชื่อสมาชิก</a>
-                                <a class="nav-link" href="">ประเภทสมาชิก</a>
+                                <a class="nav-link" href="<?= site_url('admin/customertype/'); ?>">ประเภทสมาชิก</a>
                             </nav>
                         </div>
                         <!-- พนักงาน -->
@@ -75,7 +78,7 @@
                         </div>
                         <!-- สินค้า -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fab fa-product-hunt"></i></div>
                             สินค้า
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
@@ -89,7 +92,7 @@
                         </div>
                         <!-- ที่นั่ง -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SeatcollapseLayouts" aria-expanded="false" aria-controls="SeatcollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-chair"></i></div>
                             ที่นั่ง
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
@@ -101,8 +104,8 @@
                             </nav>
                         </div>
                         <!-- รับล็อต -->
-                        <a class="nav-link" href="#" >
-                            <div class="sb-nav-link-icon"><i class="fa fa-book-open"></i></div>
+                        <a class="nav-link" href="#">
+                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
                             รับล็อต
                         </a>
                         <!-- โปรโมชั่น -->
@@ -153,7 +156,7 @@
             </footer>
         </div>
     </div>
-    <script src="<?= base_url('assets/script/scripts.js"') ?>"></script>
+
 
 </body>
 

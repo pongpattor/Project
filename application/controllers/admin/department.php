@@ -79,7 +79,6 @@ class department extends CI_Controller
     public function addDepartment()
     {
         $data['page'] = 'department_add_view';
-        $data['employee'] = $this->crud_model->findColumns('ID,FIRSTNAME,LASTNAME', 'employee');
         $this->load->view('admin/main_view', $data);
     }
 
