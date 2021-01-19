@@ -18,7 +18,7 @@
         <div class="col-6">
             <div class="card boder-0 shadow-lg ">
                 <div class="card-header">
-                    <h3>Login</h3>
+                    <h3>เข้าสู่ระบบ</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">

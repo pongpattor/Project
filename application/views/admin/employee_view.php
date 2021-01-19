@@ -82,7 +82,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= number_format($row->SALARY, 2); ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
-                                                    <button name="resetPass" class="btn btn-info resetPass" value="<?= $row->ID ?>"> <i class="fa fa-key"></i></button>
+                                                    <button name="resetPass" class="btn btn-primary resetPass" value="<?= $row->ID ?>"> <i class="fa fa-key"></i></button>
                                                 </center>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
@@ -123,6 +123,9 @@
     $(document).ready(function() {
 
         $('.resetPass').on('click', function() {
+
+            // var emp = $(this).val(); 
+            // alert(emp);
             var empID = $(this).parents("tr").attr("id");
             var result = confirm('ยืนยันการรีเซ็ทรหัสผ่านของ ' + empID);
             if (result) {

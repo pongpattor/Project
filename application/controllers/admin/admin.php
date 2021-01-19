@@ -11,9 +11,8 @@ class admin extends CI_Controller
         if(empty($_SESSION['login'])){
             return redirect(site_url('admin/login'));
         }
-        $this->load->model('crud_model');
+
         $this->load->model('employee_model');
-        $this->load->model('receive_ingredient_model');
         $this->load->library('pagination');
     }
 
@@ -50,11 +49,4 @@ class admin extends CI_Controller
         return redirect(site_url('admin/admin/home'));
     }
 
-    public function test()
-    {
-        // $data['hello'] = $this->employee_model->searchDepartment('30');
-        // print_r($data['hello']);
-        // $data['page'] = 'Test';
-        // $this->load->view('admin/main_view', $data);
-    }
 }

@@ -21,7 +21,7 @@
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="<?= site_url('admin/admin/home'); ?>">ADMIN FOODSHOP</a>
         <!-- อาจจะใช้ -->
-        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+        <!-- <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button> -->
         <!-- div Space-->
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
         <!-- div Space-->
@@ -42,98 +42,98 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
-
-                        <a class="nav-link" href="#" <?php if ($_SESSION['permission'][10] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>
+                        <!-- ไประบบหน้าร้าน -->
+                        <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
                             ระบบจัดการหน้าร้าน
                         </a>
-
-                        <a class="nav-link" href="#" <?php if ($_SESSION['permission'][11] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-utensils"></i></div>
-                            ระบบห้องครัว
-                        </a>
-
-                        <a class="nav-link" href="#" <?php if ($_SESSION['permission'][12] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-book-open"></i></div>
-                            ระบบจองคิว
-                        </a>
-
-
                         <div class="sb-sidenav-menu-heading">ระบบหลังร้าน</div>
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts" <?php if ($_SESSION['permission'][0] != 1 && $_SESSION['permission'][1] != 1 && $_SESSION['permission'][2] != 1) {
-                                                                                                                                                                                                echo 'hidden';
-                                                                                                                                                                                            } ?>>
+                        <!-- สมาชิก -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#CustomercollapseLayouts" aria-expanded="false" aria-controls="CustomercollapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fa fa-users"></i></div>
+                            สมาชิก
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="CustomercollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="">รายชื่อสมาชิก</a>
+                                <a class="nav-link" href="">ประเภทสมาชิก</a>
+                            </nav>
+                        </div>
+                        <!-- พนักงาน -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fa fa-address-card"></i></div>
                             พนักงาน
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="EmployeecollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= site_url('admin/employee/'); ?>" <?php if ($_SESSION['permission'][0] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>รายชื่อพนักงาน</a>
-                                <a class="nav-link" href="<?= site_url('admin/department/'); ?>" <?php if ($_SESSION['permission'][1] != 1) {
-                                                                                                        echo 'hidden';
-                                                                                                    } ?>>แผนก</a>
-                                <a class="nav-link" href="<?= site_url('admin/position/'); ?>" <?php if ($_SESSION['permission'][2] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>ตำแหน่ง</a>
+                                <a class="nav-link" href="<?= site_url('admin/employee/'); ?>">รายชื่อพนักงาน</a>
+                                <a class="nav-link" href="<?= site_url('admin/department/'); ?>">แผนก</a>
+                                <a class="nav-link" href="<?= site_url('admin/position/'); ?>">ตำแหน่ง</a>
                             </nav>
                         </div>
-
-                        <a class="nav-link collapsed" href="<?= site_url('admin/desk/'); ?>" <?php if ($_SESSION['permission'][3] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-couch"></i></div>
-                            โต๊ะ
-                        </a>
-
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts" <?php if ($_SESSION['permission'][4] != 1 && $_SESSION['permission'][5] != 1 && $_SESSION['permission'][6] != 1) {
-                                                                                                                                                                                                echo 'hidden';
-                                                                                                                                                                                            } ?>>
+                        <!-- สินค้า -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
                             สินค้า
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="ProductcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= site_url('admin/product/'); ?>" <?php if ($_SESSION['permission'][4] != 1) {
-                                                                                                    echo 'hidden';
-                                                                                                } ?>>รายการสินค้า</a>
-                                <a class="nav-link" href="<?= site_url('admin/typeproduct/'); ?>" <?php if ($_SESSION['permission'][5] != 1) {
-                                                                                                        echo 'hidden';
-                                                                                                    } ?>>ประเภทสินค้า</a>
-                                <a class="nav-link" href="<?= site_url('admin/meat/'); ?>" <?php if ($_SESSION['permission'][6] != 1) {
-                                                                                                echo 'hidden';
-                                                                                            } ?>>ประเภทเนื้อสัตว์</a>
+                                <a class="nav-link" href="<?= site_url('admin/product/'); ?>">รายการสินค้า</a>
+                                <a class="nav-link" href="<?= site_url('admin/typeproduct/'); ?>">ประเภทสินค้า</a>
+                                <a class="nav-link" href="">สูตรการผลิต</a>
+                                <a class="nav-link" href="">วัตถุดิบ</a>
+                            </nav>
+                        </div>
+                        <!-- ที่นั่ง -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SeatcollapseLayouts" aria-expanded="false" aria-controls="SeatcollapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                            ที่นั่ง
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="SeatcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="">โต๊ะ</a>
+                                <a class="nav-link" href="">ห้องคาราโอเกะ</a>
+                                <a class="nav-link" href="">โซนที่นั่ง</a>
+                            </nav>
+                        </div>
+                        <!-- รับล็อต -->
+                        <a class="nav-link" href="#" >
+                            <div class="sb-nav-link-icon"><i class="fa fa-book-open"></i></div>
+                            รับล็อต
+                        </a>
+                        <!-- โปรโมชั่น -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PromotioncollapseLayouts" aria-expanded="false" aria-controls="PromotioncollapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                            โปรโมชั่น
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="PromotioncollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="">โปรโมชั่นลดราคา</a>
+                                <a class="nav-link" href="">โปรโมชั่นเซ็ต</a>
+                            </nav>
+                        </div>
+                        <!-- รายงาน -->
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ReportcollapseLayouts" aria-expanded="false" aria-controls="ReportcollapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fa fa-file-medical-alt"></i></div>
+                            รายงาน
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="ReportcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="#">รายการสินค้า</a>
+                                <a class="nav-link" href="#">รายการสินค้า</a>
+                                <a class="nav-link" href="#">รายการสินค้า</a>
+                                <a class="nav-link" href="#">รายการสินค้า</a>
+                                <a class="nav-link" href="#">รายการสินค้า</a>
+
                             </nav>
                         </div>
 
-                        <a class="nav-link collapsed" href="<?= site_url('admin/receiveIngredient/'); ?>" <?php if ($_SESSION['permission'][7] != 1) {
-                                                                                                                echo 'hidden';
-                                                                                                            } ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-cart-arrow-down"></i></div>
-                            รับวัตถุดิบ
-                        </a>
-
-                        <a class="nav-link collapsed" href="<?= site_url('admin/promotion/'); ?>" <?php if ($_SESSION['permission'][8] != 1) {
-                                                                                                        echo 'hidden';
-                                                                                                    } ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-gifts"></i></div>
-                            โปรโมชั่น
-                        </a>
-                        <a class="nav-link collapsed" href="#" <?php if ($_SESSION['permission'][9] != 1) {
-                                                                    echo 'hidden';
-                                                                } ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-file-medical-alt"></i></div>
-                            รีพอร์ท
-                        </a>
                     </div>
                 </div>
             </nav>

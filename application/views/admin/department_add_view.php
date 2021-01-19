@@ -81,12 +81,7 @@
             } 
         });
 
-        // $('#btn_cancel').on('click', function() {
-        //     var deptName = $('#department_name').val();
-        //     if (deptName != "") {
-        //         confirm("คุณต้องการยกเลิกการเพิ่มข้อมูลใช่หรือไม่?");
-        //     }
-        // })
+
 
 
 

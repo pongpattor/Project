@@ -50,4 +50,9 @@ class login extends CI_Controller
             echo '</script>';
         }
     }
+
+    // หน้าLogin อีกแบบ
+    // public function testlogin(){
+    //     $this->load->view('admin/testlogin');
+    // }
 }
