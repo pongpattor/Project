@@ -7,7 +7,7 @@ class customertype_model extends CI_Model
     public function customerType($search = '', $limit, $offset)
     {
         $sql = "SELECT * FROM customertype 
-        where 
+        WHERE 
         (
             CUSTOMERTYPE_ID LIKE  ? OR
             CUSTOMERTYPE_NAME LIKE ? OR
@@ -35,8 +35,8 @@ class customertype_model extends CI_Model
 
     public function countAllCustomerType($search = '')
     {
-        $sql = "SELECT COUNT(*) as cnt FROM customertype 
-        where 
+        $sql = "SELECT COUNT(*) AS cnt FROM customertype 
+        WHERE 
         (
             CUSTOMERTYPE_ID LIKE  ? OR
             CUSTOMERTYPE_NAME LIKE ? OR
@@ -77,10 +77,11 @@ class customertype_model extends CI_Model
         }
     }
 
-    public function maxID(){
+    public function maxID()
+    {
         $sql = "SELECT MAX(CUSTOMERTYPE_ID) as maxID FROM customertype";
         $query = $this->db->query($sql);
-        foreach($query->result() as $row){
+        foreach ($query->result() as $row) {
             return $row->maxID;
         }
     }

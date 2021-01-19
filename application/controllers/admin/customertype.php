@@ -73,12 +73,12 @@ class customertype extends CI_Controller
             $data['customer'] = $dataCustomer;
             $data['status'] = true;
             $data['message'] = "เพิ่มประเภทสมาชิกสำเร็จ";
-            echo json_encode($data);
+            $data['url'] = site_url('admin/customertype');
         } else {
             $data['status'] = false;
             $data['message'] = "ชื่อ $customerTypeName ได้ถูกใช้ไปแล้ว";
-            echo json_encode($data);
         }
+        echo json_encode($data);
     }
 
     public function genIdCustomerType()
@@ -133,10 +133,53 @@ class customertype extends CI_Controller
         }
     }
 
-    public function editCustomerType(){
+    public function editCustomerType()
+    {
         $customerTypeID = $this->input->get('customerTypeID');
-        $data['customerType'] = $this->crud_model->findwhere('customerType','CUSTOMERTYPE_ID',$customerTypeID);
-        $data['page'] = 'admin/customertype_edit_view';
+        $data['customerType'] = $this->crud_model->findwhere('customerType', 'CUSTOMERTYPE_ID', $customerTypeID);
+        $data['page'] = 'customertype_edit_view';
         $this->load->view('admin/main_view', $data);
+    }
+
+    public function updateCustomerType()
+    {
+        $customerTypeName = $this->input->post('customerTypeName');
+        $customerTypeNameOld = $this->input->post('customerTypeNameOld');
+        $customerTypeID = $this->input->post('customerTypeID');
+        $customerTypeDiscount = $this->input->post('customerTypeDiscount');
+        $customerTypeDiscountBdate = $this->input->post('customerTypeDiscountBdate');
+        if ($customerTypeName == $customerTypeNameOld) {
+            $dataCustomer = array(
+                'CUSTOMERTYPE_NAME' => $customerTypeName,
+                'CUSTOMERTYPE_DISCOUNT' => $customerTypeDiscount,
+                'CUSTOMERTYPE_DISCOUNTBDATE' => $customerTypeDiscountBdate
+            );
+            $this->crud_model->update('customertype',$dataCustomer,'CUSTOMERTYPE_ID',$customerTypeID);
+            $data['status'] = true;
+            $data['message'] = 'แก้ไขข้อมูลเสร็จสิ้น';
+            $data['url'] = site_url('admin/customertype');
+        } else {
+            $count = $this->customertype_model->checkCustomerTypeName($customerTypeName);
+            if ($count == 0) {
+                $dataCustomer = array(
+                    'CUSTOMERTYPE_NAME' => $customerTypeName,
+                    'CUSTOMERTYPE_DISCOUNT' => $customerTypeDiscount,
+                    'CUSTOMERTYPE_DISCOUNTBDATE' => $customerTypeDiscountBdate
+                );
+                $this->crud_model->update('customertype',$dataCustomer,'CUSTOMERTYPE_ID',$customerTypeID);
+                $data['status'] = true;
+                $data['message'] = 'แก้ไขข้อมูลเสร็จสิ้น';
+                $data['url'] = site_url('admin/customertype');
+            } else {
+                $data['status'] = false;
+                $data['message'] = "ชื่อ $customerTypeName ได้ถูกใช้ไปแล้ว";
+            }
+        }
+        echo json_encode($data);
+    }
+
+    public function deleteCustomerType(){
+        $customerTypeID = $this->input->post('customerTypeID');
+        $this->crud_model->delete('customertype','CUSTOMERTYPE_ID',$customerTypeID);
     }
 }

@@ -8,7 +8,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
-
     <!-- CSS JQUERY -->
     <link href="<?= base_url('assets/css/styles.css'); ?>" rel="stylesheet" />
     <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.js'); ?>"></script>
@@ -16,7 +15,8 @@
     <!-- Icon -->
     <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
-    <script src="<?= base_url('assets/script.js')?>"></script>
+    <script src="<?= base_url('assets/script.js') ?>"></script>
+
 
 </head>
 
@@ -59,7 +59,7 @@
                         </a>
                         <div class="collapse" id="CustomercollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="">รายชื่อสมาชิก</a>
+                                <a class="nav-link" href="<?= site_url('admin/customer/'); ?>">รายชื่อสมาชิก</a>
                                 <a class="nav-link" href="<?= site_url('admin/customertype/'); ?>">ประเภทสมาชิก</a>
                             </nav>
                         </div>

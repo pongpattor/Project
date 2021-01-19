@@ -52,7 +52,6 @@ class employee extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['employee'] = $this->employee_model->employee($search, $limit, $offset);
-        // $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'employee_view';
         $this->load->view('admin/main_view', $data);
@@ -61,8 +60,7 @@ class employee extends CI_Controller
     public function addEmployee()
     {
         $this->load->model('position_model');
-        $data['nationality'] = $this->crud_model->findall('nationality');
-        $data['religion'] = $this->crud_model->findall('religion');
+
         $data['province'] = $this->crud_model->findall('province');
         $data['department'] = $this->position_model->showDepartment();
         $data['page'] = 'employee_add_view';
@@ -243,8 +241,7 @@ class employee extends CI_Controller
             echo 'location.href= "' . site_url('admin/employee/') . '"';
             echo '</script>';
         } else {
-            $data['nationality'] = $this->crud_model->findall('nationality');
-            $data['religion'] = $this->crud_model->findall('religion');
+
             $data['province']  = $this->employee_model->fetch_province();
             $province_id = $data['employee']['0']->D_PROVINCE_ID;
             $data['amphur'] = $this->crud_model->findwhere('amphur', 'A_PROVINCE_ID', $province_id);
@@ -349,7 +346,7 @@ class employee extends CI_Controller
             $n = rand(0, $alphaLength);
             $pass[$i] = $alphabet[$n];
         }
-        $pass = implode($pass); //turn the array into a string
+        // $pass = implode($pass); //turn the array into a string
        
         $empID = $this->input->post('empID');
         $this->employee_model->ResetPassword($empID,$pass);

@@ -74,7 +74,7 @@
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            <button class="btn btn-danger delete" style="text-align: center;" value="<?= $row->CUSTOMERTYPE_ID; ?>"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-danger deleteCustomerType" style="text-align: center;" value="<?= $row->CUSTOMERTYPE_ID; ?>"><i class="fa fa-trash"></i></button>
                                                         </center>
                                                     </td>
                                                 </tr>
@@ -100,37 +100,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-
-
-        $('.delete').click(function(e) {
-            var ID = $(this).val();
-            var result = confirm(`ยืนยันการลบประเภทสมาชิก รหัส ${ID}`);
-            if (result) {
-                $.ajax({
-                    url: "<?= site_url('admin//') ?>",
-                    method: "POST",
-                    data: {
-                        deptID: ID
-                    },
-                    success: function() {
-                        alert(`ลบประเภทสมาชิก รหัส ${ID} เสร็จสิ้น`);
-                        window.location.href = "<?= site_url('admin/customertype/') ?>";
-
-                    }
-                });
-            }
-        });
-
-        $('.bgtable').mouseover(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "#C6FFF8");
-        });
-        $('.bgtable').mouseout(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "");
-        });
-    });
-</script>

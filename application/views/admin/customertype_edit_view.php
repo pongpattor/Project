@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <h3 class="d-inline">เพิ่มแผนก</h3>
+                    <h3 class="d-inline">แก้ไขประเภทสมาชิก</h3>
                 </div>
             </div>
         </div>
@@ -16,49 +16,51 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form method="POST" id="formCustomerType">
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>ชื่อประเภทสมาชิก </label>
-                                <input type="text" name="customerTypeName" id="customerTypeName" class="form-control " maxlength="50">
-                                <span id="customerTypeNameError" style="color: red;"> </span>
+                    <form id="editCustomerTypeForm">
+                        <?php foreach ($customerType as $row) : ?>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>ชื่อประเภทสมาชิก </label>
+                                    <input type="hidden" name="customerTypeID" value="<?= $row->CUSTOMERTYPE_ID; ?>">
+                                    <input type="hidden" name="customerTypeNameOld" value="<?= $row->CUSTOMERTYPE_NAME; ?>">
+                                    <input type="text" name="customerTypeName" id="customerTypeName" class="form-control" maxlength="50" value="<?= $row->CUSTOMERTYPE_NAME; ?>">
+                                    <span id="customerTypeNameError" style="color: red;"> </span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>ส่วนลด(%) </label>
-                                <input type="text" name="customerTypeDiscount" id="customerTypeDiscount" class="form-control " maxlength="3">
-                                <span id="customerTypeDiscountError" style="color: red;"> </span>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>ส่วนลด(%) </label>
+                                    <input type="text" name="customerTypeDiscount" id="customerTypeDiscount" class="form-control " maxlength="3" value="<?= $row->CUSTOMERTYPE_DISCOUNT; ?>">
+                                    <span id="customerTypeDiscountError" style="color: red;"> </span>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
-                                <label>ส่วนลดวันเกิด(%) </label>
-                                <input type="text" name="customerTypeDiscountBdate" id="customerTypeDiscountBdate" class="form-control " maxlength="3">
-                                <span id="customerTypeDiscountBdateError" style="color: red;"> </span>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>ส่วนลดวันเกิด(%) </label>
+                                    <input type="text" name="customerTypeDiscountBdate" id="customerTypeDiscountBdate" class="form-control " maxlength="3" value="<?= $row->CUSTOMERTYPE_DISCOUNTBDATE; ?>">
+                                    <span id="customerTypeDiscountBdateError" style="color: red;"> </span>
+                                </div>
                             </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6  ">
-                                <center>
-                                    <div class="input-group">
-                                        <div class="col">
-                                            <a href="<?= site_url('admin/customertype/'); ?>" class="btn btn-danger" id="btn_cancel">ยกเลิก</a>
+                            <br>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6  ">
+                                    <center>
+                                        <div class="input-group">
+                                            <div class="col">
+                                                <a href="<?= site_url('admin/customertype/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
+                                            </div>
+                                            <div class="col">
+                                                <input class="btn btn-success btn-xs" type="submit" value="แก้ไข">
+                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <input id="btn_add" class="btn btn-success" type="submit" value="  เพิ่ม  ">
-                                        </div>
-                                    </div>
-                                </center>
+                                    </center>
+                                </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-

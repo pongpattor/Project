@@ -12,10 +12,11 @@ class customer extends CI_Controller
         $this->load->library('pagination');
     }
 
-    public function index(){
+    public function index()
+    {
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/customer/index');
-        $config['total_rows'] = $this->department_model->countAllDepartment($search);
+        $config['total_rows'] = $this->customer_model->countAllCustomer($search);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -42,9 +43,26 @@ class customer extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['department'] = $this->department_model->Department($search, $limit, $offset);
+        $data['customer'] = $this->customer_model->Customer($search, $limit, $offset);
+        if ($data['customer'] != null) {
+            $arrCustomer = [];
+            foreach ($data['customer'] as $row) {
+                array_push($arrCustomer, $row->cusID);
+            }
+            $cusID = implode(",", $arrCustomer);
+
+            $data['customertel'] = $this->customer_model->fetchCustomerTel($cusID);
+        }
+        // echo '<pre>';
+        // print_r($data['customertel']);
+        // echo '</pre>';
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'customer_view';
         $this->load->view('admin/main_view', $data);
+    }
+
+    public function addCustomer(){
+        $data['page'] = 'customer_add_view';
+        $this->load->view('admin/main_view',$data);
     }
 }

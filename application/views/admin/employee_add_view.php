@@ -243,9 +243,6 @@
                 $('#row' + btn_del).remove();
             });
 
-
-
-
         });
 
         function chkiIdCard() {

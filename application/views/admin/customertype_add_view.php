@@ -16,11 +16,11 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form method="POST" id="formCustomerType">
+                    <form method="POST" id="addCustomerTypeForm">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อประเภทสมาชิก </label>
-                                <input type="text" name="customerTypeName" id="customerTypeName" class="form-control " maxlength="50">
+                                <input type="text" name="customerTypeName" id="customerTypeName" class="form-control" maxlength="50">
                                 <span id="customerTypeNameError" style="color: red;"> </span>
                             </div>
                         </div>
@@ -45,10 +45,10 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/customertype/'); ?>" class="btn btn-danger" id="btn_cancel">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/customertype/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                         </div>
                                         <div class="col">
-                                            <input id="btn_add" class="btn btn-success" type="submit" value="  เพิ่ม  ">
+                                            <input class="btn btn-success btn-xs" type="submit" value="  เพิ่ม  ">
                                         </div>
                                     </div>
                                 </center>
@@ -60,5 +60,3 @@
         </div>
     </div>
 </div>
-
-
