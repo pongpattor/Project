@@ -96,7 +96,7 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6">
-                                <label>วันเกิด <span style="color: red;">*</span> </label>
+                                <label>วันเกิด   <span style="color: red;">*</span> </label>
                                 <input type="date" id="bdate" name="bdate" class="form-control" required max="<?= date('Y-m-d'); ?>">
                             </div>
                         </div>
@@ -387,38 +387,8 @@
             }
         });
 
-        $('#amphur').change(function() {
-            var AMPHUR_ID = $('#amphur').val();
-            if (AMPHUR_ID != '') {
-                $.ajax({
-                    url: "<?= site_url('admin/employee/fetchdistrict'); ?>",
-                    method: "POST",
-                    data: {
-                        AMPHUR_ID: AMPHUR_ID
-                    },
-                    success: function(data) {
-                        $('#district').html(data);
-                        $('#postcode').html('<option value="" disable selected>กรุณาเลือกรหัสไปรษณีย์</option>');
-                    }
-                });
-            }
-        });
 
-        $('#district').change(function() {
-            var DISTRICT_ID = $('#district').val();
-            if (DISTRICT_ID != '') {
-                $.ajax({
-                    url: "<?= site_url('admin/employee/fetchpostcode'); ?>",
-                    method: "POST",
-                    data: {
-                        DISTRICT_ID: DISTRICT_ID
-                    },
-                    success: function(data) {
-                        $('#postcode').html(data);
-                    }
-                });
-            }
-        });
+     
 
         $('#department').change(function() {
             var DEPARTMENT_ID = $('#department').val();

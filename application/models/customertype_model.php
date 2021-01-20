@@ -77,12 +77,5 @@ class customertype_model extends CI_Model
         }
     }
 
-    public function maxID()
-    {
-        $sql = "SELECT MAX(CUSTOMERTYPE_ID) as maxID FROM customertype";
-        $query = $this->db->query($sql);
-        foreach ($query->result() as $row) {
-            return $row->maxID;
-        }
-    }
+
 }

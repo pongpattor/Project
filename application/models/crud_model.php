@@ -16,7 +16,8 @@ class crud_model extends CI_Model
         return $this->db->query($sql)->result();
     }
 
-   public function find($table,$select){
+    public function find($table, $select)
+    {
         $sql = "SELECT $select FROM $table";
         return $this->db->query($sql)->result();
     }
@@ -25,22 +26,40 @@ class crud_model extends CI_Model
     {
         $sql = "SELECT * FROM $table where $where = '$data'";
         return  $this->db->query($sql)->result();
-        
     }
-    public function findSelectWhere($table,$select,$where,$data){
+    public function findSelectWhere($table, $select, $where, $data)
+    {
         $sql = "SELECT $select FROM $table WHERE $where = $data";
         return $this->db->query($sql)->result();
     }
     public function findColumns($columns, $table)
     {
-           $sql = "SELECT $columns FROM $table";
-           return $this->db->query($sql)->result();
+        $sql = "SELECT $columns FROM $table";
+        return $this->db->query($sql)->result();
     }
 
     public function countAll($table)
     {
-           $sql = "SELECT COUNT(*) as row FROM $table";
-           return $this->db->query($sql)->result();
+        $sql = "SELECT COUNT(*) as cnt FROM $table";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function countWhere($table, $where, $data)
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM $table
+                WHERE $where = ?";
+        $query = $this->db->query($sql, array(
+            $this->db->escape_like_str($data),
+        ));
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
     }
 
     public function update($table, $data = array(), $where, $whereData)
@@ -55,5 +74,20 @@ class crud_model extends CI_Model
         $this->db->query($sql);
     }
 
+    public function maxID($table, $select)
+    {
+        $sql = "SELECT MAX($select) as maxID FROM $table";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->maxID;
+        }
+    }
 
+    public function findIn($table, $select, $where, $data)
+    {
+        $sql = "SELECT $select FROM $table
+                WHERE $where in ($data)";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 }

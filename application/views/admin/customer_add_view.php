@@ -19,33 +19,40 @@
                     <form method="POST" id="addCustomerForm">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
+                                <label>เลขบัตรประชาชน </label>
+                                <input type="text" name="customerIdCard" id="customerIdCard" class="form-control" maxlength="13">
+                                <span id="customerIdCardError" style="color: red; "> </span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อ </label>
-                                <input type="text" name="customerFirstName" id="customerFirstName" class="form-control" maxlength="50">
+                                <input type="text" name="customerFirstName" id="customerFirstName" class="form-control" maxlength="20">
                                 <span id="customerFirstNameError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>นามสกุล </label>
-                                <input type="text" name="customerLastName" id="customerLastName" class="form-control " maxlength="3">
+                                <input type="text" name="customerLastName" id="customerLastName" class="form-control " maxlength="20">
                                 <span id="customerLastNameError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>เพศ </label>
-                                <select id="customerGender" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกคำนำหน้า</option>
+                                <select id="customerGender" name="customerGender" class="form-control">
+                                    <option value="" selected>กรุณาเลือกเพศ</option>
                                     <option value="1">ชาย</option>
                                     <option value="2">หญิง</option>
                                 </select>
-                                <span id="customerTypeNameError" style="color: red;"> </span>
+                                <span id="customerGenderError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>วันเกิด</label>
-                                <input type="date" name="customerBdate" id="customerBdate" class="form-control " maxlength="3">
+                                <input type="date" name="customerBdate" id="customerBdate" class="form-control " max="<?= date('Y-m-d'); ?>">
                                 <span id="customerBdateError" style="color: red;"> </span>
                             </div>
                         </div>
@@ -57,9 +64,9 @@
                                             <td>เบอร์โทร</td>
                                         </tr>
                                         <tr id="row1">
-                                            <td><input type="tel" class="form-control telphone" name="customerTel[]"></td>
+                                            <td><input type="tel" class="form-control customerTel" name="customerTel[]" maxlength="10"></td>
                                             <td>
-                                                <button type="button" id="addphone" class="btn btn-info float-right"><i class="fa fa-plus"></i></button>
+                                                <button type="button" id="addCustomerTel" class="btn btn-info float-right"><i class="fa fa-plus"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -76,66 +83,51 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>เพศ </label>
-                                <select id="customerGender" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกคำนำหน้า</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
-                                </select>
-                                <span id="customerTypeNameError" style="color: red;"> </span>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 ">
                                 <label>จังหวัด</label>
-                                <select id="customerProvince" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกจังหวัด</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
+                                <select id="province" class="form-control">
+                                    <option value="" selected>กรุณาเลือกจังหวัด</option>
+                                    <?php foreach ($province as $row) : ?>
+                                        <option value="<?= $row->PROVINCE_ID; ?>"><?= $row->PROVINCE_NAME; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
-                                <span id="customerProvinceError" style="color: red;"> </span>
+                                <span id="provinceError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>เขต</label>
-                                <select id="customerAmphur" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกเขต</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
+                                <select id="amphur" class="form-control">
+                                    <option value="" selected>กรุณาเลือกเขต</option>
                                 </select>
-                                <span id="customerAmphurError" style="color: red;"> </span>
+                                <span id="amphurError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>แขวง</label>
-                                <select id="customerDistrict" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกแขวง</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
+                                <select id="district" name="district" class="form-control">
+                                    <option value="" selected>กรุณาเลือกแขวง</option>
                                 </select>
-                                <span id="customerDistrictError" style="color: red;"> </span>
+                                <span id="districtError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>รหัสไปรษณีย์</label>
-                                <select id="customerPostCode" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกแขวง</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
+                                <select id="postcode" class="form-control">
+                                    <option value="" selected>กรุณาเลือกรหัสไปรษณีย์</option>
                                 </select>
-                                <span id="customerPostCodeError" style="color: red;"> </span>
+                                <span id="postcodeError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ประเภทสมาชิก</label>
-                                <select id="customerType" class="form-control">
-                                    <option value="" disabled selected>กรุณาเลือกแขวง</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
+                                <select id="customerType" name="customerType" class="form-control">
+                                    <option value="" selected>กรุณาเลือกแขวง</option>
+                                    <?php foreach ($customerType as $row) : ?>
+                                        <option value="<?= $row->CUSTOMERTYPE_ID ?>"><?= $row->CUSTOMERTYPE_NAME ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <span id="customerTypeError" style="color: red;"> </span>
                             </div>

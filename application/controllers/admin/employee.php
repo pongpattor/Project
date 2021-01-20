@@ -361,25 +361,11 @@ class employee extends CI_Controller
 
 
     // Data Start
-    public function fetchamphur()
-    {
-        $province_id = $this->input->post('PROVINCE_ID');
-        $data['amphur'] = $this->employee_model->fetch_amphur($province_id);
-        echo $data['amphur'];
-    }
 
-    public function fetchdistrict()
-    {
-        $amphur_id = $this->input->post("AMPHUR_ID");
-        $data['district'] = $this->employee_model->fetch_district($amphur_id);
-        echo $data['district'];
-    }
-    public function fetchpostcode()
-    {
-        $district_id = $this->input->post("DISTRICT_ID");
-        $data['postcode'] = $this->employee_model->fetch_postcode($district_id);
-        echo $data['postcode'];
-    }
+
+    
+
+    
 
     public function fetchdepartment()
     {

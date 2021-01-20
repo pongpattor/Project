@@ -11,7 +11,7 @@ class admin extends CI_Controller
         if(empty($_SESSION['login'])){
             return redirect(site_url('admin/login'));
         }
-
+        $this->load->model('data_model');
         $this->load->model('employee_model');
         $this->load->library('pagination');
     }
@@ -48,5 +48,28 @@ class admin extends CI_Controller
         $this->employee_model->rePassword($empID, $newPass);
         return redirect(site_url('admin/admin/home'));
     }
+
+    public function fetchAmphur()
+    {
+        $provinceID = $this->input->post('provinceID');
+        $data['amphur'] = $this->data_model->fetchAmphur($provinceID);
+        echo json_encode($data);
+    }
+
+    public function fetchDistrict()
+    {
+        $amphurID = $this->input->post("amphurID");
+        $data['district'] = $this->data_model->fetchDistrict($amphurID);
+        echo json_encode($data);
+    }
+
+    public function fetchPostcode()
+    {
+        $districtID = $this->input->post("districtID");
+        $data['postcode'] = $this->data_model->fetchPostcode($districtID);
+        echo json_encode($data);
+    }
+
+
 
 }

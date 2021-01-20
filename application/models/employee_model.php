@@ -216,47 +216,13 @@ class employee_model extends CI_Model
     }
 
     //ETC
-    public function fetch_province()
-    {
-        $sql = "SELECT * FROM province";
-        return $this->db->query($sql)->result();
-    }
+ 
+  
 
-    public function fetch_amphur($province_id)
-    {
-        $sql = "SELECT * from amphur where A_PROVINCE_ID = $province_id";
-        $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected disable>กรุณาเลือกเขต</option>';
-
-        foreach ($query as $row) {
-            $output .= '<option value="' . $row->AMPHUR_ID . '">' . $row->AMPHUR_NAME . '</option>';
-        }
-        return $output;
-    }
-
-    public function fetch_district($amphur_id)
-    {
-        $sql = "SELECT * from district where D_AMPHUR_ID = $amphur_id";
-        $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected disable >กรุณาเลือกแขวง</option>';
-
-        foreach ($query as $row) {
-            $output .= '<option value="' . $row->DISTRICT_ID . '">' . $row->DISTRICT_NAME . '</option>';
-        }
-        return $output;
-    }
+  
 
 
-    public function fetch_postcode($district_id)
-    {
-        $sql = "SELECT POSTCODE from district where DISTRICT_ID = $district_id";
-        $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected disable>กรุณาเลือกรหัสไปรษณีย์</option>';
-        foreach ($query as $row) {
-            $output = '<option value="' . $row->POSTCODE . '">' . $row->POSTCODE . '</option>';
-        }
-        return $output;
-    }
+    
 
     public function  fetch_department()
     {

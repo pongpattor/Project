@@ -64,8 +64,8 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->CUSTOMER_FIRSTNAME . ' ' . $row->CUSTOMER_LASTNAME; ?></td>
                                                     <td class="align-middle" style="text-align: center;">
                                                         <?php foreach ($customertel as $row2) {
-                                                            if($row2->CUSTOMERTEL_ID == $row->CUSTOMER_ID){
-                                                                echo $row2->CUSTOMERTEL_TEL.'<br>';
+                                                            if ($row2->CUSTOMERTEL_ID == $row->CUSTOMER_ID) {
+                                                                echo $row2->CUSTOMERTEL_TEL . '<br>';
                                                             }
                                                         } ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->CUSTOMERTYPE_NAME; ?></td>
@@ -104,3 +104,4 @@
         </div>
     </div>
 </div>
+

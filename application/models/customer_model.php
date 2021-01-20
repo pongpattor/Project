@@ -9,7 +9,7 @@ class customer_model extends CI_Model
         $sql = "SELECT customer.CUSTOMER_ID,customer.CUSTOMER_FIRSTNAME,customer.CUSTOMER_LASTNAME
         ,customertype.CUSTOMERTYPE_NAME,customertel.CUSTOMERTEL_TEL,RPAD(LPAD(customer.CUSTOMER_ID,13,\"\'\"),14,\"\'\") as cusID
         FROM customer 
-        JOIN customertel
+         JOIN customertel
         ON customer.CUSTOMER_ID = customertel.CUSTOMERTEL_ID
         LEFT JOIN customertype 
         ON customer.CUSTOMER_CUSTOMERTYPE = customertype.CUSTOMERTYPE_ID
@@ -87,5 +87,17 @@ class customer_model extends CI_Model
         where CUSTOMERTEL_ID IN ($customerID)";
         $query = $this->db->query($sql);
         return $query->result();
+    }
+
+    public function checkCustomerTel($customerTel){
+        $sql = "SELECT COUNT(*) as cnt FROM customertel
+                WHERE CUSTOMERTEL_TEL IN ($customerTel)";
+        $query = $this->db->query($sql);
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach($query->result() as $row){
+            return $row->cnt;
+        }
     }
 }

@@ -83,7 +83,7 @@ class customertype extends CI_Controller
 
     public function genIdCustomerType()
     {
-        $maxID =  $this->customertype_model->maxID();
+        $maxID =  $this->crud_model->maxID('customertype','CUSTOMERTYPE_ID');
         $year = date('y');
         if ($maxID == Null) {
             return 'TCUS' . $year . '0001';
@@ -99,37 +99,6 @@ class customertype extends CI_Controller
                 }
                 return 'TCUS' . $y . $no;
             }
-        }
-    }
-
-    //genID Employee 
-    public function genIdEmployee($idPosition)
-    {
-        $idDept =  $this->employee_model->idDeptGenIdEmp($idPosition);
-        $maxIdEmployee = $this->employee_model->maxIdEmployee($idDept);
-        $firstID = substr($maxIdEmployee, 0, 2);
-        $idDept = substr($idDept, 3);
-        $date =  date('Y') + 543;
-        $Y =  substr($date, 2);
-        $m = date('m');
-        $midfront =  $m;
-        $midback = 00;
-        $midback = +$idDept;
-        $midback = '0' . $midback;
-        $last = '';
-        if ($firstID != $Y) {
-            $last = 0001;
-            while (strlen($last) < 4) {
-                $last = '0' . $last;
-            }
-            return $Y . $midfront .   $midback . $last;
-        } else {
-            $last = substr($maxIdEmployee, 6);
-            $last += 1;
-            while (strlen($last) < 4) {
-                $last = '0' . $last;
-            }
-            return $Y . $midfront .   $midback . $last;
         }
     }
 
