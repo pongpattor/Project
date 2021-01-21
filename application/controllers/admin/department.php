@@ -108,7 +108,7 @@ class department extends CI_Controller
     public function editDepartment()
     {
         $departmentID = $this->input->get('departmentID');
-        $data['department'] = $this->department_model->editDept($departmentID);
+        $data['department'] = $this->crud_model->findWhere('department','DEPARTMENT_ID',$departmentID);
         $data['page'] = 'department_edit_view';
         $this->load->view('admin/main_view', $data);
     }
