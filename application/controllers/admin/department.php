@@ -72,7 +72,7 @@ class department extends CI_Controller
                 'DEPARTMENT_NAME' => $departmentName,
             );
             $this->crud_model->insert('department', $dataDepartment);
-            $data['message'] = 'เพื่อข้อมูลแผนกเสร็จสิ้น';
+            $data['message'] = 'เพิ่มข้อมูลแผนกเสร็จสิ้น';
             $data['url'] = site_url('admin/department/');
         } else {
             $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
