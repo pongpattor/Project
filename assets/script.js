@@ -267,22 +267,26 @@ $(document).ready(function () {
 
     $('#editDepartmentForm').on('submit', function (e) {
         e.preventDefault();
-        $.ajax({
-            url: "../department/updateDepartment",
-            method: "POST",
-            data: $(this).serialize(),
-            dataType: "JSON",
-            success: function (data) {
-                // console.log(data);
-                if (data.status == true) {
-                    alert(data.message);
-                    location.replace(data.url);
-                } else {
-                    $('#departmentNameError').html(data.departmentNameError);
-                    alert(data.message);
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../department/updateDepartment",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert(data.message);
+                        location.replace(data.url);
+                    } else {
+                        $('#departmentNameError').html(data.departmentNameError);
+                        alert(data.message);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     });
     //Department End
 
