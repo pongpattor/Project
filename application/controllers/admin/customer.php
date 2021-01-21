@@ -117,7 +117,6 @@ class customer extends CI_Controller
             $data['status'] = false;
         }
         //จบตรวจเบอร์
-
         //เพิ่มข้อมูล
         if ($data['status'] == true) {
             $customerID = $this->genIdCustomer();
@@ -140,21 +139,20 @@ class customer extends CI_Controller
                 'CUSTOMER_CUSTOMERTYPE' => $customerType,
             );
             $data['id'] = $customerID;
-            $this->crud_model->insert('customer',$datacustomer);
+            $this->crud_model->insert('customer', $datacustomer);
             $i = 1;
-            foreach($customerTel as $row){
+            foreach ($customerTel as $row) {
                 $dataCustomerTel = array(
                     'CUSTOMERTEL_ID' => $customerID,
                     'CUSTOMERTEL_TEL' => $row,
                     'CUSTOMERTEL_NO' => $i,
                 );
-                $this->crud_model->insert('customertel',$dataCustomerTel);
+                $this->crud_model->insert('customertel', $dataCustomerTel);
                 $i++;
             }
             $data['url'] = site_url('admin/customer');
             $data['message'] = 'เพิ่มข้อมูลสมาชิกเสร็จสิ้น';
-        }
-        else{
+        } else {
             $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
         }
         echo json_encode($data);
@@ -201,4 +199,150 @@ class customer extends CI_Controller
             return false; // ไม่ตรงกันแสดงว่าผิด
     }
 
+    public function editCustomer()
+    {
+        $customerID = $this->input->get('customerID');
+        $data['customer'] = $this->customer_model->editCustomer($customerID);
+        $data['customerTel'] = $this->crud_model->findSelectWhere('customertel', 'CUSTOMERTEL_ID,CUSTOMERTEL_TEL', 'CUSTOMERTEL_ID',  $customerID);
+        $data['customerType'] = $this->crud_model->find('customertype', 'CUSTOMERTYPE_ID,CUSTOMERTYPE_NAME');
+        $data['province'] = $this->crud_model->findAll('province');
+        $province = $data['customer']['0']->PROVINCE_ID;
+        $data['amphur'] = $this->crud_model->findSelectWhere('amphur', 'AMPHUR_ID,AMPHUR_NAME', 'A_PROVINCE_ID', $province);
+        $amphur = $data['customer']['0']->AMPHUR_ID;
+        $data['district'] = $this->crud_model->findSelectWhere('district', 'DISTRICT_ID,DISTRICT_NAME', 'D_AMPHUR_ID', $amphur);
+        $district = $data['customer']['0']->DISTRICT_ID;
+        $data['postcode'] = $this->crud_model->findSelectWhere('district', 'POSTCODE', 'DISTRICT_ID', $district);
+        $data['page'] = 'customer_edit_view';
+        // echo '<pre>';
+        // print_r($data['customer']);
+        // echo '</pre>';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function updateCustomer()
+    {
+        // $data['input'] = $this->input->post();
+        $data['status'] = true;
+        $customerIdCard = $this->input->post('customerIdCard');
+        $customerIdCardOld = $this->input->post('customerIdCardOld');
+
+        //เลขประชาชนกรอกใหม่
+        if ($customerIdCard != $customerIdCardOld) {
+            // // ตรวจความถูกต้องของบัตรประชาชน
+            $checkCustomerIdCard = $this->checkIdCard($customerIdCard);
+            if ($checkCustomerIdCard == true) {
+                //ตรวจว่าในข้อมูลมีรหัสซ้ำไหม ถ้าซ้ำคนนั้นลาออกไปหรือยัง ถ้ายังไม่ให้เพิ่ม
+                $num = $this->crud_model->countWhere('customer', 'CUSTOMER_IDCARD', $customerIdCard);
+                if ($num == 0) {
+                    $data['errorIdCard'] = '';
+                } else {
+                    $data['errorIdCard'] = 'บัตรประชาชนนี้ได้ถูกใช้ไปแล้ว';
+                    $data['status'] = false;
+                }
+            } else {
+                $data['errorIdCard'] = 'กรุณากรอกบัตรประชาชนให้ถูกต้อง';
+                $data['status'] = false;
+            }
+            // //จบตรวจบัตร
+        }
+
+
+        // //ตรวจเบอร์ซ้ำ
+        $customerTel = $this->input->post('customerTel');
+        $customerTelOld = $this->input->post('customerTelOld');
+       
+        // if(count($newTel) != 0){
+        //     $data['new'] = $newTel;
+        //     $data['send'] = $customerTel;
+        //     $data['old'] = $customerTelOld;
+        // }
+        // $data['newTel'] = $customerTel;
+        // $data['oldTel'] = $customerTelOld;
+        $newTel = array_diff($customerTel,$customerTelOld);
+        // $data['checkTel'] = $newTel;
+        // $data['noNewTel'] = count($newTel);
+        //ถ้าจำนวนเบอร์ใหม่ไม่เท่ากับ 0 หรือ มากกว่า 0
+        $arrNewTel = [];
+        foreach($newTel as $rowNewTel){
+            array_push($arrNewTel,$rowNewTel);
+        }
+        $data['checkNewTel'] = $arrNewTel;
+        if (count($arrNewTel) > 0) {
+            $allTel = '';
+            for ($i = 0; $i < count($arrNewTel); $i++) {
+                $allTel .= '\'';
+                $allTel .= $arrNewTel[$i];
+                $allTel .= '\'';
+                if ($i != (count($arrNewTel) - 1)) {
+                    $allTel .= ',';
+                }
+            }
+            $data['allTel'] = $allTel;
+            $checkCustomerTel = $this->customer_model->checkCustomerTel($allTel);
+            if ($checkCustomerTel == 0) {
+                $data['errorTel'] = '';
+            } else {
+                $allDupliTel = $this->crud_model->findIn('customertel', 'CUSTOMERTEL_TEL', 'CUSTOMERTEL_TEL', $allTel);
+                $arrTel = [];
+                foreach ($allDupliTel as $row) {
+                    array_push($arrTel, $row->CUSTOMERTEL_TEL);
+                }
+                $error = implode(',', $arrTel);
+                $error .= ' ได้ถูกใช้ไปแล้ว';
+                $data['errorTel'] = $error;
+                $data['status'] = false;
+            }
+            // จบตรวจเบอร์
+
+        }
+        // จบตรวจเบอร์
+
+
+        // แก้ไขข้อมูล
+        if ($data['status'] == true) {
+            // $customerID = $this->input->post('customerID');
+            // $customerFirstName = $this->input->post('customerFirstName');
+            // $customerLastName = $this->input->post('customerLastName');
+            // $customerGender = $this->input->post('customerGender');
+            // $customerBdate = $this->input->post('customerBdate');
+            // $customerAddress = $this->input->post('customerAddress');
+            // $customerDistrict = $this->input->post('district');
+            // $customerType = $this->input->post('customerType');
+            // $datacustomer = array(
+            //     'CUSTOMER_IDCARD' => $customerIdCard,
+            //     'CUSTOMER_FIRSTNAME' => $customerFirstName,
+            //     'CUSTOMER_LASTNAME' => $customerLastName,
+            //     'CUSTOMER_GENDER' => $customerGender,
+            //     'CUSTOMER_BDATE' => $customerBdate,
+            //     'CUSTOMER_ADDRESS' => $customerAddress,
+            //     'CUSTOMER_DISTRICT' => $customerDistrict,
+            //     'CUSTOMER_CUSTOMERTYPE' => $customerType,
+            // );
+            // $this->crud_model->update('customer', $datacustomer, 'CUSTOMER_ID', $customerID);
+            // $this->crud_model->delete('customertel', 'CUSTOMERTEL_ID', $customerID);
+            // $i = 1;
+            // foreach ($customerTel as $row) {
+            //     $dataCustomerTel = array(
+            //         'CUSTOMERTEL_ID' => $customerID,
+            //         'CUSTOMERTEL_TEL' => $row,
+            //         'CUSTOMERTEL_NO' => $i,
+            //     );
+            //     $this->crud_model->insert('customertel', $dataCustomerTel);
+            //     $i++;
+            // }
+            $data['url'] = site_url('admin/customer');
+            $data['message'] = 'แก้ไขข้อมูลสมาชิกเสร็จสิ้น';
+        } else {
+            $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
+        }
+        echo json_encode($data);
+    }
+
+    public function deleteCustomer(){
+        $customerID = $this->input->post('customerID');
+        $this->crud_model->delete('customer','CUSTOMER_ID',$customerID);
+        $data['url'] = site_url('admin/customer');
+        echo json_encode($data);
+
+    }
 }

@@ -110,7 +110,7 @@
                         </a>
                         <!-- โปรโมชั่น -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PromotioncollapseLayouts" aria-expanded="false" aria-controls="PromotioncollapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa fa-bullhorn"></i></div>
                             โปรโมชั่น
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>

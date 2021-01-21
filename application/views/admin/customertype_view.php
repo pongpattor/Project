@@ -99,3 +99,28 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function() {
+        $('.deleteCustomerType').on('click', function() {
+            var customerTypeID = $(this).val();
+            var cf = confirm(`ยืนยันการลบประเภทสมาชิก รหัส ${customerTypeID}`);
+            if (cf == true) {
+                $.ajax({
+                    url: "<?=site_url('admin/customertype/deleteCustomerType')?>",
+                    method: "POST",
+                    data: {
+                        customerTypeID: customerTypeID
+                    },
+                    dataType: "JSON",
+                    success: function(data) {
+                        alert(`ลบประเภทสมาชิก รหัส ${customerTypeID} เสร็จสิ้น`);
+                        location.replace(data.url);
+                        // console.log(data);
+                    }
+                });
+            }
+        });
+    });
+</script>

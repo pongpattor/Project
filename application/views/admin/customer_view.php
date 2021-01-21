@@ -69,16 +69,16 @@
                                                             }
                                                         } ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->CUSTOMERTYPE_NAME; ?></td>
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <center>
                                                             <form action="<?= site_url('admin/customer/editCustomer') ?>" method="get">
-                                                                <button name="departmentID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->CUSTOMER_ID ?>"><i class="fa fa-edit"></i></button>
+                                                                <button name="customerID" class="btn btn-warning edit " style="text-align: center; " value="<?= $row->CUSTOMER_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
                                                         </center>
                                                     </td>
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <center>
-                                                            <button class="btn btn-danger  delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-danger deleteCustomer" style="text-align: center; " value="<?= $row->CUSTOMER_ID ?>"><i class="fa fa-trash"></i></button>
                                                         </center>
                                                     </td>
                                                 </tr>
@@ -91,7 +91,6 @@
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
                                                 <li class="page-item active"><a class="page-link ">1</a></li>
-
                                             </ul>
                                         </nav>
                                     <?php } ?>
@@ -105,3 +104,26 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function() {
+        $('.deleteCustomer').on('click', function() {
+            var customerID = $(this).val();
+            var cf = confirm(`ยืนยันการลบสมาชิก รหัส ${customerID}`);
+            if (cf == true) {
+                $.ajax({
+                    url: "<?=site_url('admin/customer/deleteCustomer')?>",
+                    method: "POST",
+                    data: {
+                        customerID: customerID
+                    },
+                    dataType : "JSON",
+                    success: function(data) {
+                        alert(`ลบสมาชิก รหัส ${customerID} เสร็จสิ้น`);
+                        location.replace(data.url);
+                        // console.log(data);
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -150,5 +150,7 @@ class customertype extends CI_Controller
     public function deleteCustomerType(){
         $customerTypeID = $this->input->post('customerTypeID');
         $this->crud_model->delete('customertype','CUSTOMERTYPE_ID',$customerTypeID);
+        $data['url'] = site_url('admin/customertype');
+        echo json_encode($data);
     }
 }

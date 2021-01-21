@@ -100,4 +100,26 @@ class customer_model extends CI_Model
             return $row->cnt;
         }
     }
+
+    public function editCustomer($customerID){
+        $sql = "SELECT  customer.CUSTOMER_ID,customer.CUSTOMER_IDCARD,customer.CUSTOMER_FIRSTNAME,customer.CUSTOMER_LASTNAME,
+                        customer.CUSTOMER_GENDER,customer.CUSTOMER_BDATE,customer.CUSTOMER_ADDRESS,customer.CUSTOMER_CUSTOMERTYPE,
+                        province.PROVINCE_ID,amphur.AMPHUR_ID,district.DISTRICT_ID,DISTRICT.POSTCODE
+                FROM customer
+                LEFT JOIN customertype
+                ON customer.CUSTOMER_CUSTOMERTYPE = customertype.CUSTOMERTYPE_ID
+                JOIN district
+                ON customer.CUSTOMER_DISTRICT = district.DISTRICT_ID
+                JOIN amphur
+                ON district.D_AMPHUR_ID = amphur.AMPHUR_ID
+                JOIN province
+                ON amphur.A_PROVINCE_ID = province.PROVINCE_ID
+                WHERE customer.CUSTOMER_ID = '$customerID'";
+        $query = $this->db->query($sql);
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
+    }
+
 }

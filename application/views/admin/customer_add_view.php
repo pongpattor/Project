@@ -19,7 +19,7 @@
                     <form method="POST" id="addCustomerForm">
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label>เลขบัตรประชาชน </label>
+                                <label>บัตรประจำตัวประชาชน </label>
                                 <input type="text" name="customerIdCard" id="customerIdCard" class="form-control" maxlength="13">
                                 <span id="customerIdCardError" style="color: red; "> </span>
                             </div>

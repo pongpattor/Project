@@ -1,5 +1,38 @@
 //All customer
 $(document).ready(function () {
+
+    //Login Start
+    //ยังไม่ใช้ หรือ ไม่ได้ใช้
+    // $("#username").keypress(function (event) {
+    //     var ew = event.which;
+    //     if (ew == 32)
+    //         return true;
+    //     if (48 <= ew && ew <= 57)
+    //         return true;
+    //     if (65 <= ew && ew <= 90)
+    //         return true;
+    //     if (97 <= ew && ew <= 122)
+    //         return true;
+    //     return false;
+    // });
+
+    // $("#password").keypress(function (event) {
+    //     var ew = event.which;
+    //     if (ew == 32)
+    //         return true;
+    //     if (48 <= ew && ew <= 57)
+    //         return true;
+    //     if (65 <= ew && ew <= 90)
+    //         return true;
+    //     if (97 <= ew && ew <= 122)
+    //         return true;
+    //     return false;
+    // });
+
+
+    //Login End
+
+
     //customerType
     function validationCustomerType() {
         var Errors = 0;
@@ -86,42 +119,7 @@ $(document).ready(function () {
         }
     });
 
-    // ใช้ input number แทน
-    // $('#customerTypeDiscount').on('keypress', function (e) {
-    //     if (e.charCode >= 48 && e.charCode <= 57) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // });
 
-    // $('#customerTypeDiscountBdate').on('keypress', function (e) {
-    //     if (e.charCode >= 48 && e.charCode <= 57) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-
-    // });
-
-    $('.deleteCustomerType').on('click', function () {
-        var customerTypeID = $(this).val();
-        var cf = confirm(`ยืนยันการลบประเภทสมาชิก รหัส ${customerTypeID}`);
-        if (cf == true) {
-            $.ajax({
-                url: "../customerType/deleteCustomerType",
-                method: "POST",
-                data: {
-                    customerTypeID: customerTypeID
-                },
-                success: function () {
-                    alert(`ลบประเภทสมาชิก รหัส ${customerTypeID} เสร็จสิ้น`);
-                    location.reload();
-                    // console.log(data);
-                }
-            });
-        }
-    });
 
 
     //customer
@@ -281,14 +279,14 @@ $(document).ready(function () {
                         }
                         alert(data.message);
                     }
-
                 }
             });
         }
         else {
-            alert('กรุณากรอกข้อมูลให้ถูกต้อง');   
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
         }
     });
+
 
     var addCustomerTel = 1;
     $('#addCustomerTel').click(function () {
@@ -315,6 +313,11 @@ $(document).ready(function () {
         });
     });
 
+    $('.btn-remove').on('click', function () {
+        var btn_del = $(this).attr("id");
+        $('#row' + btn_del).remove();
+    });
+
     $('.customerTel').on('keypress', function (e) {
         if (e.charCode >= 48 && e.charCode <= 57) {
             return true;
@@ -322,6 +325,49 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    $('#editCustomerForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validationCustomer();
+            if (result == 0) {
+                $.ajax({
+                    url: "../customer/updateCustomer",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status == true) {
+                            alert(data.message);
+                            location.replace(data.url);
+                        } else {
+                            if (data.errorTel == '') {
+                                $('#customerTelError').html('');
+                            }
+                            else {
+                                $('#customerTelError').html(data.errorTel);
+                            }
+                            if (data.errorIdCard == '') {
+                                $('#customerIdCardError').html('');
+                            }
+                            else {
+                                $('#customerIdCardError').html(data.errorIdCard);
+                            }
+                            alert(data.message);
+                        }
+                    }
+                });
+            }
+            else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            }
+        }
+
+    });
+
+ 
     // Customer End
 
 

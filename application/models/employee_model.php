@@ -219,9 +219,6 @@ class employee_model extends CI_Model
  
   
 
-  
-
-
     
 
     public function  fetch_department()

@@ -231,7 +231,7 @@ class employee extends CI_Controller
     {
         $this->load->model('position_model');
         $id = $this->input->get('empID');
-        $data['employee'] = $this->employee_model->editEmp($id);
+        $data['employee'] = $this->employee_model->editEmp('6310020002'); 
         // echo '<pre>';
         // print_r($data['employee']);
         // echo '</pre>';
@@ -241,7 +241,6 @@ class employee extends CI_Controller
             echo 'location.href= "' . site_url('admin/employee/') . '"';
             echo '</script>';
         } else {
-
             $data['province']  = $this->employee_model->fetch_province();
             $province_id = $data['employee']['0']->D_PROVINCE_ID;
             $data['amphur'] = $this->crud_model->findwhere('amphur', 'A_PROVINCE_ID', $province_id);
