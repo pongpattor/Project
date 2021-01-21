@@ -16,11 +16,12 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form action="<?= site_url('admin/department/insertDepartment') ?>" method="POST" id="formDepartment">
+                    <form method="POST" id="addDepartmentForm">
                         <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-6 " id="rowDeptName">
+                            <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อแผนก </label>
-                                <input type="text" name="DEPARTMENT_NAME" id="department_name" class="form-control " required maxlength="50">
+                                <input type="text" name="departmentName" id="departmentName" class="form-control"  required maxlength="50">
+                                <span id="departmentNameError" style="color:red;"></span>
                             </div>
                         </div>
                         <br>
@@ -29,10 +30,10 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger" id="btn_cancel">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                         </div>
                                         <div class="col">
-                                            <input id="btn_regis" class="btn btn-success" type="submit" value="  เพิ่ม  ">
+                                            <input class="btn btn-success btn-xs" type="submit" value="  เพิ่ม  ">
                                         </div>
                                     </div>
                                 </center>
@@ -44,49 +45,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-
-        function chkName() {
-            var deptName = $('#department_name').val();
-            $.ajax({
-                url: "<?= site_url('admin/department/checkDepartmentNameInsert') ?>",
-                method: "POST",
-                async: false,
-                data: {
-                    departmentName: deptName
-                },
-                success: function(data) {
-                    if (data != 0) {
-                        $('#btn_regis').removeClass('idTrue');
-                        $('#btn_regis').addClass('idFalse');
-                        $('#alertidcard').remove();
-                        $('#rowDeptName').append(' <p style="color:red" id="alertidcard">ชื่อแผนกนี้ได้ถูกใช้ไปแล้ว</p>');
-                    } else {
-                        $('#alertidcard').remove();
-                        $('#btn_regis').removeClass('idFalse');
-                        $('#btn_regis').addClass('idTrue');
-                    }
-                }
-            });
-        }
-
-
-
-        $('#btn_regis').on('click', function() {
-            chkName();
-            if ($('#btn_regis').hasClass('idFalse')) {
-                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                return false;
-            } 
-        });
-
-
-
-
-
-
-
-
-    });
-</script>

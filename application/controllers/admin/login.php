@@ -7,9 +7,9 @@ class login extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (isset($_SESSION['login'])) {
-            return redirect(site_url('admin/admin/home'));
-        }
+        // if (isset($_SESSION['login'])) {
+        //     return redirect(site_url('admin/admin/home'));
+        // }
         date_default_timezone_set('ASIA/BANGKOK');
         $this->load->model('employee_model');
     }

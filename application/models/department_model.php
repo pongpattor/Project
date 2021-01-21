@@ -5,7 +5,7 @@ class department_model extends CI_Model
 {
 
     //Department Start
-    public function Department($search = '', $limit, $offset)
+    public function department($search = '', $limit, $offset)
     {
         $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME FROM department 
         where DEPARTMENT_ID != 'DEP000' AND
@@ -55,9 +55,10 @@ class department_model extends CI_Model
         }
     }
 
-    public function maxIdDepartment()
+    public function maxDepartmentID()
     {
-        $sql = 'SELECT MAX(DEPARTMENT_ID) as MID from department';
+        $sql = "SELECT MAX(DEPARTMENT_ID) as MID from department
+                WHERE DEPARTMENT_ID != 'DEP000000'";
         $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->MID;
@@ -69,21 +70,6 @@ class department_model extends CI_Model
         $sql = "SELECT * FROM department 
         WHERE DEPARTMENT_ID = '$id'";
         return $this->db->query($sql)->result();
-    }
-
-    public function checkName($departmentName)
-    {
-        $sql = "SELECT COUNT(DEPARTMENT_NAME) as cnt FROM department
-        WHERE DEPARTMENT_NAME LIKE ?";
-        $query = $this->db->query(
-            $sql,
-            array(
-                 $this->db->escape_like_str($departmentName)
-            )
-        );
-        foreach ($query->result() as $row) {
-            return $row->cnt;
-        }
     }
     //Department End
 }

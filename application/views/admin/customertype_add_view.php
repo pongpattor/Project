@@ -20,23 +20,20 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อประเภทสมาชิก </label>
-                                <input type="text" name="customerTypeName" id="customerTypeName" class="form-control" maxlength="20">
+                                <input type="text" name="customerTypeName" id="customerTypeName" class="form-control" maxlength="20" required>
                                 <span id="customerTypeNameError" style="color: red;"> </span>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ส่วนลด(%) </label>
-                                <input type="number" name="customerTypeDiscount" id="customerTypeDiscount" class="form-control" >
-                                <span id="customerTypeDiscountError" style="color: red;"> </span>
-
+                                <input type="number" name="customerTypeDiscount" id="customerTypeDiscount" class="form-control" min="0" max="100" required>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ส่วนลดวันเกิด(%) </label>
-                                <input type="number" name="customerTypeDiscountBdate" id="customerTypeDiscountBdate" class="form-control" >
-                                <span id="customerTypeDiscountBdateError" style="color: red;"> </span>
+                                <input type="number" name="customerTypeDiscountBdate" id="customerTypeDiscountBdate" class="form-control" min="0" max="100" required >
                             </div>
                         </div>
                         <br>

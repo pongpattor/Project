@@ -72,8 +72,8 @@
                         <div class="collapse" id="EmployeecollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= site_url('admin/employee/'); ?>">รายชื่อพนักงาน</a>
-                                <a class="nav-link" href="<?= site_url('admin/department/'); ?>">แผนก</a>
                                 <a class="nav-link" href="<?= site_url('admin/position/'); ?>">ตำแหน่ง</a>
+                                <a class="nav-link" href="<?= site_url('admin/department/'); ?>">แผนก</a>
                             </nav>
                         </div>
                         <!-- สินค้า -->

@@ -13,7 +13,8 @@ class customer_model extends CI_Model
         ON customer.CUSTOMER_ID = customertel.CUSTOMERTEL_ID
         LEFT JOIN customertype 
         ON customer.CUSTOMER_CUSTOMERTYPE = customertype.CUSTOMERTYPE_ID
-        where 
+        where  customer.CUSTOMER_STATUS = '1'
+        AND
         (
             customer.CUSTOMER_ID LIKE  ? OR
             customer.CUSTOMER_FIRSTNAME LIKE ? OR
@@ -21,6 +22,7 @@ class customer_model extends CI_Model
             customertype.CUSTOMERTYPE_NAME LIKE ? OR
             customertel.CUSTOMERTEL_TEL LIKE ?
         )
+        
         GROUP BY customer.CUSTOMER_ID
         LIMIT $offset,$limit
         ";
@@ -52,7 +54,8 @@ class customer_model extends CI_Model
             ON customer.CUSTOMER_ID = customertel.CUSTOMERTEL_ID
             LEFT JOIN customertype 
             ON customer.CUSTOMER_CUSTOMERTYPE = customertype.CUSTOMERTYPE_ID
-            WHERE 
+            WHERE  customer.CUSTOMER_STATUS = '1'
+            AND
             (
                 customer.CUSTOMER_ID LIKE  ? OR
                 customer.CUSTOMER_FIRSTNAME LIKE ? OR
@@ -90,8 +93,11 @@ class customer_model extends CI_Model
     }
 
     public function checkCustomerTel($customerTel){
-        $sql = "SELECT COUNT(*) as cnt FROM customertel
-                WHERE CUSTOMERTEL_TEL IN ($customerTel)";
+        $sql = "SELECT COUNT(*) AS cnt FROM customer
+        JOIN customertel
+        ON customer.CUSTOMER_ID = customertel.CUSTOMERTEL_ID
+        WHERE customertel.CUSTOMERTEL_TEL IN ($customerTel)
+        AND customer.CUSTOMER_STATUS = '1'";
         $query = $this->db->query($sql);
         // echo '<pre>';
         // print_r($this->db->last_query($query));

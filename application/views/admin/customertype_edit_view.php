@@ -23,23 +23,20 @@
                                     <label>ชื่อประเภทสมาชิก </label>
                                     <input type="hidden" name="customerTypeID" value="<?= $row->CUSTOMERTYPE_ID; ?>">
                                     <input type="hidden" name="customerTypeNameOld" value="<?= $row->CUSTOMERTYPE_NAME; ?>">
-                                    <input type="text" name="customerTypeName" id="customerTypeName" class="form-control" maxlength="20" value="<?= $row->CUSTOMERTYPE_NAME; ?>">
+                                    <input type="text" name="customerTypeName" id="customerTypeName" class="form-control" maxlength="20" required value="<?= $row->CUSTOMERTYPE_NAME; ?>">
                                     <span id="customerTypeNameError" style="color: red;"> </span>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ส่วนลด(%) </label>
-                                    <input type="number" name="customerTypeDiscount" id="customerTypeDiscount" class="form-control"  value="<?= $row->CUSTOMERTYPE_DISCOUNT; ?>">
-                                    <span id="customerTypeDiscountError" style="color: red;"> </span>
-
+                                    <input type="number" name="customerTypeDiscount" id="customerTypeDiscount" class="form-control" min="0" max="100" required value="<?= $row->CUSTOMERTYPE_DISCOUNT; ?>">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ส่วนลดวันเกิด(%) </label>
-                                    <input type="number" name="customerTypeDiscountBdate" id="customerTypeDiscountBdate" class="form-control"  value="<?= $row->CUSTOMERTYPE_DISCOUNTBDATE; ?>">
-                                    <span id="customerTypeDiscountBdateError" style="color: red;"> </span>
+                                    <input type="number" name="customerTypeDiscountBdate" id="customerTypeDiscountBdate" class="form-control" min="0" max="100" required value="<?= $row->CUSTOMERTYPE_DISCOUNTBDATE; ?>">
                                 </div>
                             </div>
                             <br>

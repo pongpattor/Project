@@ -69,7 +69,7 @@
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            <button class="btn btn-danger  delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-trash"></i></button>
                                                         </center>
                                                     </td>
                                                 </tr>
@@ -81,7 +81,7 @@
                                     } else { ?>
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                <li class="page-item active"><a class="page-link " >1</a></li>
+                                                <li class="page-item active"><a class="page-link ">1</a></li>
 
                                             </ul>
                                         </nav>
@@ -98,34 +98,22 @@
 
 <script>
     $(document).ready(function() {
-
-
         $('.delete').click(function(e) {
-            var ID = $(this).parents("tr").attr("id");
-            var result = confirm(`ยืนยันการลบแผนก รหัส ${ID}`);
+            var departmentID = $(this).val();
+            var result = confirm(`ยืนยันการลบแผนก รหัส ${departmentID}`);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/department/deleteDepartment') ?>",
                     method: "POST",
                     data: {
-                        deptID: ID
+                        departmentID: departmentID
                     },
                     success: function() {
-                        alert(`ลบแผนก รหัส ${ID} เสร็จสิ้น`);
-                        window.location.href = "<?= site_url('admin/department/') ?>";
-
+                        alert(`ลบแผนก รหัส ${departmentID} เสร็จสิ้น`);
+                        location.href = "<?= site_url('admin/department/') ?>";
                     }
                 });
             }
-        });
-
-        $('.bgtable').mouseover(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "#C6FFF8");
-        });
-        $('.bgtable').mouseout(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "");
         });
     });
 </script>

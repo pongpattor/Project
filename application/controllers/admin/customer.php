@@ -7,6 +7,9 @@ class customer extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        // if (empty($_SESSION['login'])) {
+        //     return redirect(site_url('admin/login'));
+        // }
         date_default_timezone_set('ASIA/BANGKOK');
         $this->load->model('customer_model');
         $this->load->model('crud_model');
@@ -74,6 +77,7 @@ class customer extends CI_Controller
     {
         $customerTel = $this->input->post('customerTel');
         $customerIdCard = $this->input->post('customerIdCard');
+        $data['asd'] = $this->input->post();
         $data['status'] = true;
         // ตรวจความถูกต้องของบัตรประชาชน
         $checkCustomerIdCard = $this->checkIdCard($customerIdCard);
@@ -92,7 +96,7 @@ class customer extends CI_Controller
         }
         //จบตรวจบัตร
 
-        //ตรวจเบอร์ซ้ำ
+       // ตรวจเบอร์ซ้ำ
         $allTel = '';
         for ($i = 0; $i < count($customerTel); $i++) {
             $allTel .= '\'';
@@ -102,6 +106,7 @@ class customer extends CI_Controller
                 $allTel .= ',';
             }
         }
+        $data['allTel'] = $allTel;
         $checkCustomerTel = $this->customer_model->checkCustomerTel($allTel);
         if ($checkCustomerTel == 0) {
             $data['errorTel'] = '';
@@ -116,8 +121,8 @@ class customer extends CI_Controller
             $data['errorTel'] = $error;
             $data['status'] = false;
         }
-        //จบตรวจเบอร์
-        //เพิ่มข้อมูล
+        // จบตรวจเบอร์
+        // เพิ่มข้อมูล
         if ($data['status'] == true) {
             $customerID = $this->genIdCustomer();
             $customerFirstName = $this->input->post('customerFirstName');
@@ -137,6 +142,7 @@ class customer extends CI_Controller
                 'CUSTOMER_ADDRESS' => $customerAddress,
                 'CUSTOMER_DISTRICT' => $customerDistrict,
                 'CUSTOMER_CUSTOMERTYPE' => $customerType,
+                'CUSTOMER_STATUS' => '1',
             );
             $data['id'] = $customerID;
             $this->crud_model->insert('customer', $datacustomer);
@@ -167,10 +173,10 @@ class customer extends CI_Controller
             return 'CUS' . $ndate . '001';
         } else {
             $odate = substr($maxID, 3, 6);
-            $no = substr($maxID, 9, 3);
             if ($odate != $ndate) {
-                return 'CUS' . $ndate . $no;
+                return 'CUS' . $ndate . '001';
             } else {
+                $no = substr($maxID, 9, 3);
                 $no = $no + 1;
                 while (strlen($no) < 3) {
                     $no = '0' . $no;
@@ -246,27 +252,16 @@ class customer extends CI_Controller
             // //จบตรวจบัตร
         }
 
-
         // //ตรวจเบอร์ซ้ำ
         $customerTel = $this->input->post('customerTel');
         $customerTelOld = $this->input->post('customerTelOld');
-       
-        // if(count($newTel) != 0){
-        //     $data['new'] = $newTel;
-        //     $data['send'] = $customerTel;
-        //     $data['old'] = $customerTelOld;
-        // }
-        // $data['newTel'] = $customerTel;
-        // $data['oldTel'] = $customerTelOld;
         $newTel = array_diff($customerTel,$customerTelOld);
-        // $data['checkTel'] = $newTel;
-        // $data['noNewTel'] = count($newTel);
         //ถ้าจำนวนเบอร์ใหม่ไม่เท่ากับ 0 หรือ มากกว่า 0
         $arrNewTel = [];
         foreach($newTel as $rowNewTel){
             array_push($arrNewTel,$rowNewTel);
         }
-        $data['checkNewTel'] = $arrNewTel;
+        // $data['checkNewTel'] = $arrNewTel;
         if (count($arrNewTel) > 0) {
             $allTel = '';
             for ($i = 0; $i < count($arrNewTel); $i++) {
@@ -300,36 +295,36 @@ class customer extends CI_Controller
 
         // แก้ไขข้อมูล
         if ($data['status'] == true) {
-            // $customerID = $this->input->post('customerID');
-            // $customerFirstName = $this->input->post('customerFirstName');
-            // $customerLastName = $this->input->post('customerLastName');
-            // $customerGender = $this->input->post('customerGender');
-            // $customerBdate = $this->input->post('customerBdate');
-            // $customerAddress = $this->input->post('customerAddress');
-            // $customerDistrict = $this->input->post('district');
-            // $customerType = $this->input->post('customerType');
-            // $datacustomer = array(
-            //     'CUSTOMER_IDCARD' => $customerIdCard,
-            //     'CUSTOMER_FIRSTNAME' => $customerFirstName,
-            //     'CUSTOMER_LASTNAME' => $customerLastName,
-            //     'CUSTOMER_GENDER' => $customerGender,
-            //     'CUSTOMER_BDATE' => $customerBdate,
-            //     'CUSTOMER_ADDRESS' => $customerAddress,
-            //     'CUSTOMER_DISTRICT' => $customerDistrict,
-            //     'CUSTOMER_CUSTOMERTYPE' => $customerType,
-            // );
-            // $this->crud_model->update('customer', $datacustomer, 'CUSTOMER_ID', $customerID);
-            // $this->crud_model->delete('customertel', 'CUSTOMERTEL_ID', $customerID);
-            // $i = 1;
-            // foreach ($customerTel as $row) {
-            //     $dataCustomerTel = array(
-            //         'CUSTOMERTEL_ID' => $customerID,
-            //         'CUSTOMERTEL_TEL' => $row,
-            //         'CUSTOMERTEL_NO' => $i,
-            //     );
-            //     $this->crud_model->insert('customertel', $dataCustomerTel);
-            //     $i++;
-            // }
+            $customerID = $this->input->post('customerID');
+            $customerFirstName = $this->input->post('customerFirstName');
+            $customerLastName = $this->input->post('customerLastName');
+            $customerGender = $this->input->post('customerGender');
+            $customerBdate = $this->input->post('customerBdate');
+            $customerAddress = $this->input->post('customerAddress');
+            $customerDistrict = $this->input->post('district');
+            $customerType = $this->input->post('customerType');
+            $datacustomer = array(
+                'CUSTOMER_IDCARD' => $customerIdCard,
+                'CUSTOMER_FIRSTNAME' => $customerFirstName,
+                'CUSTOMER_LASTNAME' => $customerLastName,
+                'CUSTOMER_GENDER' => $customerGender,
+                'CUSTOMER_BDATE' => $customerBdate,
+                'CUSTOMER_ADDRESS' => $customerAddress,
+                'CUSTOMER_DISTRICT' => $customerDistrict,
+                'CUSTOMER_CUSTOMERTYPE' => $customerType,
+            );
+            $this->crud_model->update('customer', $datacustomer, 'CUSTOMER_ID', $customerID);
+            $this->crud_model->delete('customertel', 'CUSTOMERTEL_ID', $customerID);
+            $i = 1;
+            foreach ($customerTel as $row) {
+                $dataCustomerTel = array(
+                    'CUSTOMERTEL_ID' => $customerID,
+                    'CUSTOMERTEL_TEL' => $row,
+                    'CUSTOMERTEL_NO' => $i,
+                );
+                $this->crud_model->insert('customertel', $dataCustomerTel);
+                $i++;
+            }
             $data['url'] = site_url('admin/customer');
             $data['message'] = 'แก้ไขข้อมูลสมาชิกเสร็จสิ้น';
         } else {
@@ -340,7 +335,7 @@ class customer extends CI_Controller
 
     public function deleteCustomer(){
         $customerID = $this->input->post('customerID');
-        $this->crud_model->delete('customer','CUSTOMER_ID',$customerID);
+        $this->crud_model->UpdateStatus('customer','CUSTOMER_STATUS','0','CUSTOMER_ID',$customerID);
         $data['url'] = site_url('admin/customer');
         echo json_encode($data);
 

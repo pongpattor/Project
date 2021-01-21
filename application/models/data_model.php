@@ -7,7 +7,7 @@ class data_model extends CI_Model
     {
         $sql = "SELECT * from amphur where A_PROVINCE_ID = $provinceID";
         $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected >กรุณาเลือกเขต</option>';
+        $output = '<option value="" selected disabled>กรุณาเลือกเขต</option>';
 
         foreach ($query as $row) {
             $output .= '<option value="' . $row->AMPHUR_ID . '">' . $row->AMPHUR_NAME . '</option>';
@@ -19,7 +19,7 @@ class data_model extends CI_Model
     {
         $sql = "SELECT * from district where D_AMPHUR_ID = $amphurID";
         $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected  >กรุณาเลือกแขวง</option>';
+        $output = '<option value="" selected disabled >กรุณาเลือกแขวง</option>';
 
         foreach ($query as $row) {
             $output .= '<option value="' . $row->DISTRICT_ID . '">' . $row->DISTRICT_NAME . '</option>';
@@ -31,7 +31,7 @@ class data_model extends CI_Model
     {
         $sql = "SELECT POSTCODE from district where DISTRICT_ID = $districtID";
         $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected >กรุณาเลือกรหัสไปรษณีย์</option>';
+        $output = '<option value="" selected disabled >กรุณาเลือกรหัษไปรษณีย์</option>';
         foreach ($query as $row) {
             $output = '<option value="' . $row->POSTCODE . '">' . $row->POSTCODE . '</option>';
         }

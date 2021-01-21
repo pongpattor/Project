@@ -74,6 +74,12 @@ class crud_model extends CI_Model
         $this->db->query($sql);
     }
 
+    public function UpdateStatus($table,$set,$setData,$where, $whereData)
+    {
+        $sql = "UPDATE $table SET $set = $setData WHERE $where = '$whereData' ";
+        $this->db->query($sql);
+    }
+
     public function maxID($table, $select)
     {
         $sql = "SELECT MAX($select) as maxID FROM $table";
