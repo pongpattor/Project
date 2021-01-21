@@ -7,12 +7,12 @@ class position extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (empty($_SESSION['login'])) {
-            return redirect(site_url('admin/login'));
-        } else if ($_SESSION['permission'][2] != 1) {
-            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
-            return redirect(site_url('admin/admin/home'));
-        }
+        // if (empty($_SESSION['login'])) {
+        //     return redirect(site_url('admin/login'));
+        // } else if ($_SESSION['permission'][2] != 1) {
+        //     echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+        //     return redirect(site_url('admin/admin/home'));
+        // }
         date_default_timezone_set('ASIA/BANGKOK');
         $this->load->model('crud_model');
         $this->load->model('position_model');
@@ -26,7 +26,7 @@ class position extends CI_Controller
         $search = $this->input->get('search');
         $config['base_url'] = site_url('admin/position/index');
         $config['total_rows'] = $this->position_model->countAllPosition($search);
-        $config['per_page'] = 5; 
+        $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
         $config['full_tag_open'] = '<nav><ul class="pagination">';
@@ -63,123 +63,119 @@ class position extends CI_Controller
     public function addPosition()
     {
         $data['page'] = 'position_add_view';
-        $data['department'] = $this->position_model->showDepartment();
+        $data['department'] = $this->crud_model->findAll('department');
         $this->load->view('admin/main_view', $data);
     }
 
     public function genIdPosition()
     {
-        $maxIdPosition = $this->position_model->maxIdPosition();
-        if ($maxIdPosition == '') {
-            $id = 'POS001';
+        $maxId = $this->crud_model->maxID('position', 'POSITION_ID');
+        $ym = date('ym');
+        if ($maxId == '') {
+            $id = 'POS' . $ym . '0010';
             return $id;
         } else {
-            $id = substr($maxIdPosition, 3);
-            $id += 1;
-            while (strlen($id) < 3) {
-                $id = '0' . $id;
+            $ymID = substr($maxId, 3, 4);
+            if ($ymID != $ym) {
+                return 'POS' . $ym . '0001';
+            } else {
+                $id = substr($maxId, 7);
+                $id += 1;
+                while (strlen($id) < 4) {
+                    $id = '0' . $id;
+                }
+                $id = 'POS' . $ymID . $id;
+                return $id;
             }
-            $id = 'POS' . $id;
-            return $id;
         }
     }
 
-    public function insertPos()
+    public function insertPosition()
     {
+        $data['status'] = true;
+        $positionName = $this->input->post('positionName');
+        $positionDepartment = $this->input->post('positionDepartment');
+        $positionPermission = $this->input->post('positionPermission');
+        $checkPositionName = $this->position_model->checkPositionName($positionName, $positionDepartment);
+        if ($checkPositionName == 0) {
+            $dataPosition = array(
+                'POSITION_ID' => $this->genIdPosition(),
+                'POSITION_NAME' => $positionName,
+                'POSITION_DEPARTMENT' => $positionDepartment,
+                'POSITION_PERMISSION' =>  $positionPermission,
+            );
+            $this->crud_model->insert('position', $dataPosition);
+            $data['message'] = "เพิ่มข้อมูลตำแหน่งเสร็จสิ้น";
+            $data['url'] = site_url('admin/position');
+        } else {
+            $data['status'] = false;
+            $data['positionNameError'] = "ชื่อตำแหน่งนี้ได้ถูกใช้ไปแล้ว";
+            $data['message'] = "กรุณากรอกข้อมูลให้ถูกต้อง";
+        }
 
-        $position = array(
-            'POSITION_ID' => $this->genIdPosition(),
-            'POSITION_NAME' => $this->input->post('positionName'),
-            'DEPT_ID' => $this->input->post('departmentID'),
-            'PERMISSION' =>  $this->input->post('perPosition')
-        );
-
-        $this->crud_model->insert('position', $position);
-        echo '<script>alert("เพิ่มข้อมูลตำแหน่งสำเร็จ")</script>';
-        return redirect(site_url('admin/position/'));
-
-        // Convert String to Array
-        // $array = explode(",",$d);
-        // print_r($array);
+        echo json_encode($data);
     }
 
     public function editPosition()
     {
-        $posID = $this->input->get('positionID');
-        $data['oldPos'] = $this->crud_model->findwhere('position', 'POSITION_ID', $posID);
-
-        if ($data['oldPos'] == null) {
-            echo '<script>';
-            echo 'alert("ไม่มีข้อมูลตำแหน่งรหัส ' . $posID . '");';
-            echo 'location.href= "' . site_url('admin/position/') . '"';
-            echo '</script>';
+        $positpositionID = $this->input->get('positionID');
+        $data['position'] = $this->crud_model->findwhere('position', 'POSITION_ID', $positpositionID);
+        $data['department'] = $this->crud_model->findAll('department');
+        if ($data['position'][0]->POSITION_PERMISSION == "") {
+            $data['permission'] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
         } else {
-            $data['page'] = 'position_edit_view';
-            $data['department'] = $this->position_model->showDepartment();
-
-
-            if ($data['oldPos'][0]->PERMISSION == "") {
-                $data['permission'] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
-            } else {
-                $data['permission'] = explode(',', $data['oldPos']['0']->PERMISSION);
-            }
-            // print_r($data['permission']);
-            $this->load->view('admin/main_view', $data);
+            $data['permission'] = explode(',', $data['position']['0']->POSITION_PERMISSION);
         }
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
+        $data['page'] = 'position_edit_view';
+        $this->load->view('admin/main_view', $data);
     }
 
     public function updatePosition()
     {
-        $positionID = $this->input->post('positionID');
+        $data['status'] = true;
+        // $data['input'] = $this->input->post();
         $positionName = $this->input->post('positionName');
-        $deptID = $this->input->post('departmentID');
-        $permission =  $this->input->post('perPosition');
-        $this->position_model->updatePosition($positionID, $positionName, $deptID, $permission);
-        echo '<script>alert("แก้ไขข้อมูลตำแหน่งสำเร็จ")</script>';
-
-        return redirect(site_url('admin/position/'));
+        $positionDepartment = $this->input->post('positionDepartment');
+        $positionNameOld = $this->input->post('positionNameOld');
+        $positionDepartmentOld = $this->input->post('positionDepartmentOld');
+        if(strtolower($positionName) == strtolower($positionNameOld) && $positionDepartment == $positionDepartmentOld){
+            $positionID = $this->input->post('positionID');
+            $dataPosition = array(
+                'POSITION_PERMISSION' => $this->input->post('positionPermission'),
+            );
+            $this->crud_model->update('position',$dataPosition,'POSITION_ID',$positionID);
+            $data['message'] = "แก้ไขข้อมูลตำแหน่งเสร็จสิ้น";
+            $data['url'] = site_url('admin/position');
+        }else{
+            $checkPositionName =  $this->position_model->checkPositionName($positionName, $positionDepartment);
+            if($checkPositionName == 0){
+                $positionID = $this->input->post('positionID');
+                $dataPosition = array(
+                    'POSITION_NAME' => $positionName,
+                    'POSITION_DEPARTMENT' => $positionDepartment,
+                    'POSITION_PERMISSION' => $this->input->post('positionPermission'),
+                );
+                $this->crud_model->update('position',$dataPosition,'POSITION_ID',$positionID);
+                $data['message'] = "แก้ไขข้อมูลตำแหน่งเสร็จสิ้น";
+                $data['url'] = site_url('admin/position');
+            }
+            else{
+                $data['status'] = false;
+                $data['positionNameError'] = 'ชื่อตำแหน่งนี้ได้ถูกใช้ไปแล้ว';
+                $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
+            }
+        }
+        echo json_encode($data);
     }
 
     public function deletePosition()
     {
-        $pos = $this->input->post('posID');
-        $this->crud_model->delete('position', 'POSITION_ID', $pos);
+        $positionID = $this->input->post('positionID');
+        $this->crud_model->delete('position', 'POSITION_ID', $positionID);
     }
 
-    public function checkPositionNameInsert()
-    {
-        $departmentId = $this->input->post("departmentId");
-        $positionName = $this->input->post("positionName");
-        $check = $this->position_model->checkName($departmentId, $positionName);
-        if ($check != 0) {
-            //ซ้ำ
-            echo 1;
-        } else {
-            //ไม่ซ้ำ
-            echo 0;
-        }
-    }
-
-
-    public function checkPositionNameUpdate()
-    {
-        $departmentId = $this->input->post("departmentId");
-        $positionName = $this->input->post("positionName");
-        $oldname = $this->input->post("oldPositionName");
-        $oldDepartment = $this->input->post("oldDepartment");
-        if ($oldname == $positionName && $departmentId == $oldDepartment) {
-            echo 0;
-        } else {
-            $check = $this->position_model->checkName($departmentId, $positionName);
-            if ($check != 0) {
-                //ซ้ำ
-                echo 1;
-            } else {
-                //ไม่ซ้ำ
-                echo 0;
-            }
-        }
-    }
-    // Position End
 
 }

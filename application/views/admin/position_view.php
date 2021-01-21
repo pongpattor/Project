@@ -48,9 +48,9 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสตำแหน่ง</th>
-                                        <th style="text-align: center;">แผนก</th>
                                         <th style="text-align: center;">ตำแหน่ง</th>
-                                        <th style="text-align: center;  ">แก้ไข</th>
+                                        <th style="text-align: center;">แผนก</th>
+                                        <th style="text-align: center;">แก้ไข</th>
                                         <th style="text-align: center;">ลบ</th>
                                     </tr>
                                 </thead>
@@ -58,18 +58,18 @@
                                     <?php foreach ($dept_pos as $row) : ?>
                                         <tr id="<?= $row->POSITION_ID ?>" class=" bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_ID; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?php echo $row->POSITION_NAME; ?></td>
-                                            <td>
+                                            <td class="align-middle">
                                                 <center>
                                                     <form action="<?= site_url('admin/position/editPosition') ?>" method="get">
                                                         <button name="positionID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->POSITION_ID ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
                                             </td>
-                                            <td>
+                                            <td class="align-middle">
                                                 <center>
-                                                    <button class="btn btn-danger  delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
+                                                    <button class="btn btn-danger delete" style="text-align: center;" value="<?= $row->POSITION_ID ?>"><i class="fa fa-trash"></i></button>
                                                 </center>
                                             </td>
                                         </tr>
@@ -82,7 +82,6 @@
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
                                         <li class="page-item active"><a class="page-link " >1</a></li>
-
                                     </ul>
                                 </nav>
                             <?php } ?>
@@ -97,31 +96,22 @@
     $(document).ready(function() {
 
         $('.delete').click(function(e) {
-            var ID = $(this).parents("tr").attr("id");
-            var result = confirm(`ยืนยันการลบตำแหน่ง รหัส ${ID}`);
+            var positionID = $(this).val();
+            var result = confirm(`ยืนยันการลบตำแหน่ง รหัส ${positionID}`);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/position/deletePosition') ?>",
                     method: "POST",
                     data: {
-                        posID: ID
+                        positionID: positionID
                     },
                     success: function() {
-                        alert(`ลบตำแหน่ง รหัส ${ID} เสร็จสิ้น`);
-                        window.location.href = "<?= site_url('admin/position/') ?>";
+                        alert(`ลบตำแหน่ง รหัส ${positionID} เสร็จสิ้น`);
+                        location.href = "<?= site_url('admin/position/') ?>";
 
                     }
                 });
             }
-        });
-
-        $('.bgtable').mouseover(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "#C6FFF8");
-        });
-        $('.bgtable').mouseout(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "");
         });
     });
 </script>

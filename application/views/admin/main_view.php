@@ -30,7 +30,7 @@
         <!-- div Space-->
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown input-group-append">
-                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?php echo $_SESSION['Empname']; ?></a>
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?php //echo $_SESSION['Empname']; ?></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="<?= site_url('admin/admin/repassword'); ?>">เปลี่ยนรหัสผ่าน</a>
                     <div class="dropdown-divider"></div>

@@ -37,15 +37,38 @@ $(document).ready(function () {
 
     $('#addCustomerTypeForm').on('submit', function (e) {
         e.preventDefault();
+        $.ajax({
+            url: "../customerType/insertCustomerType",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    alert(data.message);
+                    $('#customerTypeNameError').html(data.message);
+                }
+            }
+        });
+
+    });
+
+    $('#editCustomerTypeForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
             $.ajax({
-                url: "../customerType/insertCustomerType",
+                url: "../customertype/updateCustomerType",
                 method: "POST",
                 data: $(this).serialize(),
                 dataType: "JSON",
                 success: function (data) {
-                    // console.log(data);
                     if (data.status == true) {
                         alert(data.message);
+                        // console.log(data);
                         location.replace(data.url);
                     } else {
                         alert(data.message);
@@ -53,29 +76,6 @@ $(document).ready(function () {
                     }
                 }
             });
-        
-    });
-
-    $('#editCustomerTypeForm').on('submit', function (e) {
-        e.preventDefault();
-        var cf = confirm('กรุณายืนยันการแก้ไข');
-        if (cf == true) {
-                $.ajax({
-                    url: "../customertype/updateCustomerType",
-                    method: "POST",
-                    data: $(this).serialize(),
-                    dataType: "JSON",
-                    success: function (data) {
-                        if (data.status == true) {
-                            alert(data.message);
-                            // console.log(data);
-                            location.replace(data.url);
-                        } else {
-                            alert(data.message);
-                            $('#customerTypeNameError').html(data.message);
-                        }
-                    }
-                });
         }
     });
 
@@ -94,19 +94,19 @@ $(document).ready(function () {
         for (var i = 0; i < telList.length; i++) {
             for (var j = 0; j < telList.length; j++) {
 
-                    if (i == j) {
-                        // console.log('continue');
-                        continue;
-                    } else if (telList[i] == telList[j]) {
-                        // console.log(i + " :" + telList[i] + ": " + telList[j] + ': Found same');
-                        $('#customerTelError').html('กรุณาอย่ากรอกเบอร์ซ้ำ');
-                        Errors = 1;
-                        breaker = 1;
-                        break;
-                    }
-                
+                if (i == j) {
+                    // console.log('continue');
+                    continue;
+                } else if (telList[i] == telList[j]) {
+                    // console.log(i + " :" + telList[i] + ": " + telList[j] + ': Found same');
+                    $('#customerTelError').html('กรุณาอย่ากรอกเบอร์ซ้ำ');
+                    Errors = 1;
+                    breaker = 1;
+                    break;
+                }
+
             }
-            if (breaker == 1) { 
+            if (breaker == 1) {
                 break;
             } else {
                 $('#customerTelError').html('');
@@ -125,7 +125,7 @@ $(document).ready(function () {
 
     $('#addCustomerForm').on('submit', function (e) {
         e.preventDefault();
-        var result =validationCustomer();
+        var result = validationCustomer();
         if (result == 0) {
             $.ajax({
                 url: "../customer/insertCustomer",
@@ -248,27 +248,86 @@ $(document).ready(function () {
 
     $('#addDepartmentForm').on('submit', function (e) {
         e.preventDefault();
-            $.ajax({
-                url: "../department/insertDepartment",
-                method: "POST",
-                data: $(this).serialize(),
-                dataType: "JSON",
-                success: function (data) {
-                    if (data.status == true) {
-                        alert(data.message);
-                        location.replace(data.url);
-                    } else {
-                        $('#departmentNameError').html(data.departmentNameError);
-                        alert(data.message);
-                    }
+        $.ajax({
+            url: "../department/insertDepartment",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    $('#departmentNameError').html(data.departmentNameError);
+                    alert(data.message);
                 }
-            });
+            }
+        });
     });
 
     $('#editDepartmentForm').on('submit', function (e) {
         e.preventDefault();
+        $.ajax({
+            url: "../department/updateDepartment",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    $('#departmentNameError').html(data.departmentNameError);
+                    alert(data.message);
+                }
+            }
+        });
+    });
+    //Department End
+
+    //Position Start
+
+
+    $('.chkper').click(function () {
+        var perList = [];
+        $('input[type=checkbox]').each(function () {
+            if ($(this).prop("checked") == true) {
+                perList.push(1)
+            } else {
+                perList.push(0)
+            }
+        });
+        $('#positionPermission').val(perList);
+        // console.log(perList);
+    });
+
+    $('#addPositionForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../position/insertPosition",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    $('#positionNameError').html(data.positionNameError);
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $('#editPositionForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
             $.ajax({
-                url: "../department/updateDepartment",
+                url: "../position/updatePosition",
                 method: "POST",
                 data: $(this).serialize(),
                 dataType: "JSON",
@@ -278,13 +337,22 @@ $(document).ready(function () {
                         alert(data.message);
                         location.replace(data.url);
                     } else {
-                        $('#departmentNameError').html(data.departmentNameError);
+                        if (data.positionNameError == '') {
+                            $('#positionNameError').html('');
+                        }
+                        else {
+                            $('#positionNameError').html(data.positionNameError);
+
+                        }
                         alert(data.message);
                     }
                 }
             });
+        }
     });
-    //Department End
+
+
+    //Position End
 
 
     //Address Start

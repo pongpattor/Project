@@ -7,8 +7,8 @@ class position_model extends CI_Model
     public function position($search = '', $limit, $offset)
     {
         $sql = "SELECT position.POSITION_ID,position.POSITION_NAME,department.DEPARTMENT_NAME FROM position
-      LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
-      where department.DEPARTMENT_ID != 'DEP000' AND
+      LEFT JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID 
+      where 
       (
           position.POSITION_ID LIKE  ? OR
           position.POSITION_NAME LIKE ? OR
@@ -21,7 +21,7 @@ class position_model extends CI_Model
         $query = $this->db->query(
             $sql,
             array(
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
             )
@@ -35,8 +35,8 @@ class position_model extends CI_Model
     public function countAllPosition($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM position
-      LEFT JOIN department ON position.DEPT_ID = department.DEPARTMENT_ID 
-      where department.DEPARTMENT_ID != 'DEP000' AND
+      LEFT JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID 
+      where 
       (
           position.POSITION_ID LIKE  ? OR
           position.POSITION_NAME LIKE ? OR
@@ -47,7 +47,7 @@ class position_model extends CI_Model
         $query = $this->db->query(
             $sql,
             array(
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
             )
@@ -60,9 +60,15 @@ class position_model extends CI_Model
         }
     }
 
-    public function showDepartment(){
-        $sql = "SELECT * FROM department WHERE DEPARTMENT_ID != 'DEP000' ";
-        return $this->db->query($sql)->result();
+    public function checkPositionName($positionName,$positionDepartment){
+        $sql = "SELECT COUNT(*) AS cnt FROM position
+                JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID
+                WHERE position.POSITION_NAME = '$positionName'
+                AND department.DEPARTMENT_ID = '$positionDepartment'";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
     }
 
     public function maxIdPosition()
@@ -71,33 +77,6 @@ class position_model extends CI_Model
         $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->MID;
-        }
-    }
-
-
-    public function editPos($id)
-    {
-        $sql = "SELECT * FROM position 
-      WHERE POSITION_ID = $id";
-        return $this->db->query($sql)->result();
-    }
-
-    public function checkName($departmentId, $positionName)
-    {
-        $sql = "SELECT COUNT(*) as cnt FROM department
-                INNER JOIN position 
-                ON department.DEPARTMENT_ID = position.DEPT_ID
-                WHERE department.DEPARTMENT_ID = ?
-                and position.POSITION_NAME LIKE ?";
-        $query = $this->db->query(
-            $sql,
-            array(
-                $this->db->escape_like_str($departmentId),
-                $this->db->escape_like_str($positionName)
-            )
-        );
-        foreach ($query->result() as $row) {
-            return $row->cnt;
         }
     }
 

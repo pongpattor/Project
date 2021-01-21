@@ -60,14 +60,14 @@
                                                 <tr id="<?= $row2->DEPARTMENT_ID ?>" class=" bgtable">
                                                     <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_ID; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row2->DEPARTMENT_NAME; ?></td>
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <center>
                                                             <form action="<?= site_url('admin/department/editDepartment') ?>" method="get">
                                                                 <button name="departmentID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
                                                         </center>
                                                     </td>
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <center>
                                                             <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row2->DEPARTMENT_ID ?>"><i class="fa fa-trash"></i></button>
                                                         </center>

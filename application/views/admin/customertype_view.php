@@ -65,14 +65,14 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->CUSTOMERTYPE_DISCOUNT; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->CUSTOMERTYPE_DISCOUNTBDATE; ?></td>
 
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <center>                      
                                                             <form action="<?= site_url('admin/customertype/editCustomerType') ?>" method="get">
                                                                 <button name="customerTypeID" class="btn btn-warning edit" style="text-align: center;" value="<?= $row->CUSTOMERTYPE_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
                                                         </center>
                                                     </td>
-                                                    <td>
+                                                    <td class="align-middle">
                                                         <center>
                                                             <button class="btn btn-danger deleteCustomerType" style="text-align: center;" value="<?= $row->CUSTOMERTYPE_ID; ?>"><i class="fa fa-trash"></i></button>
                                                         </center>

@@ -8,7 +8,7 @@ class department_model extends CI_Model
     public function department($search = '', $limit, $offset)
     {
         $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME FROM department 
-        where DEPARTMENT_ID != 'DEP000' AND
+        where 
         (
             DEPARTMENT_ID LIKE  ? OR
             DEPARTMENT_NAME LIKE ? 
@@ -20,7 +20,7 @@ class department_model extends CI_Model
         $query = $this->db->query(
             $sql,
             array(
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
             )
         );
@@ -33,7 +33,7 @@ class department_model extends CI_Model
     public function countAllDepartment($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM department 
-        where DEPARTMENT_ID != 'DEP000' AND
+        where 
         (
             DEPARTMENT_ID LIKE  ? OR
             DEPARTMENT_NAME LIKE ? 
@@ -43,7 +43,7 @@ class department_model extends CI_Model
         $query = $this->db->query(
             $sql,
             array(
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
             )
         );
@@ -57,19 +57,12 @@ class department_model extends CI_Model
 
     public function maxDepartmentID()
     {
-        $sql = "SELECT MAX(DEPARTMENT_ID) as MID from department
-                WHERE DEPARTMENT_ID != 'DEP000000'";
+        $sql = "SELECT MAX(DEPARTMENT_ID) as MID from department";
         $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->MID;
         }
     }
 
-    public function editDept($id)
-    {
-        $sql = "SELECT * FROM department 
-        WHERE DEPARTMENT_ID = '$id'";
-        return $this->db->query($sql)->result();
-    }
     //Department End
 }
