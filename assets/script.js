@@ -412,6 +412,62 @@ $(document).ready(function () {
 
     //Zone End
 
+    //Desk Start
+    $('#addDeskFrom').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../desk/insertDesk",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    if (data.deskNameError == '') {
+                        $('#deskNameError').html('');
+                    }
+                    else {
+                        $('#deskNameError').html(data.deskNameError);
+                    }
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $('#editDeskForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../desk/updateDesk",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert(data.message);
+                        location.replace(data.url);
+                    } else {
+                        if (data.deskNameError == '') {
+                            $('#deskNameError').html('');
+                        }
+                        else {
+                            $('#deskNameError').html(data.deskNameError);
+                        }
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    });
+
+    //Desk End
+
     //Address Start
     $('#province').change(function () {
         var provinceID = $('#province').val();

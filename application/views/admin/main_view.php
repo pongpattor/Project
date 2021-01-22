@@ -98,7 +98,7 @@
                         </a>
                         <div class="collapse" id="SeatcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="">โต๊ะ</a>
+                                <a class="nav-link" href="<?=site_url('admin/desk')?>">โต๊ะ</a>
                                 <a class="nav-link" href="">ห้องคาราโอเกะ</a>
                                 <a class="nav-link" href="<?=site_url('admin/zone')?>">โซนที่นั่ง</a>
                             </nav>
@@ -133,10 +133,8 @@
                                 <a class="nav-link" href="#">รายการสินค้า</a>
                                 <a class="nav-link" href="#">รายการสินค้า</a>
                                 <a class="nav-link" href="#">รายการสินค้า</a>
-
                             </nav>
                         </div>
-
                     </div>
                 </div>
             </nav>
