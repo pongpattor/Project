@@ -75,7 +75,7 @@ class seat_model extends CI_Model
     public function karaoke($search = '', $limit, $offset)
     {
         $sql = "SELECT * FROM ZONE 
-        JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
+        RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
                      karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                 WHERE seat.SEAT_STATUS != '0' 
@@ -111,7 +111,7 @@ class seat_model extends CI_Model
     public function countAllKaraoke($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM ZONE 
-        JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
+        RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
                     karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                 WHERE seat.SEAT_STATUS != '0' 
@@ -145,7 +145,7 @@ class seat_model extends CI_Model
     public function editKaraoke($karaokeID)
     {
         $sql = "SELECT * FROM ZONE 
-                JOIN    (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
+                RIGHT JOIN  (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
                              karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE
                         FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                         WHERE seat.SEAT_STATUS != '0' 
