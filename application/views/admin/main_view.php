@@ -100,7 +100,7 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="">โต๊ะ</a>
                                 <a class="nav-link" href="">ห้องคาราโอเกะ</a>
-                                <a class="nav-link" href="">โซนที่นั่ง</a>
+                                <a class="nav-link" href="<?=site_url('admin/zone')?>">โซนที่นั่ง</a>
                             </nav>
                         </div>
                         <!-- รับล็อต -->

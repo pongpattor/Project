@@ -14,7 +14,6 @@ class position_model extends CI_Model
           position.POSITION_NAME LIKE ? OR
           department.DEPARTMENT_NAME LIKE ? 
       )
-      ORDER BY department.DEPARTMENT_ID ASC, position.POSITION_ID ASC
       LIMIT $offset,$limit
       ";
 

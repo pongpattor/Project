@@ -22,7 +22,6 @@ class customer_model extends CI_Model
             customertype.CUSTOMERTYPE_NAME LIKE ? OR
             customertel.CUSTOMERTEL_TEL LIKE ?
         )
-        
         GROUP BY customer.CUSTOMER_ID
         LIMIT $offset,$limit
         ";

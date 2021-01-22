@@ -84,7 +84,7 @@ class department extends CI_Controller
 
     public function genIdDepartment()
     {
-        $maxID = $this->department_model->maxDepartmentID();
+        $maxID = $this->crud_model->maxID('department','DEPARTMENT_ID');
         $y = date('y');
         if ($maxID == '') {
             $id = 'DEP' . $y . '0001';

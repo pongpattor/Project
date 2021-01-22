@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <h3 class="d-inline">แก้ไขแผนก</h3>
+                    <h3 class="d-inline">เพิ่มโซน</h3>
                 </div>
             </div>
         </div>
@@ -16,16 +16,13 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <form  method="POST" id="editDepartmentForm">
-                    <?php foreach ($department as $row) : ?>
+                    <form method="POST" id="addZoneForm">
                         <div class="row justify-content-center">
-                                <div class="col-sm col-md col-xl-6" >
-                                    <label>ชื่อแผนก </label>
-                                    <input type="text" name="departmentName" id="departmentName" class="form-control" value="<?= $row->DEPARTMENT_NAME ?>" maxlength="50" required>
-                                    <span id="departmentNameError" style="color:red;"></span>
-                                    <input type="hidden" name="departmentNameOld" id="oldDepartment_name" value="<?= $row->DEPARTMENT_NAME ?>">
-                                    <input type="hidden" name="departmentID" value="<?= $row->DEPARTMENT_ID ?>">
-                                </div>
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label>ชื่อโซน </label>
+                                <input type="text" name="zoneName" id="zoneName" class="form-control"  required maxlength="50">
+                                <span id="zoneNameError" style="color:red;"></span>
+                            </div>
                         </div>
                         <br>
                         <div class="row justify-content-center">
@@ -33,15 +30,14 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/department/'); ?>" class="btn btn-danger" id="btn_cancel">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/zone/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                         </div>
                                         <div class="col">
-                                            <input  class="btn btn-success" type="submit" value="แก้ไข">
+                                            <input class="btn btn-success btn-xs" type="submit" value="  เพิ่ม  ">
                                         </div>
                                     </div>
                                 </center>
                             </div>
-                        <?php endforeach; ?>
                         </div>
                     </form>
                 </div>

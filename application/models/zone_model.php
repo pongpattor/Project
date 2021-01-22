@@ -1,17 +1,17 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class department_model extends CI_Model
+class zone_model extends CI_Model
 {
 
     //Department Start
-    public function department($search = '', $limit, $offset)
+    public function zone($search = '', $limit, $offset)
     {
-        $sql = "SELECT DEPARTMENT_ID,DEPARTMENT_NAME FROM department 
+        $sql = "SELECT * FROM zone 
         where 
         (
-            DEPARTMENT_ID LIKE  ? OR
-            DEPARTMENT_NAME LIKE ? 
+            ZONE_ID LIKE  ? OR
+            ZONE_NAME LIKE ? 
         )
         LIMIT $offset,$limit
         ";
@@ -29,13 +29,13 @@ class department_model extends CI_Model
         return $query->result();
     }
 
-    public function countAllDepartment($search = '')
+    public function countAllZone($search = '')
     {
-        $sql = "SELECT COUNT(*) as cnt FROM department 
+        $sql = "SELECT COUNT(*) as cnt FROM zone 
         where 
         (
-            DEPARTMENT_ID LIKE  ? OR
-            DEPARTMENT_NAME LIKE ? 
+            ZONE_ID LIKE  ? OR
+            ZONE_NAME LIKE ? 
         )
         ";
 
@@ -54,6 +54,5 @@ class department_model extends CI_Model
         }
     }
 
-
-    //Department End
+    
 }

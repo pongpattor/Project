@@ -354,10 +354,63 @@ $(document).ready(function () {
             });
         }
     });
-
-
     //Position End
 
+    //Zone Start
+    $('#addZoneForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../zone/insertZone",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    if (data.zoneNameError == '') {
+                        $('#zoneNameError').html('');
+                    }
+                    else {
+                        $('#zoneNameError').html(data.zoneNameError);
+                    }
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $('#editZoneForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../zone/updateZone",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert(data.message);
+                        location.replace(data.url);
+                    } else {
+                        if (data.zoneNameError == '') {
+                            $('#zoneNameError').html('');
+                        }
+                        else {
+                            $('#zoneNameError').html(data.zoneNameError);
+                        }
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    });
+
+    //Zone End
 
     //Address Start
     $('#province').change(function () {
