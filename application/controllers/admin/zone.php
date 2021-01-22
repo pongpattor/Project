@@ -117,7 +117,7 @@ class zone extends CI_Controller
 
         if (strtolower($zoneName) == strtolower($zoneNameOld)) {
             $data['url'] = site_url('admin/zone');
-            $data['message'] = 'เพิ่มข้อมูลโซนเสร็จสิ้น';
+            $data['message'] = 'แก้ไขข้อมูลโซนเสร็จสิ้น';
         } else {
             $checkZoneName = $this->crud_model->countWhere('zone', 'ZONE_NAME', $zoneName);
             if ($checkZoneName == 0) {
@@ -128,11 +128,11 @@ class zone extends CI_Controller
                 );
                 $this->crud_model->update('zone',$dataZone,'ZONE_ID',$zoneID);
                 $data['url'] = site_url('admin/zone');
-                $data['message'] = 'เพิ่มข้อมูลโซนเสร็จสิ้น';
+                $data['message'] = 'แก้ไขข้อมูลโซนเสร็จสิ้น';
             } else {
                 $data['status'] = false;
                 $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
-                $data['zoneNameError'] = 'ชื่อโซนนี้ได้ถูกใช้ไปแล้ว';
+                $data['zoneNameError'] = 'ชื่อนี้ได้ถูกใช้ไปแล้ว';
             }
         }
         $data['input'] = $this->input->post();

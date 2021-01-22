@@ -113,7 +113,7 @@
                         deskID: deskID
                     },
                     success: function() {
-                        alert(`ลบโซน รหัส ${deskID} เสร็จสิ้น`);
+                        alert(`ลบโต๊ะ รหัส ${deskID} เสร็จสิ้น`);
                         location.href = "<?= site_url('admin/desk/') ?>";
                     }
                 });

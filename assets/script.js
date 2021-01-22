@@ -468,6 +468,62 @@ $(document).ready(function () {
 
     //Desk End
 
+    //Karaoke Start
+    $('#addKaraokeForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../karaoke/insertKaraoke",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert(data.message);
+                    location.replace(data.url);
+                } else {
+                    if (data.karaokeNameError == '') {
+                        $('#karaokeNameError').html('');
+                    }
+                    else {
+                        $('#karaokeNameError').html(data.karaokeNameError);
+                    }
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $('#editKaraokeForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../karaoke/updateKaraoke",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert(data.message);
+                        location.replace(data.url);
+                    } else {
+                        if (data.karaokeNameError == '') {
+                            $('#karaokeNameError').html('');
+                        }
+                        else {
+                            $('#karaokeNameError').html(data.karaokeNameError);
+                        }
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+
+    });
+    //Karaoke End
+
     //Address Start
     $('#province').change(function () {
         var provinceID = $('#province').val();

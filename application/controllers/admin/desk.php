@@ -63,9 +63,9 @@ class desk extends CI_Controller
     {
         $data['status'] = true;
         $deskName = $this->input->post('deskName');
-        $cheakDeskName = $this->seat_model->checkSeatName($deskName);
+        $checkSeatName = $this->seat_model->checkSeatName($deskName);
         // $data['sa'] = $cheakSeatName;
-        if ($cheakDeskName == 0) {
+        if ($checkSeatName == 0) {
             $dataSeat = array(
                 'SEAT_ID' => $this->genIdSeat(),
                 'SEAT_NAME' => $deskName,
@@ -137,11 +137,11 @@ class desk extends CI_Controller
             );
             $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
             $data['url'] = site_url('admin/desk');
-            $data['message'] = 'เพิ่มข้อมูลโต๊ะเสร็จสิ้น';
+            $data['message'] = 'แก้ไขข้อมูลโต๊ะเสร็จสิ้น';
         } else {
-            $cheakDeskName = $this->seat_model->checkSeatName($deskName);
+            $checkSeatName = $this->seat_model->checkSeatName($deskName);
             // $data['sa'] = $cheakSeatName;
-            if ($cheakDeskName == 0) {
+            if ($checkSeatName == 0) {
                 $deskID =  $this->input->post('deskID');
                 $deskAmount =  $this->input->post('deskAmount');
                 $deskZone =  $this->input->post('deskZone');
@@ -152,7 +152,7 @@ class desk extends CI_Controller
                 );
                 $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
                 $data['url'] = site_url('admin/desk');
-                $data['message'] = 'เพิ่มข้อมูลโต๊ะเสร็จสิ้น';
+                $data['message'] = 'แก้ไขข้อมูลโต๊ะเสร็จสิ้น';
             } else {
                 $data['status'] = false;
                 $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
