@@ -100,7 +100,7 @@
     $(document).ready(function() {
         $('.delete').click(function(e) {
             var zoneID = $(this).val();
-            var result = confirm(`ยืนยันการลบแผนก รหัส ${zoneID}`);
+            var result = confirm(`ยืนยันการลบโซน รหัส ${zoneID}`);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/zone/deleteZone') ?>",
