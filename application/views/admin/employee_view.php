@@ -69,7 +69,7 @@
                                     <?php foreach ($employee as $row) : ?>
                                         <tr id="<?= $row->EMPLOYEE_ID ?>" class="bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->EMPLOYEE_ID ?></td>
-                                            <td class="align-middle" style="text-align: center;"><img src="" alt="" width="80px" height="80px"></td>
+                                            <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/employee/'.$row->EMPLOYEE_IMAGE) ?>" alt="" width="80px" height="80px"></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->EMPLOYEE_FIRSTNAME . ' ' . $row->EMPLOYEE_LASTNAME ?></td>
                                             <td class="align-middle" style="text-align: center;"> <?php foreach ($employeeTel as $row2) {
                                                             if ($row2->EMPLOYEETEL_ID == $row->EMPLOYEE_ID) {

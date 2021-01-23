@@ -8,7 +8,7 @@ class employee_model extends CI_Model
     public function employee($search = '', $limit, $offset)
     {
         $sql = "SELECT emp.EMPLOYEE_ID,emp.EMPLOYEE_FIRSTNAME,emp.EMPLOYEE_LASTNAME,
-        emp.EMPLOYEE_IMAGE,position.POSITION_NAME,department.DEPARTMENT_NAME,RPAD(LPAD(emp.EMPLOYEE_ID,11,\"\'\"),12,\"\'\") as empID
+        emp.EMPLOYEE_IMAGE,position.POSITION_NAME,department.DEPARTMENT_NAME,RPAD(LPAD(emp.EMPLOYEE_ID,13,\"\'\"),14,\"\'\") as empID
         FROM (SELECT employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME,
               employee.EMPLOYEE_IMAGE,employee.EMPLOYEE_POSITION ,employee.EMPLOYEE_STATUS,employeetel.EMPLOYEETEL_TEL
               FROM employee 
@@ -100,8 +100,6 @@ class employee_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
-
-
 
     public function editEmp($id)
     {
@@ -256,4 +254,6 @@ class employee_model extends CI_Model
         $sql = "UPDATE employee SET PASSWORD = '$newPass' WHERE ID = '$empID'";
         $this->db->query($sql);
     }
+
+    
 }

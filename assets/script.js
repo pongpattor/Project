@@ -115,13 +115,6 @@ $(document).ready(function () {
         return Errors;
     }
 
-    $('#customerIdCard').on('keypress', function (e) {
-        if (e.charCode >= 48 && e.charCode <= 57) {
-            return true;
-        } else {
-            return false;
-        }
-    });
 
     $('#addCustomerForm').on('submit', function (e) {
         e.preventDefault();
@@ -356,6 +349,120 @@ $(document).ready(function () {
     });
     //Position End
 
+    //Employee Start
+
+    $('#employeeDepartment').on('change', function (e) {
+        var departmentID = $(this).val();
+        $.ajax({
+            url: "../admin/fetchPosition",
+            method: "POST",
+            data: { departmentID: departmentID },
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data.position);
+                $('#employeePosition').html(data.position);
+            }
+        });
+    });
+
+    var addEmployeeTel = 1;
+    $('#addEmployeeTel').click(function () {
+        addEmployeeTel++;
+        var txt = `<tr id="row${addEmployeeTel}">
+                        <td><input type="tel" class="form-control employeeTel" name="employeeTel[]" maxlength="10" minlength="10" required></td>
+                        <td><button type="button" id="${addEmployeeTel}" class="btn btn-danger btn-remove float-right">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </td>
+                        </tr>`;
+        $('#bodyTel').append(txt);
+
+        $('.btn-remove').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#row' + btn_del).remove();
+        });
+
+        $('.employeeTel').on('keypress', function (e) {
+            if (e.charCode >= 48 && e.charCode <= 57) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+
+    function validationEmployee() {
+        var Errors = 0;
+        var telList = [];
+        var breaker = 0;
+        $('input[type="tel"]').each(function () {
+            var telephon = $(this).val();
+            telList.push(telephon);
+        });
+        for (var i = 0; i < telList.length; i++) {
+            for (var j = 0; j < telList.length; j++) {
+
+                if (i == j) {
+                    // console.log('continue');
+                    continue;
+                } else if (telList[i] == telList[j]) {
+                    // console.log(i + " :" + telList[i] + ": " + telList[j] + ': Found same');
+                    $('#employeeTelError').html('กรุณาอย่ากรอกเบอร์ซ้ำ');
+                    Errors = 1;
+                    breaker = 1;
+                    break;
+                }
+
+            }
+            if (breaker == 1) {
+                break;
+            } else {
+                $('#employeeTelError').html('');
+            }
+        }
+        return Errors;
+    }
+
+
+    $('#addEmployeeForm').on('submit', function (e) {
+        e.preventDefault();
+        var result = validationEmployee();
+        if (result == 0) {
+            // var formData = new FormData($('#addEmployeeForm')[0]);
+
+            $.ajax({
+                url: "../employee/insertEmployee",
+                method: "POST",
+                processData: false,
+                contentType: false,
+                data: new FormData(this),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert(data.message);
+                        location.replace(data.url);
+                    } else {
+                        if (data.employeeIdCardError == '') {
+                            $('#employeeIdCardError').html('');
+                        }
+                        else {
+                            $('#employeeIdCardError').html(data.employeeIdCardError);
+                        }
+                        alert(data.message);
+                    }
+
+                }
+            });
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        }
+    });
+
+    //Employee End
+
+
     //Zone Start
     $('#addZoneForm').on('submit', function (e) {
         e.preventDefault();
@@ -524,9 +631,13 @@ $(document).ready(function () {
     });
     //Karaoke End
 
+
+
+
     //Address Start
     $('#province').change(function () {
         var provinceID = $('#province').val();
+        // alert(provinceID);
         if (provinceID != "") {
             $.ajax({
                 url: "../admin/fetchAmphur",
@@ -584,15 +695,55 @@ $(document).ready(function () {
 
 
     //general start
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imgPreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#Image").change(function () {
+        var result = $(this).val();
+        if (result != '') {
+            var file = this.files[0];
+            var fileType = file["type"];
+            var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+            if ($.inArray(fileType, validImageTypes) < 0) {
+                $('#Image').val('');
+                $('#imgPreview').attr('src', '');
+                $('#imageError').html('กรุณาเลือกเฉพาะรูปภาพ');
+
+            }
+            else {
+                readURL(this);
+                $('#imageError').html('');
+            }
+        }
+        else {
+            $('#imgPreview').attr('src', '');
+            $('#imageError').html('');
+        }
+
+    });
+
+    $('#idCard').on('keypress', function (e) {
+        if (e.charCode >= 48 && e.charCode <= 57) {
+            return true;
+        } else {
+            return false;
+        }
+    });
 
     var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
-    $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function() {
+    $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
         if (this.href === path) {
             $(this).addClass("active");
         }
     });
 
-    $("#sidebarToggle").on("click", function(e) {
+    $("#sidebarToggle").on("click", function (e) {
         e.preventDefault();
         $("body").toggleClass("sb-sidenav-toggled");
     });

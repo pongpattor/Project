@@ -8,9 +8,9 @@ class admin extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        if(empty($_SESSION['login'])){
-            return redirect(site_url('admin/login'));
-        }
+        // if(empty($_SESSION['login'])){
+        //     return redirect(site_url('admin/login'));
+        // }
         $this->load->model('data_model');
         $this->load->model('employee_model');
         $this->load->library('pagination');
@@ -71,6 +71,11 @@ class admin extends CI_Controller
         echo json_encode($data);
     }
 
-
+    
+    public function fetchPosition(){
+        $departmentID = $this->input->post('departmentID');
+        $data['position'] = $this->data_model->fetchPosition($departmentID);
+        echo json_encode($data);
+    }
 
 }

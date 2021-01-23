@@ -23,7 +23,7 @@
                                     <label>บัตรประจำตัวประชาชน </label>
                                     <input type="hidden" name="customerID" value="<?= $row->CUSTOMER_ID; ?>">
                                     <input type="hidden" name="customerIdCardOld" value="<?= $row->CUSTOMER_IDCARD; ?>">
-                                    <input type="text" name="customerIdCard" id="customerIdCard" class="form-control" maxlength="13" minlength="13" required value="<?= $row->CUSTOMER_IDCARD; ?>">
+                                    <input type="text" name="customerIdCard" id="idCard" class="form-control" maxlength="13" minlength="13" required value="<?= $row->CUSTOMER_IDCARD; ?>">
                                     <span id="customerIdCardError" style="color: red; "> </span>
                                 </div>
                             </div>
@@ -44,10 +44,10 @@
                                     <label>เพศ </label>
                                     <select id="customerGender" name="customerGender" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกเพศ</option>
-                                        <option value="1" <?php if ($row->CUSTOMER_GENDER == 1) {
+                                        <option value="M" <?php if ($row->CUSTOMER_GENDER == 'M') {
                                                                 echo 'selected';
                                                             } ?>>ชาย</option>
-                                        <option value="2" <?php if ($row->CUSTOMER_GENDER == 2) {
+                                        <option value="F" <?php if ($row->CUSTOMER_GENDER == 'F') {
                                                                 echo 'selected';
                                                             } ?>>หญิง</option>
                                     </select>

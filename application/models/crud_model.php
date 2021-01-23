@@ -96,4 +96,14 @@ class crud_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function count2Where($table,$where1,$whereData1,$where2,$whereData2){
+        $sql = " SELECT COUNT(*) AS cnt FROM $table
+                WHERE $where1 = '$whereData1'
+                AND $where2 = '$whereData2'";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            return $row->cnt;
+        }
+    }
 }

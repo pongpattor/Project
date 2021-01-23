@@ -20,7 +20,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>บัตรประจำตัวประชาชน </label>
-                                <input type="text" name="customerIdCard" id="customerIdCard" class="form-control" maxlength="13" minlength="13" required>
+                                <input type="text" name="customerIdCard" id="idCard" class="form-control" maxlength="13" minlength="13" required>
                                 <span id="customerIdCardError" style="color: red; "> </span>
                             </div>
                         </div>
@@ -41,8 +41,8 @@
                                 <label>เพศ </label>
                                 <select id="customerGender" name="customerGender" class="form-control" required>
                                     <option value="" selected disabled>กรุณาเลือกเพศ</option>
-                                    <option value="1">ชาย</option>
-                                    <option value="2">หญิง</option>
+                                    <option value="M">ชาย</option>
+                                    <option value="F">หญิง</option>
                                 </select>
                             </div>
                         </div>

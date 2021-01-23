@@ -83,7 +83,7 @@ class customer extends CI_Controller
         $checkCustomerIdCard = $this->checkIdCard($customerIdCard);
         if ($checkCustomerIdCard == true) {
             //ตรวจว่าในข้อมูลมีรหัสซ้ำไหม ถ้าซ้ำคนนั้นลาออกไปหรือยัง ถ้ายังไม่ให้เพิ่ม
-            $num = $this->crud_model->countWhere('customer', 'CUSTOMER_IDCARD', $customerIdCard);
+            $num = $this->crud_model->count2Where('customer', 'CUSTOMER_IDCARD', $customerIdCard, 'CUSTOMER_STATUS', '1');
             if ($num == 0) {
                 $data['errorIdCard'] = '';
             } else {
@@ -96,7 +96,7 @@ class customer extends CI_Controller
         }
         //จบตรวจบัตร
 
-       // ตรวจเบอร์ซ้ำ
+        // ตรวจเบอร์ซ้ำ
         $allTel = '';
         for ($i = 0; $i < count($customerTel); $i++) {
             $allTel .= '\'';
@@ -238,7 +238,7 @@ class customer extends CI_Controller
             $checkCustomerIdCard = $this->checkIdCard($customerIdCard);
             if ($checkCustomerIdCard == true) {
                 //ตรวจว่าในข้อมูลมีรหัสซ้ำไหม ถ้าซ้ำคนนั้นลาออกไปหรือยัง ถ้ายังไม่ให้เพิ่ม
-                $num = $this->crud_model->countWhere('customer', 'CUSTOMER_IDCARD', $customerIdCard);
+                $num = $this->crud_model->count2Where('customer', 'CUSTOMER_IDCARD', $customerIdCard, 'CUSTOMER_STATUS', '1');
                 if ($num == 0) {
                     $data['errorIdCard'] = '';
                 } else {
@@ -255,11 +255,11 @@ class customer extends CI_Controller
         // //ตรวจเบอร์ซ้ำ
         $customerTel = $this->input->post('customerTel');
         $customerTelOld = $this->input->post('customerTelOld');
-        $newTel = array_diff($customerTel,$customerTelOld);
+        $newTel = array_diff($customerTel, $customerTelOld);
         //ถ้าจำนวนเบอร์ใหม่ไม่เท่ากับ 0 หรือ มากกว่า 0
         $arrNewTel = [];
-        foreach($newTel as $rowNewTel){
-            array_push($arrNewTel,$rowNewTel);
+        foreach ($newTel as $rowNewTel) {
+            array_push($arrNewTel, $rowNewTel);
         }
         // $data['checkNewTel'] = $arrNewTel;
         if (count($arrNewTel) > 0) {
@@ -333,11 +333,11 @@ class customer extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteCustomer(){
+    public function deleteCustomer()
+    {
         $customerID = $this->input->post('customerID');
-        $this->crud_model->UpdateStatus('customer','CUSTOMER_STATUS','0','CUSTOMER_ID',$customerID);
+        $this->crud_model->UpdateStatus('customer', 'CUSTOMER_STATUS', '0', 'CUSTOMER_ID', $customerID);
         $data['url'] = site_url('admin/customer');
         echo json_encode($data);
-
     }
 }

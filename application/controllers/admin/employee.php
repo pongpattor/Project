@@ -69,18 +69,91 @@ class employee extends CI_Controller
     public function addEmployee()
     {
         $this->load->model('position_model');
-
         $data['province'] = $this->crud_model->findall('province');
-        $data['department'] = $this->position_model->showDepartment();
+        $data['department'] = $this->crud_model->findAll('department');
         $data['page'] = 'employee_add_view';
         $this->load->view('admin/main_view', $data);
     }
 
-    public function checkIdCard()
+
+
+    public function insertEmployee()
+    {
+        $data['status'] = true;
+        $data['input'] = $this->input->post('employeeImage');
+        $data['image'] = $_FILES['employeeImage'];
+
+        $employeeIdCard = $this->input->post('employeeIdCard');
+        $checkIdCard = $this->checkIdCard($employeeIdCard);
+        if ($checkIdCard == true) {
+            $num = $this->crud_model->count2Where('employee', 'EMPLOYEE_IDCARD', $employeeIdCard, 'EMPLOYEE_STATUS', '1');
+            if ($num == 0) {
+                $data['employeeIdCardError'] = '';
+            } else {
+                $data['employeeIdCardError'] = 'บัตรประชาชนนี้ได้ถูกใช้ไปแล้ว';
+                $data['status'] = false;
+            }
+        } else {
+            $data['status'] = false;
+            $data['employeeIdCardError'] = 'กรุณากรอกบัตรประชาชนให้ถูกต้อง';
+        }
+
+        // เพิ่มข้อมูล
+        if ($data['status'] == true) {
+            $employeeID = $this->genIdEmployee();
+            $config = array();
+            $config['upload_path']          =  './assets/image/employee/';
+            $config['allowed_types']        = 'jpg|png';
+            $config['max_size']             = '2000';
+            $config['max_width']            = '3000';
+            $config['max_height']           = '3000';
+            $config['file_name']            = $employeeID;
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('employeeImage')) {
+                $employeeImage['img'] = $this->upload->data();
+                $dataEmployee = array(
+                    'EMPLOYEE_ID' => $employeeID,
+                    'EMPLOYEE_PASSWORD' => $employeeID,
+                    'EMPLOYEE_IDCARD' => $this->input->post('employeeIdCard'),
+                    'EMPLOYEE_FIRSTNAME' => $this->input->post('employeeFirstName'),
+                    'EMPLOYEE_LASTNAME' => $this->input->post('employeeLastName'),
+                    'EMPLOYEE_GENDER' => $this->input->post('employeeGender'),
+                    'EMPLOYEE_EMAIL' => $this->input->post('employeeEmail'),
+                    'EMPLOYEE_BDATE' => $this->input->post('employeeBdate'),
+                    'EMPLOYEE_ADDRESS' => $this->input->post('employeeAddress'),
+                    'EMPLOYEE_DISTRICT' => $this->input->post('district'),
+                    'EMPLOYEE_POSITION' => $this->input->post('employeePosition'),
+                    'EMPLOYEE_SALARY' => $this->input->post('employeeSalary'),
+                    'EMPLOYEE_IMAGE' =>  $employeeImage['img']['file_name'],
+                    'EMPLOYEE_STATUS' => '1',
+                );
+                $this->crud_model->insert('employee', $dataEmployee);
+
+                $employeeTel = $this->input->post('employeeTel');
+                $i = 1;
+                foreach ($employeeTel as $rowTel) {
+                    $dataEmployeeTel = array(
+                        'EMPLOYEETEL_ID' => $employeeID,
+                        'EMPLOYEETEL_NO' => $i,
+                        'EMPLOYEETEL_TEL' => $rowTel,
+                    );
+                $this->crud_model->insert('employeetel', $dataEmployeeTel);
+                $i++;
+                }
+                $data['url'] = site_url('admin/employee');
+                $data['message'] = 'เพิ่มข้อมูลพนักงานเสร็จสิ้น';
+            }
+        } else {
+            $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
+        }
+        echo json_encode($data);
+    }
+
+
+    public function checkIdCard($employeeIdCard)
     {
         //ตรวจรหัสบัตรว่าใช่เลขบัตรจริงไหม
-        $idcard = $this->input->post('idcard');
-        $rev = strrev($idcard); // reverse string ขั้นที่ 0 เตรียมตัว
+        $rev = strrev($employeeIdCard); // reverse string ขั้นที่ 0 เตรียมตัว
         $total = 0;
         for ($i = 1; $i < 13; $i++) // ขั้นตอนที่ 1 - เอาเลข 12 หลักมา เขียนแยกหลักกันก่อน
         {
@@ -92,10 +165,42 @@ class employee extends CI_Controller
         $sub = 11 - $mod; //ขั้นตอนที่ 5 - เอา 11 ตั้ง ลบออกด้วย เลขที่ได้จากขั้นตอนที่ 4
         $check_digit = $sub % 10; //ถ้าเกิด ลบแล้วได้ออกมาเป็นเลข 2 หลัก ให้เอาเลขในหลักหน่วยมาเป็น Check Digit
         if ($rev[0] == $check_digit)  // ตรวจสอบ ค่าที่ได้ กับ เลขตัวสุดท้ายของ บัตรประจำตัวประชาชน
-            echo True; /// ถ้า ตรงกัน แสดงว่าถูก
+            return True; /// ถ้า ตรงกัน แสดงว่าถูก
         else
-            echo false; // ไม่ตรงกันแสดงว่าผิด
+            return false; // ไม่ตรงกันแสดงว่าผิด
     }
+
+
+    //genID Employee 
+    public function genIdEmployee()
+    {
+        $maxID =  $this->crud_model->maxID('employee', 'EMPLOYEE_ID');
+        $ndate = date('ymd');
+        // echo $year;
+        if ($maxID == Null) {
+            return 'EMP' . $ndate . '001';
+        } else {
+            $odate = substr($maxID, 3, 6);
+            if ($odate != $ndate) {
+                return 'EMP' . $ndate . '001';
+            } else {
+                $no = substr($maxID, 9, 3);
+                $no = $no + 1;
+                while (strlen($no) < 3) {
+                    $no = '0' . $no;
+                }
+                return 'EMP' . $ndate . $no;
+            }
+        }
+    }
+
+    public function deleteEmployee()
+    {
+        $delete_at = date('Y-m-d H:i:s');
+        $empID = $this->input->post('empID');
+        $this->employee_model->delEmp($empID, $delete_at);
+    }
+
 
 
     public function checkIdCardUpdate()
@@ -117,116 +222,11 @@ class employee extends CI_Controller
         }
     }
 
-
-    public function insertEmp()
-    {
-
-        // echo '<pre>';
-        // print_r($this->input->post());
-        // echo '</pre>';
-
-        // echo $this->input->post('gender');
-        $IDposition = $this->input->post('position');
-        $idEmployee = $this->genIdEmployee($IDposition);
-        $config = array();
-        $config['upload_path']          =  './assets/image/employee/';
-        $config['allowed_types']        = 'jpg|png';
-        $config['max_size']             = '2000';
-        $config['max_width']            = '3000';
-        $config['max_height']           = '3000';
-        $config['file_name']        = $idEmployee;
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('imgEmp')) {
-            echo '<script>';
-            echo 'alert("กรุณาอัพโหลดรูป");';
-            echo 'location.href= "' . site_url('admin/employee/addEmployee') . '"';
-            echo '</script>';
-        } else {
-            $data['img'] = $this->upload->data();
-            $employee_detail = array(
-                'ID' => $idEmployee,
-                'PASSWORD' => $idEmployee,
-                'IDCARD' => $this->input->post('idcard'),
-                'TITLENAME' => $this->input->post('title'),
-                'FIRSTNAME' => $this->input->post('firstname'),
-                'LASTNAME' => $this->input->post('lastname'),
-                'GENDER' => $this->input->post('gender'),
-                'EMAIL' => $this->input->post('email'),
-                'BDATE' => $this->input->post('bdate'),
-                'ADDRESS' => $this->input->post('img'),
-                'ADDRESS' => $this->input->post('address'),
-                'DISTRICT' => $this->input->post('district'),
-                'POSITION' =>  $IDposition,
-                'SALARY' => $this->input->post('salary'),
-                'IMG' => $data['img']['file_name'],
-                'BLOOD' => $this->input->post('blood'),
-                'NATIONALITY' => $this->input->post('nationality'),
-                'RELIGION' => $this->input->post('religion'),
-                'CREATE_AT' => date('Y-m-d H:i:s'),
-                'STATUS' => 1
-            );
-            // echo '<pre>';
-            // print_r($employee_detail);
-            // echo '</pre>';
-            $this->crud_model->insert('employee', $employee_detail);
-            $tel = $this->input->post('tel');
-            foreach ($tel as $phone) {
-                $data = array(
-                    'PHONE' => $phone,
-                    'EMPLOYEE_ID' => $idEmployee
-                );
-                $this->crud_model->insert('employee_telephone', $data);
-            }
-
-            echo '<script>alert("เพิ่มข้อมูลพนักงานสำเร็จ")</script>';
-            return redirect(site_url('admin/employee/'));
-        }
-    }
-
-    //genID Employee 
-    public function genIdEmployee($idPosition)
-    {
-        $idDept =  $this->employee_model->idDeptGenIdEmp($idPosition);
-        $maxIdEmployee = $this->employee_model->maxIdEmployee($idDept);
-        $firstID = substr($maxIdEmployee, 0, 2);
-        $idDept = substr($idDept, 3);
-        $date =  date('Y') + 543;
-        $Y =  substr($date, 2);
-        $m = date('m');
-        $midfront =  $m;
-        $midback = 00;
-        $midback = +$idDept;
-        $midback = '0' . $midback;
-        $last = '';
-        if ($firstID != $Y) {
-            $last = 0001;
-            while (strlen($last) < 4) {
-                $last = '0' . $last;
-            }
-            return $Y . $midfront .   $midback . $last;
-        } else {
-            $last = substr($maxIdEmployee, 6);
-            $last += 1;
-            while (strlen($last) < 4) {
-                $last = '0' . $last;
-            }
-            return $Y . $midfront .   $midback . $last;
-        }
-    }
-
-    public function deleteEmployee()
-    {
-        $delete_at = date('Y-m-d H:i:s');
-        $empID = $this->input->post('empID');
-        $this->employee_model->delEmp($empID, $delete_at);
-    }
-
     public function editEmployee()
     {
         $this->load->model('position_model');
         $id = $this->input->get('empID');
-        $data['employee'] = $this->employee_model->editEmp('6310020002'); 
+        $data['employee'] = $this->employee_model->editEmp('6310020002');
         // echo '<pre>';
         // print_r($data['employee']);
         // echo '</pre>';
@@ -326,8 +326,8 @@ class employee extends CI_Controller
                 $this->crud_model->insert('employee_telephone', $data);
             }
 
-        echo '<script>alert("แก้ไขข้อมูลพนักงานสำเร็จ")</script>';
-           return redirect(site_url('admin/employee/'));
+            echo '<script>alert("แก้ไขข้อมูลพนักงานสำเร็จ")</script>';
+            return redirect(site_url('admin/employee/'));
         }
     }
 
@@ -341,34 +341,9 @@ class employee extends CI_Controller
             $pass[$i] = $alphabet[$n];
         }
         // $pass = implode($pass); //turn the array into a string
-       
+
         $empID = $this->input->post('empID');
-        $this->employee_model->ResetPassword($empID,$pass);
+        $this->employee_model->ResetPassword($empID, $pass);
         echo $pass;
     }
-
-
-
-
-    // Employee End
-
-
-
-    // Data Start
-
-
-    
-
-    
-
-    public function fetchdepartment()
-    {
-        $department_id = $this->input->post('DEPARTMENT_ID');
-        $data['department'] = $this->employee_model->fetch_position($department_id);
-        echo $data['department'];
-    }
-    // Data End
-
-
-
 }

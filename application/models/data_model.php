@@ -31,10 +31,22 @@ class data_model extends CI_Model
     {
         $sql = "SELECT POSTCODE from district where DISTRICT_ID = $districtID";
         $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected disabled >กรุณาเลือกรหัษไปรษณีย์</option>';
+        $output = '<option value="" selected disabled >กรุณาเลือกรหัสไปรษณีย์</option>';
         foreach ($query as $row) {
-            $output = '<option value="' . $row->POSTCODE . '">' . $row->POSTCODE . '</option>';
+            $output .= '<option value="' . $row->POSTCODE . '">' . $row->POSTCODE . '</option>';
         }
         return $output;
     }
+
+    public function fetchPosition($departmentID){
+        $sql = "SELECT POSITION_ID,POSITION_NAME from position where POSITION_DEPARTMENT = '$departmentID'";
+        $query =  $this->db->query($sql)->result();
+        $output = '<option value="" selected disabled >กรุณาเลือกตำแหน่ง</option>';
+        foreach ($query as $row) {
+            $output .= '<option value="' . $row->POSITION_ID . '">' . $row->POSITION_NAME . '</option>';
+        }
+        return $output;
+    }
+
+ 
 }
