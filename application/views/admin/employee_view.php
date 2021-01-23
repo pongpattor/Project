@@ -53,15 +53,11 @@
                                         <th style="text-align: center;">รูป</th>
                                         <th style="text-align: center;">ชื่อ-สกุล
                                         </th>
-                                        <th style="text-align: center;">อีเมล
-                                        </th>
                                         <th style="text-align: center;">เบอร์โทรศัทพ์
                                         </th>
                                         <th style="text-align: center;">แผนก
                                         </th>
                                         <th style="text-align: center;">ตำแหน่ง
-                                        </th>
-                                        <th style="text-align: center;">เงินเดือน
                                         </th>
                                         <th style="text-align: center;">ลืมรหัส</th>
                                         <th style="text-align: center;">แก้ไข</th>
@@ -71,24 +67,26 @@
 
                                 <tbody>
                                     <?php foreach ($employee as $row) : ?>
-                                        <tr id="<?= $row->ID ?>" class="bgtable">
-                                            <td class="align-middle" style="text-align: center;"><?= $row->ID ?></td>
-                                            <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/employee/' . $row->IMG); ?>" alt="" width="80px" height="80px"></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->FIRSTNAME . ' ' . $row->LASTNAME ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->EMAIL ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PHONE; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME ?></td>
+                                        <tr id="<?= $row->EMPLOYEE_ID ?>" class="bgtable">
+                                            <td class="align-middle" style="text-align: center;"><?= $row->EMPLOYEE_ID ?></td>
+                                            <td class="align-middle" style="text-align: center;"><img src="" alt="" width="80px" height="80px"></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->EMPLOYEE_FIRSTNAME . ' ' . $row->EMPLOYEE_LASTNAME ?></td>
+                                            <td class="align-middle" style="text-align: center;"> <?php foreach ($employeeTel as $row2) {
+                                                            if ($row2->EMPLOYEETEL_ID == $row->EMPLOYEE_ID) {
+                                                                echo $row2->EMPLOYEETEL_TEL . '<br>';
+                                                            }
+                                                        } ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->DEPARTMENT_NAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->SALARY, 2); ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
-                                                    <button name="resetPass" class="btn btn-primary resetPass" value="<?= $row->ID ?>"> <i class="fa fa-key"></i></button>
+                                                    <button name="resetPass" class="btn btn-primary resetPass" value="<?= $row->EMPLOYEE_ID ?>"> <i class="fa fa-key"></i></button>
                                                 </center>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
                                                     <form action="<?= site_url('admin/employee/editEmployee') ?>" method="GET">
-                                                        <button name="empID" class="btn btn-warning edit" class="btn btn-warning" value="<?= $row->ID ?>"> <i class="fa fa-edit"></i></button>
+                                                        <button name="employeeID" class="btn btn-warning edit" class="btn btn-warning" value="<?= $row->EMPLOYEE_ID ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
                                             </td>
@@ -123,9 +121,6 @@
     $(document).ready(function() {
 
         $('.resetPass').on('click', function() {
-
-            // var emp = $(this).val(); 
-            // alert(emp);
             var empID = $(this).parents("tr").attr("id");
             var result = confirm('ยืนยันการรีเซ็ทรหัสผ่านของ ' + empID);
             if (result) {
@@ -141,8 +136,6 @@
                     }
                 });
             }
-
-
         });
 
         $('.delete').click(function(e) {
@@ -161,15 +154,6 @@
                     }
                 });
             }
-        });
-
-        $('.bgtable').mouseover(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "#C6FFF8");
-        });
-        $('.bgtable').mouseout(function() {
-            var ID = $(this).attr("ID");
-            $('#' + ID).css("background-color", "");
         });
     });
 </script>

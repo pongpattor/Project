@@ -7,36 +7,39 @@ class employee_model extends CI_Model
     //Employee Start 
     public function employee($search = '', $limit, $offset)
     {
-        $sql = "select e.ID,e.FIRSTNAME,e.LASTNAME,e.EMAIL,e.SALARY,
-        e.IMG,et.PHONE,d.DEPARTMENT_NAME,p.POSITION_NAME
-        from employee e
-        LEFT JOIN employee_telephone et on e.ID = et.EMPLOYEE_ID
-        LEFT JOIN position p on e.POSITION = p.POSITION_ID
-        LEFT JOIN department d on p.DEPT_ID = d.DEPARTMENT_ID
-        WHERE e.STATUS = 1 AND
-        (   e.ID LIKE  ? OR
-            e.FIRSTNAME LIKE  ? OR
-            e.LASTNAME LIKE ?  OR
-            e.EMAIL LIKE ?  OR
-            e.salary LIKE ?  OR
-            d.DEPARTMENT_NAME LIKE ?  OR
-            p.POSITION_NAME LIKE ?  OR
-            et.PHONE LIKE ? 
-        )
-            GROUP BY  e.ID
-            ORDER BY e.ID ASC
+        $sql = "SELECT emp.EMPLOYEE_ID,emp.EMPLOYEE_FIRSTNAME,emp.EMPLOYEE_LASTNAME,
+        emp.EMPLOYEE_IMAGE,position.POSITION_NAME,department.DEPARTMENT_NAME,RPAD(LPAD(emp.EMPLOYEE_ID,11,\"\'\"),12,\"\'\") as empID
+        FROM (SELECT employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME,
+              employee.EMPLOYEE_IMAGE,employee.EMPLOYEE_POSITION ,employee.EMPLOYEE_STATUS,employeetel.EMPLOYEETEL_TEL
+              FROM employee 
+              LEFT JOIN employeetel 
+              ON employee.EMPLOYEE_ID = employeetel.EMPLOYEETEL_ID
+              ) emp
+        LEFT JOIN position
+            ON position.POSITION_ID = emp.EMPLOYEE_POSITION
+        LEFT JOIN department
+            ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID
+        WHERE emp.EMPLOYEE_STATUS = '1'
+        AND
+                 (
+                    emp.EMPLOYEE_ID LIKE ? OR
+                    emp.EMPLOYEE_FIRSTNAME LIKE ? OR
+                    emp.EMPLOYEE_LASTNAME LIKE ? OR
+                    emp.EMPLOYEETEL_TEL LIKE ? OR
+                    position.POSITION_NAME LIKE ? OR
+                    department.DEPARTMENT_NAME LIKE ?
+                    )
+        GROUP BY emp.EMPLOYEE_ID		
             LIMIT $offset,$limit
         ";
 
         $query = $this->db->query(
             $sql,
             array(
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search). '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
             )
@@ -49,35 +52,36 @@ class employee_model extends CI_Model
 
     public function countAllEmployee($search)
     {
-        $sql = "
-        select count(*) as cnt from (SELECT * FROM employee e
-        left join employee_telephone et on e.ID = et.EMPLOYEE_ID
-        LEFT JOIN position p on e.POSITION = p.POSITION_ID
-        LEFT JOIN department d on p.DEPT_ID = d.DEPARTMENT_ID
-        WHERE e.`STATUS` = 1
-        AND
-        (   
-            e.ID LIKE  ? OR
-            e.FIRSTNAME LIKE  ? OR
-            e.LASTNAME LIKE ?  OR
-            e.EMAIL LIKE ?  OR
-            e.salary LIKE ?  OR
-            d.DEPARTMENT_NAME LIKE ?  OR
-            p.POSITION_NAME LIKE ?  OR
-            et.PHONE LIKE ? 
-        )
-        GROUP BY  e.ID
-        ORDER BY e.ID ASC) t";
+        $sql = "SELECT COUNT(*) as cnt FROM  
+                    (SELECT employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME
+                            ,employee.EMPLOYEE_IMAGE,employee.EMPLOYEE_POSITION,employee.EMPLOYEE_STATUS,employeetel.EMPLOYEETEL_TEL
+                    FROM employee 
+                    LEFT JOIN employeetel 
+                        ON employee.EMPLOYEE_ID = employeetel.EMPLOYEETEL_ID
+                    LEFT JOIN (SELECT position.POSITION_ID,position.POSITION_NAME,department.DEPARTMENT_NAME 
+                                FROM position JOIN department 
+                                    ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID) p
+                         ON employee.EMPLOYEE_POSITION = p.POSITION_ID
+                        WHERE employee.EMPLOYEE_STATUS = '1'
+                            AND
+                            (
+                            employee.EMPLOYEE_ID LIKE ? OR
+                            employee.EMPLOYEE_FIRSTNAME LIKE ? OR
+                            employee.EMPLOYEE_LASTNAME LIKE ? OR
+                            employeetel.EMPLOYEETEL_TEL LIKE ? OR
+                            p.POSITION_NAME LIKE ? OR
+                            p.DEPARTMENT_NAME LIKE ?
+                            )
+                        GROUP BY employee.EMPLOYEE_ID	
+                    ) emp";
 
         $query = $this->db->query(
             $sql,
             array(
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search). '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
             )
@@ -89,6 +93,15 @@ class employee_model extends CI_Model
             return $row->cnt;
         }
     }
+
+    public function fetchEmployeeTel($employeeTel){
+        $sql = "SELECT EMPLOYEETEL_ID,EMPLOYEETEL_TEL FROM employeeTel
+        where EMPLOYEETEL_ID IN ($employeeTel)";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+
 
     public function editEmp($id)
     {
@@ -216,27 +229,6 @@ class employee_model extends CI_Model
     }
 
     //ETC
- 
-  
-
-    
-
-    public function  fetch_department()
-    {
-        $sql = "SELECT * FROM department";
-        return $this->db->query($sql)->result();
-    }
-
-    public function fetch_position($department_id)
-    {
-        $sql = "SELECT * from position where DEPT_ID = '$department_id' ORDER BY POSITION_NAME ASC";
-        $query =  $this->db->query($sql)->result();
-        $output = '<option value="" selected disable>กรุณาเลือกตำแหน่ง</option>';
-        foreach ($query as $row) {
-            $output .= '<option value="' . $row->POSITION_ID . '">' . $row->POSITION_NAME . '</option>';
-        }
-        return $output;
-    }
 
     public function checkOldPass($empID)
     {
@@ -259,8 +251,9 @@ class employee_model extends CI_Model
         );
     }
 
-    public function ResetPassword($empID,$newPass){
-        $sql ="UPDATE employee SET PASSWORD = '$newPass' WHERE ID = '$empID'";
+    public function ResetPassword($empID, $newPass)
+    {
+        $sql = "UPDATE employee SET PASSWORD = '$newPass' WHERE ID = '$empID'";
         $this->db->query($sql);
     }
 }

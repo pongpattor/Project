@@ -137,7 +137,7 @@
             <main>
                 <div id="content" class="container-fluid">
 
-                    <?php $this->load->view('admin/' . $page); ?>
+                    <!-- <?php $this->load->view('admin/' . $page); ?> -->
 
                 </div>
             </main>

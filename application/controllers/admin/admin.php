@@ -49,6 +49,7 @@ class admin extends CI_Controller
         return redirect(site_url('admin/admin/home'));
     }
 
+
     public function fetchAmphur()
     {
         $provinceID = $this->input->post('provinceID');

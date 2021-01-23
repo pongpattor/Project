@@ -17,14 +17,13 @@
     <!-- script -->
     <script src="<?= base_url('assets/script.js') ?>"></script>
 
-
 </head>
 
-<body class="sb-nav-fixed ">
+<body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="<?= site_url('admin/admin/home'); ?>">ADMIN FOODSHOP</a>
         <!-- อาจจะใช้ -->
-        <!-- <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button> -->
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" ><i class="fas fa-bars"></i></button>
         <!-- div Space-->
         <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
         <!-- div Space-->
@@ -154,6 +153,7 @@
             </footer>
         </div>
     </div>
+
 
 
 </body>

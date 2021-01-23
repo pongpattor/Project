@@ -49,8 +49,20 @@ class employee extends CI_Controller
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
         $data['employee'] = $this->employee_model->employee($search, $limit, $offset);
+        if ($data['employee'] != null) {
+            $arrEmployeeTel = [];
+            foreach ($data['employee'] as $row) {
+                array_push($arrEmployeeTel, $row->empID);
+            }
+            $empID = implode(",", $arrEmployeeTel);
+
+            $data['employeeTel'] = $this->employee_model->fetchEmployeeTel($empID);
+        }
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'employee_view';
+        //  echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -64,7 +76,7 @@ class employee extends CI_Controller
         $this->load->view('admin/main_view', $data);
     }
 
-    public function idcard()
+    public function checkIdCard()
     {
         //ตรวจรหัสบัตรว่าใช่เลขบัตรจริงไหม
         $idcard = $this->input->post('idcard');
@@ -83,20 +95,6 @@ class employee extends CI_Controller
             echo True; /// ถ้า ตรงกัน แสดงว่าถูก
         else
             echo false; // ไม่ตรงกันแสดงว่าผิด
-    }
-
-    public function checkIdCard()
-    {
-        //ตรวจว่าในข้อมูลมีรหัสซ้ำไหม ถ้าซ้ำคนนั้นลาออกไปหรือยัง ถ้ายังไม่ให้เพิ่ม
-        $idcard = $this->input->post('idcard');
-        $num = $this->employee_model->checkIdCard($idcard);
-        if ($num > 0) {
-            //มีแล้ว
-            echo 1;
-        } else {
-            //ยังไม่มี
-            echo 0;
-        }
     }
 
 
