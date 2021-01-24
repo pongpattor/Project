@@ -11,10 +11,10 @@ $(document).ready(function () {
             dataType: "JSON",
             success: function (data) {
                 // console.log(data);
-                if(data.status == true){
+                if (data.status == true) {
                     location.replace(data.url);
                 }
-                else{
+                else {
                     $('#password').val('');
                     alert('กรุณากรอก Username หรือ Password ให้ถูกต้อง');
                 }
@@ -342,6 +342,58 @@ $(document).ready(function () {
     //Position End
 
     //Employee Start
+    function validChangePassword() {
+        var Errors = 0;
+        var passwordNew = $('#passwordNew').val();
+        var rePasswordNew = $('#rePasswordNew').val();
+        var passwordOld = $('#passwordOld').val();
+        if (passwordNew == rePasswordNew) {
+            // $('#newPasswordError').html('');
+            if (passwordNew != passwordOld) {
+                $('#newPasswordError').html('');
+            }
+            else {
+                Errors = 1;
+                $('#newPasswordError').html('กรุณากรอกรหัสผ่านใหม่กับรหัสผ่านเก่าให้ไม่เหมือนกัน');
+            }
+        }
+        else {
+            Errors = 1;
+            $('#newPasswordError').html('กรุณากรอกรหัสผ่านใหม่ให้เหมือนกัน');
+        }
+        return Errors;
+    }
+
+    $('#changePasswordForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการเปลี่ยนรหัสผ่านใหม่');
+        if (cf == true) {
+            var result = validChangePassword();
+            if(result == 0){
+                $.ajax({
+                    url : "../admin/rePassword",
+                    method : "POST",
+                    data : $(this).serialize(),
+                    dataType : "JSON",
+                    success : function(data){
+                        // console.log(data);
+                        if(data.status == true){
+                            alert('แก้ไขรหัสผ่านเสร็จสิ้น');
+                            location.replace(data.url);
+                        }
+                        else{
+                            $('#passwordError').html('กรุณากรอกรหัสผ่านเก่าให้ถูกต้อง');
+                            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        }
+                    }
+                });
+            }
+            else{
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            }
+        }
+
+    });
 
     $('#employeeDepartment').on('change', function () {
         var departmentID = $(this).val();

@@ -8,11 +8,11 @@ class admin extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        // if(empty($_SESSION['login'])){
-        //     return redirect(site_url('admin/login'));
-        // }
+        if(empty($_SESSION['employeeLogin'])){
+            return redirect(site_url('admin/login'));
+        }
+        $this->load->model('crud_model');
         $this->load->model('data_model');
-        $this->load->model('employee_model');
         $this->load->library('pagination');
     }
 
@@ -29,24 +29,25 @@ class admin extends CI_Controller
        redirect(site_url('admin/login'));
     }
 
-    public function repassword(){
-        $data['page'] = 'repassword';
+    public function changePassword(){
+        $data['page'] = 'changepassword_view';
         $this->load->view('admin/main_view',$data);
     }
 
-    public function checkOldPass(){
-    //    $oldpass = $this->input->post('oldpass');
-       $empID = $this->input->post('empID');
-       $pass = $this->employee_model->checkOldPass($empID);
-        echo $pass;
 
-    }
-
-    public function repass(){
-        $newPass = $this->input->post('newPass');
-        $empID = $this->input->post('empID');
-        $this->employee_model->rePassword($empID, $newPass);
-        return redirect(site_url('admin/admin/home'));
+    public function rePassword(){
+        $data['status'] = true;
+        $passwordOld = $this->input->post('passwordOld');
+        $check = $this->crud_model->count2Where('employee','EMPLOYEE_ID',$_SESSION['employeeID'],'EMPLOYEE_PASSWORD',$passwordOld);
+        if($check==1){
+            $passwordNew = $this->input->post('passwordNew');
+            $this->crud_model->updateStatus('employee','EMPLOYEE_PASSWORD',$passwordNew,'EMPLOYEE_ID',$_SESSION['employeeID']);
+            $data['url'] = site_url('admin/admin');
+        }
+        else{
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
 
 
@@ -78,4 +79,9 @@ class admin extends CI_Controller
         echo json_encode($data);
     }
 
+    public function test(){
+        echo '<pre>';
+        print_r($_SESSION['employeePermission']);
+        echo '</pre>';
+    }
 }

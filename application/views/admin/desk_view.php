@@ -53,6 +53,7 @@
                                                 <th style="text-align: center;">ชื่อโต๊ะ</th>
                                                 <th style="text-align: center;">จำนวนที่นั่ง</th>
                                                 <th style="text-align: center;">โซนที่นั่ง</th>
+                                                <th style="text-align: center;">สถานะการใช้งาน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
                                                 <th style="text-align: center;">ลบ</th>
                                             </tr>
@@ -64,6 +65,12 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SEAT_NAME; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SEAT_AMOUNT; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->ZONE_NAME; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?php if($row->SEAT_ACTIVE == '1'){
+                                                        echo 'พร้อมใช้งาน';}else{
+                                                            echo 'ไม่พร้อมใช้งาน';
+                                                        }
+                                                        ?></td>
+
                                                     <td class="align-middle">
                                                         <center>
                                                             <form action="<?= site_url('admin/desk/editDesk') ?>" method="get">

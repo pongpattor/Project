@@ -166,27 +166,5 @@ class employee_model extends CI_Model
     }
 
 
-    //ETC
-
-    public function checkOldPass($empID)
-    {
-        $sql = "SELECT PASSWORD as pass FROM employee WHERE ID ='$empID'";
-        $query = $this->db->query($sql);
-        foreach ($query->result() as $row) {
-            return $row->pass;
-        }
-    }
-
-    public function rePassword($empID, $newPass)
-    {
-        $sql = "UPDATE employee SET PASSWORD = ? WHERE ID = ?";
-        $this->db->query(
-            $sql,
-            array(
-                $this->db->escape_like_str($newPass),
-                $this->db->escape_like_str($empID),
-            )
-        );
-    }
 
 }

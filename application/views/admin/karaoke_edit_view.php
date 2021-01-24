@@ -58,6 +58,20 @@
                                 <input type="number" name="karaokeFlatRate" id="karaokeFlatRate" class="form-control"  value="<?=$row->KARAOKE_FLATRATE?>"  required min="1" max="99999">
                             </div>
                         </div>
+                        <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
+                                    <label>สถานะการใช้งาน </label>
+                                    <select name="karaokeActive" class="form-control" required>
+                                        <option value="" selected disabled>กรุณาเลือกสถานะการใช้งาน</option>
+                                        <option value="1" <?php if ($row->SEAT_ACTIVE == '1') {
+                                                                echo 'selected';
+                                                            } ?>>พร้อมใช้งาน</option>
+                                        <option value="2" <?php if ($row->SEAT_ACTIVE == '2') {
+                                                                echo 'selected';
+                                                            } ?>>ไม่พร้อมใช้งาน</option>
+                                    </select>
+                                </div>
+                            </div>
                         <br>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">

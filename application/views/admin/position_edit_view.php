@@ -106,13 +106,13 @@
                                                 <input type="checkbox" name="permission[]" id="exampleCheck10" class="chkper" <?php if ($permission[9] == 1) {
                                                                                                                                     echo 'checked';
                                                                                                                                 } ?>>
-                                                <label class="form-check-label" for="exampleCheck10">จัดการข้อมูลที่โต๊ะ เพิ่ม ลบ แก้ไข</label>
+                                                <label class="form-check-label" for="exampleCheck10">จัดการข้อมูลโต๊ะ เพิ่ม ลบ แก้ไข</label>
                                             </div>
                                             <div class="form-check">
                                                 <input type="checkbox" name="permission[]" id="exampleCheck11" class="chkper" <?php if ($permission[10] == 1) {
                                                                                                                                     echo 'checked';
                                                                                                                                 } ?>>
-                                                <label class="form-check-label" for="exampleCheck11">จัดการข้อมูลที่ห้องคาราโอเกะ เพิ่ม ลบ แก้ไข</label>
+                                                <label class="form-check-label" for="exampleCheck11">จัดการข้อมูลห้องคาราโอเกะ เพิ่ม ลบ แก้ไข</label>
                                             </div>
                                             <div class="form-check">
                                                 <input type="checkbox" name="permission[]" id="exampleCheck12" class="chkper" <?php if ($permission[11] == 1) {
@@ -124,19 +124,19 @@
                                                 <input type="checkbox" name="permission[]" id="exampleCheck13" class="chkper" <?php if ($permission[12] == 1) {
                                                                                                                                     echo 'checked';
                                                                                                                                 } ?>>
-                                                <label class="form-check-label" for="exampleCheck13">จัดการข้อมูลรับล็อค เพิ่ม ลบ แก้ไข</label>
+                                                <label class="form-check-label" for="exampleCheck13">จัดการข้อมูลรับล็อต เพิ่ม ลบ แก้ไข</label>
                                             </div>
                                             <div class="form-check">
                                                 <input type="checkbox" name="permission[]" id="exampleCheck14" class="chkper"<?php if ($permission[13] == 1) {
                                                                                                                                     echo 'checked';
                                                                                                                                 } ?>>
-                                                <label class="form-check-label" for="exampleCheck14">จัดการข้อมูลที่โปรโมชั่นลดราคา เพิ่ม ลบ แก้ไข</label>
+                                                <label class="form-check-label" for="exampleCheck14">จัดการข้อมูลโปรโมชั่นลดราคา เพิ่ม ลบ แก้ไข</label>
                                             </div>
                                             <div class="form-check">
                                                 <input type="checkbox" name="permission[]" id="exampleCheck15" class="chkper" <?php if ($permission[14] == 1) {
                                                                                                                                     echo 'checked';
                                                                                                                                 } ?>>
-                                                <label class="form-check-label" for="exampleCheck15">จัดการข้อมูลที่โปรโมชั่นเซ็ต เพิ่ม ลบ แก้ไข</label>
+                                                <label class="form-check-label" for="exampleCheck15">จัดการข้อมูลโปรโมชั่นเซ็ต เพิ่ม ลบ แก้ไข</label>
                                             </div>
                                             <div class="form-check">
                                                 <input type="checkbox" name="permission[]" id="exampleCheck16" class="chkper" <?php if ($permission[15] == 1) {

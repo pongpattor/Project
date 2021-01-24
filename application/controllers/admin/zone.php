@@ -7,9 +7,13 @@ class zone extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        // if (empty($_SESSION['login'])) {
-        //     return redirect(site_url('admin/login'));
-        // }
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } 
+        else if ($_SESSION['employeePermission'][12] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('zone_model');
         $this->load->library('pagination');

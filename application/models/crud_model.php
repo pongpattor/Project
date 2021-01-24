@@ -32,10 +32,13 @@ class crud_model extends CI_Model
         $sql = "SELECT $select FROM $table WHERE $where = '$data'";
         return $this->db->query($sql)->result();
     }
-    public function findColumns($columns, $table)
+ 
+    public function findIn($table, $select, $where, $data)
     {
-        $sql = "SELECT $columns FROM $table";
-        return $this->db->query($sql)->result();
+        $sql = "SELECT $select FROM $table
+                WHERE $where in ($data)";
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
     public function countAll($table)
@@ -62,21 +65,33 @@ class crud_model extends CI_Model
         }
     }
 
+    
+    public function count2Where($table,$where1,$whereData1,$where2,$whereData2){
+        $sql = " SELECT COUNT(*) AS cnt FROM $table
+                WHERE $where1 = '$whereData1'
+                AND $where2 = '$whereData2'";
+        $query = $this->db->query($sql);
+        foreach($query->result() as $row){
+            return $row->cnt;
+        }
+    }
+
     public function update($table, $data = array(), $where, $whereData)
     {
         $this->db->where($where, $whereData);
         $this->db->update($table, $data);
     }
 
-    public function delete($table, $where, $data)
-    {
-        $sql = "DELETE FROM $table WHERE $where = '$data'";
-        $this->db->query($sql);
-    }
 
     public function UpdateStatus($table,$set,$setData,$where, $whereData)
     {
         $sql = "UPDATE $table SET $set = '$setData' WHERE $where = '$whereData' ";
+        $this->db->query($sql);
+    }
+
+    public function delete($table, $where, $data)
+    {
+        $sql = "DELETE FROM $table WHERE $where = '$data'";
         $this->db->query($sql);
     }
 
@@ -89,21 +104,5 @@ class crud_model extends CI_Model
         }
     }
 
-    public function findIn($table, $select, $where, $data)
-    {
-        $sql = "SELECT $select FROM $table
-                WHERE $where in ($data)";
-        $query = $this->db->query($sql);
-        return $query->result();
-    }
 
-    public function count2Where($table,$where1,$whereData1,$where2,$whereData2){
-        $sql = " SELECT COUNT(*) AS cnt FROM $table
-                WHERE $where1 = '$whereData1'
-                AND $where2 = '$whereData2'";
-        $query = $this->db->query($sql);
-        foreach($query->result() as $row){
-            return $row->cnt;
-        }
-    }
 }

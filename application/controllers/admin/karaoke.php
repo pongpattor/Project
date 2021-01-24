@@ -7,9 +7,13 @@ class karaoke extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        // if (empty($_SESSION['login'])) {
-        //     return redirect(site_url('admin/login'));
-        // }
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } 
+        else if ($_SESSION['employeePermission'][11] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('seat_model');
         $this->load->library('pagination');
@@ -79,6 +83,7 @@ class karaoke extends CI_Controller
                 'SEAT_TYPE' => '2',
                 'SEAT_ZONE' => $karaokeZone,
                 'SEAT_STATUS' => '1',
+                'SEAT_ACTIVE' => '1',
             );
             $this->crud_model->insert('seat', $dataSeat);
             $dataKaraoke = array(
@@ -144,9 +149,11 @@ class karaoke extends CI_Controller
             $karaokeZone =  $this->input->post('karaokeZone');
             $karaokePricePerHour =  $this->input->post('karaokePricePerHour');
             $karaokeFlatRate =  $this->input->post('karaokeFlatRate');
+            $karaokeActive = $this->input->post('karaokeActive');
             $dataSeat = array(
                 'SEAT_AMOUNT' => $karaokeAmount,
                 'SEAT_ZONE' => $karaokeZone,
+                'SEAT_ACTIVE' => $karaokeActive,
             );
             $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $karaokeID);
             $dataKaraoke = array(
@@ -165,10 +172,12 @@ class karaoke extends CI_Controller
                 $karaokeZone =  $this->input->post('karaokeZone');
                 $karaokePricePerHour =  $this->input->post('karaokePricePerHour');
                 $karaokeFlatRate =  $this->input->post('karaokeFlatRate');
+                $karaokeActive = $this->input->post('karaokeActive');
                 $dataSeat = array(
                     'SEAT_NAME' => $karaokeName,
                     'SEAT_AMOUNT' => $karaokeAmount,
                     'SEAT_ZONE' => $karaokeZone,
+                    'SEAT_ACTIVE' => $karaokeActive,
                 );
                 $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $karaokeID);
                 $dataKaraoke = array(

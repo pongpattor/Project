@@ -7,9 +7,13 @@ class desk extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        // if (empty($_SESSION['login'])) {
-        //     return redirect(site_url('admin/login'));
-        // }
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } 
+        else if ($_SESSION['employeePermission'][10] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('seat_model');
         $this->load->library('pagination');
@@ -73,6 +77,7 @@ class desk extends CI_Controller
                 'SEAT_TYPE' => '1',
                 'SEAT_ZONE' => $this->input->post('deskZone'),
                 'SEAT_STATUS' => '1',
+                'SEAT_ACTIVE' => '1',
             );
             $this->crud_model->insert('seat', $dataSeat);
             $data['url'] = site_url('admin/desk');
@@ -130,10 +135,13 @@ class desk extends CI_Controller
             $deskID =  $this->input->post('deskID');
             $deskAmount =  $this->input->post('deskAmount');
             $deskZone =  $this->input->post('deskZone');
+            $deskActive =  $this->input->post('deskActive');
             $dataSeat = array(
                 'SEAT_NAME' => $deskName,
                 'SEAT_AMOUNT' => $deskAmount,
-                'SEAT_ZONE' => $deskZone
+                'SEAT_ZONE' => $deskZone,
+                'SEAT_ACTIVE' => $deskActive,
+                
             );
             $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
             $data['url'] = site_url('admin/desk');
@@ -145,10 +153,12 @@ class desk extends CI_Controller
                 $deskID =  $this->input->post('deskID');
                 $deskAmount =  $this->input->post('deskAmount');
                 $deskZone =  $this->input->post('deskZone');
+                $deskActive =  $this->input->post('deskActive');
                 $dataSeat = array(
                     'SEAT_NAME' => $deskName,
                     'SEAT_AMOUNT' => $deskAmount,
                     'SEAT_ZONE' =>  $deskZone,
+                    'SEAT_ACTIVE' => $deskActive,
                 );
                 $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
                 $data['url'] = site_url('admin/desk');
