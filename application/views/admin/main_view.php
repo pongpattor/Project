@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>FoodShop</title>
     <!-- CSS JQUERY -->
     <link href="<?= base_url('assets/css/styles.css'); ?>" rel="stylesheet" />
     <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.js'); ?>"></script>
     <script src="<?= base_url('assets/bootstrap4/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
+    <!-- <link rel="shortcut icon" href="<?php base_url('assets/image/favicon.ico')?>" /> -->
     <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
     <script src="<?= base_url('assets/script.js') ?>"></script>
@@ -21,7 +22,7 @@
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="<?= site_url('admin/admin/home'); ?>">ADMIN FOODSHOP</a>
+        <a class="navbar-brand" href="<?= site_url('admin/admin/'); ?>">ADMIN FOODSHOP</a>
         <!-- อาจจะใช้ -->
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- div Space-->
@@ -51,10 +52,9 @@
                         </a>
                         <div class="sb-sidenav-menu-heading">ระบบหลังร้าน</div>
                         <!-- สมาชิก -->
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#CustomercollapseLayouts" aria-expanded="false" aria-controls="CustomercollapseLayouts" 
-                        <?php if ($_SESSION['employeePermission']['0'] != '1' && $_SESSION['employeePermission']['1'] != '1') {
-                        echo 'hidden';
-                         }?>>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#CustomercollapseLayouts" aria-expanded="false" aria-controls="CustomercollapseLayouts" <?php if ($_SESSION['employeePermission']['0'] != '1' && $_SESSION['employeePermission']['1'] != '1') {
+                                                                                                                                                                                                echo 'hidden';
+                                                                                                                                                                                            } ?>>
                             <div class="sb-nav-link-icon"><i class="fa fa-users"></i></div>
                             สมาชิก
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
@@ -72,10 +72,9 @@
                             </nav>
                         </div>
                         <!-- พนักงาน -->
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts"
-                        <?php if ($_SESSION['employeePermission']['2'] != '1' && $_SESSION['employeePermission']['3'] != '1'&& $_SESSION['employeePermission']['4'] != '1') {
-                        echo 'hidden';
-                         }?>>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#EmployeecollapseLayouts" aria-expanded="false" aria-controls="EmployeecollapseLayouts" <?php if ($_SESSION['employeePermission']['2'] != '1' && $_SESSION['employeePermission']['3'] != '1' && $_SESSION['employeePermission']['4'] != '1') {
+                                                                                                                                                                                                echo 'hidden';
+                                                                                                                                                                                            } ?>>
                             <div class="sb-nav-link-icon"><i class="fa fa-address-card"></i></div>
                             พนักงาน
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
@@ -97,10 +96,9 @@
                             </nav>
                         </div>
                         <!-- สินค้า -->
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts"
-                        <?php if ($_SESSION['employeePermission']['5'] != '1' && $_SESSION['employeePermission']['6'] != '1'&& $_SESSION['employeePermission']['7'] != '1' && $_SESSION['employeePermission']['8'] != '1') {
-                        echo 'hidden';
-                         }?>>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ProductcollapseLayouts" aria-expanded="false" aria-controls="ProductcollapseLayouts" <?php if ($_SESSION['employeePermission']['5'] != '1' && $_SESSION['employeePermission']['6'] != '1' && $_SESSION['employeePermission']['7'] != '1' && $_SESSION['employeePermission']['8'] != '1') {
+                                                                                                                                                                                                echo 'hidden';
+                                                                                                                                                                                            } ?>>
                             <div class="sb-nav-link-icon"><i class="fab fa-product-hunt"></i></div>
                             สินค้า
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
@@ -126,10 +124,9 @@
                             </nav>
                         </div>
                         <!-- ที่นั่ง -->
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SeatcollapseLayouts" aria-expanded="false" aria-controls="SeatcollapseLayouts"
-                        <?php if ($_SESSION['employeePermission']['9'] != '1' && $_SESSION['employeePermission']['10'] != '1'&& $_SESSION['employeePermission']['11'] != '1') {
-                        echo 'hidden';
-                         }?>>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SeatcollapseLayouts" aria-expanded="false" aria-controls="SeatcollapseLayouts" <?php if ($_SESSION['employeePermission']['9'] != '1' && $_SESSION['employeePermission']['10'] != '1' && $_SESSION['employeePermission']['11'] != '1') {
+                                                                                                                                                                                        echo 'hidden';
+                                                                                                                                                                                    } ?>>
                             <div class="sb-nav-link-icon"><i class="fa fa-chair"></i></div>
                             ที่นั่ง
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
@@ -159,10 +156,9 @@
                             รับล็อต
                         </a>
                         <!-- โปรโมชั่น -->
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PromotioncollapseLayouts" aria-expanded="false" aria-controls="PromotioncollapseLayouts"
-                        <?php if ($_SESSION['employeePermission']['13'] != '1' && $_SESSION['employeePermission']['14'] != '1') {
-                        echo 'hidden';
-                         }?>>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PromotioncollapseLayouts" aria-expanded="false" aria-controls="PromotioncollapseLayouts" <?php if ($_SESSION['employeePermission']['13'] != '1' && $_SESSION['employeePermission']['14'] != '1') {
+                                                                                                                                                                                                    echo 'hidden';
+                                                                                                                                                                                                } ?>>
                             <div class="sb-nav-link-icon"><i class="fa fa-bullhorn"></i></div>
                             โปรโมชั่น
                             <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>

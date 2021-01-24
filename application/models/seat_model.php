@@ -5,7 +5,7 @@ class seat_model extends CI_Model
 {
 
     //Department Start
-    public function desk($search = '', $limit, $offset)
+    public function desk($search, $deskActive, $limit, $offset)
     {
         $sql = "SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ACTIVE,zone.ZONE_NAME
         FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
@@ -18,6 +18,7 @@ class seat_model extends CI_Model
             seat.SEAT_AMOUNT LIKE ? OR
             zone.ZONE_NAME LIKE ?
         )
+        AND seat.SEAT_ACTIVE IN ($deskActive)
         LIMIT $offset,$limit
         ";
 
@@ -36,7 +37,7 @@ class seat_model extends CI_Model
         return $query->result();
     }
 
-    public function countAlldesk($search = '')
+    public function countAlldesk($search, $deskActive)
     {
         $sql = "SELECT COUNT(*) as cnt FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
         where seat.SEAT_TYPE = '1' 
@@ -48,6 +49,7 @@ class seat_model extends CI_Model
             seat.SEAT_AMOUNT LIKE ? OR
             zone.ZONE_NAME LIKE ?
         )
+        AND seat.SEAT_ACTIVE IN ($deskActive)
         ";
 
         $query = $this->db->query(
@@ -72,7 +74,7 @@ class seat_model extends CI_Model
         return $query->result();
     }
 
-    public function karaoke($search = '', $limit, $offset)
+    public function karaoke($search, $karaokeActive, $limit, $offset)
     {
         $sql = "SELECT * FROM ZONE 
         RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,seat.SEAT_ACTIVE,
@@ -88,6 +90,7 @@ class seat_model extends CI_Model
                 s.KARAOKE_PRICEPERHOUR LIKE ? OR
                 s.KARAOKE_FLATRATE LIKE ?
                 )
+        AND s.SEAT_ACTIVE IN ($karaokeActive)
         LIMIT $offset,$limit
         ";
 
@@ -108,11 +111,11 @@ class seat_model extends CI_Model
         return $query->result();
     }
 
-    public function countAllKaraoke($search = '')
+    public function countAllKaraoke($search, $karaokeActive)
     {
         $sql = "SELECT COUNT(*) as cnt FROM ZONE 
         RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
-                    karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE
+                    seat.SEAT_ACTIVE,karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                 WHERE seat.SEAT_STATUS != '0' 
                 AND seat.SEAT_TYPE = '2') s
@@ -124,6 +127,7 @@ class seat_model extends CI_Model
                 s.KARAOKE_PRICEPERHOUR LIKE ? OR
                 s.KARAOKE_FLATRATE LIKE ?
                 )
+                AND s.SEAT_ACTIVE IN ($karaokeActive)
         ";
 
         $query = $this->db->query(

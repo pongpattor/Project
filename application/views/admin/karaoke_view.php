@@ -14,15 +14,26 @@
         <div class="card border-0 shadow-lg">
             <div class="card-body">
                 <form action="<?= site_url('admin/karaoke/'); ?>" method="GET">
-                    <div class="row">
-                        <div class="col-6 input-group">
-                            <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
-                            <div class="input-group-append">
-                                <button class="input-group-text"><i class="fa fa-search"></i></button>
+                <div class="row">
+                        <div class="col-9">
+                            <div class="row">
+                                <div class="col-3">
+                                    <select name="karaokeActive" id="karaokeActive" class="form-control" >
+                                        <option value="1,2" selected>ทั้งหมด</option>
+                                        <option value="1">พร้อมใช้งาน</option>
+                                        <option value="2">ไม่พร้อมใช้งาน</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 input-group">
+                                    <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
+                                    <div class="input-group-append">
+                                        <button class="input-group-text"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <a href="<?= site_url('admin/karaoke/addKaraoke') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                        <div class="col-3">
+                            <a href="<?= site_url('admin/typeproduct/addTypeProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>

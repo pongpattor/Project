@@ -6,24 +6,32 @@ class typeproduct extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (empty($_SESSION['login'])) {
+        if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['permission'][5] != 1) {
+        } else if ($_SESSION['employeePermission'][6] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
-            return redirect(site_url('admin/admin/home'));
+            return redirect(site_url('admin/admin/'));
         }
         date_default_timezone_set('ASIA/BANGKOK');
-        $this->load->model('product_model');
+        $this->load->model('typeproduct_model');
         $this->load->model('crud_model');
         $this->load->library('pagination');
     }
 
     public function index()
     {
-
-        $search = $this->input->get('search');
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+        } else {
+            $search = '';
+        }
+        if ($this->input->get('typeProductGroup')) {
+            $typeProductGroup = $this->input->get('typeProductGroup');
+        } else {
+            $typeProductGroup = '1,2';
+        }
         $config['base_url'] = site_url('admin/typeproduct/index');
-        $config['total_rows'] = $this->product_model->countAllTypeProduct($search);
+        $config['total_rows'] = $this->typeproduct_model->countAllTypeProduct($search, $typeProductGroup);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -49,7 +57,7 @@ class typeproduct extends CI_Controller
         $limit = $config['per_page'];
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
-        $data['typeProduct'] = $this->product_model->typeProduct($search, $limit, $offset);
+        $data['typeProduct'] = $this->typeproduct_model->typeProduct($search, $typeProductGroup, $limit, $offset);
         // $data['total_rows'] = $config['total_rows'];
         $data['total'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
@@ -66,101 +74,94 @@ class typeproduct extends CI_Controller
 
     public function insertTypeProduct()
     {
-        $typeProductDetail = array(
-            'TYPEPRODUCT_ID'  => $this->genIdTypeProduct(),
-            'TYPEPRODUCT_NAME' => $this->input->post('typeProductName'),
-            'TYPEPRODUCT_GROUP' =>  $this->input->post('typeProductGroup'),
-        );
-        $this->db->insert('typeproduct', $typeProductDetail);
-        echo '<script>alert("เพิ่มข้อมูลประเภทสินค้าสำเร็จ")</script>';
-        return redirect(site_url('admin/typeproduct/'));
+
+        $data['status'] = true;
+
+        $typeProductName = $this->input->post('typeProductName');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $check = $this->crud_model->count2Where('typeproduct', 'TYPEPRODUCT_NAME', $typeProductName, 'TYPEPRODUCT_GROUP', $typeProductGroup);
+        if ($check == 0) {
+            $typeProductID = $this->genIdTypeProduct();
+            $dataTypeProduct = array(
+                'TYPEPRODUCT_ID' => $typeProductID,
+                'TYPEPRODUCT_NAME' => $typeProductName,
+                'TYPEPRODUCT_GROUP' => $typeProductGroup,
+            );
+            $this->crud_model->insert('typeproduct', $dataTypeProduct);
+            $data['url'] = site_url('admin/typeproduct');
+        } else {
+            $data['status'] = false;
+        }
+
+        echo json_encode($data);
     }
 
     public function genIdTypeProduct()
     {
-        $maxId = $this->product_model->maxTypeProductId();
-        if ($maxId == '') {
-            return 'TP001';
+        $maxID = $this->crud_model->maxID('typeproduct', 'TYPEPRODUCT_ID');
+        $y = date('y');
+        if ($maxID == '') {
+            $id = 'TP' . $y . '0001';
+            return $id;
         } else {
-            $maxId = substr($maxId, 2);
-            $maxId++;
-            while (strlen($maxId) < 3) {
-                $maxId = '0' . $maxId;
-            }
-            return 'TP' . $maxId;
-        }
-    }
-
-    public function checkTypeProductName()
-    {
-        $typeProductName = $this->input->post('typeProductName');
-        $typeProductGroup = $this->input->post('typeProductGroup');
-        $check = $this->product_model->checkTypeProductName($typeProductName, $typeProductGroup);
-        if ($check != 0) {
-            echo 1;
-        } else {
-            echo 0;
-        }
-    }
-
-    public function checkTypeProductNameUpdate()
-    {
-        $typeProductName = $this->input->post('typeProductName');
-        $typeProductOldName = $this->input->post('typeProductOldName');
-        $typeProductGroup = $this->input->post('typeProductGroup');
-        $typeProductOldGroup =  $this->input->post('typeProductOldGroup');
-        if ($typeProductName  == $typeProductOldName && $typeProductGroup == $typeProductOldGroup) {
-            echo 0;
-            // echo "same";
-        } else {
-            $check = $this->product_model->checkTypeProductName($typeProductName, $typeProductGroup);
-            if ($check != 0) {
-                // echo "FALSE";
-                echo 1;
+            $year = substr($maxID, 2, 2);
+            if ($y != $year) {
+                return 'TP' . $y . '0001';
             } else {
-                echo 0;
-                // echo "TRUE";
+                $id = substr($maxID, 5);
+                $id += 1;
+                while (strlen($id) < 4) {
+                    $id = '0' . $id;
+                }
+                return 'TP' . $year . $id;
             }
         }
     }
+
 
     public function editTypeProduct()
     {
-        $typeId = $this->input->get('typeProductId');
-        $data['typeProduct'] = $this->product_model->editTypeProduct($typeId);
-        if ($data['typeProduct'] == null) {
-            echo '<script>';
-            echo 'alert("ไม่มีข้อมูลประเภทสินค้ารหัส ' . $typeId . '");';
-            echo 'location.href= "' . site_url('admin/typeproduct/') . '"';
-            echo '</script>';
-        } else {
-            // echo '<pre>';
-            // print_r($data['typeProductId']);
-            // echo'</pre>';
-            $data['page'] = 'typeproduct_edit_view';
-            $this->load->view('admin/main_view', $data);
-        }
+        $typeProductID = $this->input->get('typeProductID');
+        $data['typeProduct'] = $this->crud_model->findwhere('typeproduct', 'TYPEPRODUCT_ID', $typeProductID);
+        $data['page'] = 'typeproduct_edit_view';
+        $this->load->view('admin/main_view', $data);
     }
 
     public function updateTypeProduct()
     {
-        $typeID = $this->input->post('typeProductId');
-        $typeName = $this->input->post('typeProductName');
-        $typeGroup = $this->input->post('typeProductGroup');
+        $data['status'] = true;
+        $typeProductID = $this->input->post('typeProductID');
+        $typeProductName = $this->input->post('typeProductName');
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $typeProductNameOld = $this->input->post('typeProductNameOld');
+        $typeProductGroupOld = $this->input->post('typeProductGroupOld');
+        if (strtolower($typeProductName) == strtolower($typeProductNameOld) && $typeProductGroup == $typeProductGroupOld) {
+            $dataTypeProduct = array(
+                'TYPEPRODUCT_NAME' => $typeProductName,
+                'TYPEPRODUCT_GROUP' => $typeProductGroup,
+            );
+        } else {
+            $check = $this->crud_model->count2Where('typeproduct', 'TYPEPRODUCT_NAME', $typeProductName, 'TYPEPRODUCT_GROUP', $typeProductGroup);
+            if ($check == 0) {
+                $dataTypeProduct = array(
+                    'TYPEPRODUCT_NAME' => $typeProductName,
+                    'TYPEPRODUCT_GROUP' => $typeProductGroup,
+                );
+            } else {
+                $data['status'] = false;
+            }
+        }
 
-        $typeProductDetail = array(
-            'TYPEPRODUCT_NAME' => $typeName,
-            'TYPEPRODUCT_GROUP' => $typeGroup
-        );
-
-        $this->crud_model->update('typeproduct', $typeProductDetail, 'TYPEPRODUCT_ID', $typeID);
-        echo '<script>alert("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")</script>';
-        return redirect(site_url('admin/typeproduct/'));
+        if ($data['status'] == true) {
+            $this->crud_model->update('typeproduct', $dataTypeProduct, 'TYPEPRODUCT_ID', $typeProductID);
+            $data['url'] = site_url('admin/typeproduct');
+        }
+        echo json_encode($data);
     }
 
     public function deleteTypeProduct()
     {
-        $id = $this->input->post('typeProductId');
-        $this->crud_model->delete('typeproduct', 'TYPEPRODUCT_ID', $id);
+        $typeProductID = $this->input->post('typeProductID');
+        $this->crud_model->delete('typeproduct', 'TYPEPRODUCT_ID', $typeProductID);
     }
 }

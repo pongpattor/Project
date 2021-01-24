@@ -369,26 +369,26 @@ $(document).ready(function () {
         var cf = confirm('กรุณายืนยันการเปลี่ยนรหัสผ่านใหม่');
         if (cf == true) {
             var result = validChangePassword();
-            if(result == 0){
+            if (result == 0) {
                 $.ajax({
-                    url : "../admin/rePassword",
-                    method : "POST",
-                    data : $(this).serialize(),
-                    dataType : "JSON",
-                    success : function(data){
+                    url: "../admin/rePassword",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
                         // console.log(data);
-                        if(data.status == true){
+                        if (data.status == true) {
                             alert('แก้ไขรหัสผ่านเสร็จสิ้น');
                             location.replace(data.url);
                         }
-                        else{
+                        else {
                             $('#passwordError').html('กรุณากรอกรหัสผ่านเก่าให้ถูกต้อง');
                             alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                         }
                     }
                 });
             }
-            else{
+            else {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
             }
         }
@@ -712,6 +712,62 @@ $(document).ready(function () {
     //Karaoke End
 
 
+    //TypeProduct Start
+
+
+    $('#addTypeProductForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../typeproduct/insertTypeProduct",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == true) {
+                    alert('เพิ่มข้อมูลประเภทสินค้าเสร็จสิ้น');
+                    location.replace(data.url);
+                } else {
+                    if (data.typeProductNameError == '') {
+                        $('#typeProductNameError').html('');
+                    }
+                    else {
+                        $('#typeProductNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                    }
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                }
+            }
+        });
+    });
+
+    $('#editTypeProduct').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../typeproduct/updateTypeProduct",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert('แก้ไขข้อมูลประเภทสินค้าเสร็จสิ้น');
+                        location.replace(data.url);
+                    } else {
+                        if (data.typeProductNameError == '') {
+                            $('#typeProductNameError').html('');
+                        }
+                        else {
+                            $('#typeProductNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                        }
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    }
+                }
+            });
+        }
+
+    });
+    //TypeProduct End
 
 
     //Address Start

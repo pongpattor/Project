@@ -21,9 +21,20 @@ class karaoke extends CI_Controller
 
     public function index()
     {
-        $search = $this->input->get('search');
+        if($this->input->get('search')){
+            $search = $this->input->get('search');
+        }
+        else{
+            $search ='';
+        }
+        if($this->input->get('karaokeActive')){
+            $karaokeActive = $this->input->get('karaokeActive');
+        }
+        else{
+            $karaokeActive ='1,2';
+        }
         $config['base_url'] = site_url('admin/desk/index');
-        $config['total_rows'] = $this->seat_model->countAllkaraoke($search);
+        $config['total_rows'] = $this->seat_model->countAllkaraoke($search,$karaokeActive);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -50,7 +61,7 @@ class karaoke extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['karaoke'] = $this->seat_model->karaoke($search, $limit, $offset);
+        $data['karaoke'] = $this->seat_model->karaoke($search,$karaokeActive, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'karaoke_view';
         $this->load->view('admin/main_view', $data);
