@@ -19,9 +19,9 @@
                             <div class="row">
                                 <div class="col-3">
                                     <select name="deskActive" id="deskActive" class="form-control" >
-                                        <option value="1,2" selected>ทั้งหมด</option>
-                                        <option value="1">พร้อมใช้งาน</option>
-                                        <option value="2">ไม่พร้อมใช้งาน</option>
+                                        <option value="1,2" selected >ทั้งหมด</option>
+                                        <option value="1" <?php if ($this->input->get('deskActive') == '1'){echo 'selected';}?>>พร้อมใช้งาน</option>
+                                        <option value="2" <?php if ($this->input->get('deskActive') == '2'){echo 'selected';}?>>ไม่พร้อมใช้งาน</option>
                                     </select>
                                 </div>
                                 <div class="col-6 input-group">

@@ -20,8 +20,8 @@
                                 <div class="col-3">
                                     <select name="typeProductGroup" id="typeProductGroup" class="form-control" >
                                         <option value="1,2" selected>ทั้งหมด</option>
-                                        <option value="1">อาหาร</option>
-                                        <option value="2">เครื่องดื่ม</option>
+                                        <option value="1" <?php if ($this->input->get('typeProductGroup') == '1'){echo 'selected';}?>>อาหาร</option>
+                                        <option value="2" <?php if ($this->input->get('typeProductGroup') == '2'){echo 'selected';}?>>เครื่องดื่ม</option>
                                     </select>
                                 </div>
                                 <div class="col-6 input-group">

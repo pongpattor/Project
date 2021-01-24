@@ -20,8 +20,8 @@
                                 <div class="col-3">
                                     <select name="karaokeActive" id="karaokeActive" class="form-control" >
                                         <option value="1,2" selected>ทั้งหมด</option>
-                                        <option value="1">พร้อมใช้งาน</option>
-                                        <option value="2">ไม่พร้อมใช้งาน</option>
+                                        <option value="1" <?php if ($this->input->get('karaokeActive') == '1'){echo 'selected';}?>>พร้อมใช้งาน</option>
+                                        <option value="2" <?php if ($this->input->get('karaokeActive') == '1'){echo 'selected';}?>>ไม่พร้อมใช้งาน</option>
                                     </select>
                                 </div>
                                 <div class="col-6 input-group">
