@@ -1,36 +1,28 @@
 //All customer
 $(document).ready(function () {
 
-    //Login Start
-    //ยังไม่ใช้ หรือ ไม่ได้ใช้
-    // $("#username").keypress(function (event) {
-    //     var ew = event.which;
-    //     if (ew == 32)
-    //         return true;
-    //     if (48 <= ew && ew <= 57)
-    //         return true;
-    //     if (65 <= ew && ew <= 90)
-    //         return true;
-    //     if (97 <= ew && ew <= 122)
-    //         return true;
-    //     return false;
-    // });
+    //Login
+    $('#loginForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "./login/userLogin",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if(data.status == true){
+                    location.replace(data.url);
+                }
+                else{
+                    $('#password').val('');
+                    alert('กรุณากรอก Username หรือ Password ให้ถูกต้อง');
+                }
+            }
 
-    // $("#password").keypress(function (event) {
-    //     var ew = event.which;
-    //     if (ew == 32)
-    //         return true;
-    //     if (48 <= ew && ew <= 57)
-    //         return true;
-    //     if (65 <= ew && ew <= 90)
-    //         return true;
-    //     if (97 <= ew && ew <= 122)
-    //         return true;
-    //     return false;
-    // });
+        });
 
-
-    //Login End
+    });
 
 
     //customerType
@@ -351,7 +343,7 @@ $(document).ready(function () {
 
     //Employee Start
 
-    $('#employeeDepartment').on('change', function (e) {
+    $('#employeeDepartment').on('change', function () {
         var departmentID = $(this).val();
         $.ajax({
             url: "../admin/fetchPosition",
@@ -359,7 +351,7 @@ $(document).ready(function () {
             data: { departmentID: departmentID },
             dataType: "JSON",
             success: function (data) {
-                // console.log(data.position);
+                // console.log(data);
                 $('#employeePosition').html(data.position);
             }
         });
@@ -412,7 +404,6 @@ $(document).ready(function () {
                     breaker = 1;
                     break;
                 }
-
             }
             if (breaker == 1) {
                 break;
@@ -459,6 +450,43 @@ $(document).ready(function () {
             alert('กรุณากรอกข้อมูลให้ถูกต้อง')
         }
     });
+
+    $('#editEmployeeForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validationEmployee();
+            if (result == 0) {
+                $.ajax({
+                    url: "../employee/updateEmployee",
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: new FormData(this),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status == true) {
+                            alert('แก้ไขข้อมูลพนักงานเสร็จสิ้น');
+                            location.replace(data.url);
+                        } else {
+                            if (data.employeeIdCardError == '') {
+                                $('#employeeIdCardError').html('');
+                            }
+                            else {
+                                $('#employeeIdCardError').html(data.employeeIdCardError);
+                            }
+                            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        }
+                    }
+                });
+            }
+            else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            }
+        }
+    });
+
 
     //Employee End
 
@@ -712,7 +740,6 @@ $(document).ready(function () {
             var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
             if ($.inArray(fileType, validImageTypes) < 0) {
                 $('#Image').val('');
-                $('#imgPreview').attr('src', '');
                 $('#imageError').html('กรุณาเลือกเฉพาะรูปภาพ');
 
             }
@@ -722,7 +749,6 @@ $(document).ready(function () {
             }
         }
         else {
-            $('#imgPreview').attr('src', '');
             $('#imageError').html('');
         }
 

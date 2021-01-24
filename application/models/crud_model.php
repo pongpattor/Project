@@ -76,7 +76,7 @@ class crud_model extends CI_Model
 
     public function UpdateStatus($table,$set,$setData,$where, $whereData)
     {
-        $sql = "UPDATE $table SET $set = $setData WHERE $where = '$whereData' ";
+        $sql = "UPDATE $table SET $set = '$setData' WHERE $where = '$whereData' ";
         $this->db->query($sql);
     }
 

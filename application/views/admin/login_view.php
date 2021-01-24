@@ -30,14 +30,14 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <form action="<?= site_url('admin/login/Login') ?>" method="POST">
+                            <form method="POST" id="loginForm">
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6 ">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="Username" name="username" id="username" maxlength="10" required>
+                                            <input type="text" class="form-control" placeholder="Username" name="username" id="username" required>
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                 <br>
                                 <div class="row justify-content-center">
                                     <div class="col-sm col-md col-xl-6 ">
-                                        <input type="submit" value="เข้าสู่ระบบ" class="btn btn-success" id="Login">
+                                        <input type="submit" class="btn btn-success form-control" value="Login">
                                     </div>
                                 </div>
                                 <br>

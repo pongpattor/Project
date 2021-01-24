@@ -157,7 +157,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>เงินเดือน</label>
-                                <input type="number" name="employeeSalary" class="form-control" min="0" max="9999999" required>
+                                <input type="number" name="employeeSalary" class="form-control" min="0" max="9999999" required step="0.01">
                             </div>
                         </div>
                         <br>

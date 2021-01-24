@@ -36,7 +36,7 @@ class employee_model extends CI_Model
         $query = $this->db->query(
             $sql,
             array(
-                $this->db->escape_like_str($search). '%',
+                $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
@@ -78,7 +78,7 @@ class employee_model extends CI_Model
         $query = $this->db->query(
             $sql,
             array(
-                $this->db->escape_like_str($search). '%',
+                $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
@@ -94,23 +94,27 @@ class employee_model extends CI_Model
         }
     }
 
-    public function fetchEmployeeTel($employeeTel){
+    public function fetchEmployeeTel($employeeTel)
+    {
         $sql = "SELECT EMPLOYEETEL_ID,EMPLOYEETEL_TEL FROM employeeTel
         where EMPLOYEETEL_ID IN ($employeeTel)";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
-    public function editEmp($id)
+    public function editEmployee($employeeID)
     {
-        $sql = "SELECT e.ID,e.`PASSWORD`,e.IDCARD,e.TITLENAME,e.FIRSTNAME,e.LASTNAME,e.GENDER,e.EMAIL,e.BDATE,
-        e.ADDRESS,e.SALARY,e.IMG,p.POSITION_ID,d.DEPARTMENT_ID,di.D_PROVINCE_ID,di.D_AMPHUR_ID,di.DISTRICT_ID,
-        di.POSTCODE,e.BLOOD,e.NATIONALITY,.e.RELIGION
-        FROM employee e 
-        left join position p on e.POSITION = p.POSITION_ID 
-        left join department d on p.DEPT_ID = d.DEPARTMENT_ID 
-        left join district di on e.DISTRICT = di.DISTRICT_ID
-        WHERE e.ID = $id";
+        $sql = "SELECT employee.EMPLOYEE_ID,employee.EMPLOYEE_IDCARD,employee.EMPLOYEE_IDCARD,employee.EMPLOYEE_FIRSTNAME,
+                       employee.EMPLOYEE_LASTNAME,employee.EMPLOYEE_GENDER,employee.EMPLOYEE_EMAIL,employee.EMPLOYEE_ADDRESS,
+                       employee.EMPLOYEE_SALARY,employee.EMPLOYEE_IMAGE,employee.EMPLOYEE_BDATE,position.POSITION_ID,
+                       position.POSITION_DEPARTMENT,district.D_PROVINCE_ID,district.D_AMPHUR_ID,district.DISTRICT_ID,district.POSTCODE
+                FROM employee
+                    LEFT JOIN position
+                        ON employee.EMPLOYEE_POSITION = position.POSITION_ID
+                    LEFT JOIN district
+                        ON employee.EMPLOYEE_DISTRICT = district.DISTRICT_ID
+                    WHERE employee.EMPLOYEE_ID = '$employeeID'
+        ";
         $query = $this->db->query($sql);
         // echo '<pre>';
         // print_r($this->db->last_query($query));   
@@ -119,36 +123,9 @@ class employee_model extends CI_Model
     }
 
 
-    public function delEmp($ID, $delete_at)
-    {
-        $sql = "UPDATE employee SET STATUS = '0' , DELETE_AT = '$delete_at' WHERE ID = '$ID'";
-        return $this->db->query($sql);
-    }
-
-    public function maxIdEmployee($idDept)
-    {
-        $sql = "SELECT MAX(ID)as'MID',d.DEPARTMENT_ID  FROM employee e
-        inner join position p ON e.POSITION = p.POSITION_ID
-        inner join department d ON p.DEPT_ID = d.DEPARTMENT_ID
-        where d.DEPARTMENT_ID = '$idDept'";
-        $query = $this->db->query($sql)->result();
-        foreach ($query as $row) {
-            return $row->MID;
-        }
-    }
 
 
 
-    public function idDeptGenIdEmp($position_id)
-    {
-        $sql = "SELECT department.DEPARTMENT_ID as DID FROM department
-                INNER JOIN position ON department.DEPARTMENT_ID = position.DEPT_ID
-                WHERE position.POSITION_ID= '$position_id'";
-        $query = $this->db->query($sql);
-        foreach ($query->result() as $row) {
-            return $row->DID;
-        }
-    }
 
     public function checkIdCard($idCard)
     {
@@ -159,42 +136,11 @@ class employee_model extends CI_Model
         }
     }
 
-    public function checkIdCardUpdate($idCard, $oldidcard)
-    {
-        $sql = "SELECT COUNT(*) as num FROM employee 
-        where IDCARD = $idCard 
-        and IDCARD NOT LIKE $oldidcard
-        and STATUS = 1";
-        $result = $this->db->query($sql)->result();
-        foreach ($result as $row) {
-            return $row->num;
-        }
-    }
-
-    public function PhoneEmployee($ID)
-    {
-        $sql = "SELECT PHONE FROM employee_telephone et inner join employee e on et.EMPLOYEE_ID=e.ID WHERE e.ID = $ID";
-        return $this->db->query($sql)->result();
-    }
-
-    public function checkPhoneNumber($idEmployee, $Phone)
-    {
-        $sql = "SELECT COUNT(*) as cnt FROM employee_telephone et
-        left join employee e ON et.EMPLOYEE_ID = e.ID
-        WHERE et.EMPLOYEE_ID = '$idEmployee'
-        and et.PHONE = '$Phone'";
-        $query = $this->db->query($sql);
-        foreach ($query->result() as $row) {
-            return $row->cnt;
-        }
-    }
-    //Employee End
 
     public function checklogin($username, $password)
     {
         $sql = " SELECT COUNT(*) as cnt FROM employee
-        WHERE ID = ? and PASSWORD = ? and STATUS IN (1,9)";
-
+        WHERE EMPLOYEE_ID = ? and EMPLOYEE_PASSWORD = ? and EMPLOYEE_STATUS = '1'";
         $query = $this->db->query($sql, array(
             $this->db->escape_like_str($username),
             $this->db->escape_like_str($password),
@@ -207,9 +153,10 @@ class employee_model extends CI_Model
     //Login
     public function login($username, $password)
     {
-        $sql = " SELECT employee.ID,employee.FIRSTNAME,employee.LASTNAME,position.PERMISSION FROM employee 
-        LEFT JOIN position ON employee.POSITION = position.POSITION_ID
-        WHERE ID = ? and PASSWORD = ? and STATUS IN (1,9)";  //9 is test system
+        $sql = " SELECT employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME,
+        position.POSITION_PERMISSION FROM employee 
+        LEFT JOIN position ON employee.EMPLOYEE_POSITION = position.POSITION_ID
+        WHERE employee.EMPLOYEE_ID = ? and employee.EMPLOYEE_PASSWORD = ? and employee.EMPLOYEE_STATUS = '1' ";  //9 is test system
 
         $query = $this->db->query($sql, array(
             $this->db->escape_like_str($username),
@@ -218,13 +165,6 @@ class employee_model extends CI_Model
         return $query->result();
     }
 
-
-    public function newSession($employeeID)
-    {
-        $sql = "SELECT position.PERMISSION FROM employee LEFT JOIN position ON employee.POSITION = position.POSITION_ID
-        WHERE ID = '$employeeID'";
-        return $this->db->query($sql)->result();
-    }
 
     //ETC
 
@@ -249,11 +189,4 @@ class employee_model extends CI_Model
         );
     }
 
-    public function ResetPassword($empID, $newPass)
-    {
-        $sql = "UPDATE employee SET PASSWORD = '$newPass' WHERE ID = '$empID'";
-        $this->db->query($sql);
-    }
-
-    
 }

@@ -17,7 +17,7 @@ class admin extends CI_Controller
     }
 
     
-    public function home()
+    public function index()
     {
         $data['page'] = 'home';
         $this->load->view('admin/main_view', $data);

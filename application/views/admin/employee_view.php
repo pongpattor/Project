@@ -80,7 +80,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->POSITION_NAME ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
-                                                    <button name="resetPass" class="btn btn-primary resetPass" value="<?= $row->EMPLOYEE_ID ?>"> <i class="fa fa-key"></i></button>
+                                                    <button  class="btn btn-primary resetPass" value="<?= $row->EMPLOYEE_ID ?>"> <i class="fa fa-key"></i></button>
                                                 </center>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
@@ -92,7 +92,7 @@
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
-                                                    <button class="btn btn-danger  delete" style="text-align: center; "> <i class="fa fa-trash"></i></button>
+                                                    <button class="btn btn-danger delete" style="text-align: center; " value="<?= $row->EMPLOYEE_ID ?>"> <i class="fa fa-trash"></i></button>
                                                 </center>
                                             </td>
                                         </tr>
@@ -105,7 +105,6 @@
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
                                         <li class="page-item active"><a class="page-link">1</a></li>
-
                                     </ul>
                                 </nav>
                             <?php } ?>
@@ -121,36 +120,38 @@
     $(document).ready(function() {
 
         $('.resetPass').on('click', function() {
-            var empID = $(this).parents("tr").attr("id");
-            var result = confirm('ยืนยันการรีเซ็ทรหัสผ่านของ ' + empID);
+            var employeeID = $(this).val();;
+            var result = confirm('กรุณายืนยันการรีเซ็ทรหัสผ่านของ ' + employeeID);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/employee/resetPassword'); ?>",
                     method: "POST",
                     data: {
-                        empID: empID
+                        employeeID: employeeID
                     },
+                    dataType : "JSON",
                     success: function(data) {
-                        alert(`กรุณาจดรหัสผ่านใหม่ของ ${empID} \nรหัสผ่านใหม่คือ ${data}`);
-
+                        // console.log(data);
+                        alert(`กรุณาจดรหัสผ่านใหม่ของ ${employeeID} \nรหัสผ่านใหม่คือ `+data.pass);
                     }
                 });
             }
         });
 
-        $('.delete').click(function(e) {
-            var ID = $(this).parents("tr").attr("id");
-            var result = confirm(`ยืนยันการลบ ${ID}`);
+
+        $('.delete').on('click', function(){
+            var employeeID = $(this).val();
+            var result = confirm(`กรุณายืนยันการลบพนักงานรหัส ${employeeID}`);
             if (result) {
                 $.ajax({
                     url: "<?= site_url('admin/employee/deleteEmployee') ?>",
                     method: "POST",
                     data: {
-                        empID: ID
+                        employeeID: employeeID
                     },
                     success: function() {
-                        alert(`ลบ ${ID} เสร็จสิ้น`);
-                        window.location.href = "<?= site_url('admin/employee/') ?>";
+                        alert(`ลบ ${employeeID} เสร็จสิ้น`);
+                        location.reload();
                     }
                 });
             }
