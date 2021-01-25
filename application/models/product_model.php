@@ -4,31 +4,35 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class product_model extends CI_Model
 {
 
-    public function product($search = '', $limit, $offset)
+    public function product($search,$typeProductGroup, $typeProductActive, $limit, $offset)
     {
-        $sql = "SELECT * FROM product 
-        LEFT JOIN typeproduct  ON product.PRODUCT_TYPE = typeproduct.TYPEPRODUCT_ID
-        WHERE PRODUCT_STATUS = 1 AND
-        (
-            product.PRODUCT_ID LIKE  ? OR
-            product.PRODUCT_NAME LIKE ? OR
-            product.PRODUCT_IMG LIKE ? OR
-            product.PRODUCT_COSTPRICE LIKE ? OR
-            product.PRODUCT_SELLPRICE LIKE ? OR
-            typeproduct.TYPEPRODUCT_NAME LIKE ? OR
-            typeproduct.TYPEPRODUCT_GROUP LIKE ?
+        $sql = "SELECT product.PRODUCT_ID,product.PRODUCT_NAME,product.PRODUCT_COSTPRICE,product.PRODUCT_STATUS,product.PRODUCT_ACTIVE,
+                       product.PRODUCT_SELLPRICE,product.PRODUCT_IMAGE,typeproduct.TYPEPRODUCT_NAME,typeproduct.TYPEPRODUCT_GROUP
+                FROM product 
+                    LEFT JOIN typeproduct  ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
+                WHERE product.PRODUCT_STATUS = '1' 
+                AND
+                    (
+                    product.PRODUCT_ID LIKE  ? OR
+                    product.PRODUCT_NAME LIKE ? OR
+                    product.PRODUCT_COSTPRICE = ? OR
+                    product.PRODUCT_SELLPRICE = ? OR
+                    typeproduct.TYPEPRODUCT_NAME LIKE ? 
+                     )
+                AND typeproduct.TYPEPRODUCT_GROUP in ($typeProductGroup)
+                AND product.PRODUCT_ACTIVE in ($typeProductActive)
+ 
 
-        )
         LIMIT $offset,$limit
         ";
 
         $query = $this->db->query(
             $sql,
             array(
+                $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
-                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search),
+                $this->db->escape_like_str($search),
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
                 '%' . $this->db->escape_like_str($search) . '%',
@@ -42,21 +46,23 @@ class product_model extends CI_Model
         return $query->result();
     }
 
-    public function CountAllProduct($search = '')
+    public function CountAllProduct($search ,$typeProductActive)
     {
         $sql = "SELECT COUNT(*) as cnt FROM product 
-        LEFT JOIN typeproduct  ON product.PRODUCT_TYPE = typeproduct.TYPEPRODUCT_ID
-        WHERE PRODUCT_STATUS = 1 AND
-        (
-            product.PRODUCT_ID LIKE  ? OR
-            product.PRODUCT_NAME LIKE ? OR
-            product.PRODUCT_IMG LIKE ? OR
-            product.PRODUCT_COSTPRICE LIKE ? OR
-            product.PRODUCT_SELLPRICE LIKE ? OR
-            typeproduct.TYPEPRODUCT_NAME LIKE ? OR
-            typeproduct.TYPEPRODUCT_GROUP LIKE ?
-        )
-        ";
+                    LEFT JOIN typeproduct 
+                        ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
+                WHERE PRODUCT_STATUS = 1 AND
+                (
+                    product.PRODUCT_ID LIKE  '%%' OR
+                    product.PRODUCT_NAME LIKE '%%' OR
+                    product.PRODUCT_IMAGE LIKE '%%' OR
+                    product.PRODUCT_COSTPRICE LIKE '%%' OR
+                    product.PRODUCT_SELLPRICE LIKE '%%' OR
+                    typeproduct.TYPEPRODUCT_NAME LIKE '%%' OR
+                    typeproduct.TYPEPRODUCT_GROUP LIKE '%%'
+                )
+                AND product.PRODUCT_ACTIVE in ($typeProductActive)
+                ";
         $query = $this->db->query(
             $sql,
             array(
@@ -115,7 +121,7 @@ class product_model extends CI_Model
         return $query->result();
     }
 
-  
+
     public function maxProductID()
     {
         $sql = "SELECT MAX(PRODUCT_ID) as MID from product";
@@ -127,7 +133,7 @@ class product_model extends CI_Model
 
 
 
-   
+
 
     public function maxTypeProductId()
     {

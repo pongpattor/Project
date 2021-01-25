@@ -14,30 +14,43 @@
         <div class="card border-0 shadow-lg">
             <div class="card-body">
                 <form action="<?= site_url('admin/karaoke/'); ?>" method="GET">
-                <div class="row">
-                        <div class="col-9">
+                    <div class="row">
+                        <div class="col-10">
                             <div class="row">
-                                <div class="col-3">
-                                    <select name="karaokeActive" id="karaokeActive" class="form-control" >
-                                        <option value="1,2" selected>ทั้งหมด</option>
-                                        <option value="1" <?php if ($this->input->get('karaokeActive') == '1'){echo 'selected';}?>>พร้อมใช้งาน</option>
-                                        <option value="2" <?php if ($this->input->get('karaokeActive') == '1'){echo 'selected';}?>>ไม่พร้อมใช้งาน</option>
-                                    </select>
+                                <div class="col-3 form-group row">
+                                    <div class="col-3"> <label for="karaokeActive" class="col-form-label">สถานะ</label></div>
+                                    <div class="col">
+                                        <select name="karaokeActive" id="karaokeActive" class="form-control">
+                                            <option value="1,2" selected>ทั้งหมด</option>
+                                            <option value="1" <?php if ($this->input->get('karaokeActive') == '1') {
+                                                                    echo 'selected';
+                                                                } ?>>พร้อมใช้งาน</option>
+                                            <option value="2" <?php if ($this->input->get('karaokeActive') == '2') {
+                                                                    echo 'selected';
+                                                                } ?>>ไม่พร้อมใช้งาน</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-6 input-group">
-                                    <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
-                                    <div class="input-group-append">
-                                        <button class="input-group-text"><i class="fa fa-search"></i></button>
+                                <div class="col">
+                                    <div class="row form-group">
+                                        <div class="col">
+                                            <div class="col-7 input-group">
+                                                <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
+                                                <div class="input-group-append">
+                                                    <button class="input-group-text"><i class="fa fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <a href="<?= site_url('admin/typeproduct/addTypeProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
-                <br>
+                <!-- <br> -->
                 <div class="row">
                     <div class="col-12">
                         <?php
@@ -80,11 +93,12 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->ZONE_NAME; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->KARAOKE_PRICEPERHOUR; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->KARAOKE_FLATRATE; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?php if($row->SEAT_ACTIVE == '1'){
-                                                        echo 'พร้อมใช้งาน';}else{
-                                                            echo 'ไม่พร้อมใช้งาน';
-                                                        }
-                                                        ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ACTIVE == '1') {
+                                                                                                                echo 'พร้อมใช้งาน';
+                                                                                                            } else {
+                                                                                                                echo 'ไม่พร้อมใช้งาน';
+                                                                                                            }
+                                                                                                            ?></td>
                                                     <td class="align-middle">
                                                         <center>
                                                             <form action="<?= site_url('admin/karaoke/editKaraoke') ?>" method="get">

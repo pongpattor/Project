@@ -15,14 +15,48 @@
             <div class="card-body">
                 <form action="<?= site_url('admin/product/'); ?>" method="GET">
                     <div class="row">
-                        <div class="col-6 input-group">
+                        <div class="col-11">
+                            <div class="row">
+                                <div class="col-3 form-group row">
+                                    <div class="col-4"> <label for="productGroup" class="col-form-label">หมวดหมู่</label></div>
+                                    <div class="col-6">
+                                        <select name="productGroup" id="productGroup" class="form-control">
+                                            <option value="1,2" selected>ทั้งหมด</option>
+                                            <option value="1" <?php if ($this->input->get('productGroup') == '1') {
+                                                                    echo 'selected';
+                                                                } ?>>อาหาร</option>
+                                            <option value="2" <?php if ($this->input->get('productGroup') == '2') {
+                                                                    echo 'selected';
+                                                                } ?>>เครื่องดื่ม</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-3 form-group row">
+                                    <div class="col-3"> <label for="productActive" class="col-form-label">สถานะ</label></div>
+                                    <div class="col-8">
+                                        <select name="productActive" id="productActive" class="form-control">
+                                            <option value="1,2" selected>ทั้งหมด</option>
+                                            <option value="1" <?php if ($this->input->get('productActive') == '1') {
+                                                                    echo 'selected';
+                                                                } ?>>พร้อมใช้งาน</option>
+                                            <option value="2" <?php if ($this->input->get('productActive') == '2') {
+                                                                    echo 'selected';
+                                                                } ?>>ไม่พร้อมใช้งาน</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <a href="<?= site_url('admin/typeproduct/addTypeProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 input-group form-group ">
                             <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
                             <div class="input-group-append">
                                 <button class="input-group-text"><i class="fa fa-search"></i></button>
                             </div>
-                        </div>
-                        <div class="col-6">
-                            <a href="<?= site_url('admin/product/addProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
@@ -34,10 +68,10 @@
                         echo '<div class="col-12">';
                         echo '<div class="row">';
                         echo '<div class="col-8">'; ?>
-                        <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
+                        <!-- <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?> -->
                         <?php echo '</div>';
                         echo '<div class="col-4">';
-                        echo '<p class="float-right">จำนวน ' . $total . ' รายการ</p>';
+                        // echo '<p class="float-right">จำนวน ' . $total . ' รายการ</p>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
@@ -50,16 +84,17 @@
                                         <th style="text-align: center;">รหัสสินค้า</th>
                                         <th style="text-align: center;">รูปภาพ</th>
                                         <th style="text-align: center;">ชื่อสินค้า</th>
-                                        <th style="text-align: center;">หมวดหมู่สินค้า</th>
                                         <th style="text-align: center;">ประเภทสินค้า</th>
+                                        <th style="text-align: center;">หมวดหมู่สินค้า</th>
                                         <th style="text-align: center;">ราคาทุน</th>
                                         <th style="text-align: center;">ราคาขาย</th>
+                                        <th style="text-align: center;">สถานะการใช้งาน</th>
                                         <th style="text-align: center; ">แก้ไข</th>
                                         <th style="text-align: center;">ลบ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($product as $row) : ?>
+                                    <!-- <?php foreach ($product as $row) : ?>
                                         <tr id="<?= $row->PRODUCT_ID ?>" class=" bgtable" >
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMG); ?>" alt="" width="120px" height="120px"></td>
@@ -67,7 +102,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_GROUP; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_COSTPRICE; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->PRODUCT_SELLPRICE,2); ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->PRODUCT_SELLPRICE, 2); ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <center>
                                                     <form action="<?= site_url('admin/product/editProduct') ?>" method="get">
@@ -81,19 +116,19 @@
                                                 </center>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
+                                    <?php endforeach; ?> -->
                                 </tbody>
                             </table>
-                            <?php if ($links != null) {
-                                echo $links;
-                            } else { ?>
+                            <!-- <?php if ($links != null) {
+                                        echo $links;
+                                    } else { ?>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
                                         <li class="page-item active"><a class="page-link " >1</a></li>
 
                                     </ul>
                                 </nav>
-                            <?php } ?>
+                            <?php } ?> -->
                         </div>
                     </div>
                 </div>

@@ -15,35 +15,48 @@
             <div class="card-body">
                 <form action="<?= site_url('admin/typeproduct/') ?>" method="GET">
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-10">
                             <div class="row">
-                                <div class="col-3">
-                                    <select name="typeProductGroup" id="typeProductGroup" class="form-control" >
-                                        <option value="1,2" selected>ทั้งหมด</option>
-                                        <option value="1" <?php if ($this->input->get('typeProductGroup') == '1'){echo 'selected';}?>>อาหาร</option>
-                                        <option value="2" <?php if ($this->input->get('typeProductGroup') == '2'){echo 'selected';}?>>เครื่องดื่ม</option>
-                                    </select>
+                                <div class="col-4 form-group row">
+                                    <div class="col-4"> <label for="productGroup" class="col-form-label">หมวดหมู่</label></div>
+                                    <div class="col-6">
+                                        <select name="typeProductGroup" id="typeProductGroup" class="form-control">
+                                            <option value="1,2" selected>ทั้งหมด</option>
+                                            <option value="1" <?php if ($this->input->get('typeProductGroup') == '1') {
+                                                                    echo 'selected';
+                                                                } ?>>อาหาร</option>
+                                            <option value="2" <?php if ($this->input->get('typeProductGroup') == '2') {
+                                                                    echo 'selected';
+                                                                } ?>>เครื่องดื่ม</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-6 input-group">
-                                    <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
-                                    <div class="input-group-append">
-                                        <button class="input-group-text"><i class="fa fa-search"></i></button>
+                                <div class="col">
+                                    <div class="row form-group">
+                                        <div class="col">
+                                            <div class="col-7 input-group">
+                                                <input type="text" class="form-control" name="search" placeholder="กรุณากรอกคำที่ต้องการค้นหา">
+                                                <div class="input-group-append">
+                                                    <button class="input-group-text"><i class="fa fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <a href="<?= site_url('admin/typeproduct/addTypeProduct') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
-                <br>
+                <!-- <br> -->
                 <?php
                 echo '<div class="row">';
                 echo '<div class="col-12">';
                 echo '<div class="row">';
                 echo '<div class="col-8">'; ?>
-                <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>';?>
+                <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
                 <?php echo '</div>';
                 echo '<div class="col-4">';
                 echo '<p class="float-right">จำนวน ' . $total . ' ประเภท</p>';
@@ -123,7 +136,7 @@
                     },
                     success: function(data) {
                         alert(`ลบประเภทสินค้า รหัส ${typeProductID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/typeproduct')?>";
+                        location.href = "<?= site_url('admin/typeproduct') ?>";
                     }
                 });
             }
