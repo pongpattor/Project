@@ -48,5 +48,19 @@ class data_model extends CI_Model
         return $output;
     }
 
+    public function fetchTypeProduct($typeProductGroup)
+    {
+        $sql = "SELECT TYPEPRODUCT_ID,TYPEPRODUCT_NAME from typeproduct where TYPEPRODUCT_GROUP = '$typeProductGroup'";
+        $query =  $this->db->query($sql)->result();
+        $output = '<option value="" selected disable>กรุณาเลือกประเภทสินค้า</option>';
+        //  echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        foreach ($query as $row) {
+            $output .= '<option value="' . $row->TYPEPRODUCT_ID . '">' . $row->TYPEPRODUCT_NAME . '</option>';
+        }
+        return $output;
+    }
+
  
 }

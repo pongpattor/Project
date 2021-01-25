@@ -32,7 +32,7 @@ class crud_model extends CI_Model
         $sql = "SELECT $select FROM $table WHERE $where = '$data'";
         return $this->db->query($sql)->result();
     }
- 
+
     public function findIn($table, $select, $where, $data)
     {
         $sql = "SELECT $select FROM $table
@@ -65,13 +65,14 @@ class crud_model extends CI_Model
         }
     }
 
-    
-    public function count2Where($table,$where1,$whereData1,$where2,$whereData2){
+
+    public function count2Where($table, $where1, $whereData1, $where2, $whereData2)
+    {
         $sql = " SELECT COUNT(*) AS cnt FROM $table
                 WHERE $where1 = '$whereData1'
                 AND $where2 = '$whereData2'";
         $query = $this->db->query($sql);
-        foreach($query->result() as $row){
+        foreach ($query->result() as $row) {
             return $row->cnt;
         }
     }
@@ -83,7 +84,7 @@ class crud_model extends CI_Model
     }
 
 
-    public function UpdateStatus($table,$set,$setData,$where, $whereData)
+    public function UpdateStatus($table, $set, $setData, $where, $whereData)
     {
         $sql = "UPDATE $table SET $set = '$setData' WHERE $where = '$whereData' ";
         $this->db->query($sql);

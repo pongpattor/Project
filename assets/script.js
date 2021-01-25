@@ -769,6 +769,75 @@ $(document).ready(function () {
     });
     //TypeProduct End
 
+    //Product Start
+
+    $('#typeProductGroup').on('change', function () {
+        var typeProductGroup = $(this).val();
+        $.ajax({
+            url: "../product/fetchTypeProduct",
+            method: "POST",
+            data: { typeProductGroup: typeProductGroup },
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data.productTypeProduct);
+                $('#productType').html(data.productType);
+            }
+        });
+    });
+
+    $('#addProduct').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../product/insertProduct",
+            method: "POST",
+            processData: false,
+            contentType: false,
+            data: new FormData(this),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert('เพิ่มข้อมูลสินค้าสำเร็จ');
+                    location.replace(data.url);
+
+
+                } else {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    $('#productNameError').html(data.productNameError);
+                }
+            }
+        });
+    });
+
+    $('#editProduct').on('submit', function (e) {
+        // alert('hello');
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../product/updateProduct",
+                method: "POST",
+                processData: false,
+                contentType: false,
+                data: new FormData(this),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert('เพิ่มข้อมูลสินค้าสำเร็จ');
+                        location.replace(data.url);
+                    } else {
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        $('#productNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                    }
+                }
+            });
+        }
+    });
+
+
+    //Product End
+
 
     //Address Start
     $('#province').change(function () {

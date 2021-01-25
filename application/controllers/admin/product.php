@@ -13,6 +13,7 @@ class product extends CI_Controller
         //     return redirect(site_url('admin/admin/home'));
         // }
         date_default_timezone_set('ASIA/BANGKOK');
+        $this->load->model('data_model');
         $this->load->model('product_model');
         $this->load->model('crud_model');
         $this->load->library('pagination');
@@ -20,48 +21,47 @@ class product extends CI_Controller
 
     public function index()
     {
-        // if($this->input->get('search')){
-        //     $search = $this->input->get('search');
-        // }
-        // else{
-        //     $search ='';
-        // }
-        // if($this->input->get('productActive')){
-        //     $productActive = $this->input->get('productActive');
-        // }
-        // else{
-        //     $productActive ='1,2';
-        // }
-        // $config['base_url'] = site_url('admin/product/index');
-        // $config['total_rows'] = $this->product_model->countAllProduct($search);
-        // $config['per_page'] = 5;
-        // $config['reuse_query_string'] = TRUE;
-        // $config['uri_segment'] = 4;
-        // $config['full_tag_open'] = '<nav><ul class="pagination">';
-        // $config['full_tag_close'] = '</ul></nav>';
-        // $config['first_link'] = 'First';
-        // $config['last_link'] = 'Last';
-        // $config['first_tag_open'] = '<li class="page-item">';
-        // $config['first_tag_close'] = '</li>';
-        // $config['prev_link'] = '&laquo';
-        // $config['prev_tag_open'] = '<li class="page-item ">';
-        // $config['prev_tag_close'] = '</li>';
-        // $config['next_link'] = '&raquo';
-        // $config['next_tag_open'] = '<li class="page-item">';
-        // $config['next_tag_close'] = '</li>';
-        // $config['last_tag_open'] = '<li class="page-item">';
-        // $config['last_tag_close'] = '</li>';
-        // $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
-        // $config['cur_tag_close'] = '</a></li>';
-        // $config['num_tag_open'] = '<li class="page-item">';
-        // $config['num_tag_close'] = '</li>';
-        // $config['attributes'] = array('class' => 'page-link');
-        // $limit = $config['per_page'];
-        // $offset = $this->uri->segment(4, 0);
-        // $this->pagination->initialize($config);
-        // $data['total'] = $config['total_rows'];
-        // $data['product'] = $this->product_model->product($search,$productActive, $limit, $offset);
-        // $data['links'] = $this->pagination->create_links();
+        if ($this->input->get('search')) {
+            $search = $this->input->get('search');
+        } else {
+            $search = '';
+        }
+        if ($this->input->get('productActive')) {
+            $productActive = $this->input->get('productActive');
+        } else {
+            $productActive = '1,2';
+        }
+
+        $config['base_url'] = site_url('admin/product/index');
+        $config['total_rows'] = $this->product_model->countAllProduct($search, $productActive);
+        $config['per_page'] = 5;
+        $config['reuse_query_string'] = TRUE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<nav><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item ">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+        $limit = $config['per_page'];
+        $offset = $this->uri->segment(4, 0);
+        $this->pagination->initialize($config);
+        $data['total'] = $config['total_rows'];
+        $data['product'] = $this->product_model->product($search, $productActive, $limit, $offset);
+        $data['links'] = $this->pagination->create_links();
         // print_r($data['product']);
         $data['page'] = 'product_view';
         $this->load->view('admin/main_view', $data);
@@ -69,235 +69,162 @@ class product extends CI_Controller
 
     public function addProduct()
     {
-        $data['meat'] = $this->crud_model->find('meat', 'MEAT_ID,MEAT_NAME');
         $data['page'] = 'product_add_view';
         $this->load->view('admin/main_view', $data);
     }
 
-    public function checkProductName()
-    {
-        $productName = $this->input->post('productName');
-        $typeProductGroup = $this->input->post('typeProductGroup');
-        $typeProductName = $this->input->post('typeProductName');
-        $meatName = $this->input->post('meatName');
-
-        $check = $this->product_model->checkProductName($productName, $typeProductGroup, $typeProductName, $meatName);
-        echo $check;
-    }
-
     public function insertProduct()
     {
-        $productID = $this->genProductID();
-        $config = array();
-        $config['upload_path']          =  './assets/image/product/';
-        $config['allowed_types']        = 'jpg|png';
-        $config['max_size']             = '2000';
-        $config['max_width']            = '3000';
-        $config['max_height']           = '3000';
-        $config['file_name']           = $productID;
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('imgProduct')) {
-            echo '<script>';
-            echo 'alert("กรุณาอัพโหลดรูป");';
-            echo 'location.href= "' . site_url('admin/product/addProduct') . '"';
-            echo '</script>';
-        } else {
-            $data['img'] = $this->upload->data();
-            $typeProductGroup = $this->input->post('typeProductGroup');
-            $productName = $this->input->post('productName');
-            $productType = $this->input->post('typeProductName');
-            $productCostPrice = $this->input->post('costPrice');
-            $productSellPrice = $this->input->post('sellPrice');
-            $productImgName = $data['img']['file_name'];
-
-            $productDetail = array(
-                'PRODUCT_ID' => $productID,
-                'PRODUCT_NAME' =>  $productName,
-                'PRODUCT_TYPE' => $productType,
-                'PRODUCT_COSTPRICE' => $productCostPrice,
-                'PRODUCT_SELLPRICE' => $productSellPrice,
-                'PRODUCT_IMG' =>  $productImgName,
-                'PRODUCT_STATUS' => 1,
-            );
-            $this->crud_model->insert('product', $productDetail);
-            if ($typeProductGroup == 'อาหาร') {
-                $foodDetail = array(
-                    'PRODUCT_FOOD_ID' => $productID,
-                    'MEAT_FOOD_ID' => $this->input->post('meatName'),
-                );
-                $this->crud_model->insert('food', $foodDetail);
-            } else if ($typeProductGroup == 'เครื่องดื่ม') {
-                $drinkDetail = array(
-                    'PRODUCT_DRINK_ID' => $productID,
-                );
-                $this->crud_model->insert('drink', $drinkDetail);
-            } else if ($typeProductGroup == 'ท็อปปิ้ง') {
-                $ToppingDetail = array(
-                    'PRODUCT_TOPPING_ID' => $productID,
-                );
-                $this->crud_model->insert('topping', $ToppingDetail);
-            }
-            echo '<script>alert("เพิ่มข้อมูลสินค้าสำเร็จ")</script>';
-           return redirect(site_url('admin/product/'));
-        }
-    }
-
-    public function editProduct()
-    {
-        $productID = $this->input->get('productID');
-        $data['product'] = $this->product_model->editProduct($productID);
-        if ($data['product'] == null) {
-            echo '<script>';
-            echo 'alert("ไม่มีข้อมูลสินค้ารหัส ' . $productID . '");';
-            echo 'location.href= "' . site_url('admin/product/') . '"';
-            echo '</script>';
-        } else {
-            $typeProductGroup = $data['product']['0']->TYPEPRODUCT_GROUP;
-            $data['typeproduct'] = $this->crud_model->findwhere('typeproduct', 'TYPEPRODUCT_GROUP', $typeProductGroup);
-            $data['meat'] = $this->crud_model->find('meat', 'MEAT_ID,MEAT_NAME');
-            $data['page'] = 'product_edit_view';
-            // echo '<pre>';
-            // print_r($data['product']);
-            // echo '</pre>';
-            $this->load->view('admin/main_view', $data);
-        }
-        // echo '<pre>';
-        // print_r($data['product']);
-        // echo '</pre>';
-    }
-
-    public function genProductID()
-    {
-        $maxId = $this->product_model->maxProductID();
-        if ($maxId == '') {
-            return 'PD0001';
-        } else {
-            $maxId = substr($maxId, 2);
-            $maxId++;
-            while (strlen($maxId) < 4) {
-                $maxId = '0' . $maxId;
-            }
-            return 'PD' . $maxId;
-        }
-    }
-
-    public function checkProductNameUpdate()
-    {
+        $data['status'] = true;
         $productName = $this->input->post('productName');
-        $typeProductGroup = $this->input->post('typeProductGroup');
-        $typeProductName = $this->input->post('typeProductName');
-        $meatName = $this->input->post('meatName');
-        $oldName = $this->input->post('oldName');
-        $oldTpGroup = $this->input->post('oldTpGroup');
-        $oldType = $this->input->post('oldType');
-        $oldMeat = $this->input->post('oldMeat');
-        // echo $productName.$typeProductGroup.$typeProductName.$meatName."ค่าเก่า".$oldName.$oldTpGroup.$oldType.$oldMeat;
-        if ($productName == $oldName && $typeProductGroup == $oldTpGroup && $typeProductName == $oldType && $meatName == $oldMeat) {
-            echo 0;
-        } else {
-            $check = $this->product_model->checkProductName($productName, $typeProductGroup, $typeProductName, $meatName);
-            echo $check;
+        $checkProductName =  $this->crud_model->countWhere('product', 'PRODUCT_NAME', $productName);
+        //ตรวจชื่อซ้ำ
+        if ($checkProductName != 0) {
+            $data['status'] = false;
         }
-    }
-
-    public function updateProduct()
-    {
-        // echo '<pre>';
-        // print_r($this->input->post());
-        // echo '</pre>';
-        $check = true;
-
-        $productID = $this->input->post('productID');
-        // echo $productID;
-        $typeProductGroup = $this->input->post('typeProductGroup');
-        $oldProductGroup = $this->input->post('oldTpGroup');
-        if (empty($_FILES['imgProduct']['name'])) {
-            $productDetail = array(
-                'PRODUCT_NAME' => $this->input->post('productName'),
-                'PRODUCT_TYPE' => $this->input->post('typeProductName'),
-                'PRODUCT_COSTPRICE' => $this->input->post('costPrice'),
-                'PRODUCT_SELLPRICE' => $this->input->post('sellPrice'),
-            );
-        } else {
+        //เพิ่มข้อมูล
+        if ($data['status'] == true) {
+            $productID = $this->genProductID();
             $config = array();
             $config['upload_path']          =  './assets/image/product/';
             $config['allowed_types']        = 'jpg|png';
             $config['max_size']             = '2000';
             $config['max_width']            = '3000';
             $config['max_height']           = '3000';
-            $config['file_name']            = $productID;
+            $config['file_name']           = $productID;
             $this->load->library('upload', $config);
-            if (!$this->upload->do_upload('imgProduct')) {
-                echo '<script>';
-                echo 'alert("กรุณาอัพโหลดรูปเท่านั้น");';
-                echo 'window.history.back();';
-                echo '</script>';
-                $check = false;
-            } else {
-                $oldImg = $this->input->post('oldImg');
-                unlink('./assets/image/product/' . $oldImg);
+            if ($this->upload->do_upload('productImage')) {
                 $data['img'] = $this->upload->data();
-                $productDetail = array(
-                    'PRODUCT_NAME' => $this->input->post('productName'),
-                    'PRODUCT_TYPE' => $this->input->post('typeProductName'),
-                    'PRODUCT_COSTPRICE' => $this->input->post('costPrice'),
-                    'PRODUCT_SELLPRICE' => $this->input->post('sellPrice'),
-                    'PRODUCT_IMG' => $data['img']['file_name'],
+                $productType = $this->input->post('productType');
+                $productCostPrice = $this->input->post('productCostPrice');
+                $productSellPrice = $this->input->post('productSellPrice');
+                $productImage = $data['img']['file_name'];
+                $dataProduct = array(
+                    'PRODUCT_ID' => $productID,
+                    'PRODUCT_NAME' => $productName,
+                    'PRODUCT_TYPEPRODUCT' => $productType,
+                    'PRODUCT_COSTPRICE' => $productCostPrice,
+                    'PRODUCT_SELLPRICE' => $productSellPrice,
+                    'PRODUCT_IMAGE' => $productImage,
+                    'PRODUCT_ACTIVE' => '1',
+                    'PRODUCT_STATUS' => '1',
                 );
+                $this->crud_model->insert('product', $dataProduct);
+                $data['url'] = site_url('admin/product');
+            }
+        } else {
+            $data['productNameError'] = 'ชื่อนี้ได้ถูกใช้ไปแล้ว';
+        }
+        echo json_encode($data);
+    }
+
+    public function genProductID()
+    {
+        $maxId = $this->crud_model->maxID('product', 'PRODUCT_ID');
+        $ym = date('ym');
+        if ($maxId == '') {
+            $id = 'PD' . $ym . '0001';
+            return $id;
+        } else {
+            $ymID = substr($maxId, 2, 4);
+            if ($ymID != $ym) {
+                return 'PD' . $ym . '0001';
+            } else {
+                $id = substr($maxId, 6);
+                $id += 1;
+                while (strlen($id) < 4) {
+                    $id = '0' . $id;
+                }
+                $id = 'PD' . $ymID . $id;
+                return $id;
             }
         }
-
-        if ($check) {
-            $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
+    }
 
 
-            if ($oldProductGroup == 'อาหาร') {
-                $this->crud_model->delete('food', 'PRODUCT_FOOD_ID', $productID);
-            } else if ($oldProductGroup == 'เครื่องดื่ม') {
-                $this->crud_model->delete('drink', 'PRODUCT_DRINK_ID', $productID);
-            } else if ($oldProductGroup == 'ท็อปปิ้ง') {
-                $this->crud_model->delete('topping', 'PRODUCT_TOPPING_ID', $productID);
+    public function editProduct()
+    {
+        $productID = $this->input->get('productID');
+        $data['product'] = $this->product_model->editProduct($productID);
+        $typeProductGroup = $data['product']['0']->TYPEPRODUCT_GROUP;
+        $data['typeProduct'] = $this->crud_model->findSelectWhere('typeproduct', 'TYPEPRODUCT_ID,TYPEPRODUCT_NAME', 'TYPEPRODUCT_GROUP', $typeProductGroup);
+        $data['page'] = 'product_edit_view';
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
+        $this->load->view('admin/main_view', $data);
+    }
+
+
+
+
+    public function updateProduct()
+    {
+        // $data['input'] =$this->input->post();
+        // $data['image'] = $_FILES;
+        $data['status'] = true;
+        $productNameOld = $this->input->post('productNameOld');
+        $productName = $this->input->post('productName');
+        if (strtolower($productName) != strtolower($productNameOld)) {
+            $checkProductName =  $this->crud_model->countWhere('product', 'PRODUCT_NAME', $productName);
+            if ($checkProductName != 0) {
+                $data['status'] = false;
             }
-
-            if ($typeProductGroup == 'อาหาร') {
-
-                $foodDetail = array(
-                    'PRODUCT_FOOD_ID' => $productID,
-                    'MEAT_FOOD_ID' => $this->input->post('meatName'),
-                );
-                $this->crud_model->insert('food', $foodDetail);
-            } else if ($typeProductGroup == 'เครื่องดื่ม') {
-                $drinkDetail = array(
-                    'PRODUCT_DRINK_ID' => $productID,
-                );
-                $this->crud_model->insert('drink', $drinkDetail);
-            } else if ($typeProductGroup == 'ท็อปปิ้ง') {
-                $ToppingDetail = array(
-                    'PRODUCT_TOPPING_ID' => $productID,
-                );
-                $this->crud_model->insert('topping', $ToppingDetail);
-            }
-
-            echo '<script>alert("แก้ไขข้อมูลสินค้าสำเร็จ")</script>';
-            return redirect(site_url('admin/product/'));
         }
+        if ($data['status'] == true) {
+            $productID = $this->input->post('productID');
+            $productType = $this->input->post('productType');
+            $productCostPrice = $this->input->post('productCostPrice');
+            $productSellPrice = $this->input->post('productSellPrice');
+            $productActive = $this->input->post('productActive');
+            if (!empty($_FILES['productImage']['name'])) {
+                $productImageOld = $this->input->post('productImageOld');
+                unlink('./assets/image/product/' . $productImageOld);
+                $config = array();
+                $config['upload_path']          =  './assets/image/product/';
+                $config['allowed_types']        = 'jpg|png';
+                $config['max_size']             = '2000';
+                $config['max_width']            = '3000';
+                $config['max_height']           = '3000';
+                $config['file_name']            = $productID;
+                $this->load->library('upload', $config);
+                $this->upload->do_upload('productImage');
+            }
+            $dataProduct = array(
+                'PRODUCT_NAME' => $productName,
+                'PRODUCT_TYPEPRODUCT' => $productType,
+                'PRODUCT_COSTPRICE' => $productCostPrice,
+                'PRODUCT_SELLPRICE' => $productSellPrice,
+                'PRODUCT_ACTIVE' => $productActive,
+            );
+            $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
+            $data['url'] = site_url('admin/product');
+        }
+
+        echo json_encode($data);
+    }
+
+
+    public function fetchTypeProduct()
+    {
+        $typeProductGroup = $this->input->post('typeProductGroup');
+        $data['productType'] = $this->data_model->fetchTypeProduct($typeProductGroup);
+        echo json_encode($data);
     }
 
     public function deleteProduct()
     {
         $productID = $this->input->post('productID');
-        $productDetail = array(
+        $dataProduct = array(
             'PRODUCT_STATUS' => '0',
         );
-        $this->crud_model->update('product', $productDetail, 'PRODUCT_ID', $productID);
+        $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
     }
 
-
-    public function fetchTypeProductName()
-    {
-        $typeProductGroup = $this->input->post('typeProductGroup');
-        $data['TypeProductName'] = $this->product_model->fetch_typeProductName($typeProductGroup);
-        echo $data['TypeProductName'];
-    }
+    //ตัดช่องว่าง
+    // public function trimSpace($name)
+    // {
+    //     $newStr2 = mb_ereg_replace('[[:space:]]+', '', trim($name));
+    //     return $newStr2;
+    // }
 }

@@ -9,8 +9,7 @@ class employee extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } 
-        else if ($_SESSION['employeePermission'][3] != 1) {
+        } else if ($_SESSION['employeePermission'][3] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -276,16 +275,16 @@ class employee extends CI_Controller
             if (!empty($_FILES['employeeImage']['name'])) {
                 $employeeImageOld = $this->input->post('employeeImageOld');
                 unlink('./assets/image/employee/' . $employeeImageOld);
+                $config = array();
+                $config['upload_path']          =  './assets/image/employee/';
+                $config['allowed_types']        = 'jpg|png';
+                $config['max_size']             = '2000';
+                $config['max_width']            = '3000';
+                $config['max_height']           = '3000';
+                $config['file_name']            = $employeeID;
+                $this->load->library('upload', $config);
+                $this->upload->do_upload('employeeImage');
             }
-            $config = array();
-            $config['upload_path']          =  './assets/image/employee/';
-            $config['allowed_types']        = 'jpg|png';
-            $config['max_size']             = '2000';
-            $config['max_width']            = '3000';
-            $config['max_height']           = '3000';
-            $config['file_name']            = $employeeID;
-            $this->load->library('upload', $config);
-            $this->upload->do_upload('employeeImage');
             $dataEmployee = array(
                 'EMPLOYEE_IDCARD' => $employeeIdCard,
                 'EMPLOYEE_FIRSTNAME' => $employeeFirstName,
@@ -336,6 +335,5 @@ class employee extends CI_Controller
     {
         $employeeID = $this->input->post('employeeID');
         $this->crud_model->UpdateStatus('employee', 'EMPLOYEE_STATUS', '0', 'EMPLOYEE_ID', $employeeID);
-
     }
 }

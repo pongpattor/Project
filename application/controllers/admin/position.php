@@ -73,7 +73,7 @@ class position extends CI_Controller
         $maxId = $this->crud_model->maxID('position', 'POSITION_ID');
         $ym = date('ym');
         if ($maxId == '') {
-            $id = 'POS' . $ym . '0010';
+            $id = 'POS' . $ym . '0001';
             return $id;
         } else {
             $ymID = substr($maxId, 3, 4);

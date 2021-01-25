@@ -79,9 +79,5 @@ class admin extends CI_Controller
         echo json_encode($data);
     }
 
-    public function test(){
-        echo '<pre>';
-        print_r($_SESSION['employeePermission']);
-        echo '</pre>';
-    }
+
 }
