@@ -9,8 +9,7 @@ class desk extends CI_Controller
         date_default_timezone_set('ASIA/BANGKOK');
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } 
-        else if ($_SESSION['employeePermission'][10] != 1) {
+        } else if ($_SESSION['employeePermission'][10] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -21,20 +20,14 @@ class desk extends CI_Controller
 
     public function index()
     {
-        if($this->input->get('search')){
-            $search = $this->input->get('search');
-        }
-        else{
-            $search ='';
-        }
-        if($this->input->get('deskActive')){
+        $search = $this->input->get('search');
+        if ($this->input->get('deskActive')) {
             $deskActive = $this->input->get('deskActive');
-        }
-        else{
-            $deskActive ='1,2';
+        } else {
+            $deskActive = '1,2';
         }
         $config['base_url'] = site_url('admin/desk/index');
-        $config['total_rows'] = $this->seat_model->countAllDesk($search,$deskActive);
+        $config['total_rows'] = $this->seat_model->countAllDesk($search, $deskActive);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -61,7 +54,7 @@ class desk extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['desk'] = $this->seat_model->desk($search,$deskActive, $limit, $offset);
+        $data['desk'] = $this->seat_model->desk($search, $deskActive, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'desk_view';
         $this->load->view('admin/main_view', $data);
@@ -152,7 +145,7 @@ class desk extends CI_Controller
                 'SEAT_AMOUNT' => $deskAmount,
                 'SEAT_ZONE' => $deskZone,
                 'SEAT_ACTIVE' => $deskActive,
-                
+
             );
             $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
             $data['url'] = site_url('admin/desk');
@@ -183,8 +176,9 @@ class desk extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteSeat(){
+    public function deleteSeat()
+    {
         $seatID = $this->input->post('deskID');
-        $this->crud_model->updateStatus('seat','SEAT_STATUS','0','SEAT_ID',$seatID);
+        $this->crud_model->updateStatus('seat', 'SEAT_STATUS', '0', 'SEAT_ID', $seatID);
     }
 }

@@ -113,14 +113,14 @@
                                                                                                         echo 'hidden';
                                                                                                     }
                                                                                                     ?>>ประเภทสินค้า</a>
-                                <a class="nav-link" href="" <?php if ($_SESSION['employeePermission']['7'] != '1') {
+                                <a class="nav-link" href="<?= site_url('admin/recipe/'); ?>" <?php if ($_SESSION['employeePermission']['7'] != '1') {
                                                                 echo 'hidden';
                                                             }
                                                             ?>>สูตรการผลิต</a>
-                                <a class="nav-link" href="" <?php if ($_SESSION['employeePermission']['8'] != '1') {
+                                <a class="nav-link" href="<?= site_url('admin/ingredient/'); ?>" <?php if ($_SESSION['employeePermission']['8'] != '1') {
                                                                 echo 'hidden';
                                                             }
-                                                            ?>>วัตถุดิบ</a>
+                                                            ?>>รายการวัตถุดิบ</a>
                             </nav>
                         </div>
                         <!-- ที่นั่ง -->

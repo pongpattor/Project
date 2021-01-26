@@ -797,10 +797,8 @@ $(document).ready(function () {
             success: function (data) {
                 // console.log(data);
                 if (data.status == true) {
-                    alert('เพิ่มข้อมูลสินค้าสำเร็จ');
+                    alert('เพิ่มข้อมูลสินค้าเสร็จสิ้น');
                     location.replace(data.url);
-
-
                 } else {
                     alert('กรุณากรอกข้อมูลให้ถูกต้อง');
                     $('#productNameError').html(data.productNameError);
@@ -824,7 +822,7 @@ $(document).ready(function () {
                 success: function (data) {
                     // console.log(data);
                     if (data.status == true) {
-                        alert('เพิ่มข้อมูลสินค้าสำเร็จ');
+                        alert('แก้ไขข้อมูลสินค้าเสร็จสิ้น');
                         location.replace(data.url);
                     } else {
                         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
@@ -834,10 +832,54 @@ $(document).ready(function () {
             });
         }
     });
-
-
     //Product End
 
+    //Ingredient Start
+
+    $('#addIngredientForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../ingredient/insertIngredient",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                if (data.status == true) {
+                    alert('เพิ่มข้อมูลวัตถุดิบเสร็จสิ้น');
+                    location.replace(data.url);
+                } else {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    $('#ingredientNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                }
+            }
+
+        });
+    });
+
+    $('#editIngredientForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../ingredient/updateIngredient",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert('แก้ไขข้อมูลวัตถุดิบเสร็จสิ้น');
+                        location.replace(data.url);
+                    } else {
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        $('#ingredientNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                    }
+                }
+            });
+        }
+    });
+    //Ingredient End
 
     //Address Start
     $('#province').change(function () {

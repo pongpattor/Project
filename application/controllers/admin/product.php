@@ -21,11 +21,7 @@ class product extends CI_Controller
 
     public function index()
     {
-        if ($this->input->get('search')) {
-            $search = $this->input->get('search');
-        } else {
-            $search = '';
-        }
+        $search = $this->input->get('search');
         if ($this->input->get('productActive')) {
             $productActive = $this->input->get('productActive');
         } else {
@@ -77,7 +73,7 @@ class product extends CI_Controller
     {
         $data['status'] = true;
         $productName = $this->input->post('productName');
-        $checkProductName =  $this->crud_model->countWhere('product', 'PRODUCT_NAME', $productName);
+        $checkProductName =  $this->crud_model->count2Where('product', 'PRODUCT_NAME', $productName, 'PRODUCT_STATUS', '1');
         //ตรวจชื่อซ้ำ
         if ($checkProductName != 0) {
             $data['status'] = false;
@@ -166,7 +162,7 @@ class product extends CI_Controller
         $productNameOld = $this->input->post('productNameOld');
         $productName = $this->input->post('productName');
         if (strtolower($productName) != strtolower($productNameOld)) {
-            $checkProductName =  $this->crud_model->countWhere('product', 'PRODUCT_NAME', $productName);
+            $checkProductName =  $this->crud_model->count2Where('product', 'PRODUCT_NAME', $productName, 'PRODUCT_STATUS', '1');
             if ($checkProductName != 0) {
                 $data['status'] = false;
             }

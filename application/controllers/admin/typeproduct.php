@@ -20,11 +20,7 @@ class typeproduct extends CI_Controller
 
     public function index()
     {
-        if ($this->input->get('search')) {
-            $search = $this->input->get('search');
-        } else {
-            $search = '';
-        }
+        $search = $this->input->get('search');
         if ($this->input->get('typeProductGroup')) {
             $typeProductGroup = $this->input->get('typeProductGroup');
         } else {
