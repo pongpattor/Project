@@ -976,7 +976,6 @@ $(document).ready(function () {
             }
         }
 
-
         var rpID = $('#recipeProductID').val();
         if (rpID == '') {
             Errors = 1;
@@ -984,7 +983,6 @@ $(document).ready(function () {
         }
         else {
             $('#recipeProductError').html('')
-
         }
         return Errors;
     }
@@ -1012,7 +1010,6 @@ $(document).ready(function () {
         }
         else {
             alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-            $('#recipeProductError').html('');
         }
     });
 
@@ -1041,7 +1038,6 @@ $(document).ready(function () {
             }
             else {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                $('#recipeProductError').html('');
             }
         }
 
