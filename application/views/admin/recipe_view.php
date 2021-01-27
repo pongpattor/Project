@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg">
             <div class="card-body">
-                <h3 class="d-inline">ประเภทสินค้า</h3>
+                <h3 class="d-inline">สูตรการผลิต</h3>
             </div>
         </div>
     </div>
@@ -65,19 +65,19 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($recipe as $row) { ?>
-                                        <tr id="<?= $row->TYPEPRODUCT_ID; ?>" class="bgtable">
+                                        <tr id="<?= $row->RECIPE_ID; ?>" class="bgtable">
                                             <td class="align-middle " style="text-align: center;"><?= $row->RECIPE_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/typeproduct/editTypeProduct') ?>" method="get">
-                                                        <button name="typeProductID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->TYPEPRODUCT_ID; ?>"><i class="fa fa-edit"></i></button>
+                                                    <form action="<?= site_url('admin/recipe/editRecipe') ?>" method="get">
+                                                        <button name="recipeID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->RECIPE_ID; ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
                                             </td>
                                             <td>
                                                 <center>
-                                                    <button class="btn btn-danger delete" style="text-align: center;" value="<?= $row->TYPEPRODUCT_ID; ?>"><i class="fa fa-trash"></i></button>
+                                                    <button class="btn btn-danger delete" style="text-align: center;" value="<?= $row->RECIPE_ID; ?>"><i class="fa fa-trash"></i></button>
                                                 </center>
                                             </td>
                                         </tr>
@@ -100,22 +100,22 @@
         </div>
     </div>
 </div>
-<!-- <script>
+<script>
     $(document).ready(function() {
 
         $('.delete').click(function() {
-            var typeProductID = $(this).val();
-            var result = confirm(`ยืนยันการลบ รหัสประเภทสินค้า ${typeProductID}`);
+            var recipeID = $(this).val();
+            var result = confirm(`ยืนยันการลบสูตรการผลิต รหัส ${recipeID}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/typeproduct/deleteTypeProduct') ?>",
+                    url: "<?= site_url('admin/recipe/deleteRecipe') ?>",
                     method: "POST",
                     data: {
-                        typeProductID: typeProductID,
+                        recipeID: recipeID,
                     },
                     success: function(data) {
-                        alert(`ลบประเภทสินค้า รหัส ${typeProductID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/typeproduct') ?>";
+                        alert(`ลบสูตรการผลิต รหัส ${recipeID} เสร็จสิ้น`);
+                        location.href = "<?= site_url('admin/recipe') ?>";
                     }
                 });
             }
@@ -123,4 +123,4 @@
 
 
     });
-</script> -->
+</script>

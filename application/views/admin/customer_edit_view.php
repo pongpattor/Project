@@ -209,6 +209,8 @@
                         </tr>`;
             $('#bodyTel').append(txt);
 
+
+
             $('.btn-remove').on('click', function() {
                 var btn_del = $(this).attr("id");
                 $('#row' + btn_del).remove();

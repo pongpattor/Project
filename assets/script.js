@@ -176,6 +176,7 @@ $(document).ready(function () {
         $('#row' + btn_del).remove();
     });
 
+
     $('.customerTel').on('keypress', function (e) {
         if (e.charCode >= 48 && e.charCode <= 57) {
             return true;
@@ -880,6 +881,172 @@ $(document).ready(function () {
         }
     });
     //Ingredient End
+
+    //Recipet Start
+    $('#recipeIngredientTable').DataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ]
+    });
+
+    $('#recipeProductTable').DataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ]
+    });
+
+
+
+
+    $('.selectProduct').on('click', function () {
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        $('#recipeProduct').val(name);
+        $('#recipeProductID').val(id);
+        $('#recipeProductError').html('')
+
+    });
+
+
+    var rowIngredient = 1;
+    $('.selectIngredient').on('click', function (e) {
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        var txt = ` <tr id="rowi${rowIngredient}" class="d-flex">
+                        <td style="text-align: center;" class="align-middle col-5 ">
+                            <input type="text" name="recipeIngredient" value="${name}" class="form-control" disabled>
+                            <input type="hidden" name="recipeIngredientID[]" class="recipeIngredientID" value="${id}">
+                        </td>
+                        <td style="text-align: center;" class="align-middle col-5">
+                            <select name="ingredientImportant[]" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกความสำคัญวัตถุดิบ</option>
+                                    <option value="1">สำคัญ</option>
+                                    <option value="0">ไม่สำคัญ</option>
+                            </select>
+                        </td>
+                        <td style="text-align: center;" class="align-middle col-2">
+                            <button type="button" id="${rowIngredient}" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>
+                        </td>
+                    </tr>`;
+        // console.log(txt);
+        $('#bodyIngredient').append(txt);
+        rowIngredient++;
+        $('#ingredientError').html('');
+        $('.btn-remove').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#rowi' + btn_del).remove();
+        });
+    });
+
+    function validRecipe() {
+        var Errors = 0;
+        var recipeIngredientList = [];
+        var breaker = 0;
+        $('.recipeIngredientID').each(function () {
+            var ingredient = $(this).val();
+            recipeIngredientList.push(ingredient);
+        });
+
+        if (recipeIngredientList.length == 0) {
+            Errors = 1;
+            $('#ingredientError').html('กรุณาเลือกวัตถุดิบ');
+        }
+        else {
+            for (var i = 0; i < recipeIngredientList.length; i++) {
+                for (var j = 0; j < recipeIngredientList.length; j++) {
+
+                    if (i == j) {
+                        continue;
+                    } else if (recipeIngredientList[i] == recipeIngredientList[j]) {
+                        $('#ingredientError').html('กรุณาอย่าเลือกวัตถุดิบซ้ำ');
+                        Errors = 1;
+                        breaker = 1;
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    break;
+                } else {
+                    $('#ingredientError').html('');
+                }
+            }
+        }
+
+
+        var rpID = $('#recipeProductID').val();
+        if (rpID == '') {
+            Errors = 1;
+            $('#recipeProductError').html('กรุณาเลือกสินค้า')
+        }
+        else {
+            $('#recipeProductError').html('')
+
+        }
+        return Errors;
+    }
+
+    $('#addRecipeForm').on('submit', function (e) {
+        e.preventDefault();
+        var result = validRecipe();
+        if (result == 0) {
+            $.ajax({
+                url: "../recipe/insertRecipe",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert('เพิ่มสูตรการผลิตเสร็จสิ้น');
+                        location.replace(data.url);
+                    } else {
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        $('#recipeProductError').html('สินค้านี้มีสูตรการผลิตแล้ว');
+                    }
+                }
+            });
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+            $('#recipeProductError').html('');
+        }
+    });
+
+    $('#editRecipeForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validRecipe();
+            if (result == 0) {
+                $.ajax({
+                    url: "../recipe/updateRecipe",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status == true) {
+                            alert('แก้ไขสูตรการผลิตเสร็จสิ้น');
+                            location.replace(data.url);
+                        } else {
+                            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                            $('#recipeProductError').html('สินค้านี้มีสูตรการผลิตแล้ว');
+                        }
+                    }
+                });
+            }
+            else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                $('#recipeProductError').html('');
+            }
+        }
+
+    });
+    //Recipe ENd
 
     //Address Start
     $('#province').change(function () {

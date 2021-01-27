@@ -13,10 +13,13 @@
     <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.js'); ?>"></script>
     <script src="<?= base_url('assets/bootstrap4/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
-    <!-- <link rel="shortcut icon" href="<?php base_url('assets/image/favicon.ico')?>" /> -->
+    <!-- <link rel="shortcut icon" href="<?php base_url('assets/image/favicon.ico') ?>" /> -->
     <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
     <script src="<?= base_url('assets/script.js') ?>"></script>
+    <!-- Data Table -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url('assets\datatable\datatables.css') ?>" />
+    <script type="text/javascript" src="<?= base_url('assets\datatable\datatables.js') ?>"></script>
 
 </head>
 
@@ -114,13 +117,13 @@
                                                                                                     }
                                                                                                     ?>>ประเภทสินค้า</a>
                                 <a class="nav-link" href="<?= site_url('admin/recipe/'); ?>" <?php if ($_SESSION['employeePermission']['7'] != '1') {
-                                                                echo 'hidden';
-                                                            }
-                                                            ?>>สูตรการผลิต</a>
+                                                                                                    echo 'hidden';
+                                                                                                }
+                                                                                                ?>>สูตรการผลิต</a>
                                 <a class="nav-link" href="<?= site_url('admin/ingredient/'); ?>" <?php if ($_SESSION['employeePermission']['8'] != '1') {
-                                                                echo 'hidden';
-                                                            }
-                                                            ?>>รายการวัตถุดิบ</a>
+                                                                                                        echo 'hidden';
+                                                                                                    }
+                                                                                                    ?>>รายการวัตถุดิบ</a>
                             </nav>
                         </div>
                         <!-- ที่นั่ง -->
