@@ -887,14 +887,18 @@ $(document).ready(function () {
         "lengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
-        ]
+        ], "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ],
     });
 
     $('#recipeProductTable').DataTable({
         "lengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
-        ]
+        ], "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ],
     });
 
 
@@ -1044,6 +1048,161 @@ $(document).ready(function () {
     });
     //Recipe ENd
 
+    //PromotionSet Start
+    $('#proSetProductTable').dataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ],
+        "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ],
+    });
+
+    var rowProSet = 1;
+    $('.selectProSetProduct').on('click', function () {
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        var cost = $('#' + rowid + ' td:nth-child(3)').html();
+        var price = $('#' + rowid + ' td:nth-child(4)').html();
+        // alert(id + ' ' + name + ' ' + cost + ' ' + price);
+        txt = `<tr id="rowp${rowProSet}" class="d-flex">
+        <td style="text-align: center;" class="align-middle col-5 ">
+            <input type="text" name="proSetProductName" value="${name}" class="form-control" disabled>
+            <input type="hidden" name="proSetProductID[]" class="proSetProductID" value="${id}">
+            <input type="hidden" name="cost[]" class="cost" value="${cost}">
+            <input type="hidden" name="price[]" class="price" value="${price}">
+
+        </td>
+        <td style="text-align: center;" class="align-middle col-5">
+            <input type="number" name="proSetAmount[]" value="1" min="1" max="99" class="form-control proSetAmount"  required>
+        </td>
+        <td style="text-align: center;" class="align-middle col-2">
+            <button type="button" id="${rowProSet}" class="btn btn-danger btn-removep"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>`;
+        $('#bodyProSetProduct').append(txt);
+        $('#proSetProductError').html('');
+
+        var allCost = 0;
+        $('.cost').each(function () {
+            allCost += parseInt($(this).val());
+        });
+        $('#promotionSetCost').val(allCost);
+        $('#promotionSetCostShow').val(allCost);
+        var allPrice = 0;
+        $('.price').each(function () {
+            allPrice += parseInt($(this).val());
+        });
+        $('#menuAllPrice').val(allPrice);
+        $('#promotionSetPrice').attr('min', allCost);
+        // console.log(allCost);
+
+        rowProSet++;
+        $('.proSetAmount').on('change', function () {
+            var allCost = 0;
+            var amount = 0;
+            var allPrice = 0;
+            $('.proSetAmount').each(function(){
+                amount += parseInt($(this).val());
+            });
+            $('.cost').each(function () {
+                allCost += parseInt($(this).val())*amount;
+            });
+            $('.price').each(function () {
+                allPrice += parseInt($(this).val())*amount;
+            });
+            $('#promotionSetCost').val(allCost);
+            $('#promotionSetCostShow').val(allCost);
+            $('#menuAllPrice').val(allPrice);
+            $('#promotionSetPrice').attr('min', allCost);
+
+        });
+
+
+        $('.btn-removep').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#rowp' + btn_del).remove();
+            // var allCost = 0;
+            // var allCost = 0;
+            // var amount = 0;
+            // var allPrice = 0;
+            // $('.proSetAmount').each(function(){
+            //     amount += parseInt($(this).val());
+            // });
+            // $('.cost').each(function () {
+            //     allCost += parseInt($(this).val())*amount;
+            // });
+            // $('.price').each(function () {
+            //     allPrice += parseInt($(this).val())*amount;
+            // });
+            // $('#promotionSetCost').val(allCost);
+            // $('#promotionSetCostShow').val(allCost);
+            // $('#menuAllPrice').val(allPrice);
+            // $('#promotionSetPrice').attr('min', allCost);
+
+        });
+    });
+
+    function validPromotionSet() {
+        var Errors = 0;
+        var productList = [];
+        var breaker = 0;
+        $('.proSetProductID').each(function () {
+            var productID = $(this).val();
+            productList.push(productID);
+        });
+
+        if (productList.length == 0) {
+            Errors = 1;
+            $('#proSetProductError').html('กรุณาเลือกสินค้า');
+        }
+        else {
+            for (var i = 0; i < productList.length; i++) {
+                for (var j = 0; j < productList.length; j++) {
+
+                    if (i == j) {
+                        continue;
+                    } else if (productList[i] == productList[j]) {
+                        $('#proSetProductError').html('กรุณาอย่าเลือกสินค้าซ้ำ');
+                        Errors = 1;
+                        breaker = 1;
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    break;
+                } else {
+                    $('#proSetProductError').html('');
+                }
+            }
+        }
+
+        return Errors;
+    }
+
+    $('#addPromotionSetForm').on('submit', function (e) {
+        e.preventDefault();
+        var result = validPromotionSet();
+        if (result == 0) {
+            $.ajax({
+                url: "../promotionset/insertPromotionSet",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        }
+
+    });
+    //PromotionSet End
+
     //Address Start
     $('#province').change(function () {
         var provinceID = $('#province').val();
@@ -1144,12 +1303,20 @@ $(document).ready(function () {
         }
     });
 
-    var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
+    var pathhh = window.location.href; // because the 'href' property of the DOM element is the absolute path
     $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
-        if (this.href === path) {
+        if (this.href === pathhh) {
             $(this).addClass("active");
         }
     });
+
+    $('.dateStart').on('change', function () {
+        var dateStart = $(this).val();
+        $('.dateEnd').val('');
+        $('.dateEnd').attr('min', dateStart);
+    });
+
+
 
     $("#sidebarToggle").on("click", function (e) {
         e.preventDefault();

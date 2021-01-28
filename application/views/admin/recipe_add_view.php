@@ -26,7 +26,7 @@
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-dialog  modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="productModalLabel">สินค้า</h5>
@@ -35,7 +35,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <table id="recipeProductTable" class="display">
+                                                <table id="recipeProductTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>รหัส</th>
@@ -80,7 +80,7 @@
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="ingredientModal" tabindex="-1" role="dialog" aria-labelledby="ingredientModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-dialog  modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="ingredientModalLabel">วัตถุดิบ</h5>
@@ -89,7 +89,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <table id="recipeIngredientTable" class="display">
+                                                <table id="recipeIngredientTable" class="display table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>รหัส</th>

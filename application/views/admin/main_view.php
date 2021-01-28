@@ -172,10 +172,10 @@
                                                                 echo 'hidden';
                                                             }
                                                             ?>>โปรโมชั่นลดราคา</a>
-                                <a class="nav-link" href="" <?php if ($_SESSION['employeePermission']['14'] != '1') {
-                                                                echo 'hidden';
-                                                            }
-                                                            ?>>โปรโมชั่นเซ็ต</a>
+                                <a class="nav-link" href="<?= site_url('admin/promotionset') ?>" <?php if ($_SESSION['employeePermission']['14'] != '1') {
+                                                                                                    echo 'hidden';
+                                                                                                }
+                                                                                                ?>>โปรโมชั่นเซ็ต</a>
                             </nav>
                         </div>
                         <!-- รายงาน -->
