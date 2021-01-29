@@ -21,22 +21,16 @@
                             <div class="col-sm col-md col-xl-7 ">
                                 <label for="promotionSetID">ชื่อโปรโมชั่นเซ็ต</label>
                                 <input type="text" name="promotionSetName" id="promotionSetName" class="form-control" required maxlength="50">
-                                <span id="recipeProductError" style="color: red;"> </span>
+                                <span id="promotionSetNameError" style="color: red;"> </span>
                             </div>
                         </div>
-                        <div class="row justify-content-center">
+                        <!-- <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-7 ">
                                 <label for="promotionSetCost">ราคาทุน</label>
                                 <input type="number" name="promotionSetCostShow" id="promotionSetCostShow" class="form-control" value="0" required disabled>
                                 <input type="hidden" name="promotionSetCost" id="promotionSetCost">
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-sm col-md col-xl-7 ">
-                                <label for="menuAllPrice">ราคารวมเมนูทั้งหมด</label>
-                                <input type="number" name="menuAllPrice" id="menuAllPrice" class="form-control" value="0" required disabled>
-                            </div>
-                        </div>
+                        </div> -->
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-7 ">
                                 <label for="promotionSetPrice">ราคาขาย</label>

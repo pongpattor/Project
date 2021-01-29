@@ -1064,84 +1064,71 @@ $(document).ready(function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
-        var cost = $('#' + rowid + ' td:nth-child(3)').html();
-        var price = $('#' + rowid + ' td:nth-child(4)').html();
+        // var cost = $('#' + rowid + ' td:nth-child(3)').html();
         // alert(id + ' ' + name + ' ' + cost + ' ' + price);
         txt = `<tr id="rowp${rowProSet}" class="d-flex">
         <td style="text-align: center;" class="align-middle col-5 ">
             <input type="text" name="proSetProductName" value="${name}" class="form-control" disabled>
-            <input type="hidden" name="proSetProductID[]" class="proSetProductID" value="${id}">
-            <input type="hidden" name="cost[]" class="cost" value="${cost}">
-            <input type="hidden" name="price[]" class="price" value="${price}">
-
+            <input type="hidden" name="promotionSetProduct[]" class="promotionSetProduct" value="${id}">
         </td>
         <td style="text-align: center;" class="align-middle col-5">
-            <input type="number" name="proSetAmount[]" value="1" min="1" max="99" class="form-control proSetAmount"  required>
+            <input type="number" name="promotionSetAmount[]" value="1" min="1" max="99" class="form-control promotionSetAmount"  required>
         </td>
         <td style="text-align: center;" class="align-middle col-2">
             <button type="button" id="${rowProSet}" class="btn btn-danger btn-removep"><i class="fa fa-minus"></i></button>
         </td>
     </tr>`;
+
+        //เอาราคาทุนออก
+        //         txt = `<tr id="rowp${rowProSet}" class="d-flex">
+        //     <td style="text-align: center;" class="align-middle col-5 ">
+        //         <input type="text" name="proSetProductName" value="${name}" class="form-control" disabled>
+        //         <input type="hidden" name="proSetProductID[]" class="proSetProductID" value="${id}">
+        //         <input type="hidden" name="cost[]" class="cost" value="${cost}">
+        //         <input type="hidden" name="sumCost[]" class="sumCost" value="${cost}">
+        //     </td>
+        //     <td style="text-align: center;" class="align-middle col-5">
+        //         <input type="number" name="proSetAmount[]" value="1" min="1" max="99" class="form-control proSetAmount"  required>
+        //     </td>
+        //     <td style="text-align: center;" class="align-middle col-2">
+        //         <button type="button" id="${rowProSet}" class="btn btn-danger btn-removep"><i class="fa fa-minus"></i></button>
+        //     </td>
+        // </tr>`;
+
         $('#bodyProSetProduct').append(txt);
+        rowProSet++;
         $('#proSetProductError').html('');
 
-        var allCost = 0;
-        $('.cost').each(function () {
-            allCost += parseInt($(this).val());
-        });
-        $('#promotionSetCost').val(allCost);
-        $('#promotionSetCostShow').val(allCost);
-        var allPrice = 0;
-        $('.price').each(function () {
-            allPrice += parseInt($(this).val());
-        });
-        $('#menuAllPrice').val(allPrice);
-        $('#promotionSetPrice').attr('min', allCost);
+        //โชว์ราคาทุน
+        // var sumCost = 0;
+        // $('.sumCost').each(function () {
+        //     sumCost += parseInt($(this).val());
+        // });
+        // $('#promotionSetCost').val(sumCost);
+        // $('#promotionSetCostShow').val(sumCost);
+        // $('#promotionSetPrice').attr('min', sumCost);
         // console.log(allCost);
 
-        rowProSet++;
-        $('.proSetAmount').on('change', function () {
-            var allCost = 0;
-            var amount = 0;
-            var allPrice = 0;
-            $('.proSetAmount').each(function(){
-                amount += parseInt($(this).val());
-            });
-            $('.cost').each(function () {
-                allCost += parseInt($(this).val())*amount;
-            });
-            $('.price').each(function () {
-                allPrice += parseInt($(this).val())*amount;
-            });
-            $('#promotionSetCost').val(allCost);
-            $('#promotionSetCostShow').val(allCost);
-            $('#menuAllPrice').val(allPrice);
-            $('#promotionSetPrice').attr('min', allCost);
-
-        });
+        //โชว์ราคาทุน เมื่อเปลี่ยนจำนวนสินค้า
+        // $('.proSetAmount').on('change', function () {
+        //     var tr = $(this).parents('tr').attr('id');
+        //     var amount = $(`#${tr}`).find('.proSetAmount').val();
+        //     var cost = $(`#${tr}`).find('.cost').val();
+        //     var thisSumCost = parseInt(amount) * parseInt(cost);
+        //     $(`#${tr}`).find('.sumCost').val(thisSumCost);
+        //     var sumCost = 0;
+        //     $('.sumCost').each(function () {
+        //         sumCost += parseInt($(this).val());
+        //     });
+        //     $('#promotionSetCost').val(sumCost);
+        //     $('#promotionSetCostShow').val(sumCost);
+        //     $('#promotionSetPrice').attr('min', sumCost);
+        // });
 
 
         $('.btn-removep').on('click', function () {
             var btn_del = $(this).attr("id");
             $('#rowp' + btn_del).remove();
-            // var allCost = 0;
-            // var allCost = 0;
-            // var amount = 0;
-            // var allPrice = 0;
-            // $('.proSetAmount').each(function(){
-            //     amount += parseInt($(this).val());
-            // });
-            // $('.cost').each(function () {
-            //     allCost += parseInt($(this).val())*amount;
-            // });
-            // $('.price').each(function () {
-            //     allPrice += parseInt($(this).val())*amount;
-            // });
-            // $('#promotionSetCost').val(allCost);
-            // $('#promotionSetCostShow').val(allCost);
-            // $('#menuAllPrice').val(allPrice);
-            // $('#promotionSetPrice').attr('min', allCost);
-
         });
     });
 
@@ -1149,7 +1136,7 @@ $(document).ready(function () {
         var Errors = 0;
         var productList = [];
         var breaker = 0;
-        $('.proSetProductID').each(function () {
+        $('.promotionSetProduct').each(function () {
             var productID = $(this).val();
             productList.push(productID);
         });
@@ -1192,15 +1179,96 @@ $(document).ready(function () {
                 data: $(this).serialize(),
                 dataType: "JSON",
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert('เพิ่มโปรโมชั่นเซ็ตเสร็จสิ้น');
+                        location.replace(data.url);
+                    } else {
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        $('#promotionSetNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                    }
                 }
             });
         }
         else {
             alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            $('#promotionSetNameError').html('');
         }
 
     });
+
+    // var rowProSet2 = 1;
+    $('.editSelectProSetProduct').on('click', function () {
+        var idTr = $('#bodyProSetProduct tr:last-child').attr('id');
+        if (idTr == null) {
+            rowProSet2 = '1';
+        }
+        else {
+            idTr = idTr.substr(4);
+            var rowProSet2 = parseInt(idTr) + 1;
+        }
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        // alert(id + ' ' + name + ' ' + cost + ' ' + price);
+        txt = `<tr id="rowp${rowProSet2}" class="d-flex">
+        <td style="text-align: center;" class="align-middle col-5 ">
+            <input type="text" name="proSetProductName" value="${name}" class="form-control" disabled>
+            <input type="hidden" name="promotionSetProduct[]" class="promotionSetProduct" value="${id}">
+        </td>
+        <td style="text-align: center;" class="align-middle col-5">
+            <input type="number" name="promotionSetAmount[]" value="1" min="1" max="99" class="form-control promotionSetAmount"  required>
+        </td>
+        <td style="text-align: center;" class="align-middle col-2">
+            <button type="button" id="${rowProSet2}" class="btn btn-danger btn-removep"><i class="fa fa-minus"></i></button>
+        </td>
+        </tr>`;
+
+
+        $('#bodyProSetProduct').append(txt);
+        $('#proSetProductError').html('');
+
+        $('.btn-removep').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#rowp' + btn_del).remove();
+        });
+    });
+    $('.btn-removep').on('click', function () {
+        var btn_del = $(this).attr("id");
+        $('#rowp' + btn_del).remove();
+    });
+
+
+    $('#editPromotionSet').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validPromotionSet();
+            if (result == 0) {
+                $.ajax({
+                    url: "../promotionset/updatePromotionSet",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status == true) {
+                            alert('เพิ่มโปรโมชั่นเซ็ตเสร็จสิ้น');
+                            location.replace(data.url);
+                        } else {
+                            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                            $('#promotionSetNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            $('#promotionSetNameError').html('');
+        }
+    });
+
     //PromotionSet End
 
     //Address Start

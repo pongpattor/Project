@@ -59,7 +59,6 @@
                                     <tr>
                                         <th style="text-align: center;">รหัสโปรโมชั่น</th>
                                         <th style="text-align: center;">ชื่อโปรโมชั่น</th>
-                                        <th style="text-align: center;">ราคาทุน</th>
                                         <th style="text-align: center;">ราคาขาย</th>
                                         <th style="text-align: center;">วันเริ่มต้น</th>
                                         <th style="text-align: center;">วันสิ้นสุด</th>
@@ -72,14 +71,13 @@
                                         <tr id="<?= $row->PROMOTIONSET_ID; ?>" class="bgtable">
                                             <td class="align-middle " style="text-align: center;"><?= $row->PROMOTIONSET_ID; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_NAME; ?></td>
-                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_COST; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_PRICE; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_DATESTART; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_DATEEND; ?></td>
                                             <td>
                                                 <center>
-                                                    <form action="<?= site_url('admin/ingredient/editIngredient') ?>" method="get">
-                                                        <button name="ingredientID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->PROMOTIONSET_ID; ?>"><i class="fa fa-edit"></i></button>
+                                                    <form action="<?= site_url('admin/promotionset/editPromotionSet') ?>" method="get">
+                                                        <button name="promotionSetID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->PROMOTIONSET_ID; ?>"><i class="fa fa-edit"></i></button>
                                                     </form>
                                                 </center>
                                             </td>
@@ -109,22 +107,22 @@
     </div>
 </div>
 
-<!-- <script>
+<script>
     $(document).ready(function() {
 
         $('.delete').click(function() {
-            var ingredientID = $(this).val();
-            var result = confirm(`ยืนยันการลบวัตถุดิบ รหัส ${ingredientID}`);
+            var promotionSetID = $(this).val();
+            var result = confirm(`ยืนยันการลบโปรโมชั่นเซ็ต รหัส ${promotionSetID}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/ingredient/deleteIngredient') ?>",
+                    url: "<?= site_url('admin/promotionSet/deletePromotionSet') ?>",
                     method: "POST",
                     data: {
-                        ingredientID: ingredientID,
+                        promotionSetID: promotionSetID,
                     },
                     success: function() {
-                        alert(`ลบวัตถุดิบ รหัส ${ingredientID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/ingredient') ?>";
+                        alert(`ลบโปรโมชั่นเซ็ต รหัส ${promotionSetID} เสร็จสิ้น`);
+                        location.href = "<?= site_url('admin/promotionset') ?>";
                     }
                 });
             }
@@ -132,4 +130,4 @@
 
 
     });
-</script> -->
+</script>

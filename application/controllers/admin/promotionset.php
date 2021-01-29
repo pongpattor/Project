@@ -58,20 +58,135 @@ class promotionset extends CI_Controller
     public function addPromotionSet()
     {
         $data['page'] = 'promotionset_add_view';
-        $data['product'] = $this->crud_model->findselectWhere('product','PRODUCT_ID,PRODUCT_NAME,PRODUCT_COSTPRICE,PRODUCT_SELLPRICE','PRODUCT_STATUS','1');
-        $this->load->view('admin/main_view',$data);
+        $data['product'] = $this->crud_model->findselectWhere('product', 'PRODUCT_ID,PRODUCT_NAME,PRODUCT_COSTPRICE,PRODUCT_SELLPRICE', 'PRODUCT_STATUS', '1');
+        $this->load->view('admin/main_view', $data);
         // print_r($data);
     }
 
-    public function insertPromotionSet(){
+    public function insertPromotionSet()
+    {
         $data['input'] = $_POST;
         $data['status'] = true;
-        $promotionSetName  = $this->input->post('recipeProductID');
+        $promotionSetName  = $this->input->post('promotionSetName');
         $checkPromotionSetName = $this->crud_model->countWhere('promotionset', 'PROMOTIONSET_NAME', $promotionSetName);
-        $data['check'] = $checkPromotionSetName;
         if ($checkPromotionSetName != 0) {
             $data['status'] = false;
         }
+
+        if ($data['status'] == true) {
+            // $promotionSetCost = $this->input->post('promotionSetCost');
+            $promotionSetID = $this->genIdPromotionSet();
+            $promotionSetPrice = $this->input->post('promotionSetPrice');
+            $promotionSetDateStart = $this->input->post('promotionSetDateStart');
+            $promotionSetDateEnd = $this->input->post('promotionSetDateEnd');
+            $promotionSetProduct = $this->input->post('promotionSetProduct');
+            $promotionSetAmount = $this->input->post('promotionSetAmount');
+            $dataPromotionSet = array(
+                'PROMOTIONSET_ID' => $promotionSetID,
+                'PROMOTIONSET_NAME' => $promotionSetName,
+                'PROMOTIONSET_PRICE' => $promotionSetPrice,
+                'PROMOTIONSET_DATESTART' => $promotionSetDateStart,
+                'PROMOTIONSET_DATEEND' => $promotionSetDateEnd,
+                'PROMOTIONSET_STATUS' => '1',
+
+            );
+            $this->crud_model->insert('promotionSet', $dataPromotionSet);
+            for ($i = 0; $i < count($promotionSetProduct); $i++) {
+                $dataPromotionSetDetail = array(
+                    'PROSETDETAIL_ID' => $promotionSetID,
+                    'PROSETDETAIL_NO' => ($i + 1),
+                    'PROSETDETAIL_PRODUCT' => $promotionSetProduct[$i],
+                    'PROSETDETAIL_AMOUNT' => $promotionSetAmount[$i],
+                );
+                $this->crud_model->insert('promotionsetdetail', $dataPromotionSetDetail);
+            }
+            $data['url'] = site_url('admin/promotionset/');
+        }
         echo json_encode($data);
+    }
+
+    public function genIdPromotionSet()
+    {
+        $maxId = $this->crud_model->maxID('promotionset', 'PROMOTIONSET_ID');
+        $ym = date('ym');
+        if ($maxId == '') {
+            $id = 'PROS' . $ym . '0001';
+            return $id;
+        } else {
+            $ymID = substr($maxId, 4, 4);
+            if ($ymID != $ym) {
+                return 'PROS' . $ym . '0001';
+            } else {
+                $id = substr($maxId, 8);
+                $id += 1;
+                while (strlen($id) < 4) {
+                    $id = '0' . $id;
+                }
+                $id = 'PROS' . $ymID . $id;
+                return $id;
+            }
+        }
+    }
+
+    public function editPromotionSet()
+    {
+        $promotionSetID = $this->input->get('promotionSetID');
+        $data['product'] = $this->crud_model->findselectWhere('product', 'PRODUCT_ID,PRODUCT_NAME,PRODUCT_COSTPRICE,PRODUCT_SELLPRICE', 'PRODUCT_STATUS', '1');
+        $data['promotionset'] = $this->promotionset_model->editPromotionSet($promotionSetID);
+        $data['promotionsetdetail'] = $this->promotionset_model->editPromotionSetDetail($promotionSetID);
+        $data['page'] = 'promotionset_edit_view';
+        $this->load->view('admin/main_view', $data);
+        // echo '<pre>';
+        // print_r($data['promotionsetdetail']);
+        // echo '</pre>';
+
+    }
+    public function updatePromotionSet()
+    {
+        $data['status'] = true;
+        $promotionSetName  = $this->input->post('promotionSetName');
+        $promotionSetNameOld  = $this->input->post('promotionSetNameOld');
+        if (strtolower($promotionSetName) != strtolower($promotionSetNameOld)) {
+            $checkPromotionSetName = $this->crud_model->countWhere('promotionset', 'PROMOTIONSET_NAME', $promotionSetName);
+            if ($checkPromotionSetName != 0) {
+                $data['status'] = false;
+            }
+        }
+
+        if ($data['status'] == true) {
+            $promotionSetID = $this->input->post('promotionSetID');
+            $promotionSetPrice = $this->input->post('promotionSetPrice');
+            $promotionSetDateStart = $this->input->post('promotionSetDateStart');
+            $promotionSetDateEnd = $this->input->post('promotionSetDateEnd');
+            $promotionSetProduct = $this->input->post('promotionSetProduct');
+            $promotionSetAmount = $this->input->post('promotionSetAmount');
+            $dataPromotionSet = array(
+                'PROMOTIONSET_NAME' => $promotionSetName,
+                'PROMOTIONSET_PRICE' => $promotionSetPrice,
+                'PROMOTIONSET_DATESTART' => $promotionSetDateStart,
+                'PROMOTIONSET_DATEEND' => $promotionSetDateEnd,
+            );
+            $this->crud_model->update('promotionset', $dataPromotionSet, 'PROMOTIONSET_ID', $promotionSetID);
+            $this->crud_model->delete('promotionsetdetail', 'PROSETDETAIL_ID', $promotionSetID);
+            for ($i = 0; $i < count($promotionSetProduct); $i++) {
+                $dataPromotionSetDetail = array(
+                    'PROSETDETAIL_ID' => $promotionSetID,
+                    'PROSETDETAIL_NO' => ($i + 1),
+                    'PROSETDETAIL_PRODUCT' => $promotionSetProduct[$i],
+                    'PROSETDETAIL_AMOUNT' => $promotionSetAmount[$i],
+                );
+                $this->crud_model->insert('promotionsetdetail', $dataPromotionSetDetail);
+            }
+            $data['url'] = site_url('admin/promotionset/');
+        }
+        echo json_encode($data);
+    }
+
+    public function deletePromotionSet(){
+        $promotionSetID = $this->input->post('promotionSetID');
+        $dataPromotionSet = array(
+            'PROMOTIONSET_STATUS' => '0',
+        );
+        $this->crud_model->update('promotionset', $dataPromotionSet, 'PROMOTIONSET_ID', $promotionSetID);
     }
 }
