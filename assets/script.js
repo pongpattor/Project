@@ -882,6 +882,7 @@ $(document).ready(function () {
     });
     //Ingredient End
 
+
     //Recipet Start
     $('#recipeIngredientTable').DataTable({
         "lengthMenu": [
@@ -1046,7 +1047,127 @@ $(document).ready(function () {
         }
 
     });
-    //Recipe ENd
+    //Recipe END
+
+    //LOT START
+    $('#lotDrinkTable').dataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ], "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ],
+    });
+
+    $('.selectLotDrink').on('click', function () {
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        var idTr = $('#bodyLotDrink tr:last-child').attr('id');
+
+        if (idTr == null) {
+            var rowDrink = 1;
+        }
+        else {
+            idTr = idTr.substr(4);
+            var rowDrink = parseInt(idTr) + 1;
+        }
+        // alert(id+' '+' '+name);
+
+        txt = `<tr id="rowd${rowDrink}" class="d-flex">
+        <td style="text-align: center;" class="align-middle col-5 ">
+            <input type="text" name="lotDrinkName" value="${name}" class="form-control" disabled>
+            <input type="hidden" name="lotDrinkID[]" class="lotDrinkID" value="${id}">
+        </td>
+        <td style="text-align: center;" class="align-middle col-5">
+            <input type="number" name="lotDrinkPrice[]" value="0" min="0" max="999999.99" step="0.01" class="form-control lotDrinkPrice"  required>
+        </td>
+        <td style="text-align: center;" class="align-middle col-2">
+            <button type="button" id="${rowDrink}" class="btn btn-danger btn-removed"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>`;
+        $('#bodyLotDrink').append(txt);
+        $('#lotDrinkError').html('');
+        var total = 0;
+        $('.lotDrinkPrice').each(function () {
+            total += parseFloat($(this).val());
+        });
+        $('#lotTotalShow').val(total);
+        $('#lotTotal').val(total);
+
+        $('.lotDrinkPrice').on('change', function () {
+            total = 0;
+            $('.lotDrinkPrice').each(function () {
+                total += parseFloat($(this).val());
+            });
+            $('#lotTotalShow').val(total);
+            $('#lotTotal').val(total);
+        });
+
+        $('.btn-removed').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#rowd' + btn_del).remove();
+        });
+    });
+
+    function validLotDrink() {
+        var Errors = 0;
+        var lotDrinkList = [];
+        var breaker = 0;
+        $('.lotDrinkID').each(function () {
+            var lotDrinkID = $(this).val();
+            lotDrinkList.push(lotDrinkID);
+        });
+
+        if (lotDrinkList.length == 0) {
+            Errors = 1;
+            $('#lotDrinkError').html('กรุณาเลือกเครื่องดื่ม');
+        }
+        else {
+            for (var i = 0; i < lotDrinkList.length; i++) {
+                for (var j = 0; j < lotDrinkList.length; j++) {
+
+                    if (i == j) {
+                        continue;
+                    } else if (lotDrinkList[i] == lotDrinkList[j]) {
+                        $('#lotDrinkError').html('กรุณาอย่าเลือกเครื่องดื่มซ้ำ');
+                        Errors = 1;
+                        breaker = 1;
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    break;
+                } else {
+                    $('#lotDrinkError').html('');
+                }
+            }
+        }
+        return Errors;
+    }
+
+    $('#addLotDrinkForm').on('submit', function (e) {
+        e.preventDefault();
+        var result = validLotDrink();
+        if (result == 0) {
+            $.ajax({
+                url: "../lotdrink/insertLotDrink",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    alert('เพิ่มล็อตเครื่องดื่มเสร็จสิ้น');
+                    location.replace(data.url);
+
+                }
+            });
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        }
+    });
+    //LOT END
 
     //PromotionSet Start
     $('#proSetProductTable').dataTable({
@@ -1079,51 +1200,10 @@ $(document).ready(function () {
         </td>
     </tr>`;
 
-        //เอาราคาทุนออก
-        //         txt = `<tr id="rowp${rowProSet}" class="d-flex">
-        //     <td style="text-align: center;" class="align-middle col-5 ">
-        //         <input type="text" name="proSetProductName" value="${name}" class="form-control" disabled>
-        //         <input type="hidden" name="proSetProductID[]" class="proSetProductID" value="${id}">
-        //         <input type="hidden" name="cost[]" class="cost" value="${cost}">
-        //         <input type="hidden" name="sumCost[]" class="sumCost" value="${cost}">
-        //     </td>
-        //     <td style="text-align: center;" class="align-middle col-5">
-        //         <input type="number" name="proSetAmount[]" value="1" min="1" max="99" class="form-control proSetAmount"  required>
-        //     </td>
-        //     <td style="text-align: center;" class="align-middle col-2">
-        //         <button type="button" id="${rowProSet}" class="btn btn-danger btn-removep"><i class="fa fa-minus"></i></button>
-        //     </td>
-        // </tr>`;
-
         $('#bodyProSetProduct').append(txt);
         rowProSet++;
         $('#proSetProductError').html('');
 
-        //โชว์ราคาทุน
-        // var sumCost = 0;
-        // $('.sumCost').each(function () {
-        //     sumCost += parseInt($(this).val());
-        // });
-        // $('#promotionSetCost').val(sumCost);
-        // $('#promotionSetCostShow').val(sumCost);
-        // $('#promotionSetPrice').attr('min', sumCost);
-        // console.log(allCost);
-
-        //โชว์ราคาทุน เมื่อเปลี่ยนจำนวนสินค้า
-        // $('.proSetAmount').on('change', function () {
-        //     var tr = $(this).parents('tr').attr('id');
-        //     var amount = $(`#${tr}`).find('.proSetAmount').val();
-        //     var cost = $(`#${tr}`).find('.cost').val();
-        //     var thisSumCost = parseInt(amount) * parseInt(cost);
-        //     $(`#${tr}`).find('.sumCost').val(thisSumCost);
-        //     var sumCost = 0;
-        //     $('.sumCost').each(function () {
-        //         sumCost += parseInt($(this).val());
-        //     });
-        //     $('#promotionSetCost').val(sumCost);
-        //     $('#promotionSetCostShow').val(sumCost);
-        //     $('#promotionSetPrice').attr('min', sumCost);
-        // });
 
 
         $('.btn-removep').on('click', function () {

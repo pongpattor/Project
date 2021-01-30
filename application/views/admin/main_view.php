@@ -151,13 +151,20 @@
                             </nav>
                         </div>
                         <!-- รับล็อต -->
-                        <a class="nav-link" href="#" <?php if ($_SESSION['employeePermission']['12'] != '1') {
-                                                            echo 'hidden';
-                                                        }
-                                                        ?>>
-                            <div class="sb-nav-link-icon"><i class="fa fa-boxes"></i></div>
+                        <?php if ($_SESSION['employeePermission']['12'] = '1') {
+                                                            ?>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#LotcollapseLayouts" aria-expanded="false" aria-controls="LotcollapseLayouts" >
+                            <div class="sb-nav-link-icon"><i class="fa fa-bullhorn"></i></div>
                             รับล็อต
+                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                         </a>
+                        <div class="collapse" id="LotcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="<?=site_url('admin/lotdrink')?>" >รับล็อตเครื่องดื่ม</a>
+                                <a class="nav-link" href="">รับล็อตวัตถุดิบ</a>
+                            </nav>
+                        </div>
+                        <?php } ?>
                         <!-- โปรโมชั่น -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PromotioncollapseLayouts" aria-expanded="false" aria-controls="PromotioncollapseLayouts" <?php if ($_SESSION['employeePermission']['13'] != '1' && $_SESSION['employeePermission']['14'] != '1') {
                                                                                                                                                                                                     echo 'hidden';
@@ -173,9 +180,9 @@
                                                             }
                                                             ?>>โปรโมชั่นลดราคา</a>
                                 <a class="nav-link" href="<?= site_url('admin/promotionset') ?>" <?php if ($_SESSION['employeePermission']['14'] != '1') {
-                                                                                                    echo 'hidden';
-                                                                                                }
-                                                                                                ?>>โปรโมชั่นเซ็ต</a>
+                                                                                                        echo 'hidden';
+                                                                                                    }
+                                                                                                    ?>>โปรโมชั่นเซ็ต</a>
                             </nav>
                         </div>
                         <!-- รายงาน -->
