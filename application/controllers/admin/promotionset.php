@@ -68,7 +68,7 @@ class promotionset extends CI_Controller
         $data['input'] = $_POST;
         $data['status'] = true;
         $promotionSetName  = $this->input->post('promotionSetName');
-        $checkPromotionSetName = $this->crud_model->countWhere('promotionset', 'PROMOTIONSET_NAME', $promotionSetName);
+        $checkPromotionSetName = $this->crud_model->count2Where('promotionset', 'PROMOTIONSET_NAME', $promotionSetName, 'PROMOTIONSET_STATUS', '1');
         if ($checkPromotionSetName != 0) {
             $data['status'] = false;
         }
@@ -147,7 +147,7 @@ class promotionset extends CI_Controller
         $promotionSetName  = $this->input->post('promotionSetName');
         $promotionSetNameOld  = $this->input->post('promotionSetNameOld');
         if (strtolower($promotionSetName) != strtolower($promotionSetNameOld)) {
-            $checkPromotionSetName = $this->crud_model->countWhere('promotionset', 'PROMOTIONSET_NAME', $promotionSetName);
+            $checkPromotionSetName = $this->crud_model->count2Where('promotionset', 'PROMOTIONSET_NAME', $promotionSetName, 'PROMOTIONSET_STATUS', '1');
             if ($checkPromotionSetName != 0) {
                 $data['status'] = false;
             }
@@ -182,7 +182,8 @@ class promotionset extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deletePromotionSet(){
+    public function deletePromotionSet()
+    {
         $promotionSetID = $this->input->post('promotionSetID');
         $dataPromotionSet = array(
             'PROMOTIONSET_STATUS' => '0',

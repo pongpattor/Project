@@ -1567,8 +1567,155 @@ $(document).ready(function () {
             $('#promotionSetNameError').html('');
         }
     });
-
     //PromotionSet End
+
+    //PromotionPrice Start
+    $('#proPriceProduct').dataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ],
+        "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ]
+        
+        
+    });
+
+    $('.selectProPriceProduct').on('click', function () {
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        var idTr = $('#bodyProPriceProduct tr:last-child').attr('id');
+        if (idTr == null) {
+            var rowProprice = 1;
+        }
+        else {
+            idTr = idTr.substr(5);
+            var rowProprice = parseInt(idTr) + 1;
+        }
+        alert(rowProprice);
+
+        txt = `<tr id="rowpp${rowProprice}" class="d-flex">
+            <td style="text-align: center;" class="align-middle col-8 ">
+                <input type="text" name="promotionPriceProductName" value="${name}" class="form-control" disabled>
+                <input type="hidden" name="promotionPriceProductID[]" class="promotionPriceProductID" value="${id}">
+            </td>
+            <td style="text-align: center;" class="align-middle col-4">
+                <button type="button" id="${rowProprice}" class="btn btn-danger btn-removepp"><i class="fa fa-minus"></i></button>
+            </td>
+        </tr>`;
+        $('#bodyProPriceProduct').append(txt);
+        $('#ProPriceProductError').html('');
+        $('.btn-removepp').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#rowpp' + btn_del).remove();
+        });
+    });
+
+    $('.btn-removepp').on('click', function () {
+        var btn_del = $(this).attr("id");
+        $('#rowpp' + btn_del).remove();
+    });
+
+    function validPromotionPrice() {
+        var Errors = 0;
+        var productList = [];
+        var breaker = 0;
+        $('.promotionPriceProductID').each(function () {
+            var productID = $(this).val();
+            productList.push(productID);
+        });
+
+        if (productList.length == 0) {
+            Errors = 1;
+            $('#ProPriceProductError').html('กรุณาเลือกสินค้า');
+        }
+        else {
+            for (var i = 0; i < productList.length; i++) {
+                for (var j = 0; j < productList.length; j++) {
+
+                    if (i == j) {
+                        continue;
+                    } else if (productList[i] == productList[j]) {
+                        $('#ProPriceProductError').html('กรุณาอย่าเลือกสินค้าซ้ำ');
+                        Errors = 1;
+                        breaker = 1;
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    break;
+                } else {
+                    $('#ProPriceProductError').html('');
+                }
+            }
+        }
+
+        return Errors;
+    }
+
+    $('#addPromotionPrice').on('submit', function (e) {
+        e.preventDefault();
+        var result = validPromotionPrice();
+        if (result == 0) {
+            $.ajax({
+                url: "../promotionprice/insertPromotionPrice",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status == true) {
+                        alert('เพิ่มโปรโมชั่นลดราคาเสร็จสิ้น');
+                        location.replace(data.url);
+                    } else {
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                        $('#promotionPriceNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                    }
+                }
+            });
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            $('#promotionPriceNameError').html('');
+        }
+    });
+
+    $('#editPromotionPrice').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validPromotionPrice();
+            if (result == 0) {
+                $.ajax({
+                    url: "../promotionprice/updatePromotionPrice",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status == true) {
+                            alert('เพิ่มโปรโมชั่นลดราคาเสร็จสิ้น');
+                            location.replace(data.url);
+                        } else {
+                            alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                            $('#promotionPriceNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                        }
+                    }
+                });
+            }
+            else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                $('#promotionPriceNameError').html('');
+            }
+        }
+
+
+    });
+
+
+    //PromotionPrice End
 
     //Address Start
     $('#province').change(function () {

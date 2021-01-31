@@ -175,7 +175,7 @@
                         </a>
                         <div class="collapse" id="PromotioncollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="" <?php if ($_SESSION['employeePermission']['13'] != '1') {
+                                <a class="nav-link" href="<?= site_url('admin/promotionprice') ?>" <?php if ($_SESSION['employeePermission']['13'] != '1') {
                                                                 echo 'hidden';
                                                             }
                                                             ?>>โปรโมชั่นลดราคา</a>
