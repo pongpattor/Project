@@ -1107,9 +1107,34 @@ $(document).ready(function () {
         $('.btn-removed').on('click', function () {
             var btn_del = $(this).attr("id");
             $('#rowd' + btn_del).remove();
+
+            total = 0;
+            $('.lotDrinkPrice').each(function () {
+                total += parseFloat($(this).val());
+            });
+            $('#lotTotalShow').val(total);
+            $('#lotTotal').val(total);
         });
     });
+    $('.lotDrinkPrice').on('change', function () {
+        total = 0;
+        $('.lotDrinkPrice').each(function () {
+            total += parseFloat($(this).val());
+        });
+        $('#lotTotalShow').val(total);
+        $('#lotTotal').val(total);
+    });
 
+    $('.btn-removed').on('click', function () {
+        var btn_del = $(this).attr("id");
+        $('#rowd' + btn_del).remove();
+        total = 0;
+        $('.lotDrinkPrice').each(function () {
+            total += parseFloat($(this).val());
+        });
+        $('#lotTotalShow').val(total);
+        $('#lotTotal').val(total);
+    });
     function validLotDrink() {
         var Errors = 0;
         var lotDrinkList = [];
@@ -1165,6 +1190,30 @@ $(document).ready(function () {
         }
         else {
             alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        }
+    });
+
+    $('#editLotDrinkForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validLotDrink();
+            if (result == 0) {
+                $.ajax({
+                    url: "../lotdrink/updateLotDrink",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        alert('แก้ไขล็อตเครื่องดื่มเสร็จสิ้น');
+                        location.replace(data.url);
+                    }
+                });
+            }
+            else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            }
         }
     });
     //LOT END

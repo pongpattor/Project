@@ -5,24 +5,31 @@ class lot_model extends CI_Model
 {
     public function lotDrink($search, $limit, $offset)
     {
-        $sql = "SELECT LOT_ID,LOT_DATE,LOT_TIME,LOT_TOTAL FROM lot
-        WHERE LOT_STATUS = '1'
-        AND LOT_TYPE ='1'
-        AND
-            (	
-                LOT_ID LIKE ? OR
-                LOT_TOTAL LIKE  ? OR
-                LOT_DATE LIKE  ? OR
-                LOT_TIME LIKE  ?
-            )
-        LIMIT $offset,$limit
-        ";
+        $sql = "SELECT lot.LOT_ID,lot.LOT_DATE,lot.LOT_TIME,lot.LOT_TOTAL, 
+                       employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME
+                FROM lot
+                    JOIN employee ON lot.LOT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE LOT_STATUS = '1'
+                AND LOT_TYPE ='1'
+                AND
+                    (	
+                    lot.LOT_ID LIKE ? OR
+                    lot.LOT_TOTAL LIKE ? OR
+                    lot.LOT_DATE LIKE  ? OR
+                    lot.LOT_TIME LIKE  ? OR
+                    employee.EMPLOYEE_FIRSTNAME LIKE ? OR
+                    employee.EMPLOYEE_LASTNAME LIKE ? 
+                    )
+                    LIMIT $offset,$limit
+                ";
 
         $query = $this->db->query(
             $sql,
             array(
                 $this->db->escape_like_str($search) . '%',
-                $this->db->escape_like_str($search),
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
             )
@@ -36,22 +43,27 @@ class lot_model extends CI_Model
     public function countAllLotDrink($search)
     {
         $sql = "SELECT COUNT(*) as cnt FROM lot
-        WHERE LOT_STATUS = '1'
-        AND LOT_TYPE ='1'
-        AND
-            (	
-                LOT_ID LIKE ? OR
-                LOT_TOTAL LIKE  ? OR
-                LOT_DATE LIKE  ? OR
-                LOT_TIME LIKE  ?
-            )
-        ";
+                    JOIN employee ON lot.LOT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE LOT_STATUS = '1'
+                AND LOT_TYPE ='1'
+                AND
+                    (	
+                    lot.LOT_ID LIKE ? OR
+                    lot.LOT_TOTAL LIKE ? OR
+                    lot.LOT_DATE LIKE  ? OR
+                    lot.LOT_TIME LIKE  ? OR
+                    employee.EMPLOYEE_FIRSTNAME LIKE ? OR
+                    employee.EMPLOYEE_LASTNAME LIKE ? 
+                    )
+                ";
 
         $query = $this->db->query(
             $sql,
             array(
                 $this->db->escape_like_str($search) . '%',
-                $this->db->escape_like_str($search),
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
                 $this->db->escape_like_str($search) . '%',
             )
@@ -74,8 +86,11 @@ class lot_model extends CI_Model
 
     public function editLotDrink($lotDrinkID)
     {
-        $sql = "SELECT LOT_ID,LOT_TOTAL,LOT_DATE,LOT_TIME,LOT_EMPLOYEE
-                FROM lot WHERE LOT_ID = '$lotDrinkID'";
+        $sql = "SELECT lot.LOT_ID,lot.LOT_TOTAL,lot.LOT_DATE,lot.LOT_TIME,
+                       employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME
+                FROM lot JOIN employee ON lot.LOT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE lot.LOT_ID = '$lotDrinkID'
+                ";
         $query = $this->db->query($sql);
         return $query->result();
     }

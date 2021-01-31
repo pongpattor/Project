@@ -57,6 +57,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th style="text-align: center;">รหัสล็อต</th>
+                                        <th style="text-align: center;">ผู้รับ</th>
                                         <th style="text-align: center;">วัน/เดือน/ปี เวลา</th>
                                         <th style="text-align: center;">ราคารวม</th>
                                         <th style="text-align: center; ">แก้ไข</th>
@@ -67,6 +68,7 @@
                                     <?php foreach ($lotdrink as $row) : ?>
                                         <tr id="<?= $row->LOT_ID ?>" class=" bgtable">
                                             <td class="align-middle" style="text-align: center;"><?= $row->LOT_ID; ?></td>
+                                            <td class="align-middle" style="text-align: center;"><?= $row->EMPLOYEE_FIRSTNAME.' '.$row->EMPLOYEE_LASTNAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->LOT_DATE.' '.$row->LOT_TIME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= number_format($row->LOT_TOTAL, 2); ?></td>
                                             <td class="align-middle" style="text-align: center;">
@@ -102,25 +104,25 @@
     </div>
 </div>
 <br>
-<!-- <script>
+<script>
     $(document).ready(function() {
 
         $('.delete').click(function() {
-            var productID = $(this).val();
-            var result = confirm(`ยืนยันการลบ รหัสสินค้า ${productID}`);
+            var lotDrinkID = $(this).val();
+            var result = confirm(`ยืนยันการลบล็อตเครื่องดื่ม รหัส ${lotDrinkID}`);
             if (result) {
                 $.ajax({
-                    url: "<?= site_url('admin/product/deleteProduct') ?>",
+                    url: "<?= site_url('admin/lotdrink/deleteLotDrink') ?>",
                     method: "POST",
                     data: {
-                        productID: productID,
+                        lotDrinkID: lotDrinkID,
                     },
                     success: function(data) {
-                        alert(`ลบ ${productID} เสร็จสิ้น`);
-                       location.href = "<?= site_url('admin/product/') ?>";
+                        alert(`ลบ ${lotDrinkID} เสร็จสิ้น`);
+                       location.href = "<?= site_url('admin/lotdrink/') ?>";
                     }
                 });
             }
         });
     });
-</script> -->
+</script>

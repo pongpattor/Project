@@ -95,6 +95,12 @@ class crud_model extends CI_Model
         $sql = "DELETE FROM $table WHERE $where = '$data'";
         $this->db->query($sql);
     }
+    
+    public function delete2Where($table, $where1, $data1, $where2, $data2)
+    {
+        $sql = "DELETE FROM $table WHERE $where1 = '$data1' AND $where2 = '$data2' ";
+        $this->db->query($sql);
+    }
 
     public function maxID($table, $select)
     {

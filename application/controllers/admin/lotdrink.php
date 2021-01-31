@@ -126,15 +126,59 @@ class lotdrink extends CI_Controller
         }
     }
 
-    public function editLotDrink(){
+    public function editLotDrink()
+    {
         $lotDrinkID = $this->input->get('lotDrinkID');
         $data['lotdrink'] = $this->lot_model->editLotDrink($lotDrinkID);
-        $employeeID = $data['lotdrink']['0']->LOT_EMPLOYEE;
-        $data['employee'] = $this->crud_model->findselectWhere('employee','EMPLOYEE_FIRSTNAME,EMPLOYEE_LASTNAME','EMPLOYEE_ID',$employeeID);
         $data['lotdetail'] = $this->lot_model->editLotDetail($lotDrinkID);
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
+        $data['drink'] = $this->lot_model->drink();
+        $data['page'] = 'lotdrink_edit_view';
+        $this->load->view('admin/main_view', $data);
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
         // echo $lotDrinkID;
+    }
+
+    public function updateLotDrink()
+    {
+        $data['input'] = $_POST;
+        $lotID = $this->input->post('lotID');
+        $lotTotal = $this->input->post('lotTotal');
+        $lotDrinkID = $this->input->post('lotDrinkID');
+        $lotDrinkPrice = $this->input->post('lotDrinkPrice');
+        $dataLot = array(
+            'LOT_TOTAL' => $lotTotal,
+        );
+        $this->crud_model->update('lot', $dataLot, 'LOT_ID', $lotID);
+        $this->crud_model->delete('lotdetail', 'LOTDETAIL_ID', $lotID);
+        for ($i = 0; $i < count($lotDrinkPrice); $i++) {
+            $dataLotDetail = array(
+                'LOTDETAIL_ID' => $lotID,
+                'LOTDETAIL_NO' => ($i + 1),
+                'LOTDETAIL_PRICE' => $lotDrinkPrice[$i],
+            );
+            $this->crud_model->insert('lotdetail', $dataLotDetail);
+        }
+        for ($i = 0; $i < count($lotDrinkID); $i++) {
+            $dataLotDrink = array(
+                'LOTDRINK_ID' => $lotID,
+                'LOTDRINK_NO' => ($i + 1),
+                'LOTDRINK_DRINK' => $lotDrinkID[$i],
+            );
+            $this->crud_model->insert('lotdrink', $dataLotDrink);
+        }
+        $data['url'] = site_url('admin/lotdrink');
+
+        echo json_encode($data);
+    }
+
+    public function deleteLotDrink(){
+        $lotDrinkID = $this->input->post('lotDrinkID');
+        $dataLotDrink = array(
+            'LOT_STATUS' => '0',
+        );
+        $this->crud_model->update('lot', $dataLotDrink, 'LOT_ID', $lotDrinkID);
+
     }
 }
