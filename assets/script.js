@@ -1216,7 +1216,177 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('#lotIngredientTable').dataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ], "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ],
+
+    });
+
+    $('.selectLotIngredient').on('click', function () {
+        var rowid = $(this).parents("tr").attr("id");
+        var id = $('#' + rowid + ' td').html();
+        var name = $('#' + rowid + ' td:nth-child(2)').html();
+        var idTr = $('#bodyLotIngredient tr:last-child').attr('id');
+        if (idTr == null) {
+            var rowIngredient = 1;
+        }
+        else {
+            idTr = idTr.substr(4);
+            var rowIngredient = parseInt(idTr) + 1;
+        }
+        // alert(rowIngredient);
+
+        txt = `<tr id="rowi${rowIngredient}" class="d-flex">
+        <td style="text-align: center;" class="align-middle col-5 ">
+            <input type="text" name="lotIngredientName" value="${name}" class="form-control" disabled>
+            <input type="hidden" name="lotIngredientID[]" class="lotIngredientID" value="${id}">
+        </td>
+        <td style="text-align: center;" class="align-middle col-5">
+            <input type="number" name="lotIngredientPrice[]" value="0" min="0" max="999999.99" step="0.01" class="form-control lotIngredientPrice"  required>
+        </td>
+        <td style="text-align: center;" class="align-middle col-2">
+            <button type="button" id="${rowIngredient}" class="btn btn-danger btn-removei"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>`;
+        $('#bodyLotIngredient').append(txt);
+        $('#lotIngredientError').html('');
+
+
+        $('.lotIngredientPrice').on('change', function () {
+            total = 0;
+            $('.lotIngredientPrice').each(function () {
+                total += parseFloat($(this).val());
+            });
+            $('#lotTotalShow').val(total);
+            $('#lotTotal').val(total);
+        });
+
+        $('.btn-removei').on('click', function () {
+            var btn_del = $(this).attr("id");
+            $('#rowi' + btn_del).remove();
+
+            total = 0;
+            $('.lotIngredientPrice').each(function () {
+                total += parseFloat($(this).val());
+            });
+            $('#lotTotalShow').val(total);
+            $('#lotTotal').val(total);
+        });
+    });
+
+    $('.btn-removei').on('click', function () {
+        var btn_del = $(this).attr("id");
+        $('#rowi' + btn_del).remove();
+
+        total = 0;
+        $('.lotIngredientPrice').each(function () {
+            total += parseFloat($(this).val());
+        });
+        $('#lotTotalShow').val(total);
+        $('#lotTotal').val(total);
+    });
+
+    $('.lotIngredientPrice').on('change', function () {
+        total = 0;
+        $('.lotIngredientPrice').each(function () {
+            total += parseFloat($(this).val());
+        });
+        $('#lotTotalShow').val(total);
+        $('#lotTotal').val(total);
+    });
+
+    function validLotIngredient() {
+        var Errors = 0;
+        var lotIngredientList = [];
+        var breaker = 0;
+        $('.lotIngredientID').each(function () {
+            var lotIngredientID = $(this).val();
+            lotIngredientList.push(lotIngredientID);
+        });
+
+        if (lotIngredientList.length == 0) {
+            Errors = 1;
+            $('#lotIngredientError').html('กรุณาเลือกวัตถุดิบ');
+        }
+        else {
+            for (var i = 0; i < lotIngredientList.length; i++) {
+                for (var j = 0; j < lotIngredientList.length; j++) {
+
+                    if (i == j) {
+                        continue;
+                    } else if (lotIngredientList[i] == lotIngredientList[j]) {
+                        $('#lotIngredientError').html('กรุณาอย่าเลือกวัตถุดิบซ้ำ');
+                        Errors = 1;
+                        breaker = 1;
+                        break;
+                    }
+                }
+                if (breaker == 1) {
+                    break;
+                } else {
+                    $('#lotIngredientError').html('');
+                }
+            }
+        }
+        return Errors;
+    }
+
+    $('#addLotIngredientForm').on('submit', function (e) {
+        e.preventDefault();
+        var result = validLotIngredient();
+        if (result == 0) {
+            $.ajax({
+                url: "../lotingredient/insertLotIngredient",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    alert('เพิ่มล็อตวัตถุดิบเสร็จสิ้น');
+                    location.replace(data.url);
+
+                }
+            });
+        }
+        else {
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        }
+    });
+
+    $('#editLotIngredientForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            var result = validLotIngredient();
+            if (result == 0) {
+                $.ajax({
+                    url: "../lotingredient/updateLotIngredient",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        // console.log(data);
+                        alert('แก้ไขล็อตวัตถุดิบเสร็จสิ้น');
+                        location.replace(data.url);
+
+                    }
+                });
+            }
+            else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            }
+        }
+
+    });
+
     //LOT END
+
+
 
     //PromotionSet Start
     $('#proSetProductTable').dataTable({

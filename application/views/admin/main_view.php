@@ -161,7 +161,7 @@
                         <div class="collapse" id="LotcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?=site_url('admin/lotdrink')?>" >รับล็อตเครื่องดื่ม</a>
-                                <a class="nav-link" href="">รับล็อตวัตถุดิบ</a>
+                                <a class="nav-link" href="<?=site_url('admin/lotingredient')?>">รับล็อตวัตถุดิบ</a>
                             </nav>
                         </div>
                         <?php } ?>

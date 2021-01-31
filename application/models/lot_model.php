@@ -95,13 +95,108 @@ class lot_model extends CI_Model
         return $query->result();
     }
 
-    public function editLotDetail($lotDrinkID)
+    public function editLotDrinkDetail($lotDrinkID)
     {
         $sql = "SELECT  lotdetail.LOTDETAIL_PRICE,product.PRODUCT_ID,product.PRODUCT_NAME FROM lotdetail
         JOIN lotdrink ON lotdetail.LOTDETAIL_ID = lotdrink.LOTDRINK_ID AND lotdetail.LOTDETAIL_NO = lotdrink.LOTDRINK_NO
         JOIN product ON lotdrink.LOTDRINK_DRINK = product.PRODUCT_ID
         WHERE lotdetail.LOTDETAIL_ID = '$lotDrinkID' 
         ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+
+    public function lotIngredient($search, $limit, $offset)
+    {
+        $sql = "SELECT lot.LOT_ID,lot.LOT_DATE,lot.LOT_TIME,lot.LOT_TOTAL, 
+                       employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME
+                FROM lot
+                    JOIN employee ON lot.LOT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE LOT_STATUS = '1'
+                AND LOT_TYPE ='2'
+                AND
+                    (	
+                    lot.LOT_ID LIKE ? OR
+                    lot.LOT_TOTAL LIKE ? OR
+                    lot.LOT_DATE LIKE  ? OR
+                    lot.LOT_TIME LIKE  ? OR
+                    employee.EMPLOYEE_FIRSTNAME LIKE ? OR
+                    employee.EMPLOYEE_LASTNAME LIKE ? 
+                    )
+                    LIMIT $offset,$limit
+                ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+            )
+        );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
+    }
+
+    public function countAllLotIngredient($search)
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM lot
+                    JOIN employee ON lot.LOT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE LOT_STATUS = '1'
+                AND LOT_TYPE ='2'
+                AND
+                    (	
+                    lot.LOT_ID LIKE ? OR
+                    lot.LOT_TOTAL LIKE ? OR
+                    lot.LOT_DATE LIKE  ? OR
+                    lot.LOT_TIME LIKE  ? OR
+                    employee.EMPLOYEE_FIRSTNAME LIKE ? OR
+                    employee.EMPLOYEE_LASTNAME LIKE ? 
+                    )
+                ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function editLotIngredient($lotIngredientID)
+    {
+        $sql = "SELECT lot.LOT_ID,lot.LOT_TOTAL,lot.LOT_DATE,lot.LOT_TIME,
+                       employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME
+                FROM lot JOIN employee ON lot.LOT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE lot.LOT_ID = '$lotIngredientID'
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function editLotIngredientDetail($lotIngredientID)
+    {
+        $sql = "SELECT  lotdetail.LOTDETAIL_PRICE,ingredient.INGREDIENT_ID,ingredient.INGREDIENT_NAME 
+                FROM lotdetail
+                    JOIN lotingredient ON lotdetail.LOTDETAIL_ID = lotingredient.LOTINGREDIENT_ID 
+                                      AND lotdetail.LOTDETAIL_NO = lotingredient.LOTINGREDIENT_NO
+				    JOIN ingredient ON lotingredient.LOTINGREDIENT_INGREDIENT = ingredient.INGREDIENT_ID
+                WHERE lotdetail.LOTDETAIL_ID = '$lotIngredientID' 
+                ";
         $query = $this->db->query($sql);
         return $query->result();
     }
