@@ -62,7 +62,7 @@
                                             </div>
                                             <div class="modal-body ">
                                                 <div class="table-responsive">
-                                                    <table id="proPriceProduct" class="display table table-bordered">
+                                                    <table id="proPriceProductTable" class="display table table-bordered">
                                                         <thead>
                                                             <tr>
                                                                 <th>รหัส</th>
@@ -76,7 +76,7 @@
                                                                 <tr id="row<?= $rowProduct ?>">
                                                                     <td><?= $row->PRODUCT_ID; ?></td>
                                                                     <td><?= $row->PRODUCT_NAME; ?></td>
-                                                                    <td><button type="button" value="<?= $row->PRODUCT_ID ?>" class="selectProPriceProduct btn btn-info">เลือก</button></td>
+                                                                    <td><button type="button" value="<?= $row->PRODUCT_ID ?>" class="selectProPriceProduct btn btn-info" >เลือก</button></td>
                                                                 </tr>
                                                             <?php $rowProduct++;
                                                             endforeach; ?>
@@ -127,4 +127,6 @@
             </div>
         </div>
     </div>
+
 </div>
+

@@ -1059,7 +1059,7 @@ $(document).ready(function () {
         ],
     });
 
-    $('.selectLotDrink').on('click', function () {
+    $('#lotDrinkTable').on('click','.selectLotDrink', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1227,7 +1227,7 @@ $(document).ready(function () {
 
     });
 
-    $('.selectLotIngredient').on('click', function () {
+    $('#lotIngredientTable').on('click','.selectLotIngredient', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1400,7 +1400,7 @@ $(document).ready(function () {
     });
 
     var rowProSet = 1;
-    $('.selectProSetProduct').on('click', function () {
+    $('#proSetProductTable').on('click','.selectProSetProduct', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1579,10 +1579,10 @@ $(document).ready(function () {
             { "className": "dt-center", "targets": "_all" }
         ]
         
-        
     });
 
-    $('.selectProPriceProduct').on('click', function () {
+
+    $('#proPriceProductTable').on('click','.selectProPriceProduct', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1594,7 +1594,7 @@ $(document).ready(function () {
             idTr = idTr.substr(5);
             var rowProprice = parseInt(idTr) + 1;
         }
-        alert(rowProprice);
+        // alert(name);
 
         txt = `<tr id="rowpp${rowProprice}" class="d-flex">
             <td style="text-align: center;" class="align-middle col-8 ">
