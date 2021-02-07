@@ -1570,7 +1570,7 @@ $(document).ready(function () {
     //PromotionSet End
 
     //PromotionPrice Start
-    $('#proPriceProduct').dataTable({
+    $('#proPriceProductTable').dataTable({
         "lengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
@@ -1819,6 +1819,12 @@ $(document).ready(function () {
 
     var pathhh = window.location.href; // because the 'href' property of the DOM element is the absolute path
     $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function () {
+        if (this.href === pathhh) {
+            $(this).addClass("active");
+        }
+    });
+
+    $(".sb-topnav .navbar-nav .nav-item a.nav-link").each(function () {
         if (this.href === pathhh) {
             $(this).addClass("active");
         }

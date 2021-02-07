@@ -24,24 +24,40 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <!-- <a class="navbar-brand" href="#"> -->
-        <img src="<?= base_url('assets/image/logo.jpg') ?>" width="30" height="30" class="d-inline-block align-top" alt="">
-        <!-- </a> -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-
-            <ul class="navbar-nav">
-                <li class="nav-item active ">
-                    <a class="nav-link" href="#">เข้าใช้บริการ <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="<?= site_url('admin/queue') ?>">คิวล่วงหน้า</a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="#">คิวหน้าร้าน</a>
-                </li>
-            </ul>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <div class="navbar-brand">
+            <img src="<?= base_url('assets/image/logo.jpg') ?>" width="30" height="30" class="d-inline-block align-top " alt="">
         </div>
+        <ul class="navbar-nav ">
+            <li class="nav-item  pl-3">
+                <a class="nav-link" href="<?= site_url('admin/service') ?>">เข้าใช้บริการ <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link " href="<?= site_url('admin/queue') ?>">คิวล่วงหน้า</a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link" href="#">คิวหน้าร้าน</a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link" href="#">บริการในร้าน</a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link" href="#">ครัวอาหาร</a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link" href="#">ครัวเครื่องดื่ม</a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link" href="#">แจ้งเสิร์ฟ</a>
+            </li>
+            <li class="nav-item  pl-5">
+                <a class="nav-link" href="#">ชำระเงิน</a>
+            </li>
+        </ul>
+        <!-- div Space -->
+        <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
+        <!-- div Space -->
+        <a href="<?= site_url('admin/admin') ?>" style="color:yellow;">กลับสู่ระบบหลัก</a>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_content">
@@ -60,14 +76,6 @@
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $(".nav-link").on("click", function() {
-                $(".navbar-nav").find(".active").removeClass("active");
-                $(this).parent().addClass("active");
-            });
-        });
-    </script>
 </body>
 
 </html>

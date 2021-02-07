@@ -215,6 +215,11 @@ class product extends CI_Controller
             'PRODUCT_STATUS' => '0',
         );
         $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
+        $this->crud_model->delete('recipe','RECIPE_PRODUCT',$productID);
+        $this->crud_model->delete('promotionpricedetail','PROPRICE_PRODUCT',$productID);
+        $this->crud_model->delete('promotionsetdetail','PROSETDETAIL_PRODUCT',$productID);
+
+
     }
 
     //ตัดช่องว่าง

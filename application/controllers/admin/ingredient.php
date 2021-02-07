@@ -154,6 +154,7 @@ class ingredient extends CI_Controller
             'INGREDIENT_STATUS' => '0',
         );
         $this->crud_model->update('ingredient', $dataIngredient, 'INGREDIENT_ID', $ingredientID);
+        $this->crud_model->delete('recipedetail','RECIPEDETAIL_INGREDIENT',$ingredientID);
         // echo json_encode($data);
     }
 }

@@ -49,7 +49,7 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
                         <!-- ไประบบหน้าร้าน -->
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="<?=site_url('admin/service')?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
                             ระบบจัดการหน้าร้าน
                         </a>

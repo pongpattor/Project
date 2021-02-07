@@ -65,7 +65,7 @@
                                             </div>
                                             <div class="modal-body ">
                                                 <div class="table-responsive">
-                                                    <table id="proPriceProduct" class="display table table-bordered">
+                                                    <table id="proPriceProductTable" class="display table table-bordered">
                                                         <thead>
                                                             <tr>
                                                                 <th>รหัส</th>
