@@ -1714,8 +1714,24 @@ $(document).ready(function () {
 
     });
 
-
     //PromotionPrice End
+
+    //QUEUE START
+        $('#queueTimeForm').on('submit',function(e){
+            e.preventDefault();
+            $.ajax({
+                url : "./queue/updateQueueTime",
+                method : "POST",
+                data : $(this).serialize(),
+                success : function(){
+                    alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
+                    location.reload();
+                }
+            });
+        });
+
+    //QUEUE END
+
 
     //Address Start
     $('#province').change(function () {
@@ -1774,6 +1790,7 @@ $(document).ready(function () {
         }
     });
     //Address End
+
 
 
 

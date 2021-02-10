@@ -3,7 +3,60 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg">
             <div class="card-body">
-                <h3 class="d-inline">คิวล่วงหน้า</h3>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="d-inline">คิวล่วงหน้า</h3>
+                    </div>
+                    <div class="col">
+                        <div class="row ">
+                            <!-- <div class="col-8">
+                                <h5 class="align-middle text-center float right">เวลาเลยกำหนด <span id="time"><?php foreach ($queueTime  as $row) {
+                                                                                                                    echo $row->QUEUETYPE_TIME;
+                                                                                                                } ?></span> นาที</h5>
+                            </div> -->
+                            <div class="col">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary  float-right" data-toggle="modal" data-target="#queueTimeModal">
+                                    ตั้งค่าเวลาเลยกำหนด
+                                </button>
+                                <h4 class=" float-right">เวลาเลยกำหนด <span id="queueTimeShow"><?php foreach ($queueTime  as $row) {
+                                                                                                                    echo $row->QUEUETYPE_TIME;
+                                                                                                                } ?></span> นาที</h4>
+                                                                                                            
+                                <!-- Modal -->
+                                <div class="modal fade" id="queueTimeModal" tabindex="-1" role="dialog" aria-labelledby="queueTimeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="queueTimeModalLabel">เวลาเลยกำหนดคิวล่วงหน้า</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="POST" id="queueTimeForm">
+                                                <div class="modal-body">
+                                                    <?php foreach ($queueTime  as $row) : ?>
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-sm col-md col-xl-7 ">
+                                                                <label for="queueTime">เวลา (นาที)</label>
+                                                                <input type="number" name="queueTime" id="queueTime" class="form-control" min="0" required value="<?= $row->QUEUETYPE_TIME ?>">
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -13,7 +66,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
-                <form action="<?= site_url('admin/desk/'); ?>" method="GET">
+                <form action="#" method="GET">
                     <div class="row">
                         <div class="col-10">
                             <div class="row">
