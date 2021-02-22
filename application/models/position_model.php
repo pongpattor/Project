@@ -8,7 +8,8 @@ class position_model extends CI_Model
     {
         $sql = "SELECT position.POSITION_ID,position.POSITION_NAME,department.DEPARTMENT_NAME FROM position
       LEFT JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID 
-      where 
+      where POSITION_STATUS = '1'
+      AND
       (
           position.POSITION_ID LIKE  ? OR
           position.POSITION_NAME LIKE ? OR
@@ -35,7 +36,8 @@ class position_model extends CI_Model
     {
         $sql = "SELECT COUNT(*) as cnt FROM position
       LEFT JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID 
-      where 
+      where POSITION_STATUS = '1'
+      AND
       (
           position.POSITION_ID LIKE  ? OR
           position.POSITION_NAME LIKE ? OR
@@ -59,7 +61,8 @@ class position_model extends CI_Model
         }
     }
 
-    public function checkPositionName($positionName,$positionDepartment){
+    public function checkPositionName($positionName, $positionDepartment)
+    {
         $sql = "SELECT COUNT(*) AS cnt FROM position
                 JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID
                 WHERE position.POSITION_NAME = '$positionName'
@@ -83,13 +86,12 @@ class position_model extends CI_Model
     public function updatePosition($positionID, $positionName, $deptID, $permission)
     {
         $sql = "UPDATE position SET POSITION_NAME = ? ,DEPT_ID = ? ,PERMISSION = ? WHERE POSITION_ID = '$positionID' ";
-         $this->db->query($sql,array(
+        $this->db->query($sql, array(
             $this->db->escape_like_str($positionName),
             $this->db->escape_like_str($deptID),
             $this->db->escape_like_str($permission)
         ));
         return true;
-
     }
 
     //Position End

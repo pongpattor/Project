@@ -36,7 +36,7 @@
                 <a class="nav-link " href="<?= site_url('admin/queue') ?>">คิวล่วงหน้า</a>
             </li>
             <li class="nav-item  pl-5">
-                <a class="nav-link" href="#">คิวหน้าร้าน</a>
+                <a class="nav-link" id="test22" href="#">คิวหน้าร้าน</a>
             </li>
             <li class="nav-item  pl-5">
                 <a class="nav-link" href="#">บริการในร้าน</a>

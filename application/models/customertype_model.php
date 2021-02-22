@@ -7,7 +7,8 @@ class customertype_model extends CI_Model
     public function customerType($search = '', $limit, $offset)
     {
         $sql = "SELECT * FROM customertype 
-        WHERE 
+        WHERE  CUSTOMERTYPE_STATUS = '1'
+        AND
         (
             CUSTOMERTYPE_ID LIKE  ? OR
             CUSTOMERTYPE_NAME LIKE ? OR
@@ -36,7 +37,8 @@ class customertype_model extends CI_Model
     public function countAllCustomerType($search = '')
     {
         $sql = "SELECT COUNT(*) AS cnt FROM customertype 
-        WHERE 
+        WHERE  CUSTOMERTYPE_STATUS = '1'
+        AND
         (
             CUSTOMERTYPE_ID LIKE  ? OR
             CUSTOMERTYPE_NAME LIKE ? OR
@@ -76,6 +78,7 @@ class customertype_model extends CI_Model
             return $row->cnt;
         }
     }
+
 
 
 }

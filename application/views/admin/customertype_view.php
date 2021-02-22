@@ -66,7 +66,7 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->CUSTOMERTYPE_DISCOUNTBDATE; ?></td>
 
                                                     <td class="align-middle">
-                                                        <center>                      
+                                                        <center>
                                                             <form action="<?= site_url('admin/customertype/editCustomerType') ?>" method="get">
                                                                 <button name="customerTypeID" class="btn btn-warning edit" style="text-align: center;" value="<?= $row->CUSTOMERTYPE_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
@@ -108,16 +108,20 @@
             var cf = confirm(`ยืนยันการลบประเภทสมาชิก รหัส ${customerTypeID}`);
             if (cf == true) {
                 $.ajax({
-                    url: "<?=site_url('admin/customertype/deleteCustomerType')?>",
+                    url: "<?= site_url('admin/customertype/deleteCustomerType') ?>",
                     method: "POST",
                     data: {
                         customerTypeID: customerTypeID
                     },
                     dataType: "JSON",
                     success: function(data) {
-                        alert(`ลบประเภทสมาชิก รหัส ${customerTypeID} เสร็จสิ้น`);
-                        location.replace(data.url);
-                        // console.log(data);
+                        if (data.status == true) {
+                            alert(`ลบประเภทสมาชิก รหัส ${customerTypeID} เสร็จสิ้น`);
+                            location.replace('<?= site_url('admin/customertype') ?>');
+                        }
+                        else{
+                            alert(`มีสมาชิกใช้งานอยู่  \nไม่สามารถลบ รหัส ${customerTypeID} `);
+                        }
                     }
                 });
             }

@@ -905,7 +905,7 @@ $(document).ready(function () {
 
 
 
-    $('.selectProduct').on('click', function () {
+    $('#recipeProductTable').on('click','.selectProduct', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1116,6 +1116,7 @@ $(document).ready(function () {
             $('#lotTotal').val(total);
         });
     });
+    
     $('.lotDrinkPrice').on('change', function () {
         total = 0;
         $('.lotDrinkPrice').each(function () {
@@ -1731,6 +1732,7 @@ $(document).ready(function () {
         });
 
     //QUEUE END
+
 
 
     //Address Start

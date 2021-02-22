@@ -81,7 +81,7 @@
                             } else { ?>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
-                                        <li class="page-item active"><a class="page-link " >1</a></li>
+                                        <li class="page-item active"><a class="page-link ">1</a></li>
                                     </ul>
                                 </nav>
                             <?php } ?>
@@ -105,10 +105,14 @@
                     data: {
                         positionID: positionID
                     },
-                    success: function() {
-                        alert(`ลบตำแหน่ง รหัส ${positionID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/position/') ?>";
-
+                    dataType: "JSON",
+                    success: function(data) {
+                        if (data.status == true) {
+                            alert(`ลบตำแหน่ง รหัส ${positionID} เสร็จสิ้น`);
+                            location.href = "<?= site_url('admin/position/') ?>";
+                        } else {
+                            alert(`มีพนักงานใช้งานอยู่  \nไม่สามารถลบ รหัส ${positionID} `);
+                        }
                     }
                 });
             }

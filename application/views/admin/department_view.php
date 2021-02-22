@@ -108,9 +108,14 @@
                     data: {
                         departmentID: departmentID
                     },
-                    success: function() {
-                        alert(`ลบแผนก รหัส ${departmentID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/department/') ?>";
+                    dataType: "JSON",
+                    success: function(data) {
+                        if (data.status == true) {
+                            alert(`ลบแผนก รหัส ${departmentID} เสร็จสิ้น`);
+                            location.href = "<?= site_url('admin/department/') ?>";
+                        } else {
+                            alert(`มีตำแหน่งใช้งานอยู่  \nไม่สามารถลบ รหัส ${departmentID} `);
+                        }
                     }
                 });
             }

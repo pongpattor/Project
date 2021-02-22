@@ -79,5 +79,14 @@ class admin extends CI_Controller
         echo json_encode($data);
     }
 
+    public function test2(){
+        $this->load->model('test_model');
+        $this->test_model->insert();
+    } 
+    public function test3(){
+        $this->load->model('test_model');
+        $this->test_model->update();
+    } 
+
 
 }

@@ -9,8 +9,7 @@ class position extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } 
-        else if ($_SESSION['employeePermission'][4] != 1) {
+        } else if ($_SESSION['employeePermission'][4] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -64,7 +63,7 @@ class position extends CI_Controller
     public function addPosition()
     {
         $data['page'] = 'position_add_view';
-        $data['department'] = $this->crud_model->findAll('department');
+        $data['department'] = $this->crud_model->findWhere('department', 'DEPARTMENT_STATUS', '1');
         $this->load->view('admin/main_view', $data);
     }
 
@@ -121,9 +120,9 @@ class position extends CI_Controller
     {
         $positpositionID = $this->input->get('positionID');
         $data['position'] = $this->crud_model->findwhere('position', 'POSITION_ID', $positpositionID);
-        $data['department'] = $this->crud_model->findAll('department');
+        $data['department'] = $this->crud_model->findWhere('department', 'DEPARTMENT_STATUS', '1');
         if ($data['position'][0]->POSITION_PERMISSION == "") {
-            $data['permission'] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
+            $data['permission'] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
         } else {
             $data['permission'] = explode(',', $data['position']['0']->POSITION_PERMISSION);
         }
@@ -142,28 +141,27 @@ class position extends CI_Controller
         $positionDepartment = $this->input->post('positionDepartment');
         $positionNameOld = $this->input->post('positionNameOld');
         $positionDepartmentOld = $this->input->post('positionDepartmentOld');
-        if(strtolower($positionName) == strtolower($positionNameOld) && $positionDepartment == $positionDepartmentOld){
+        if (strtolower($positionName) == strtolower($positionNameOld) && $positionDepartment == $positionDepartmentOld) {
             $positionID = $this->input->post('positionID');
             $dataPosition = array(
                 'POSITION_PERMISSION' => $this->input->post('positionPermission'),
             );
-            $this->crud_model->update('position',$dataPosition,'POSITION_ID',$positionID);
+            $this->crud_model->update('position', $dataPosition, 'POSITION_ID', $positionID);
             $data['message'] = "แก้ไขข้อมูลตำแหน่งเสร็จสิ้น";
             $data['url'] = site_url('admin/position');
-        }else{
+        } else {
             $checkPositionName =  $this->position_model->checkPositionName($positionName, $positionDepartment);
-            if($checkPositionName == 0){
+            if ($checkPositionName == 0) {
                 $positionID = $this->input->post('positionID');
                 $dataPosition = array(
                     'POSITION_NAME' => $positionName,
                     'POSITION_DEPARTMENT' => $positionDepartment,
                     'POSITION_PERMISSION' => $this->input->post('positionPermission'),
                 );
-                $this->crud_model->update('position',$dataPosition,'POSITION_ID',$positionID);
+                $this->crud_model->update('position', $dataPosition, 'POSITION_ID', $positionID);
                 $data['message'] = "แก้ไขข้อมูลตำแหน่งเสร็จสิ้น";
                 $data['url'] = site_url('admin/position');
-            }
-            else{
+            } else {
                 $data['status'] = false;
                 $data['positionNameError'] = 'ชื่อตำแหน่งนี้ได้ถูกใช้ไปแล้ว';
                 $data['message'] = 'กรุณากรอกข้อมูลให้ถูกต้อง';
@@ -174,9 +172,18 @@ class position extends CI_Controller
 
     public function deletePosition()
     {
+        $data['status'] = true;
         $positionID = $this->input->post('positionID');
-        $this->crud_model->delete('position', 'POSITION_ID', $positionID);
+
+        $employeeNum = $this->crud_model->count2Where('employee', 'EMPLOYEE_POSITION', $positionID, 'EMPLOYEE_STATUS', '1');
+        if ($employeeNum == 0) {
+            $dataPosition = array(
+                'POSITION_STATUS' => '0',
+            );
+            $this->crud_model->update('position', $dataPosition, 'POSITION_ID', $positionID);
+        } else {
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
-
-
 }

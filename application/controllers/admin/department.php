@@ -147,8 +147,19 @@ class department extends CI_Controller
 
     public function deleteDepartment()
     {
+        $data['status'] = true;
         $departmentID = $this->input->post('departmentID');
-        $this->crud_model->delete('department', 'DEPARTMENT_ID', $departmentID);
+        $positionNum = $this->crud_model->count2Where('position','POSITION_DEPARTMENT',$departmentID,'POSITION_STATUS','1');
+        if ($positionNum == 0) {
+            $dataDepartment = array(
+                'DEPARTMENT_STATUS' => '0',
+            );
+            $this->crud_model->update('department', $dataDepartment, 'DEPARTMENT_ID', $departmentID);
+        }
+        else{
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
     // Department End
 

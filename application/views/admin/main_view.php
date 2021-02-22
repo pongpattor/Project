@@ -151,7 +151,7 @@
                             </nav>
                         </div>
                         <!-- รับล็อต -->
-                        <?php if ($_SESSION['employeePermission']['12'] = '1') {
+                        <?php if ($_SESSION['employeePermission']['12'] == '1') {
                                                             ?>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#LotcollapseLayouts" aria-expanded="false" aria-controls="LotcollapseLayouts" >
                             <div class="sb-nav-link-icon"><i class="fa fa-bullhorn"></i></div>

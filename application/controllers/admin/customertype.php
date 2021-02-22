@@ -9,8 +9,7 @@ class customertype extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } 
-        else if ($_SESSION['employeePermission'][1] != 1) {
+        } else if ($_SESSION['employeePermission'][1] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -75,7 +74,8 @@ class customertype extends CI_Controller
                 'CUSTOMERTYPE_ID' => $this->genIdCustomerType(),
                 'CUSTOMERTYPE_NAME' => $customerTypeName,
                 'CUSTOMERTYPE_DISCOUNT' => $customerTypeDiscount,
-                'CUSTOMERTYPE_DISCOUNTBDATE' => $customerTypeDiscountBdate
+                'CUSTOMERTYPE_DISCOUNTBDATE' => $customerTypeDiscountBdate,
+                'CUSTOMERTYPE_STATUS' => '1',
             );
             $this->crud_model->insert('customertype', $dataCustomer);
             $data['message'] = "เพิ่มประเภทสมาชิกสำเร็จ";
@@ -153,9 +153,18 @@ class customertype extends CI_Controller
 
     public function deleteCustomerType()
     {
+        $data['status'] = true;
         $customerTypeID = $this->input->post('customerTypeID');
-        $this->crud_model->delete('customertype', 'CUSTOMERTYPE_ID', $customerTypeID);
-        $data['url'] = site_url('admin/customertype');
+        $customerNum = $this->crud_model->count2Where('customer', 'CUSTOMER_CUSTOMERTYPE', $customerTypeID, 'CUSTOMER_STATUS', '1');
+        if ($customerNum == 0) {
+            $dataCustomerType = array(
+                'CUSTOMERTYPE_STATUS' => '0',
+            );
+            $this->crud_model->update('customertype', $dataCustomerType, 'CUSTOMERTYPE_ID', $customerTypeID);
+        }
+        else{
+            $data['status'] = false;
+        }
         echo json_encode($data);
     }
 }
