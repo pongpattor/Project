@@ -48,6 +48,20 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
+                                    <label for="deskQueue">อนุมัติการจอง</label>
+                                    <select name="deskQueue" class="form-control" required>
+                                        <option value="" selected disabled>กรุณาเลือกอนุมัติการจอง</option>
+                                        <option value="1" <?php if ($row->SEAT_QUEUE == '1') {
+                                                                echo 'selected';
+                                                            }?>>สามารถจองได้</option>
+                                        <option value="2" <?php if ($row->SEAT_QUEUE == '0') {
+                                                                echo 'selected';
+                                                            }?>>ไม่สามารถจองได้</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6 ">
                                     <label>สถานะการใช้งาน </label>
                                     <select name="deskActive" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกสถานะการใช้งาน</option>

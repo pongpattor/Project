@@ -53,6 +53,16 @@
                                 <input type="number" name="karaokeFlatRate" id="karaokeFlatRate" class="form-control"  required min="1" max="99999">
                             </div>
                         </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label for="karaokeQueue">อนุมัติการจอง</label>
+                                <select name="karaokeQueue" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกอนุมัติการจอง</option>
+                                    <option value="1" >สามารถจองได้</option>
+                                    <option value="0" >ไม่สามารถจองได้</option>
+                                </select>
+                            </div>
+                        </div>
                         <br>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6  ">

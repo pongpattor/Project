@@ -20,7 +20,7 @@
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>ชื่อโต๊ะ </label>
-                                <input type="text" name="deskName" id="deskName" class="form-control"  required maxlength="50">
+                                <input type="text" name="deskName" id="deskName" class="form-control" required maxlength="50">
                                 <span id="deskNameError" style="color:red;"></span>
                             </div>
                         </div>
@@ -28,17 +28,27 @@
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>โซนที่นั่ง</label>
                                 <select name="deskZone" class="form-control" required>
-                                <option value="" selected disabled>กรุณาเลือกโซนที่นั่ง</option>
-                                <?php foreach($zone as $row) : ?>
-                                <option value="<?=$row->ZONE_ID;?>" ><?=$row->ZONE_NAME?></option>
-                                <?php endforeach; ?>
+                                    <option value="" selected disabled>กรุณาเลือกโซนที่นั่ง</option>
+                                    <?php foreach ($zone as $row) : ?>
+                                        <option value="<?= $row->ZONE_ID; ?>"><?= $row->ZONE_NAME ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label>จำนวนคน </label>
-                                <input type="number" name="deskAmount" id="deskAmount" class="form-control"  required min="1" max="99">
+                                <input type="number" name="deskAmount" id="deskAmount" class="form-control" required min="1" max="99">
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label for="deskQueue">อนุมัติการจอง</label>
+                                <select name="deskQueue" class="form-control" required>
+                                    <option value="" selected disabled>กรุณาเลือกอนุมัติการจอง</option>
+                                    <option value="1" >สามารถจองได้</option>
+                                    <option value="0" >ไม่สามารถจองได้</option>
+                                </select>
                             </div>
                         </div>
                         <br>

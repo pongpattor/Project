@@ -8,7 +8,8 @@ class zone_model extends CI_Model
     public function zone($search = '', $limit, $offset)
     {
         $sql = "SELECT * FROM zone 
-        where 
+        where ZONE_STATUS = '1'
+        AND
         (
             ZONE_ID LIKE  ? OR
             ZONE_NAME LIKE ? 
@@ -32,7 +33,8 @@ class zone_model extends CI_Model
     public function countAllZone($search = '')
     {
         $sql = "SELECT COUNT(*) as cnt FROM zone 
-        where 
+        where ZONE_STATUS = '1'
+        AND
         (
             ZONE_ID LIKE  ? OR
             ZONE_NAME LIKE ? 

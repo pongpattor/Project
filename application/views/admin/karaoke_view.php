@@ -79,6 +79,7 @@
                                                 <th style="text-align: center;">โซนที่นั่ง</th>
                                                 <th style="text-align: center;">ราคา/ชั่วโมง</th>
                                                 <th style="text-align: center;">ราคาเหมา</th>
+                                                <th style="text-align: center;">การจอง</th>
                                                 <th style="text-align: center;">สถานะการใช้งาน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
                                                 <th style="text-align: center;">ลบ</th>
@@ -93,6 +94,12 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->ZONE_NAME; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->KARAOKE_PRICEPERHOUR; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->KARAOKE_FLATRATE; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_QUEUE == '1') {
+                                                                                                                echo 'สามารถจองได้';
+                                                                                                            } else {
+                                                                                                                echo 'ไม่สามารถจองได้';
+                                                                                                            }
+                                                                                                            ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ACTIVE == '1') {
                                                                                                                 echo 'พร้อมใช้งาน';
                                                                                                             } else {

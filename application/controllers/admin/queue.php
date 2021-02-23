@@ -26,4 +26,9 @@ class queue extends CI_Controller
         );
         $this->crud_model->update('queuetype',$dataQueueTime,'QUEUETYPE_ID','1');
     }
+
+    public function addQueue(){
+        $data['page'] = 'queue_add_view';
+        $this->load->view('admin/servicemain_view',$data);
+    }
 }

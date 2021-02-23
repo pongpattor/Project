@@ -80,6 +80,7 @@ class desk extends CI_Controller
                 'SEAT_AMOUNT' => $this->input->post('deskAmount'),
                 'SEAT_TYPE' => '1',
                 'SEAT_ZONE' => $this->input->post('deskZone'),
+                'SEAT_QUEUE' => $this->input->post('deskQueue'),
                 'SEAT_STATUS' => '1',
                 'SEAT_ACTIVE' => '1',
             );
@@ -140,11 +141,13 @@ class desk extends CI_Controller
             $deskAmount =  $this->input->post('deskAmount');
             $deskZone =  $this->input->post('deskZone');
             $deskActive =  $this->input->post('deskActive');
+            $deskQueue = $this->input->post('deskQueue');
             $dataSeat = array(
                 'SEAT_NAME' => $deskName,
                 'SEAT_AMOUNT' => $deskAmount,
                 'SEAT_ZONE' => $deskZone,
                 'SEAT_ACTIVE' => $deskActive,
+                'SEAT_QUEUE' => $deskQueue,
 
             );
             $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
@@ -158,11 +161,13 @@ class desk extends CI_Controller
                 $deskAmount =  $this->input->post('deskAmount');
                 $deskZone =  $this->input->post('deskZone');
                 $deskActive =  $this->input->post('deskActive');
+                $deskQueue = $this->input->post('deskQueue');
                 $dataSeat = array(
                     'SEAT_NAME' => $deskName,
                     'SEAT_AMOUNT' => $deskAmount,
                     'SEAT_ZONE' =>  $deskZone,
                     'SEAT_ACTIVE' => $deskActive,
+                    'SEAT_QUEUE' => $deskQueue,
                 );
                 $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);
                 $data['url'] = site_url('admin/desk');

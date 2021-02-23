@@ -146,7 +146,18 @@ class zone extends CI_Controller
 
     public function deleteZone()
     {
+        $data['status'] = true;
         $zoneID = $this->input->post('zoneID');
-        $this->crud_model->delete('zone', 'ZONE_ID', $zoneID);
+        $seatNum = $this->crud_model->count2Where('seat','SEAT_ZONE',$zoneID,'SEAT_STATUS','1');
+        if ($seatNum == 0) {
+            $dataZone = array(
+                'ZONE_STATUS' => '0',
+            );
+            $this->crud_model->update('zone', $dataZone, 'ZONE_ID', $zoneID);
+        }
+        else{
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
 }

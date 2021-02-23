@@ -108,9 +108,14 @@
                     data: {
                         zoneID: zoneID
                     },
-                    success: function() {
-                        alert(`ลบโซน รหัส ${zoneID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/zone/') ?>";
+                    dataType: "JSON",
+                    success: function(data) {
+                        if (data.status == true) {
+                            alert(`ลบโซน รหัส ${zoneID} เสร็จสิ้น`);
+                            location.href = "<?= site_url('admin/zone/') ?>";
+                        } else {
+                            alert(`มีโต๊ะหรือห้องคาราโอเกะใช้งานอยู่  \nไม่สามารถลบ รหัส ${zoneID} `);
+                        }
                     }
                 });
             }
