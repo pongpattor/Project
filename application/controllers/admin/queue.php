@@ -31,4 +31,10 @@ class queue extends CI_Controller
         $data['page'] = 'queue_add_view';
         $this->load->view('admin/servicemain_view',$data);
     }
+
+    public function queueDesk(){
+        // $data['date'] = $_POST['queueDate'];
+        $data['desk'] = $this->queue_model->selectDesk();
+        echo json_encode($data);
+    }
 }

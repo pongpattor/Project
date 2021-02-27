@@ -890,7 +890,10 @@ $(document).ready(function () {
             [5, 10, 25, "All"]
         ], "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
-        ],
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
     });
 
     $('#recipeProductTable').DataTable({
@@ -899,13 +902,16 @@ $(document).ready(function () {
             [5, 10, 25, "All"]
         ], "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
-        ],
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
     });
 
 
 
 
-    $('#recipeProductTable').on('click','.selectProduct', function () {
+    $('#recipeProductTable').on('click', '.selectProduct', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1056,10 +1062,13 @@ $(document).ready(function () {
             [5, 10, 25, "All"]
         ], "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
-        ],
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
     });
 
-    $('#lotDrinkTable').on('click','.selectLotDrink', function () {
+    $('#lotDrinkTable').on('click', '.selectLotDrink', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1116,7 +1125,7 @@ $(document).ready(function () {
             $('#lotTotal').val(total);
         });
     });
-    
+
     $('.lotDrinkPrice').on('change', function () {
         total = 0;
         $('.lotDrinkPrice').each(function () {
@@ -1224,11 +1233,14 @@ $(document).ready(function () {
             [5, 10, 25, "All"]
         ], "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
-        ],
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
 
     });
 
-    $('#lotIngredientTable').on('click','.selectLotIngredient', function () {
+    $('#lotIngredientTable').on('click', '.selectLotIngredient', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1394,14 +1406,16 @@ $(document).ready(function () {
         "lengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
-        ],
-        "columnDefs": [
+        ], "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
-        ],
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
     });
 
     var rowProSet = 1;
-    $('#proSetProductTable').on('click','.selectProSetProduct', function () {
+    $('#proSetProductTable').on('click', '.selectProSetProduct', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1575,15 +1589,17 @@ $(document).ready(function () {
         "lengthMenu": [
             [5, 10, 25, -1],
             [5, 10, 25, "All"]
-        ],
-        "columnDefs": [
+        ], "columnDefs": [
             { "className": "dt-center", "targets": "_all" }
-        ]
-        
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
+
     });
 
 
-    $('#proPriceProductTable').on('click','.selectProPriceProduct', function () {
+    $('#proPriceProductTable').on('click', '.selectProPriceProduct', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
@@ -1718,18 +1734,95 @@ $(document).ready(function () {
     //PromotionPrice End
 
     //QUEUE START
-        $('#queueTimeForm').on('submit',function(e){
-            e.preventDefault();
-            $.ajax({
-                url : "./queue/updateQueueTime",
-                method : "POST",
-                data : $(this).serialize(),
-                success : function(){
-                    alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
-                    location.reload();
-                }
-            });
+    $('#queueTimeForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../queue/updateQueueTime",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function () {
+                alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
+                location.reload();
+            }
         });
+    });
+
+
+    $('#deskTable').dataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ], "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
+    });
+
+    $('#queueDate').on('change', function () {
+        var queueDate = $(this).val();
+        $.ajax({
+            url: "../queue/queueDesk",
+            method: "POST",
+            data: {
+                queueDate: queueDate,
+            },
+            dataType: "JSON",
+            success: function (data) {
+                var deskTable = "";
+                var rowd = 1;
+                deskTable += `
+                <table id="deskTable" class="display table table-bordered">
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อ</th>
+                        <th>โซน</th>
+                        <th>จำนวนคน</th>
+                        <th>เลือก</th> 
+                    </tr>
+                </thead>
+                <tbody id="deskBody">
+                `;
+                $.each(data, function () {
+                    $.each(this, function (key, value) {
+                        // console.log(value);
+                        deskTable += `<tr id="rowd${rowd}">`;
+                        deskTable += `<td>${value.SEAT_ID}</td>`;
+                        deskTable += `<td>${value.SEAT_NAME}</td>`;
+                        deskTable += `<td>${value.ZONE_NAME}</td>`;
+                        deskTable += `<td>${value.SEAT_AMOUNT}</td>`;
+                        deskTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
+                        deskTable += `</tr>`;
+                        rowd++;
+                    });
+                });
+                deskTable += `</tbody></table>`;
+                // console.log(deskTable);
+
+                $('#deskTableModal').html(deskTable);
+                $('#deskTable').dataTable({
+                    "lengthMenu": [
+                        [5, 10, 25, -1],
+                        [5, 10, 25, "All"]
+                    ], "columnDefs": [
+                        { "className": "dt-center", "targets": "_all" }
+                    ], "language": {
+                        "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+                        "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+                    }
+                });
+                $('#deskTable').on('click', '.selectDesk', function () {
+                    var id = $(this).parents('tr').attr('id');
+                    var deskId = $(`#${id} td:nth-child(1)`).html();
+                    alert(deskId);
+                    
+                });
+            }
+        });
+    });
+
 
     //QUEUE END
 
