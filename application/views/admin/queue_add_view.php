@@ -32,7 +32,10 @@
                                 <label for="customerAmount">จำนวนคน </label>
                                 <input type="number" class="form-control" name="customerAmount" min="1" value="1" required>
                             </div>
-                           
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label for="seatAll">จำนวนที่นั่งทั้งหมด </label>
+                                <input type="number" class="form-control" name="seatAll" id="seatAll"  disabled>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
@@ -43,11 +46,12 @@
                                 <label for="queueTime">เวลาที่จอง </label>
                                 <input type="time" name="queueTime" class="form-control" required>
                             </div>
-                        </div><br>
+                        </div>
+                        <br>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
-                                <div class="row">
-                                    <div class="col">
+                                <div class="card boder-0 ">
+                                    <div class="card-body">
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deskModal">
                                             เลือกโต๊ะ
@@ -86,12 +90,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="card boder-0 ">
-                                    <div class="card-body">
                                         <div class="table-responsive">
+                                            <br>
                                             <table class="display table table-bordered" style="width: 100%;">
                                                 <thead class="thead-dark">
                                                     <tr>
@@ -100,14 +100,16 @@
                                                         <th class="align-middle" style="text-align: center;">ลบ</th>
                                                     </tr>
                                                 </thead>
+                                                <tbody id="SdeskBody">
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
-                                <div class="row">
-                                    <div class="col">
+                                <div class="card boder-0 ">
+                                    <div class="card-body">
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#karokeModal">
                                             เลือกห้องคาราโอเกะ
@@ -148,13 +150,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="card boder-0 ">
-                                    <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="display table table-bordered" style="width: 100%;">
+                                            <br>
+                                            <table class="display table table-bordered" style="width: 100%;" id="SkaraokeTable">
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th class="align-middle" style="text-align: center;">ห้องคาราโอเกะ</th>
@@ -162,13 +160,20 @@
                                                         <th class="align-middle" style="text-align: center;">ประเภทใช้งาน</th>
                                                         <th class="align-middle" style="text-align: center;">จำนวนใช้งาน</th>
                                                         <th class="align-middle" style="text-align: center;">ลบ</th>
-
                                                     </tr>
                                                 </thead>
+                                                <tbody id="SkaraokeBody">
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
+                            </div>   
+                        </div>
+                        <div class="row">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label for="note">หมายเหตุ </label>
+                                <textarea name="note" class="form-control" cols="30" rows="3" maxlength="50"></textarea>
                             </div>
                         </div>
                         <br>

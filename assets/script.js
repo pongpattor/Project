@@ -1771,6 +1771,8 @@ $(document).ready(function () {
         }
     });
 
+
+
     $('#queueDate').on('change', function () {
         var queueDate = $(this).val();
         $.ajax({
@@ -1809,18 +1811,8 @@ $(document).ready(function () {
                     rowd++;
                 });
 
-
-                $.each(data.desk, function (key, value) {
-                    deskTable += `<tr id="rowd${rowd}">`;
-                    deskTable += `<td>${value.SEAT_ID}</td>`;
-                    deskTable += `<td>${value.SEAT_NAME}</td>`;
-                    deskTable += `<td>${value.ZONE_NAME}</td>`;
-                    deskTable += `<td>${value.SEAT_AMOUNT}</td>`;
-                    deskTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
-                    deskTable += `</tr>`;
-                    rowd++;
-                });
                 deskTable += `</tbody></table>`;
+                // console.log(data.desk);
                 $('#deskTableModal').html(deskTable);
                 $('#deskTable').dataTable({
                     "lengthMenu": [
@@ -1833,12 +1825,43 @@ $(document).ready(function () {
                         "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
                     }
                 });
-                $('#deskTable #deskBody').on('click','.selectDesk',function(){
-                    alert('hello');
+
+                $('#deskTable #deskBody').on('click', '.selectDesk', function () {
+                    var rowId = $(this).parents('tr').attr('id');
+                    var deskID = $(`#${rowId} td`).html();
+                    var deskName = $(`#${rowId} td:nth-child(2)`).html();
+                    var deskAmount = $(`#${rowId} td:nth-child(4)`).html();
+                    // alert(deskAmount);
+                    var idTr = $('#SdeskBody tr:last-child').attr('id');
+
+                    if (idTr == null) {
+                        var rowsd = 1;
+                    } else {
+                        idTr = idTr.substr(5);
+                        var rowsd = parseInt(idTr) + 1;
+                    }
+                    // alert(rowsd);
+                    var txtDeskTable = `<tr id="rowsd${rowsd}">
+                                            <td style="text-align: center;" class="align-middle">
+                                            <input type="text" value="${deskName}" style="text-align: center;" class="form-control"  disabled>
+                                            <input type="hidden" name="deskID[]" value="${deskID}">
+                                            </td>
+                                            <td style="text-align: center;" class="align-middle">
+                                            <input type="text" value="${deskAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
+                                            </td>
+                                            <td style="text-align: center;" class="align-middle">
+                                                <button type="button" class="btn btn-danger deleteSD" value="${rowsd}">ลบ</button>
+                                            </td>
+                                        </tr>`;
+                    $('#SdeskBody').append(txtDeskTable);
+
+                    var seatAll = 0;
+                    $('.seatAmount').each(function () {
+                        seatAll += parseInt($(this).val());
+                    });
+                    $('#seatAll').val(seatAll);
                 });
 
-
-                
                 var karaokeTable = "";
                 var rowk = 1;
                 karaokeTable += `
@@ -1865,7 +1888,7 @@ $(document).ready(function () {
                     karaokeTable += `<td>${value.SEAT_AMOUNT}</td>`;
                     karaokeTable += `<td>${value.KARAOKE_PRICEPERHOUR}</td>`;
                     karaokeTable += `<td>${value.KARAOKE_FLATRATE}</td>`;
-                    karaokeTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
+                    karaokeTable += `<td><button type="button" class="selectKaraoke btn btn-primary">เลือก</button></td>`;
                     karaokeTable += `</tr>`;
                     rowk++;
                 });
@@ -1883,12 +1906,72 @@ $(document).ready(function () {
                     }
                 });
 
-            
+                $('#karaokeTable #karaokeBody').on('click', '.selectKaraoke', function () {
+                    var rowId = $(this).parents('tr').attr('id');
+                    var karaokeID = $(`#${rowId} td`).html();
+                    var karaokeName = $(`#${rowId} td:nth-child(2)`).html();
+                    var karaokeAmount = $(`#${rowId} td:nth-child(4)`).html();
+                    var idTr = $('#SkaraokeBody tr:last-child').attr('id');
+                    // alert(idTr);
+                    if (idTr == null) {
+                        var rowsk = 1;
+                    } else {
+                        idTr = idTr.substr(5);
+                        var rowsk = parseInt(idTr) + 1;
+                    }
+                    // alert(idTr);
+                    // alert(rowsk);
+                    var txtKaraokeTable = `
+                    <tr id="rowsk${rowsk}">
+                        <td style="text-align: center;" class="align-middle">
+                            <input type="text" value="${karaokeName}" style="text-align: center;" class="form-control"  disabled>
+                            <input type="hidden" name="deskID[]" value="${karaokeID}">
+                        </td>
+                        <td style="text-align: center;" class="align-middle">
+                            <input type="text" value="${karaokeAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
+                        </td>
+                        <td>
+                            <select name="karaokeUseType" class="form-control karaokeUseType" required>
+                                <option value="" selected disabled>กรุณาเลือกประเภทใช้งาน</option>
+                                <option value="1">เหมาห้อง</option>
+                                <option value="2">รายชั่วโมง</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="karaokeUseAmount" class="form-control" min="1" max="24" value="1" required>
+                        </td>
+                        <td style="text-align: center;" class="align-middle">
+                           <button type="button" class="btn btn-danger deleteSK" value="${rowsk}">ลบ</button>
+                        </td>
+                    </tr>`;
+                    $('#SkaraokeBody').append(txtKaraokeTable);
+                    var seatAll = 0;
+                    $('.seatAmount').each(function () {
+                        seatAll += parseInt($(this).val());
+                    });
+                    $('#seatAll').val(seatAll);
+                    // alert(rowId+" "+karaokeID+" "+karaokeName+" "+karaokeAmount);
+
+                 
+                });
             }
         });
     });
 
+    $('#SdeskBody').on('click', '.deleteSD', function () {
+        var id = $(this).val();
+        $(`#rowsd${id}`).remove();
+        var seatAll = 0;
+        $('.seatAmount').each(function () {
+            seatAll += parseInt($(this).val());
+        });
+        $('#seatAll').val(seatAll);
+    });
 
+    $('#SkaraokeTable #SkaraokeBody').on('change','.karaokeUseType',function(){
+        var type = $(this).val();
+        alert(type);
+    });
     //QUEUE END
 
 
