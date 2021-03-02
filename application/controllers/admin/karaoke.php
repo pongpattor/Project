@@ -21,10 +21,14 @@ class karaoke extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('karaokeActive')) {
-            $karaokeActive = $this->input->get('karaokeActive');
-        } else {
-            $karaokeActive = '1,2';
+        if ($this->input->get('karaokeActive') == 1) {
+            $karaokeActive = 1;
+        }
+        if ($this->input->get('karaokeActive') == 0) {
+            $karaokeActive = 0;
+        } 
+         else {
+            $karaokeActive = '1,0';
         }
         $config['base_url'] = site_url('admin/karaoke/index');
         $config['total_rows'] = $this->seat_model->countAllkaraoke($search, $karaokeActive);

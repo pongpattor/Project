@@ -10,7 +10,7 @@ class seat_model extends CI_Model
         $sql = "SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ACTIVE,SEAT_QUEUE,zone.ZONE_NAME
         FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
         where seat.SEAT_TYPE = '1' 
-        AND seat.SEAT_STATUS != '0'
+        AND seat.SEAT_STATUS = '1'
         AND
         (
             seat.SEAT_ID LIKE  ? OR
@@ -41,7 +41,7 @@ class seat_model extends CI_Model
     {
         $sql = "SELECT COUNT(*) as cnt FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
         where seat.SEAT_TYPE = '1' 
-        AND seat.SEAT_STATUS != '0'
+        AND seat.SEAT_STATUS = '1'
         AND
         (
             seat.SEAT_ID LIKE  ? OR
@@ -80,7 +80,7 @@ class seat_model extends CI_Model
         RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,seat.SEAT_ACTIVE,
                      karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE 
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
-                WHERE seat.SEAT_STATUS != '0' 
+                WHERE seat.SEAT_STATUS = '1' 
                 AND seat.SEAT_TYPE = '2') s
         ON zone.ZONE_ID = s.SEAT_ZONE
         WHERE  (zone.ZONE_NAME LIKE ?	OR
@@ -117,7 +117,7 @@ class seat_model extends CI_Model
         RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
                     seat.SEAT_ACTIVE,karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE 
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
-                WHERE seat.SEAT_STATUS != '0' 
+                WHERE seat.SEAT_STATUS = '1' 
                 AND seat.SEAT_TYPE = '2') s
         ON zone.ZONE_ID = s.SEAT_ZONE
         WHERE   (zone.ZONE_NAME LIKE ?	OR
@@ -141,6 +141,9 @@ class seat_model extends CI_Model
                 $this->db->escape_like_str($search),
             )
         );
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
         foreach ($query->result() as $row) {
             return $row->cnt;
         }

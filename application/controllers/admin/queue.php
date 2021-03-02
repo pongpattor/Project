@@ -33,8 +33,9 @@ class queue extends CI_Controller
     }
 
     public function queueDesk(){
-        // $data['date'] = $_POST['queueDate'];
+        $data['date'] = $_POST['queueDate'];
         $data['desk'] = $this->queue_model->selectDesk();
+        $data['karaoke'] = $this->queue_model->selectKaraoke();
         echo json_encode($data);
     }
 }

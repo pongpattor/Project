@@ -68,7 +68,7 @@
                                         <option value="1" <?php if ($row->SEAT_ACTIVE == '1') {
                                                                 echo 'selected';
                                                             } ?>>พร้อมใช้งาน</option>
-                                        <option value="2" <?php if ($row->SEAT_ACTIVE == '2') {
+                                        <option value="2" <?php if ($row->SEAT_ACTIVE == '0') {
                                                                 echo 'selected';
                                                             } ?>>ไม่พร้อมใช้งาน</option>
                                     </select>

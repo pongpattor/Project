@@ -123,7 +123,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body ">
-                                                        <div class="table-responsive">
+                                                        <div class="table-responsive" id="karaokeTableModal">
                                                             <table id="karaokeTable" class="display table table-bordered">
                                                                 <thead>
                                                                     <tr>

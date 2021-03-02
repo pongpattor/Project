@@ -24,58 +24,54 @@
 </head>
 
 <body>
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+  
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-brand">
             <img src="<?= base_url('assets/image/logo.jpg') ?>" width="30" height="30" class="d-inline-block align-top " alt="">
-        </div>
-        <ul class="navbar-nav ">
-            <li class="nav-item  pl-3">
-                <a class="nav-link" href="<?= site_url('admin/service') ?>">เข้าใช้บริการ <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link " href="<?= site_url('admin/queue') ?>">คิวล่วงหน้า</a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link" id="test22" href="#">คิวหน้าร้าน</a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link" href="#">บริการในร้าน</a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link" href="#">ครัวอาหาร</a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link" href="#">ครัวเครื่องดื่ม</a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link" href="#">แจ้งเสิร์ฟ</a>
-            </li>
-            <li class="nav-item  pl-5">
-                <a class="nav-link" href="#">ชำระเงิน</a>
-            </li>
-        </ul>
-        <!-- div Space -->
-        <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
-        <!-- div Space -->
-        <a href="<?= site_url('admin/admin') ?>" style="color:yellow;">กลับสู่ระบบหลัก</a>
-    </nav>
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_content">
-            <main>
-                <div id="content" class="container-fluid">
-                    <?php $this->load->view('admin/' . $page); ?>
-                </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted"><b>Copyright &copy; Your Website 2020</b></div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
+        </div> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="#"  style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= site_url('admin/queue') ?>" style="margin-left: 30px; margin-right: 30px;">คิวล่วงหน้า</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">คิวหน้าร้าน</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">บริการในร้าน</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ชำระเงิน</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= site_url('admin/admin') ?>" style="margin-left: 30px; margin-right: 30px;color:yellow">กลับสู่ระบบหลัก</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main>
+        <div id="content" class="container-fluid">
+            <?php $this->load->view('admin/' . $page); ?>
+        </div>
+    </main>
 </body>
 
 </html>

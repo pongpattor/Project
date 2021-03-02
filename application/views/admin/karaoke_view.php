@@ -21,11 +21,11 @@
                                     <div class="col-3"> <label for="karaokeActive" class="col-form-label">สถานะ</label></div>
                                     <div class="col">
                                         <select name="karaokeActive" id="karaokeActive" class="form-control">
-                                            <option value="1,2" selected>ทั้งหมด</option>
+                                            <option value="1,0" selected>ทั้งหมด</option>
                                             <option value="1" <?php if ($this->input->get('karaokeActive') == '1') {
                                                                     echo 'selected';
                                                                 } ?>>พร้อมใช้งาน</option>
-                                            <option value="2" <?php if ($this->input->get('karaokeActive') == '2') {
+                                            <option value="0" <?php if ($this->input->get('karaokeActive') == '0') {
                                                                     echo 'selected';
                                                                 } ?>>ไม่พร้อมใช้งาน</option>
                                         </select>

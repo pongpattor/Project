@@ -1668,7 +1668,6 @@ $(document).ready(function () {
                 }
             }
         }
-
         return Errors;
     }
 
@@ -1760,6 +1759,18 @@ $(document).ready(function () {
         }
     });
 
+    $('#karaokeTable').dataTable({
+        "lengthMenu": [
+            [5, 10, 25, -1],
+            [5, 10, 25, "All"]
+        ], "columnDefs": [
+            { "className": "dt-center", "targets": "_all" }
+        ], "language": {
+            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+        }
+    });
+
     $('#queueDate').on('change', function () {
         var queueDate = $(this).val();
         $.ajax({
@@ -1770,8 +1781,10 @@ $(document).ready(function () {
             },
             dataType: "JSON",
             success: function (data) {
+                // console.log(data);
                 var deskTable = "";
                 var rowd = 1;
+
                 deskTable += `
                 <table id="deskTable" class="display table table-bordered">
                 <thead>
@@ -1785,22 +1798,29 @@ $(document).ready(function () {
                 </thead>
                 <tbody id="deskBody">
                 `;
-                $.each(data, function () {
-                    $.each(this, function (key, value) {
-                        // console.log(value);
-                        deskTable += `<tr id="rowd${rowd}">`;
-                        deskTable += `<td>${value.SEAT_ID}</td>`;
-                        deskTable += `<td>${value.SEAT_NAME}</td>`;
-                        deskTable += `<td>${value.ZONE_NAME}</td>`;
-                        deskTable += `<td>${value.SEAT_AMOUNT}</td>`;
-                        deskTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
-                        deskTable += `</tr>`;
-                        rowd++;
-                    });
+                $.each(data.desk, function (key, value) {
+                    deskTable += `<tr id="rowd${rowd}">`;
+                    deskTable += `<td>${value.SEAT_ID}</td>`;
+                    deskTable += `<td>${value.SEAT_NAME}</td>`;
+                    deskTable += `<td>${value.ZONE_NAME}</td>`;
+                    deskTable += `<td>${value.SEAT_AMOUNT}</td>`;
+                    deskTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
+                    deskTable += `</tr>`;
+                    rowd++;
+                });
+
+
+                $.each(data.desk, function (key, value) {
+                    deskTable += `<tr id="rowd${rowd}">`;
+                    deskTable += `<td>${value.SEAT_ID}</td>`;
+                    deskTable += `<td>${value.SEAT_NAME}</td>`;
+                    deskTable += `<td>${value.ZONE_NAME}</td>`;
+                    deskTable += `<td>${value.SEAT_AMOUNT}</td>`;
+                    deskTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
+                    deskTable += `</tr>`;
+                    rowd++;
                 });
                 deskTable += `</tbody></table>`;
-                // console.log(deskTable);
-
                 $('#deskTableModal').html(deskTable);
                 $('#deskTable').dataTable({
                     "lengthMenu": [
@@ -1813,12 +1833,57 @@ $(document).ready(function () {
                         "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
                     }
                 });
-                $('#deskTable').on('click', '.selectDesk', function () {
-                    var id = $(this).parents('tr').attr('id');
-                    var deskId = $(`#${id} td:nth-child(1)`).html();
-                    alert(deskId);
-                    
+                $('#deskTable #deskBody').on('click','.selectDesk',function(){
+                    alert('hello');
                 });
+
+
+                
+                var karaokeTable = "";
+                var rowk = 1;
+                karaokeTable += `
+                <table id="karaokeTable" class="display table table-bordered">
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อ</th>
+                        <th>โซน</th>
+                        <th>จำนวนคน</th>
+                        <th>ราคาชั่วโมง</th>
+                        <th>ราคาเหมา</th>
+                        <th>เลือก</th> 
+                    </tr>
+                </thead>
+                <tbody id="karaokeBody">
+                `;
+                // console.log(data.karaoke);
+                $.each(data.karaoke, function (key, value) {
+                    karaokeTable += `<tr id="rowk${rowk}">`;
+                    karaokeTable += `<td>${value.SEAT_ID}</td>`;
+                    karaokeTable += `<td>${value.SEAT_NAME}</td>`;
+                    karaokeTable += `<td>${value.ZONE_NAME}</td>`;
+                    karaokeTable += `<td>${value.SEAT_AMOUNT}</td>`;
+                    karaokeTable += `<td>${value.KARAOKE_PRICEPERHOUR}</td>`;
+                    karaokeTable += `<td>${value.KARAOKE_FLATRATE}</td>`;
+                    karaokeTable += `<td><button type="button" class="selectDesk btn btn-primary">เลือก</button></td>`;
+                    karaokeTable += `</tr>`;
+                    rowk++;
+                });
+                karaokeTable += `</tbody></table>`;
+                $('#karaokeTableModal').html(karaokeTable);
+                $('#karaokeTable').dataTable({
+                    "lengthMenu": [
+                        [5, 10, 25, -1],
+                        [5, 10, 25, "All"]
+                    ], "columnDefs": [
+                        { "className": "dt-center", "targets": "_all" }
+                    ], "language": {
+                        "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+                        "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+                    }
+                });
+
+            
             }
         });
     });
@@ -1936,7 +2001,7 @@ $(document).ready(function () {
         }
     });
 
-    $(".sb-topnav .navbar-nav .nav-item a.nav-link").each(function () {
+    $(".navbar .navbar-collapse .navbar-nav .nav-item a.nav-link").each(function () {
         if (this.href === pathhh) {
             $(this).addClass("active");
         }

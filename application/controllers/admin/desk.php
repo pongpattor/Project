@@ -21,10 +21,14 @@ class desk extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('deskActive')) {
+        if ($this->input->get('deskActive') == 1) {
+            $deskActive =  $this->input->get('deskActive');
+        }
+        else if ($this->input->get('deskActive') == 0) {
             $deskActive = $this->input->get('deskActive');
-        } else {
-            $deskActive = '1,2';
+        }
+         else {
+            $deskActive = '1,0';
         }
         $config['base_url'] = site_url('admin/desk/index');
         $config['total_rows'] = $this->seat_model->countAllDesk($search, $deskActive);
@@ -58,6 +62,11 @@ class desk extends CI_Controller
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'desk_view';
         $this->load->view('admin/main_view', $data);
+        // echo $deskActive;
+        // echo '<pre>';
+        // print_r($data['desk']);
+        // echo '</pre>';
+
     }
 
     public function addDesk()
