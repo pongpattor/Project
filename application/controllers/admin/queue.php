@@ -38,4 +38,9 @@ class queue extends CI_Controller
         $data['karaoke'] = $this->queue_model->selectKaraoke();
         echo json_encode($data);
     }
+
+    public function insertQueue(){
+        $data['input'] = $_POST;
+        echo json_encode($data);
+    }
 }

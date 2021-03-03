@@ -1844,7 +1844,7 @@ $(document).ready(function () {
                     var txtDeskTable = `<tr id="rowsd${rowsd}">
                                             <td style="text-align: center;" class="align-middle">
                                             <input type="text" value="${deskName}" style="text-align: center;" class="form-control"  disabled>
-                                            <input type="hidden" name="deskID[]" value="${deskID}">
+                                            <input type="hidden" name="deskID[]" class="deskID" value="${deskID}">
                                             </td>
                                             <td style="text-align: center;" class="align-middle">
                                             <input type="text" value="${deskAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
@@ -1925,7 +1925,7 @@ $(document).ready(function () {
                     <tr id="rowsk${rowsk}">
                         <td style="text-align: center;" class="align-middle">
                             <input type="text" value="${karaokeName}" style="text-align: center;" class="form-control"  disabled>
-                            <input type="hidden" name="deskID[]" value="${karaokeID}">
+                            <input type="hidden" name="karaokeID[]" class="karaokeID" value="${karaokeID}">
                         </td>
                         <td style="text-align: center;" class="align-middle">
                             <input type="text" value="${karaokeAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
@@ -1938,7 +1938,7 @@ $(document).ready(function () {
                             </select>
                         </td>
                         <td>
-                            <input type="number" name="karaokeUseAmount" class="form-control" min="1" max="24" value="1" required>
+                            <input type="number" name="karaokeUseAmount" class="form-control karaokeUseAmount" min="1" max="24" value="1" required>
                         </td>
                         <td style="text-align: center;" class="align-middle">
                            <button type="button" class="btn btn-danger deleteSK" value="${rowsk}">ลบ</button>
@@ -1952,7 +1952,7 @@ $(document).ready(function () {
                     $('#seatAll').val(seatAll);
                     // alert(rowId+" "+karaokeID+" "+karaokeName+" "+karaokeAmount);
 
-                 
+
                 });
             }
         });
@@ -1968,9 +1968,114 @@ $(document).ready(function () {
         $('#seatAll').val(seatAll);
     });
 
-    $('#SkaraokeTable #SkaraokeBody').on('change','.karaokeUseType',function(){
-        var type = $(this).val();
-        alert(type);
+    $('#SkaraokeBody').on('click', '.deleteSK', function () {
+        var id = $(this).val();
+        $(`#rowsk${id}`).remove();
+        var seatAll = 0;
+        $('.seatAmount').each(function () {
+            seatAll += parseInt($(this).val());
+        });
+        $('#seatAll').val(seatAll);
+    });
+
+    $('#SkaraokeTable #SkaraokeBody').on('change', '.karaokeUseType', function () {
+        var rowsk = $(this).parents('tr').attr('id');
+        var type = $(`#${rowsk} td:nth-child(3) .karaokeUseType`).val();
+        if (type == 1) {
+            var s = $(`#${rowsk} td:nth-child(4) .karaokeUseAmount`);
+            s.val(1);
+            s.attr({
+                'max' : 1,
+            });
+        }
+        else {
+            var s = $(`#${rowsk} td:nth-child(4) .karaokeUseAmount`);
+            s.attr({
+                'max' : 24,
+            });
+        }
+    });
+
+    function validationQueueForm(){
+        var Errors = 0;
+        var deskList = [];
+        var karaokeList = [];
+        var breakDesk = 0;
+        var breakKaraoke = 0;
+        var seatAll = parseInt($('#seatAll').val());
+        var customerAmount =  parseInt($('#customerAmount').val());
+        if(seatAll > customerAmount){
+            $('#customerAmountError').html('');
+        }
+        else{
+            $('#customerAmountError').html('***จำนวนคนมากกว่าจำนวนที่นั่ง');
+            Errors = 1;
+        }
+
+        $('.deskID').each(function(){
+            deskList.push($(this).val());
+            for(var i = 0; i<deskList.length;i++){
+                for(var j =0;j<deskList.length;j++){
+                    if(i==j){
+                        continue;
+                    }
+                    else if(deskList[i] == deskList[j]){
+                        $('#deskError').html('***กรุณาอย่าเลือกโต๊ะซ้ำ')
+                        Errors =1;
+                        breakDesk = 1;
+                        break;  
+                    }
+                }
+                if(breakDesk == 1){
+                    break;
+                }
+                else{
+                    $('#deskError').html('')
+                }
+            }
+        });
+
+        $('.karaokeID').each(function(){
+            karaokeList.push($(this).val());
+            for(var i = 0; i<karaokeList.length;i++){
+                for(var j =0;j<karaokeList.length;j++){
+                    if(i==j){
+                        continue;
+                    }
+                    else if(karaokeList[i] == karaokeList[j]){
+                        $('#karaokeError').html('***กรุณาอย่าเลือกห้องคาราโอเกะซ้ำ')
+                        Errors =1;
+                        breakKaraoke = 1;
+                        break;  
+                    }
+                }
+                if(breakKaraoke == 1){
+                    break;
+                }
+                else{
+                    $('#karaokeError').html('')
+                }
+            }
+        });
+        return Errors;
+    }
+
+    $('#addQueueForm').on('submit',function(e){
+        e.preventDefault();
+        var Errors = validationQueueForm();
+        if(Errors == 0){
+            $.ajax({
+                url : "../queue/insertQueue",
+                method : "POST",
+                data : $(this).serialize(),
+                dataType : "JSON",
+                success:function(data){
+                    console.log(data);
+                }
+            });
+        }else{
+            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        }
     });
     //QUEUE END
 

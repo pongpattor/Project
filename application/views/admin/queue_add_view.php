@@ -29,12 +29,13 @@
                         </div>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label for="customerAmount">จำนวนคน </label>
-                                <input type="number" class="form-control" name="customerAmount" min="1" value="1" required>
+                                <label for="customerAmount">จำนวนคน <span id="customerAmountError" style="color:red"></span>
+                                </label>
+                                <input type="number" class="form-control" name="customerAmount" id="customerAmount" min="1" value="1" required>
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="seatAll">จำนวนที่นั่งทั้งหมด </label>
-                                <input type="number" class="form-control" name="seatAll" id="seatAll"  disabled>
+                                <input type="number" class="form-control" name="seatAll" id="seatAll" disabled>
                             </div>
                         </div>
                         <div class="row">
@@ -56,6 +57,7 @@
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deskModal">
                                             เลือกโต๊ะ
                                         </button>
+                                        <span id="deskError" style="color:red;"></span>
                                         <!-- Modal -->
                                         <div class="modal fade" id="deskModal" tabindex="-1" role="dialog" aria-labelledby="deskModalLabel" aria-hidden="true">
                                             <div class="modal-dialog  modal-lg" role="document">
@@ -114,6 +116,7 @@
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#karokeModal">
                                             เลือกห้องคาราโอเกะ
                                         </button>
+                                        <span id="karaokeError" style="color:red;"></span>
                                         <!-- Modal -->
                                         <div class="modal fade" id="karokeModal" tabindex="-1" role="dialog" aria-labelledby="karaokeModalLabel" aria-hidden="true">
                                             <div class="modal-dialog  modal-lg" role="document">
@@ -168,7 +171,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>   
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
