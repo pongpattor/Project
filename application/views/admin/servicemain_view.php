@@ -24,7 +24,7 @@
 </head>
 
 <body>
-  
+
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-brand">
@@ -36,7 +36,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" href="<?= site_url('admin/service') ?>"  style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
+                    <a class="nav-link" href="<?= site_url('admin/service') ?>" style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= site_url('admin/queue') ?>" style="margin-left: 30px; margin-right: 30px;">คิวล่วงหน้า</a>
@@ -69,9 +69,11 @@
     </nav>
     <main>
         <div id="content" class="container-fluid">
-            <?php $this->load->view('admin/' . $page); ?>
+            <?php $this->load->view('admin/' . $page); 
+            ?>
         </div>
     </main>
+
 </body>
 
 </html>

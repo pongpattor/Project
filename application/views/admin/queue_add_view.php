@@ -23,7 +23,7 @@
                                 <input type="text" name="customerName" id="deskName" class="form-control" required maxlength="50">
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
-                                <label for="customerTel">เบอร์โทร </label>
+                                <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>
                                 <input type="tel" class="form-control" name="customerTel" maxlength="10" minlength="10" required>
                             </div>
                         </div>
@@ -35,18 +35,22 @@
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="seatAll">จำนวนที่นั่งทั้งหมด </label>
-                                <input type="number" class="form-control" name="seatAll" id="seatAll" disabled>
+                                <input type="number" class="form-control" name="seatAll" id="seatAll" value="0" disabled>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
+                                <label for="queueDateTime">วันเวลาที่จอง </label>
+                                <input type="datetime-local" name="queueDateTime" id="queueDateTime" class="form-control" required min="<?php echo date('Y-m-d')."T00:00:00"?>">
+                            </div>
+                            <!-- <div class="col-sm col-md col-xl-6 ">
                                 <label for="queueDate">วันที่จอง </label>
                                 <input type="date" name="queueDate" id="queueDate" class="form-control" required min="<?php echo date('Y-m-d') ?>">
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="queueTime">เวลาที่จอง </label>
                                 <input type="time" name="queueTime" class="form-control" required>
-                            </div>
+                            </div> -->
                         </div>
                         <br>
                         <div class="row">
@@ -171,6 +175,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <span id="seatAllError" style="color:red;"></span>
+
                             </div>
                         </div>
                         <div class="row">

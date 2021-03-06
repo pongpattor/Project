@@ -91,7 +91,7 @@
                 </form>
                 <div class="row">
                     <div class="col-12">
-                        <!-- <?php
+                        <?php
                                 echo '<div class="row">';
                                 echo '<div class="col-12">';
                                 echo '<div class="row">';
@@ -99,58 +99,65 @@
                         <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
                         <?php echo '</div>';
                         echo '<div class="col-4">';
-                        echo '<p class="float-right">จำนวน ' . $total . ' โต๊ะ</p>';
+                        echo '<p class="float-right">จำนวน ' . $total . ' คิว</p>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        ?> -->
+                        ?>
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
                                     <table class="table  table-bordered table-sm" width="100%" cellspacing="0">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th style="text-align: center;">รหัสโต๊ะ</th>
-                                                <th style="text-align: center;">ชื่อโต๊ะ</th>
-                                                <th style="text-align: center;">จำนวนที่นั่ง</th>
-                                                <th style="text-align: center;">โซนที่นั่ง</th>
-                                                <th style="text-align: center;">สถานะการใช้งาน</th>
+                                                <th style="text-align: center;">รหัสคิว</th>
+                                                <th style="text-align: center;">ผู้จอง</th>
+                                                <th style="text-align: center;">เบอร์โทร</th>
+                                                <th style="text-align: center;">จำนวนคน</th>
+                                                <th style="text-align: center;">ที่นั่ง</th>
+                                                <th style="text-align: center;">วันเวลาจอง</th>
+                                                <th style="text-align: center;">วันเวลาหลุดจอง</th>
+                                                <th style="text-align: center;">หมายเหตุ</th>
+                                                <th style="text-align: center;">เช็คอิน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
                                                 <th style="text-align: center;">ลบ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <?php foreach ($desk as $row) : ?>
-                                                <tr id="<?= $row->SEAT_ID ?>" class=" bgtable">
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->SEAT_ID; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->SEAT_NAME; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->SEAT_AMOUNT; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->ZONE_NAME; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ACTIVE == '1') {
-                                                                                                                echo 'พร้อมใช้งาน';
-                                                                                                            } else {
-                                                                                                                echo 'ไม่พร้อมใช้งาน';
-                                                                                                            }
-                                                                                                            ?></td>
+                                            <?php foreach ($queue as $row) : ?>
+                                                <tr id="<?= $row->QUEUE_ID ?>" class=" bgtable">
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_ID; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSNAME; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSTEL; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSAMOUNT; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DTSTART; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DTEND; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
+                                                    <td class="align-middle">
+                                                        <center>
+                                                                <button type="button" name="deskID" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-users"></i></button>
+                                                        </center>
+                                                    </td>
 
                                                     <td class="align-middle">
                                                         <center>
                                                             <form action="<?= site_url('admin/desk/editDesk') ?>" method="get">
-                                                                <button name="deskID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->SEAT_ID ?>"><i class="fa fa-edit"></i></button>
+                                                                <button name="deskID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
                                                         </center>
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row->SEAT_ID ?>"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-trash"></i></button>
                                                         </center>
                                                     </td>
                                                 </tr>
-                                            <?php endforeach; ?> -->
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
-                                    <!-- <?php if ($links != null) {
+                                    <?php if ($links != null) {
                                                 echo $links;
                                             } else { ?>
                                         <nav aria-label="Page navigation example">
@@ -159,7 +166,7 @@
 
                                             </ul>
                                         </nav>
-                                    <?php } ?> -->
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

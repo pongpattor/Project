@@ -215,7 +215,7 @@
                     <?php $this->load->view('admin/' . $page); ?>
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
+            <footer class=" py-4 bg-light mt-auto">
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted"><b>Copyright &copy; Your Website 2020</b></div>
