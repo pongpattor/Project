@@ -47,9 +47,18 @@ class queue extends CI_Controller
         $data['queue'] = $this->queue_model->queue($search, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['queueTime'] = $this->queue_model->queuetime();
+        if ($data['queue'] != null) {
+            $arrQueueSeat = [];
+            foreach ($data['queue'] as $row) {
+                array_push($arrQueueSeat, $row->QUEUEID);
+            }
+            $queueID = implode(",", $arrQueueSeat);
+            $data['queueSeat'] = $this->queue_model->selectQueueSeat($queueID);
+        }
         $data['page'] = 'queue_view';
         $this->load->view('admin/servicemain_view', $data);
-        // print_r($_SESSION['employeeID']);
+
+
     }
 
     public function updateQueueTime()
@@ -95,17 +104,15 @@ class queue extends CI_Controller
             $customerName = $this->input->post('customerName');
             $customerAmount = $this->input->post('customerAmount');
             $desk = $this->input->post('deskID');
-            if($desk == null){
+            if ($desk == null) {
                 $countDesk = 0;
-            }
-            else{
+            } else {
                 $countDesk = count($desk);
             }
             $karaoke = $this->input->post('karaokeID');
-            if($karaoke == null){
+            if ($karaoke == null) {
                 $countKaraoke = 0;
-            }
-            else{
+            } else {
                 $countKaraoke = count($karaoke);
             }
             $karaokeAmount = $this->input->post('karaokeUseAmount');
@@ -158,7 +165,6 @@ class queue extends CI_Controller
                     $this->crud_model->insert('queuekaraoke', $dataQSK);
                 }
                 $data['karaoke'] = 'success';
-
             }
             $data['url'] = site_url('admin/queue');
         }
@@ -187,5 +193,16 @@ class queue extends CI_Controller
                 return $id;
             }
         }
+    }
+
+    public function editQueue(){
+        $queueID = $this->input->get('queueID');
+        $data['queue'] = $this->queue_model->editqueue($queueID);
+        $data['queueSeat'] = $this->queue_model->editQueueSeat($queueID);
+        $data['page'] = 'queue_edit_view';
+        // $this->load->view('admin/servicemain_view',$data);
+        echo '<pre>';
+        print_r($data['queueSeat']);
+        echo '</pre>';
     }
 }

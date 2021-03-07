@@ -454,7 +454,6 @@ $(document).ready(function () {
         });
         for (var i = 0; i < telList.length; i++) {
             for (var j = 0; j < telList.length; j++) {
-
                 if (i == j) {
                     // console.log('continue');
                     continue;

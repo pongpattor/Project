@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
-                    <h3 class="d-inline">เพิ่มคิวล่วงหน้า</h3>
+                    <h3 class="d-inline">แก้ไขคิวล่วงหน้า</h3>
                 </div>
             </div>
         </div>
@@ -17,6 +17,13 @@
             <div class="card boder-0 shadow-lg">
                 <div class="card-body">
                     <form method="POST" id="addQueueForm">
+                        <div class="row">
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label for="employeeName">พนักงานที่รับจอง </label>
+                                <input type="text" name="employeeName" id="employeeName" class="form-control" disabled >
+                                <input type="hidden" name="employeeID">
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="customerName">ชื่อผู้จอง </label>
@@ -41,7 +48,7 @@
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="queueDateTime">วันเวลาที่จอง </label>
-                                <input type="datetime-local" name="queueDateTime" id="queueDateTime" class="form-control" required min="<?php echo date('Y-m-d')."T00:00:00"?>">
+                                <input type="datetime-local" name="queueDateTime" id="queueDateTime" class="form-control" required min="<?php echo date('Y-m-d') . "T00:00:00" ?>">
                             </div>
                         </div>
                         <br>

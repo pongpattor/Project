@@ -9,20 +9,16 @@
                     </div>
                     <div class="col">
                         <div class="row ">
-                            <!-- <div class="col-8">
-                                <h5 class="align-middle text-center float right">เวลาเลยกำหนด <span id="time"><?php foreach ($queueTime  as $row) {
-                                                                                                                    echo $row->QUEUETYPE_TIME;
-                                                                                                                } ?></span> นาที</h5>
-                            </div> -->
+
                             <div class="col">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary  float-right" data-toggle="modal" data-target="#queueTimeModal">
                                     ตั้งค่าเวลาเลยกำหนด
                                 </button>
                                 <h4 class=" float-right">เวลาเลยกำหนด <span id="queueTimeShow"><?php foreach ($queueTime  as $row) {
-                                                                                                                    echo $row->QUEUETYPE_TIME;
-                                                                                                                } ?></span> นาที</h4>
-                                                                                                            
+                                                                                                    echo $row->QUEUETYPE_TIME;
+                                                                                                } ?></span> นาที</h4>
+
                                 <!-- Modal -->
                                 <div class="modal fade" id="queueTimeModal" tabindex="-1" role="dialog" aria-labelledby="queueTimeModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -92,10 +88,10 @@
                 <div class="row">
                     <div class="col-12">
                         <?php
-                                echo '<div class="row">';
-                                echo '<div class="col-12">';
-                                echo '<div class="row">';
-                                echo '<div class="col-8">'; ?>
+                        echo '<div class="row">';
+                        echo '<div class="col-12">';
+                        echo '<div class="row">';
+                        echo '<div class="col-8">'; ?>
                         <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
                         <?php echo '</div>';
                         echo '<div class="col-4">';
@@ -119,6 +115,7 @@
                                                 <th style="text-align: center;">วันเวลาจอง</th>
                                                 <th style="text-align: center;">วันเวลาหลุดจอง</th>
                                                 <th style="text-align: center;">หมายเหตุ</th>
+                                                <th style="text-align: center;">สถานะ</th>
                                                 <th style="text-align: center;">เช็คอิน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
                                                 <th style="text-align: center;">ลบ</th>
@@ -131,20 +128,32 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSNAME; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSTEL; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSAMOUNT; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"></td>
+                                                    <td class="align-middle" style="text-align: center;">
+                                                        <?php
+                                                        $i = 1;
+                                                        foreach ($queueSeat as $row2) {
+                                                            if ($row2->QS_QUEUEID == $row->QUEUE_ID) {
+                                                                echo $row2->SEAT_NAME . ' ';
+                                                                $i++;
+                                                                if($i%4==0){
+                                                                    echo '<br>';
+                                                                }
+                                                            }                                             
+                                                        } ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DTSTART; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DTEND; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"></td>
                                                     <td class="align-middle">
                                                         <center>
-                                                                <button type="button" name="deskID" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-users"></i></button>
+                                                            <button type="button" name="deskID" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-users"></i></button>
                                                         </center>
                                                     </td>
 
                                                     <td class="align-middle">
                                                         <center>
-                                                            <form action="<?= site_url('admin/desk/editDesk') ?>" method="get">
-                                                                <button name="deskID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-edit"></i></button>
+                                                            <form action="<?= site_url('admin/queue/editQueue') ?>" method="get">
+                                                                <button name="queueID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
                                                         </center>
                                                     </td>
@@ -158,8 +167,8 @@
                                         </tbody>
                                     </table>
                                     <?php if ($links != null) {
-                                                echo $links;
-                                            } else { ?>
+                                        echo $links;
+                                    } else { ?>
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
                                                 <li class="page-item active"><a class="page-link ">1</a></li>

@@ -83,6 +83,18 @@ class queue_model extends CI_Model
         }
     }
 
+    public function selectQueueSeat($queueID)
+    {
+        $sql = "SELECT queueseat.QS_QUEUEID,seat.SEAT_NAME 
+                FROM queueseat JOIN seat ON queueseat.QS_SEATID = seat.SEAT_ID
+                WHERE queueseat.QS_QUEUEID IN ($queueID)";
+        $query = $this->db->query($sql);
+        //   echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
+    }
+
     public function queueTime()
     {
         $sql = "SELECT QUEUETYPE_TIME FROM queuetype
@@ -123,6 +135,33 @@ class queue_model extends CI_Model
         AND seat.SEAT_ACTIVE = 1
         AND seat.SEAT_QUEUE = 1) as karaoke
         ON karaoke.SEAT_ZONE = zone.ZONE_ID";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function editqueue($queueID)
+    {
+        $sql = "SELECT employee.EMPLOYEE_ID,employee.EMPLOYEE_FIRSTNAME,employee.EMPLOYEE_LASTNAME,
+        queue.QUEUE_ID,queue.QUEUE_CUSNAME,queue.QUEUE_CUSTEL,queue.QUEUE_CUSAMOUNT,
+        queue.QUEUE_DTSTART,queue.QUEUE_NOTE,qs.amt
+        FROM queue JOIN employee 
+        ON queue.QUEUE_EMPLOYEE = employee.EMPLOYEE_ID
+        JOIN  (SELECT queueseat.QS_QUEUEID,SUM(seat.SEAT_AMOUNT) AS amt FROM queueseat JOIN seat ON queueseat.QS_SEATID = seat.SEAT_ID
+        GROUP BY queueseat.QS_QUEUEID) qs
+        ON qs.QS_QUEUEID = queue.QUEUE_ID
+        where queue.QUEUE_ID = '$queueID'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function editQueueSeat($queueID)
+    {
+        $sql = "SELECT seat.SEAT_NAME,seat.SEAT_TYPE,qs.QS_QUEUEID,qs.QS_SEATID,qs.QSK_KARAOKEUSETYPE,qs.QSK_KARAOKEUSEAMOUNT FROM seat JOIN (
+            SELECT queueseat.QS_QUEUEID,queueseat.QS_SEATID,queuekaraoke.QSK_KARAOKEUSETYPE,queuekaraoke.QSK_KARAOKEUSEAMOUNT
+            FROM queueseat LEFT JOIN queuekaraoke
+            ON (queueseat.QS_QUEUEID = queuekaraoke.QSK_QUEUEID AND queueseat.QS_SEATID = queuekaraoke.QSK_KARAOKEID)) qs
+            ON seat.SEAT_ID = qs.QS_SEATID
+            WHERE qs.QS_QUEUEID = '$queueID'";
         $query = $this->db->query($sql);
         return $query->result();
     }
