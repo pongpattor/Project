@@ -16,8 +16,17 @@ class queue extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
+        if ($this->input->get('queueStatus') == '1') {
+            $queueStatus =  1;
+        } else if ($this->input->get('queueStatus') == '2') {
+            $queueStatus = 2;
+        } else if ($this->input->get('queueStatus') == '3') {
+            $queueStatus = 3;
+        } else {
+            $queueStatus = '1,2,3';
+        }
         $config['base_url'] = site_url('admin/recipe/index');
-        $config['total_rows'] = $this->queue_model->countAllQueue($search);
+        $config['total_rows'] = $this->queue_model->countAllQueue($search, $queueStatus);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -44,7 +53,7 @@ class queue extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['queue'] = $this->queue_model->queue($search, $limit, $offset);
+        $data['queue'] = $this->queue_model->queue($search, $queueStatus, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['queueTime'] = $this->queue_model->queuetime();
         if ($data['queue'] != null) {
@@ -57,8 +66,6 @@ class queue extends CI_Controller
         }
         $data['page'] = 'queue_view';
         $this->load->view('admin/servicemain_view', $data);
-
-
     }
 
     public function updateQueueTime()
@@ -76,33 +83,37 @@ class queue extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
-    public function queueDesk()
+    public function selectSeat()
     {
-        $data['date'] = $_POST['queueDate'];
-        $data['desk'] = $this->queue_model->selectDesk();
-        $data['karaoke'] = $this->queue_model->selectKaraoke();
+        $date = $_POST['queueDate'];
+        $data['seat'] = $this->queue_model->selectSeat($date);
         echo json_encode($data);
     }
 
     public function insertQueue()
     {
         $data['status'] = true;
+        $data['input'] = $_POST;
         $customerTel = $this->input->post('customerTel');
-        $queueDateTime = $this->input->post('queueDateTime');
-        $dtString = strtotime($queueDateTime);
-        $checkDateQueue = date('Y-m-d', $dtString);
-        $queueNo = $this->queue_model->CheckQueue($customerTel, $checkDateQueue);
+        $queueDStart = $this->input->post('queueDate');
+        $queueNo = $this->queue_model->CheckQueue($customerTel, $queueDStart);
         if ($queueNo != 0) {
             $data['status'] = false;
         }
         if ($data['status'] == true) {
             $queue['queueType'] = $this->crud_model->findselectWhere('queuetype', 'QUEUETYPE_TIME', 'QUEUETYPE_ID', '1');
-            $dtLatestring = $dtString + (60 * $queue['queueType']['0']->QUEUETYPE_TIME);
+            $queueTStart = $this->input->post('queueTime');
+            $queueTEnd = strtotime($queueTStart);
+            $queueTEnd += 60 * $queue['queueType']['0']->QUEUETYPE_TIME;
+            $queueTEnd = date('H:i', $queueTEnd);
             $queueID = $this->genIdQueue();
-            $dateTimeQueue = date('Y-m-d H:i:s', $dtString);
-            $dateTimeLate = date('Y-m-d H:i:s', $dtLatestring);
             $customerName = $this->input->post('customerName');
             $customerAmount = $this->input->post('customerAmount');
+            $note = $this->input->post('note');
+            $queueType = 1; #จองคิวล่วงหน้า
+            $queueActive = 1; #1 Wait #2Use #3Late
+            $queueStatus = 1;
+            $employeeID = $_SESSION['employeeID'];
             $desk = $this->input->post('deskID');
             if ($desk == null) {
                 $countDesk = 0;
@@ -117,24 +128,22 @@ class queue extends CI_Controller
             }
             $karaokeAmount = $this->input->post('karaokeUseAmount');
             $karaokeUseType = $this->input->post('karaokeUseType');
-            $note = $this->input->post('note');
-            $queueType = 1; #จองคิวล่วงหน้า
-            $queueActive = 1; #1 Wait #2Use #3Late
-            $queueStatus = 1;
-            $employeeID = $_SESSION['employeeID'];
             $dataQueue = array(
                 'QUEUE_ID' => $queueID,
                 'QUEUE_CUSNAME' => $customerName,
                 'QUEUE_CUSAMOUNT' => $customerAmount,
                 'QUEUE_CUSTEL' => $customerTel,
-                'QUEUE_DTSTART' => $dateTimeQueue,
-                'QUEUE_DTEND' => $dateTimeLate,
+                'QUEUE_DSTART' => $queueDStart,
+                'QUEUE_TSTART' => $queueTStart,
+                'QUEUE_DEND' => $queueDStart,
+                'QUEUE_TEND' => $queueTEnd,
                 'QUEUE_NOTE' => $note,
                 'QUEUE_TYPE' => $queueType,
                 'QUEUE_ACTIVE' => $queueActive,
                 'QUEUE_STATUS' => $queueStatus,
                 'QUEUE_EMPLOYEE' => $employeeID,
             );
+
             $this->crud_model->insert('queue', $dataQueue);
             if ($countDesk > 0) {
                 for ($i = 0; $i < $countDesk; $i++) {
@@ -144,7 +153,6 @@ class queue extends CI_Controller
                     );
                     $this->crud_model->insert('queueseat', $dataQS);
                 }
-                $data['desk'] = 'success';
             }
             if ($countKaraoke > 0) {
                 for ($i = 0; $i < $countKaraoke; $i++) {
@@ -164,7 +172,6 @@ class queue extends CI_Controller
                     );
                     $this->crud_model->insert('queuekaraoke', $dataQSK);
                 }
-                $data['karaoke'] = 'success';
             }
             $data['url'] = site_url('admin/queue');
         }
@@ -195,14 +202,23 @@ class queue extends CI_Controller
         }
     }
 
-    public function editQueue(){
+    public function editQueue()
+    {
         $queueID = $this->input->get('queueID');
         $data['queue'] = $this->queue_model->editqueue($queueID);
         $data['queueSeat'] = $this->queue_model->editQueueSeat($queueID);
+        $date =  $data['queue']['0']->QUEUE_DSTART;
+        $data['seat'] = $this->queue_model->selectSeat($date);
         $data['page'] = 'queue_edit_view';
-        // $this->load->view('admin/servicemain_view',$data);
-        echo '<pre>';
-        print_r($data['queueSeat']);
-        echo '</pre>';
+        $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function updateQueue()
+    {
+        $data['status'] = true;
+        $data['test'] = $_POST;
+        
+
+        echo json_encode($data);
     }
 }

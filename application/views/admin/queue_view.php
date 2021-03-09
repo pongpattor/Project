@@ -66,6 +66,23 @@
                     <div class="row">
                         <div class="col-10">
                             <div class="row">
+                                <div class="col-3 form-group row">
+                                    <div class="col-3"> <label for="queueStatus" class="col-form-label">สถานะ</label></div>
+                                    <div class="col">
+                                        <select name="queueStatus" id="queueStatus" class="form-control">
+                                            <option value="1,2,3" selected>ทั้งหมด</option>
+                                            <option value="1" <?php if ($this->input->get('queueStatus') == '1') {
+                                                                    echo 'selected';
+                                                                } ?>>จองคิว</option>
+                                            <option value="2" <?php if ($this->input->get('queueStatus') == '2') {
+                                                                    echo 'selected';
+                                                                } ?>>เข้าใช้งานคิว</option>
+                                            <option value="3" <?php if ($this->input->get('queueStatus') == '3') {
+                                                                    echo 'selected';
+                                                                } ?>>หมดเวลาจองคิว</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col">
                                     <div class="row form-group">
                                         <div class="col">
@@ -135,15 +152,25 @@
                                                             if ($row2->QS_QUEUEID == $row->QUEUE_ID) {
                                                                 echo $row2->SEAT_NAME . ' ';
                                                                 $i++;
-                                                                if($i%4==0){
+                                                                if ($i % 4 == 0) {
                                                                     echo '<br>';
                                                                 }
-                                                            }                                             
+                                                            }
                                                         } ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DTSTART; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DTEND; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DSTART.' '.$row->QUEUE_TSTART; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND.' '.$row->QUEUE_TEND; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"></td>
+                                                    <td class="align-middle" style="text-align: center;">
+                                                        <?php if ($row->QUEUE_STATUS == '1') {
+                                                            echo 'จองคิว';
+                                                        } else if ($row->QUEUE_STATUS == '2') {
+                                                            echo 'เข้าใช้งานคิว';
+                                                        } else if ($row->QUEUE_STATUS == '3') {
+                                                            echo 'หมดเวลาจองคิว';
+                                                        } else {
+                                                            echo 'ยกเลิกคิว';
+                                                        } ?>
+                                                    </td>
                                                     <td class="align-middle">
                                                         <center>
                                                             <button type="button" name="deskID" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-users"></i></button>

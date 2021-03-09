@@ -40,8 +40,13 @@
                         </div>
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
-                                <label for="queueDateTime">วันเวลาที่จอง </label>
-                                <input type="datetime-local" name="queueDateTime" id="queueDateTime" class="form-control" required min="<?php echo date('Y-m-d')."T00:00:00"?>">
+                                <label for="queueDate">วันเวลาที่จอง  </label>
+                               
+                                <input type="date" name="queueDate" id="queueDate" class="form-control" required min="<?php echo date('Y-m-d')?>" >
+                            </div>
+                            <div class="col-sm col-md col-xl-6 ">
+                                <label for="queueTime">วันเวลาที่จอง </label>
+                                <input type="time" name="queueTime" id="queueTime" class="form-control" required  min="09:00" max="21:00">
                             </div>
                         </div>
                         <br>
