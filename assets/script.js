@@ -1740,6 +1740,7 @@ $(document).ready(function () {
     //PromotionPrice End
 
     //QUEUE START
+
     $('#queueTimeForm').on('submit', function (e) {
         e.preventDefault();
         $.ajax({
@@ -1752,6 +1753,7 @@ $(document).ready(function () {
             }
         });
     });
+
 
 
     $('#deskTable').dataTable({
@@ -1880,44 +1882,6 @@ $(document).ready(function () {
                     }
                 });
 
-                $('#deskTableModal #deskTable #deskBody').on('click', '.selectDesk', function () {
-                    var rowId = $(this).parents('tr').attr('id');
-                    var deskID = $(`#${rowId} td`).html();
-                    var deskName = $(`#${rowId} td:nth-child(2)`).html();
-                    var deskAmount = $(`#${rowId} td:nth-child(4)`).html();
-                    // alert(deskAmount);
-                    var idTr = $('#SdeskBody tr:last-child').attr('id');
-
-                    if (idTr == null) {
-                        var rowsd = 1;
-                    } else {
-                        idTr = idTr.substr(5);
-                        var rowsd = parseInt(idTr) + 1;
-                    }
-                    // alert(rowsd);
-                    var txtDeskTable = `<tr id="rowsd${rowsd}">
-                                                        <td style="text-align: center;" class="align-middle">
-                                                        <input type="text" value="${deskName}" style="text-align: center;" class="form-control"  disabled>
-                                                        <input type="hidden" name="deskID[]" class="deskID" value="${deskID}">
-                                                        </td>
-                                                        <td style="text-align: center;" class="align-middle">
-                                                        <input type="text" value="${deskAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
-                                                        </td>
-                                                        <td style="text-align: center;" class="align-middle">
-                                                            <button type="button" class="btn btn-danger deleteSD" value="${rowsd}">ลบ</button>
-                                                        </td>
-                                                    </tr>`;
-                    $('#SdeskBody').append(txtDeskTable);
-
-                    var seatAll = 0;
-                    $('.seatAmount').each(function () {
-                        seatAll += parseInt($(this).val());
-                    });
-                    $('#seatAll').val(seatAll);
-                });
-
-
-
                 karaokeTable += `</tbody></table>`;
                 $('#karaokeTableModal').html(karaokeTable);
                 $('#karaokeTable').dataTable({
@@ -1931,54 +1895,11 @@ $(document).ready(function () {
                         "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
                     }
                 });
-
-                $('#karaokeTable #karaokeBody').on('click', '.selectKaraoke', function () {
-                    var rowId = $(this).parents('tr').attr('id');
-                    var karaokeID = $(`#${rowId} td`).html();
-                    var karaokeName = $(`#${rowId} td:nth-child(2)`).html();
-                    var karaokeAmount = $(`#${rowId} td:nth-child(4)`).html();
-                    var idTr = $('#SkaraokeBody tr:last-child').attr('id');
-                    if (idTr == null) {
-                        var rowsk = 1;
-                    } else {
-                        idTr = idTr.substr(5);
-                        var rowsk = parseInt(idTr) + 1;
-                    }
-                    var txtKaraokeTable = `
-                        <tr id="rowsk${rowsk}">
-                            <td style="text-align: center;" class="align-middle">
-                                <input type="text" value="${karaokeName}" style="text-align: center;" class="form-control"  disabled>
-                                <input type="hidden" name="karaokeID[]" class="karaokeID" value="${karaokeID}">
-                            </td>
-                            <td style="text-align: center;" class="align-middle">
-                                <input type="text" value="${karaokeAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
-                            </td>
-                            <td>
-                                <select name="karaokeUseType[]" class="form-control karaokeUseType" required>
-                                    <option value="" selected disabled>กรุณาเลือกประเภทใช้งาน</option>
-                                    <option value="1">เหมาห้อง</option>
-                                    <option value="2">รายชั่วโมง</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" name="karaokeUseAmount[]" class="form-control karaokeUseAmount" min="1" max="24" value="1" required>
-                            </td>
-                            <td style="text-align: center;" class="align-middle">
-                               <button type="button" class="btn btn-danger deleteSK" value="${rowsk}">ลบ</button>
-                            </td>
-                        </tr>`;
-                    $('#SkaraokeBody').append(txtKaraokeTable);
-                    var seatAll = 0;
-                    $('.seatAmount').each(function () {
-                        seatAll += parseInt($(this).val());
-                    });
-                    $('#seatAll').val(seatAll);
-                });
             }
         });
     });
 
-    $('#deskTableModal #deskTable #deskBody').on('click', '.selectDesk', function () {
+    $('#deskTableModal').on('click', ' #deskTable #deskBody .selectDesk', function () {
         var rowId = $(this).parents('tr').attr('id');
         var deskID = $(`#${rowId} td`).html();
         var deskName = $(`#${rowId} td:nth-child(2)`).html();
@@ -2013,7 +1934,7 @@ $(document).ready(function () {
         });
         $('#seatAll').val(seatAll);
     });
-    $('#karaokeTableModal #karaokeTable #karaokeBody').on('click', '.selectKaraoke', function () {
+    $('#karaokeTableModal').on('click', ' #karaokeTable #karaokeBody .selectKaraoke', function () {
         var rowId = $(this).parents('tr').attr('id');
         var karaokeID = $(`#${rowId} td`).html();
         var karaokeName = $(`#${rowId} td:nth-child(2)`).html();
@@ -2213,22 +2134,63 @@ $(document).ready(function () {
                     dataType: "JSON",
                     success: function (data) {
                         console.log(data);
-                        // if (data.status == true) {
-                        //     alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
-                        //     location.replace(data.url);
-                        // }
-                        // else {
-                        //     $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
-                        //     alert('กรุณากรอกข้อมูลให้ถูกต้อง')
-                        // }
+                        if (data.status == true) {
+                            alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                            location.replace(data.url);
+                        }
+                        else {
+                            $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
+                            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                        }
                     }
                 });
             } else {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง')
             }
         }
-
     });
+
+
+    $('#queueWalkinTimeForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "./queuewalkin/updateQueueWalkinTime",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function () {
+                alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
+                location.reload();
+            }
+        });
+    });
+
+    $('#addQueueWalkinForm').on('submit', function (e) {
+        e.preventDefault();
+        // var Errors = validationQueueForm();
+        // if (Errors == 0) {
+            $.ajax({
+                url: "../queuewalkin/insertQueueWalkin",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    console.log(data);
+                    // if (data.status == true) {
+                    //     alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                    //     location.replace(data.url);
+                    // }
+                    // else {
+                    //     $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
+                    //     alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                    // }
+                }
+            });
+        // } else {
+        //     alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+        // }
+    });
+
+
 
     //QUEUE END
 

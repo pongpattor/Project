@@ -22,6 +22,8 @@
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="employeeName">พนักงานที่รับจอง </label>
                                     <input type="text" name="employeeName" id="employeeName" class="form-control" disabled value="<?= $row->EMPLOYEE_FIRSTNAME . ' ' . $row->EMPLOYEE_LASTNAME; ?>">
+                                    <input type="hidden" name="queueID" value="<?= $row->QUEUE_ID; ?>">
+
                                 </div>
                             </div>
                             <div class="row">
@@ -32,6 +34,7 @@
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>
                                     <input type="tel" class="form-control" name="customerTel" maxlength="10" minlength="10" required value="<?= $row->QUEUE_CUSTEL; ?>">
+                                    <input type="hidden" name="customerTelOld" value="<?= $row->QUEUE_CUSTEL; ?>">
                                 </div>
                             </div>
                             <div class="row">
@@ -49,6 +52,7 @@
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="queueDate">วันเวลาที่จอง </label>
                                     <input type="date" name="queueDate" id="queueDate" class="form-control" required min="<?php echo date('Y-m-d') ?>" value="<?= $row->QUEUE_DSTART ?>">
+                                    <input type="hidden" name="queueDateOld" id="queueDateOld"  value="<?= $row->QUEUE_DSTART ?>">
                                 </div>
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="queueTime">วันเวลาที่จอง </label>

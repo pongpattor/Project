@@ -42,7 +42,7 @@
                     <a class="nav-link" href="<?= site_url('admin/queue') ?>" style="margin-left: 30px; margin-right: 30px;">คิวล่วงหน้า</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">คิวหน้าร้าน</a>
+                    <a class="nav-link" href="<?= site_url('admin/queuewalkin') ?>" style="margin-left: 30px; margin-right: 30px;">คิวหน้าร้าน</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">บริการในร้าน</a>

@@ -29,7 +29,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form method="POST" id="queueTimeForm">
+                                            <form method="POST" id="queueWalkinTimeForm">
                                                 <div class="modal-body">
                                                     <?php foreach ($queueTime  as $row) : ?>
                                                         <div class="row justify-content-center">
@@ -98,13 +98,13 @@
                             </div>
                         </div>
                         <div class="col-2">
-                            <a href="<?= site_url('admin/queue/addQueue') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
+                            <a href="<?= site_url('admin/queuewalkin/addQueueWalkin') ?>" class="btn btn-info float-right"><i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                 </form>
                 <div class="row">
                     <div class="col-12">
-                        <?php
+                        <!-- <?php
                         echo '<div class="row">';
                         echo '<div class="col-12">';
                         echo '<div class="row">';
@@ -117,7 +117,7 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        ?>
+                        ?> -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
@@ -139,7 +139,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($queue as $row) : ?>
+                                            <!-- <?php foreach ($queue as $row) : ?>
                                                 <tr id="<?= $row->QUEUE_ID ?>" class=" bgtable">
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_ID; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSNAME; ?></td>
@@ -192,10 +192,10 @@
                                                         </center>
                                                     </td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php endforeach; ?> -->
                                         </tbody>
                                     </table>
-                                    <?php if ($links != null) {
+                                    <!-- <?php if ($links != null) {
                                         echo $links;
                                     } else { ?>
                                         <nav aria-label="Page navigation example">
@@ -204,7 +204,7 @@
 
                                             </ul>
                                         </nav>
-                                    <?php } ?>
+                                    <?php } ?> -->
                                 </div>
                             </div>
                         </div>

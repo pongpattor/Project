@@ -55,7 +55,7 @@ class queue extends CI_Controller
         $data['total'] = $config['total_rows'];
         $data['queue'] = $this->queue_model->queue($search, $queueStatus, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
-        $data['queueTime'] = $this->queue_model->queuetime();
+        $data['queueTime'] = $this->queue_model->queuetime('1');
         if ($data['queue'] != null) {
             $arrQueueSeat = [];
             foreach ($data['queue'] as $row) {
@@ -217,8 +217,95 @@ class queue extends CI_Controller
     {
         $data['status'] = true;
         $data['test'] = $_POST;
-        
+        $customerTel = $this->input->post('customerTel');
+        $customerTelOld = $this->input->post('customerTelOld');
+        $queueDStart = $this->input->post('queueDate');
+        $queueDateOld = $this->input->post('queueDateOld');
+
+        if ($customerTel != $customerTelOld || $queueDStart != $queueDateOld) {
+            $queueNo = $this->queue_model->CheckQueue($customerTel, $queueDStart);
+            $data['queueno'] = $queueNo;
+            if ($queueNo != 0) {
+                $data['status'] = false;
+            }
+        }
+
+        if ($data['status'] == true) {
+            $queue['queueType'] = $this->crud_model->findselectWhere('queuetype', 'QUEUETYPE_TIME', 'QUEUETYPE_ID', '1');
+            $queueTStart = $this->input->post('queueTime');
+            $queueTEnd = strtotime($queueTStart);
+            $queueTEnd += 60 * $queue['queueType']['0']->QUEUETYPE_TIME;
+            $queueTEnd = date('H:i', $queueTEnd);
+            $queueID = $this->input->post('queueID');
+            $customerName = $this->input->post('customerName');
+            $customerAmount = $this->input->post('customerAmount');
+            $note = $this->input->post('note');
+            $desk = $this->input->post('deskID');
+            if ($desk == null) {
+                $countDesk = 0;
+            } else {
+                $countDesk = count($desk);
+            }
+            $karaoke = $this->input->post('karaokeID');
+            if ($karaoke == null) {
+                $countKaraoke = 0;
+            } else {
+                $countKaraoke = count($karaoke);
+            }
+            $karaokeAmount = $this->input->post('karaokeUseAmount');
+            $karaokeUseType = $this->input->post('karaokeUseType');
+            $dataQueue = array(
+                'QUEUE_CUSNAME' => $customerName,
+                'QUEUE_CUSAMOUNT' => $customerAmount,
+                'QUEUE_CUSTEL' => $customerTel,
+                'QUEUE_DSTART' => $queueDStart,
+                'QUEUE_TSTART' => $queueTStart,
+                'QUEUE_DEND' => $queueDStart,
+                'QUEUE_TEND' => $queueTEnd,
+                'QUEUE_NOTE' => $note,
+            );
+            $this->crud_model->update('queue', $dataQueue, 'QUEUE_ID', $queueID);
+            $this->crud_model->delete('queueseat', 'QS_QUEUEID', $queueID);
+            if ($countDesk > 0) {
+                for ($i = 0; $i < $countDesk; $i++) {
+                    $dataQS = array(
+                        'QS_QUEUEID' => $queueID,
+                        'QS_SEATID' => $desk[$i],
+                    );
+                    $this->crud_model->insert('queueseat', $dataQS);
+                }
+            }
+            if ($countKaraoke > 0) {
+                for ($i = 0; $i < $countKaraoke; $i++) {
+                    $dataQS = array(
+                        'QS_QUEUEID' => $queueID,
+                        'QS_SEATID' => $karaoke[$i],
+
+                    );
+                    $this->crud_model->insert('queueseat', $dataQS);
+                }
+                for ($i = 0; $i < $countKaraoke; $i++) {
+                    $dataQSK = array(
+                        'QSK_QUEUEID' => $queueID,
+                        'QSK_KARAOKEID' => $karaoke[$i],
+                        'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
+                        'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
+                    );
+                    $this->crud_model->insert('queuekaraoke', $dataQSK);
+                }
+            }
+            $data['url'] = site_url('admin/queue');
+        }
 
         echo json_encode($data);
     }
+
+    public function deleteQueue(){
+        $queueID = $this->input->post('queueID');
+        $dataDelete = array(
+            'QUEUE_STATUS' => '0'
+        );
+        $this->crud_model->update('queue',$dataDelete,'QUEUE_ID',$queueID);
+    }
+
 }

@@ -107,10 +107,10 @@ class queue_model extends CI_Model
         return $query->result();
     }
 
-    public function queueTime()
+    public function queueTime($TypeId)
     {
         $sql = "SELECT QUEUETYPE_TIME FROM queuetype
-        WHERE QUEUETYPE_ID = '1'";
+        WHERE QUEUETYPE_ID = '$TypeId'";
         $query = $this->db->query($sql);
         return $query->result();
     }
