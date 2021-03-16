@@ -1780,26 +1780,9 @@ $(document).ready(function () {
         }
     });
 
-    // function Formatdate(date) {
-    //     var ymd = new Date(date);
-    //     var day = '' + (ymd.getDate());
-    //     var month = '' + (ymd.getMonth() + 1);
-    //     var year = ymd.getFullYear();
-
-    //     if (month.length < 2) {
-    //         month = '0' + month;
-    //     }
-    //     if (day.length < 2) {
-    //         day = '0' + day;
-    //     }
-    //     return year + '-' + month + '-' + day;
-    // }
-
-
 
     $('#queueDate').on('change', function () {
         var queueDate = $(this).val();
-        console.log(queueDate);
         $.ajax({
             url: "../queue/selectSeat",
             method: "POST",
@@ -1904,7 +1887,6 @@ $(document).ready(function () {
         var deskID = $(`#${rowId} td`).html();
         var deskName = $(`#${rowId} td:nth-child(2)`).html();
         var deskAmount = $(`#${rowId} td:nth-child(4)`).html();
-        // alert(deskAmount);
         var idTr = $('#SdeskBody tr:last-child').attr('id');
 
         if (idTr == null) {
@@ -1913,7 +1895,6 @@ $(document).ready(function () {
             idTr = idTr.substr(5);
             var rowsd = parseInt(idTr) + 1;
         }
-        // alert(rowsd);
         var txtDeskTable = `<tr id="rowsd${rowsd}">
                                             <td style="text-align: center;" class="align-middle">
                                             <input type="text" value="${deskName}" style="text-align: center;" class="form-control"  disabled>
@@ -1934,6 +1915,7 @@ $(document).ready(function () {
         });
         $('#seatAll').val(seatAll);
     });
+
     $('#karaokeTableModal').on('click', ' #karaokeTable #karaokeBody .selectKaraoke', function () {
         var rowId = $(this).parents('tr').attr('id');
         var karaokeID = $(`#${rowId} td`).html();
@@ -2104,7 +2086,7 @@ $(document).ready(function () {
                 data: $(this).serialize(),
                 dataType: "JSON",
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.status == true) {
                         alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
                         location.replace(data.url);
@@ -2134,14 +2116,14 @@ $(document).ready(function () {
                     dataType: "JSON",
                     success: function (data) {
                         console.log(data);
-                        if (data.status == true) {
-                            alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
-                            location.replace(data.url);
-                        }
-                        else {
-                            $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
-                            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
-                        }
+                        // if (data.status == true) {
+                        //     alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                        //     location.replace(data.url);
+                        // }
+                        // else {
+                        //     $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
+                        //     alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                        // }
                     }
                 });
             } else {
@@ -2164,33 +2146,26 @@ $(document).ready(function () {
         });
     });
 
+
     $('#addQueueWalkinForm').on('submit', function (e) {
         e.preventDefault();
-        // var Errors = validationQueueForm();
-        // if (Errors == 0) {
-            $.ajax({
-                url: "../queuewalkin/insertQueueWalkin",
-                method: "POST",
-                data: $(this).serialize(),
-                dataType: "JSON",
-                success: function (data) {
-                    console.log(data);
-                    // if (data.status == true) {
-                    //     alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
-                    //     location.replace(data.url);
-                    // }
-                    // else {
-                    //     $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
-                    //     alert('กรุณากรอกข้อมูลให้ถูกต้อง')
-                    // }
+        $.ajax({
+            url: "../queuewalkin/insertQueueWalkin",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == true) {
+                    alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                    location.replace(data.url);
                 }
-            });
-        // } else {
-        //     alert('กรุณากรอกข้อมูลให้ถูกต้อง')
-        // }
+                else {
+                    $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                }
+            }
+        });
     });
-
-
 
     //QUEUE END
 
@@ -2254,9 +2229,6 @@ $(document).ready(function () {
     });
     //Address End
 
-
-
-
     //general start
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -2303,6 +2275,7 @@ $(document).ready(function () {
             $(this).addClass("active");
         }
     });
+    // alert(pathhh);
 
     $(".navbar .navbar-collapse .navbar-nav .nav-item a.nav-link").each(function () {
         if (this.href === pathhh) {

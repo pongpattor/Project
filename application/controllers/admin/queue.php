@@ -16,17 +16,17 @@ class queue extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('queueStatus') == '1') {
-            $queueStatus =  1;
-        } else if ($this->input->get('queueStatus') == '2') {
-            $queueStatus = 2;
-        } else if ($this->input->get('queueStatus') == '3') {
-            $queueStatus = 3;
+        if ($this->input->get('queueActive') == '1') {
+            $queueActive =  1;
+        } else if ($this->input->get('queueActive') == '2') {
+            $queueActive = 2;
+        } else if ($this->input->get('queueActive') == '3') {
+            $queueActive = 3;
         } else {
-            $queueStatus = '1,2,3';
+            $queueActive = '1,2,3';
         }
-        $config['base_url'] = site_url('admin/recipe/index');
-        $config['total_rows'] = $this->queue_model->countAllQueue($search, $queueStatus);
+        $config['base_url'] = site_url('admin/queue/index');
+        $config['total_rows'] = $this->queue_model->countAllQueue($search, $queueActive);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -53,7 +53,7 @@ class queue extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['queue'] = $this->queue_model->queue($search, $queueStatus, $limit, $offset);
+        $data['queue'] = $this->queue_model->queue($search, $queueActive, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['queueTime'] = $this->queue_model->queuetime('1');
         if ($data['queue'] != null) {
@@ -92,8 +92,7 @@ class queue extends CI_Controller
 
     public function insertQueue()
     {
-        $data['status'] = true;
-        $data['input'] = $_POST;
+        $data['status'] = true;  
         $customerTel = $this->input->post('customerTel');
         $queueDStart = $this->input->post('queueDate');
         $queueNo = $this->queue_model->CheckQueue($customerTel, $queueDStart);
@@ -264,37 +263,38 @@ class queue extends CI_Controller
                 'QUEUE_TEND' => $queueTEnd,
                 'QUEUE_NOTE' => $note,
             );
-            $this->crud_model->update('queue', $dataQueue, 'QUEUE_ID', $queueID);
-            $this->crud_model->delete('queueseat', 'QS_QUEUEID', $queueID);
-            if ($countDesk > 0) {
-                for ($i = 0; $i < $countDesk; $i++) {
-                    $dataQS = array(
-                        'QS_QUEUEID' => $queueID,
-                        'QS_SEATID' => $desk[$i],
-                    );
-                    $this->crud_model->insert('queueseat', $dataQS);
-                }
-            }
-            if ($countKaraoke > 0) {
-                for ($i = 0; $i < $countKaraoke; $i++) {
-                    $dataQS = array(
-                        'QS_QUEUEID' => $queueID,
-                        'QS_SEATID' => $karaoke[$i],
+            $as = $this->crud_model->update('queue', $dataQueue, 'QUEUE_ID', $queueID);
+            $data['ss'] = $as;
+            // $this->crud_model->delete('queueseat', 'QS_QUEUEID', $queueID);
+            // if ($countDesk > 0) {
+            //     for ($i = 0; $i < $countDesk; $i++) {
+            //         $dataQS = array(
+            //             'QS_QUEUEID' => $queueID,
+            //             'QS_SEATID' => $desk[$i],
+            //         );
+            //         $this->crud_model->insert('queueseat', $dataQS);
+            //     }
+            // }
+            // if ($countKaraoke > 0) {
+            //     for ($i = 0; $i < $countKaraoke; $i++) {
+            //         $dataQS = array(
+            //             'QS_QUEUEID' => $queueID,
+            //             'QS_SEATID' => $karaoke[$i],
 
-                    );
-                    $this->crud_model->insert('queueseat', $dataQS);
-                }
-                for ($i = 0; $i < $countKaraoke; $i++) {
-                    $dataQSK = array(
-                        'QSK_QUEUEID' => $queueID,
-                        'QSK_KARAOKEID' => $karaoke[$i],
-                        'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
-                        'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
-                    );
-                    $this->crud_model->insert('queuekaraoke', $dataQSK);
-                }
-            }
-            $data['url'] = site_url('admin/queue');
+            //         );
+            //         $this->crud_model->insert('queueseat', $dataQS);
+            //     }
+            //     for ($i = 0; $i < $countKaraoke; $i++) {
+            //         $dataQSK = array(
+            //             'QSK_QUEUEID' => $queueID,
+            //             'QSK_KARAOKEID' => $karaoke[$i],
+            //             'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
+            //             'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
+            //         );
+            //         $this->crud_model->insert('queuekaraoke', $dataQSK);
+            //     }
+            // }
+            // $data['url'] = site_url('admin/queue');
         }
 
         echo json_encode($data);

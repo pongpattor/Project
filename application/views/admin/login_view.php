@@ -23,7 +23,7 @@
                     <h3>เข้าสู่ระบบ</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row table-responsive" >
                         <div class="col-12 ">
                             <img src="<?= base_url('assets/image/logo.jpg') ?>" alt="" width="150px" height="150px" class="justify-content-center">
                         </div>

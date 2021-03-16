@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="customerName">ชื่อผู้จอง </label>
-                                <input type="text" name="customerName" id="deskName" class="form-control" required maxlength="50">
+                                <input type="text" name="customerName"  class="form-control" required maxlength="50">
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>

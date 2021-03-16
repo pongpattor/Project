@@ -104,7 +104,7 @@
                 </form>
                 <div class="row">
                     <div class="col-12">
-                        <!-- <?php
+                        <?php
                         echo '<div class="row">';
                         echo '<div class="col-12">';
                         echo '<div class="row">';
@@ -117,7 +117,7 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        ?> -->
+                        ?>
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
@@ -128,35 +128,23 @@
                                                 <th style="text-align: center;">ผู้จอง</th>
                                                 <th style="text-align: center;">เบอร์โทร</th>
                                                 <th style="text-align: center;">จำนวนคน</th>
-                                                <th style="text-align: center;">ที่นั่ง</th>
                                                 <th style="text-align: center;">วันเวลาจอง</th>
                                                 <th style="text-align: center;">วันเวลาหลุดจอง</th>
                                                 <th style="text-align: center;">หมายเหตุ</th>
                                                 <th style="text-align: center;">สถานะ</th>
+                                                <th style="text-align: center;">เรียก</th>
                                                 <th style="text-align: center;">เช็คอิน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
                                                 <th style="text-align: center;">ลบ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <?php foreach ($queue as $row) : ?>
+                                            <?php foreach ($queue as $row) : ?>
                                                 <tr id="<?= $row->QUEUE_ID ?>" class=" bgtable">
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_ID; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSNAME; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSTEL; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_CUSAMOUNT; ?></td>
-                                                    <td class="align-middle" style="text-align: center;">
-                                                        <?php
-                                                        $i = 1;
-                                                        foreach ($queueSeat as $row2) {
-                                                            if ($row2->QS_QUEUEID == $row->QUEUE_ID) {
-                                                                echo $row2->SEAT_NAME . ' ';
-                                                                $i++;
-                                                                if ($i % 4 == 0) {
-                                                                    echo '<br>';
-                                                                }
-                                                            }
-                                                        } ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DSTART . ' ' . $row->QUEUE_TSTART; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND . ' ' . $row->QUEUE_TEND; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
@@ -173,15 +161,21 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button type="button" name="deskID" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_STATUS != '1') {
+                                                            <button type="button" name="callQueue" class="btn btn-info  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_STATUS != '1') {
                                                                                                                                                                                             echo 'disabled';
-                                                                                                                                                                                        } ?>><i class="fa fa-users"></i></button>
+                                                                                                                                                                                        } ?>><i class="fa fa-hand-paper"></i></button>
                                                         </center>
                                                     </td>
-
                                                     <td class="align-middle">
                                                         <center>
-                                                            <form action="<?= site_url('admin/queue/editQueue') ?>" method="get">
+                                                            <button type="button" name="checkin" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_STATUS != '1') {
+                                                                                                                                                                                            echo 'disabled';
+                                                                                                                                                                                        } ?>><i class="fa fa-check"></i></button>
+                                                        </center>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <center>
+                                                            <form action="<?= site_url('admin/queuewalkin/editQueueWalkin') ?>" method="get">
                                                                 <button name="queueID" class="btn btn-warning  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-edit"></i></button>
                                                             </form>
                                                         </center>
@@ -192,10 +186,10 @@
                                                         </center>
                                                     </td>
                                                 </tr>
-                                            <?php endforeach; ?> -->
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
-                                    <!-- <?php if ($links != null) {
+                                    <?php if ($links != null) {
                                         echo $links;
                                     } else { ?>
                                         <nav aria-label="Page navigation example">
@@ -204,7 +198,7 @@
 
                                             </ul>
                                         </nav>
-                                    <?php } ?> -->
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="customerName">ชื่อผู้จอง </label>
-                                    <input type="text" name="customerName" id="deskName" class="form-control" required maxlength="50" value="<?= $row->QUEUE_CUSNAME; ?>">
+                                    <input type="text" name="customerName" class="form-control" required maxlength="50" value="<?= $row->QUEUE_CUSNAME; ?>">
                                 </div>
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>
@@ -51,12 +51,12 @@
                             <div class="row">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="queueDate">วันเวลาที่จอง </label>
-                                    <input type="date" name="queueDate" id="queueDate" class="form-control" required min="<?php echo date('Y-m-d') ?>" value="<?= $row->QUEUE_DSTART ?>">
-                                    <input type="hidden" name="queueDateOld" id="queueDateOld"  value="<?= $row->QUEUE_DSTART ?>">
+                                    <input type="date" name="queueDate" id="queueDate" class="form-control" required min="<?php echo date('Y-m-d') ?>" value="<?php echo $row->QUEUE_DSTART ?>">
+                                    <input type="hidden" name="queueDateOld" id="queueDateOld"  value="<?php echo $row->QUEUE_DSTART ?>">
                                 </div>
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="queueTime">วันเวลาที่จอง </label>
-                                    <input type="time" name="queueTime" id="queueTime" class="form-control" required min="09:00" max="21:00" value="<?= $row->QUEUE_TSTART ?>">
+                                    <input type="time" name="queueTime" id="queueTime" class="form-control" required min="09:00" max="21:00" value="<?php echo $row->QUEUE_TSTART ?>">
                                 </div>
                             </div>
                             <br>
@@ -66,7 +66,7 @@
                                         <div class="card-body">
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deskModal">
-                                                เลือกโต๊ะ
+                                                เลือกโต๊ะ 
                                             </button>
                                             <span id="deskError" style="color:red;"></span>
                                             <!-- Modal -->
@@ -141,7 +141,7 @@
                                                                         <input type="text" value="<?= $row2->SEAT_AMOUNT ?>" style="text-align: center;" class="form-control seatAmount" disabled>
                                                                     </td>
                                                                     <td style="text-align: center;" class="align-middle">
-                                                                        <button type="button" class="btn btn-danger deleteSD" value="<?= $rowsd; ?>">ลบ</button>
+                                                                        <button type="button" class="btn btn-danger deleteSD" value="<?= $rowsd; ?>" >ลบ</button>
                                                                     </td>
                                                                 </tr>
                                                         <?php $rowsd++;
@@ -286,7 +286,7 @@
                                                 <a href="<?= site_url('admin/queue/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                             </div>
                                             <div class="col">
-                                                <input class="btn btn-success btn-xs" type="submit" value="  เพิ่ม  ">
+                                                <input class="btn btn-success btn-xs" type="submit" value="บันทึก" <?php if($row->QUEUE_ACTIVE == '2'){echo 'disabled';}?>>
                                             </div>
                                         </div>
                                     </center>

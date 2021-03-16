@@ -67,17 +67,17 @@
                         <div class="col-10">
                             <div class="row">
                                 <div class="col-3 form-group row">
-                                    <div class="col-3"> <label for="queueStatus" class="col-form-label">สถานะ</label></div>
+                                    <div class="col-3"> <label for="queueActive" class="col-form-label">สถานะ</label></div>
                                     <div class="col">
-                                        <select name="queueStatus" id="queueStatus" class="form-control">
+                                        <select name="queueActive" id="queueStatus" class="form-control">
                                             <option value="1,2,3" selected>ทั้งหมด</option>
-                                            <option value="1" <?php if ($this->input->get('queueStatus') == '1') {
+                                            <option value="1" <?php if ($this->input->get('queueActive') == '1') {
                                                                     echo 'selected';
                                                                 } ?>>จองคิว</option>
-                                            <option value="2" <?php if ($this->input->get('queueStatus') == '2') {
+                                            <option value="2" <?php if ($this->input->get('queueActive') == '2') {
                                                                     echo 'selected';
                                                                 } ?>>เข้าใช้งานคิว</option>
-                                            <option value="3" <?php if ($this->input->get('queueStatus') == '3') {
+                                            <option value="3" <?php if ($this->input->get('queueActive') == '3') {
                                                                     echo 'selected';
                                                                 } ?>>หมดเวลาจองคิว</option>
                                         </select>
@@ -157,15 +157,15 @@
                                                                 }
                                                             }
                                                         } ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DSTART . ' ' . $row->QUEUE_TSTART; ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND . ' ' . $row->QUEUE_TEND; ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DSTART.' '.$row->QUEUE_TSTART?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND.' '.$row->QUEUE_TEND?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
                                                     <td class="align-middle" style="text-align: center;">
-                                                        <?php if ($row->QUEUE_STATUS == '1') {
+                                                        <?php if ($row->QUEUE_ACTIVE == '1') {
                                                             echo 'จองคิว';
-                                                        } else if ($row->QUEUE_STATUS == '2') {
+                                                        } else if ($row->QUEUE_ACTIVE == '2') {
                                                             echo 'เข้าใช้งานคิว';
-                                                        } else if ($row->QUEUE_STATUS == '3') {
+                                                        } else if ($row->QUEUE_ACTIVE == '3') {
                                                             echo 'หมดเวลาจองคิว';
                                                         } else {
                                                             echo 'ยกเลิกคิว';
@@ -173,9 +173,9 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button type="button" name="deskID" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_STATUS != '1') {
+                                                            <button type="button" name="checkin" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
                                                                                                                                                                                             echo 'disabled';
-                                                                                                                                                                                        } ?>><i class="fa fa-users"></i></button>
+                                                                                                                                                                                        } ?>><i class="fa fa-check"></i></button>
                                                         </center>
                                                     </td>
 

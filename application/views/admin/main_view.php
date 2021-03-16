@@ -10,10 +10,9 @@
     <title>FoodShop</title>
     <!-- CSS JQUERY -->
     <link href="<?= base_url('assets/css/styles.css'); ?>" rel="stylesheet" />
-    <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.js'); ?>"></script>
+    <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.min.js'); ?>"></script>
     <script src="<?= base_url('assets/bootstrap4/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
-    <!-- <link rel="shortcut icon" href="<?php base_url('assets/image/favicon.ico') ?>" /> -->
     <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
     <script src="<?= base_url('assets/script.js') ?>"></script>

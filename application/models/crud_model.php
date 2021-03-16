@@ -81,6 +81,7 @@ class crud_model extends CI_Model
     {
         $this->db->where($where, $whereData);
         $this->db->update($table, $data);
+
     }
 
 
