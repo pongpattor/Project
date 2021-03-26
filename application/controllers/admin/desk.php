@@ -67,7 +67,7 @@ class desk extends CI_Controller
 
     public function addDesk()
     {
-        $data['zone'] = $this->crud_model->findAll('zone');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
         $data['page'] = 'desk_add_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -127,7 +127,7 @@ class desk extends CI_Controller
     {
         $deskID = $this->input->get('deskID');
         $data['desk'] = $this->seat_model->editDesk($deskID);
-        $data['zone'] = $this->crud_model->findAll('zone');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
         $data['page'] = 'desk_edit_view';
         $this->load->view('admin/main_view', $data);
         // echo '<pre>';

@@ -13,7 +13,7 @@
     <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.min.js'); ?>"></script>
     <script src="<?= base_url('assets/bootstrap4/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
-    <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
+    <script src="<?= base_url('assets/icon_fontawesome/js/all.min.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
     <script src="<?= base_url('assets/script.js') ?>"></script>
     <!-- Data Table -->
@@ -48,7 +48,7 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
                         <!-- ไประบบหน้าร้าน -->
-                        <a class="nav-link" href="<?=site_url('admin/service')?>">
+                        <a class="nav-link" href="<?=site_url('admin/service/storefont')?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
                             ระบบจัดการหน้าร้าน
                         </a>

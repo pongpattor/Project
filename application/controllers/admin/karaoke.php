@@ -66,7 +66,7 @@ class karaoke extends CI_Controller
 
     public function addKaraoke()
     {
-        $data['zone'] = $this->crud_model->findAll('zone');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
         $data['page'] = 'karaoke_add_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -137,7 +137,7 @@ class karaoke extends CI_Controller
     {
         $karaokeID = $this->input->get('karaokeID');
         $data['karaoke'] = $this->seat_model->editKaraoke($karaokeID);
-        $data['zone'] = $this->crud_model->findAll('zone');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
         $data['page'] = 'karaoke_edit_view';
         $this->load->view('admin/main_view', $data);
         // echo '<pre>';

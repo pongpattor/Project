@@ -2290,8 +2290,6 @@ $(document).ready(function () {
         $('.dateEnd').attr('min', dateStart);
     });
 
-
-
     $("#sidebarToggle").on("click", function (e) {
         e.preventDefault();
         $("body").toggleClass("sb-sidenav-toggled");

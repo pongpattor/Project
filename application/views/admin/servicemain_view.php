@@ -13,8 +13,7 @@
     <script src="<?= base_url('assets/script/node_modules/jquery/dist/jquery.js'); ?>"></script>
     <script src="<?= base_url('assets/bootstrap4/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- Icon -->
-    <!-- <link rel="shortcut icon" href="<?php base_url('assets/image/favicon.ico') ?>" /> -->
-    <script src="<?= base_url('assets/icon_fontawesome/js/all.js'); ?>" crossorigin="anonymous"></script>
+    <script src="<?= base_url('assets/icon_fontawesome/js/all.min.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
     <script src="<?= base_url('assets/script.js') ?>"></script>
     <!-- Data Table -->
@@ -36,7 +35,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" href="<?= site_url('admin/service') ?>" style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
+                    <a class="nav-link" href="<?= site_url('admin/service/storefont') ?>" style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= site_url('admin/queue') ?>" style="margin-left: 30px; margin-right: 30px;">คิวล่วงหน้า</a>
@@ -71,7 +70,7 @@
     <br>
     <main>
         <div id="content" class="container-fluid">
-            <?php $this->load->view('admin/' . $page); 
+            <?php $this->load->view('admin/'.$page); 
             ?>
         </div>
     </main>
