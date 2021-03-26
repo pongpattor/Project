@@ -185,16 +185,17 @@ class queue_model extends CI_Model
         return $query->result();
     }
 
-    public function queueWalkin($search, $queueStatus, $limit, $offset)
+    public function queueWalkin($search, $queueActive, $limit, $offset)
     {
         $sql = "SELECT
         QUEUE_ID,QUEUE_CUSNAME,QUEUE_CUSTEL,QUEUE_CUSAMOUNT,QUEUE_DSTART,
-        QUEUE_TSTART,QUEUE_DEND,QUEUE_TEND,QUEUE_NOTE,QUEUE_STATUS  
+        QUEUE_TSTART,QUEUE_DEND,QUEUE_TEND,QUEUE_NOTE,QUEUE_ACTIVE  
     FROM
         queue 
     WHERE
         QUEUE_TYPE = '2' 
-        AND QUEUE_STATUS IN ( $queueStatus ) 
+        AND QUEUE_STATUS = '1'
+        AND QUEUE_ACTIVE IN ( $queueActive ) 
         AND (
             QUEUE_ID LIKE ? 
             OR QUEUE_CUSNAME LIKE ?
@@ -206,6 +207,7 @@ class queue_model extends CI_Model
             OR QUEUE_TEND LIKE ? 
             OR QUEUE_NOTE LIKE ?
         )
+        ORDER BY QUEUE_ACTIVE ASC,QUEUE_DSTART ASC,QUEUE_TSTART ASC
     LIMIT $offset,$limit   
     ";
         $query = $this->db->query(
@@ -229,7 +231,7 @@ class queue_model extends CI_Model
     }
 
 
-    public function countAllQueueWalkin($search, $queueStatus)
+    public function countAllQueueWalkin($search, $queueActive)
     {
         $sql = "SELECT
         COUNT(*) as cnt
@@ -237,7 +239,8 @@ class queue_model extends CI_Model
         queue 
     WHERE
         QUEUE_TYPE = '2' 
-        AND QUEUE_STATUS IN ( $queueStatus) 
+        AND QUEUE_STATUS = '1'
+        AND QUEUE_ACTIVE IN ( $queueActive) 
         AND (
             QUEUE_ID LIKE ? 
             OR QUEUE_CUSNAME LIKE ?

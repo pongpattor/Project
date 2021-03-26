@@ -264,37 +264,36 @@ class queue extends CI_Controller
                 'QUEUE_NOTE' => $note,
             );
             $as = $this->crud_model->update('queue', $dataQueue, 'QUEUE_ID', $queueID);
-            $data['ss'] = $as;
-            // $this->crud_model->delete('queueseat', 'QS_QUEUEID', $queueID);
-            // if ($countDesk > 0) {
-            //     for ($i = 0; $i < $countDesk; $i++) {
-            //         $dataQS = array(
-            //             'QS_QUEUEID' => $queueID,
-            //             'QS_SEATID' => $desk[$i],
-            //         );
-            //         $this->crud_model->insert('queueseat', $dataQS);
-            //     }
-            // }
-            // if ($countKaraoke > 0) {
-            //     for ($i = 0; $i < $countKaraoke; $i++) {
-            //         $dataQS = array(
-            //             'QS_QUEUEID' => $queueID,
-            //             'QS_SEATID' => $karaoke[$i],
+            $this->crud_model->delete('queueseat', 'QS_QUEUEID', $queueID);
+            if ($countDesk > 0) {
+                for ($i = 0; $i < $countDesk; $i++) {
+                    $dataQS = array(
+                        'QS_QUEUEID' => $queueID,
+                        'QS_SEATID' => $desk[$i],
+                    );
+                    $this->crud_model->insert('queueseat', $dataQS);
+                }
+            }
+            if ($countKaraoke > 0) {
+                for ($i = 0; $i < $countKaraoke; $i++) {
+                    $dataQS = array(
+                        'QS_QUEUEID' => $queueID,
+                        'QS_SEATID' => $karaoke[$i],
 
-            //         );
-            //         $this->crud_model->insert('queueseat', $dataQS);
-            //     }
-            //     for ($i = 0; $i < $countKaraoke; $i++) {
-            //         $dataQSK = array(
-            //             'QSK_QUEUEID' => $queueID,
-            //             'QSK_KARAOKEID' => $karaoke[$i],
-            //             'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
-            //             'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
-            //         );
-            //         $this->crud_model->insert('queuekaraoke', $dataQSK);
-            //     }
-            // }
-            // $data['url'] = site_url('admin/queue');
+                    );
+                    $this->crud_model->insert('queueseat', $dataQS);
+                }
+                for ($i = 0; $i < $countKaraoke; $i++) {
+                    $dataQSK = array(
+                        'QSK_QUEUEID' => $queueID,
+                        'QSK_KARAOKEID' => $karaoke[$i],
+                        'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
+                        'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
+                    );
+                    $this->crud_model->insert('queuekaraoke', $dataQSK);
+                }
+            }
+            $data['url'] = site_url('admin/queue');
         }
 
         echo json_encode($data);
@@ -306,6 +305,16 @@ class queue extends CI_Controller
             'QUEUE_STATUS' => '0'
         );
         $this->crud_model->update('queue',$dataDelete,'QUEUE_ID',$queueID);
+    }
+
+    public function checkin(){
+        // $data['status'] = true;
+        $queueID = $this->input->post("queueID");
+        $dataqueue = array(
+            'QUEUE_ACTIVE' => '2'
+        );
+        $this->crud_model->update('queue',$dataqueue,'QUEUE_ID',$queueID);
+        // echo json_encode($data);
     }
 
 }

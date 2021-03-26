@@ -5,7 +5,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h3 class="d-inline">คิวล่วงหน้า</h3>
+                        <h3 class="d-inline">คิวหน้าร้าน</h3>
                     </div>
                     <div class="col">
                         <div class="row ">
@@ -67,17 +67,20 @@
                         <div class="col-10">
                             <div class="row">
                                 <div class="col-3 form-group row">
-                                    <div class="col-3"> <label for="queueStatus" class="col-form-label">สถานะ</label></div>
+                                    <div class="col-3"> <label for="queueActive" class="col-form-label">สถานะ</label></div>
                                     <div class="col">
-                                        <select name="queueStatus" id="queueStatus" class="form-control">
-                                            <option value="1,2,3" selected>ทั้งหมด</option>
-                                            <option value="1" <?php if ($this->input->get('queueStatus') == '1') {
+                                        <select name="queueActive" id="queueActive" class="form-control">
+                                            <option value="0,1,2,3" selected>ทั้งหมด</option>
+                                            <option value="0" <?php if ($this->input->get('queueActive') == '0') {
+                                                                    echo 'selected';
+                                                                } ?>>รอยืนยันเข้าใช้งาน</option>
+                                            <option value="1" <?php if ($this->input->get('queueActive') == '1') {
                                                                     echo 'selected';
                                                                 } ?>>จองคิว</option>
-                                            <option value="2" <?php if ($this->input->get('queueStatus') == '2') {
+                                            <option value="2" <?php if ($this->input->get('queueActive') == '2') {
                                                                     echo 'selected';
                                                                 } ?>>เข้าใช้งานคิว</option>
-                                            <option value="3" <?php if ($this->input->get('queueStatus') == '3') {
+                                            <option value="3" <?php if ($this->input->get('queueActive') == '3') {
                                                                     echo 'selected';
                                                                 } ?>>หมดเวลาจองคิว</option>
                                         </select>
@@ -149,11 +152,14 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND . ' ' . $row->QUEUE_TEND; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
                                                     <td class="align-middle" style="text-align: center;">
-                                                        <?php if ($row->QUEUE_STATUS == '1') {
+                                                        <?php
+                                                        if ($row->QUEUE_ACTIVE == '0') {
+                                                            echo 'รอยืนยันเข้าใช้งาน';
+                                                        } else if ($row->QUEUE_ACTIVE == '1') {
                                                             echo 'จองคิว';
-                                                        } else if ($row->QUEUE_STATUS == '2') {
+                                                        } else if ($row->QUEUE_ACTIVE == '2') {
                                                             echo 'เข้าใช้งานคิว';
-                                                        } else if ($row->QUEUE_STATUS == '3') {
+                                                        } else if ($row->QUEUE_ACTIVE == '3') {
                                                             echo 'หมดเวลาจองคิว';
                                                         } else {
                                                             echo 'ยกเลิกคิว';
@@ -161,16 +167,16 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button type="button" name="callQueue" class="btn btn-info  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_STATUS != '1') {
-                                                                                                                                                                                            echo 'disabled';
-                                                                                                                                                                                        } ?>><i class="fa fa-hand-paper"></i></button>
+                                                            <button type="button" name="callWalkin" class="btn btn-info  callWalkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
+                                                                                                                                                                                                    echo 'disabled';
+                                                                                                                                                                                                } ?>><i class="fa fa-hand-paper"></i></button>
                                                         </center>
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button type="button" name="checkin" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_STATUS != '1') {
-                                                                                                                                                                                            echo 'disabled';
-                                                                                                                                                                                        } ?>><i class="fa fa-check"></i></button>
+                                                            <button type="button" name="checkin" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '0') {
+                                                                                                                                                                                                echo 'disabled';
+                                                                                                                                                                                            } ?>><i class="fa fa-check"></i></button>
                                                         </center>
                                                     </td>
                                                     <td class="align-middle">
@@ -230,6 +236,48 @@
             }
         });
 
+        $('.callWalkin').on('click', function() {
+            var queueID = $(this).val();
+            var queueTime = $('#queueTimeShow').html();
+
+            $.ajax({
+                url: "<?= site_url('admin/queuewalkin/callWalkin') ?>",
+                method: "POST",
+                data: {
+                    queueID: queueID,
+                    queueTime: queueTime
+                },
+                dataType: "JSON",
+                success: function(data) {
+                    $(`#${queueID} td:nth-child(9) .callWalkin`).prop('disabled', true);
+                    $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', false);
+                    $(`#${queueID} td:nth-child(8)`).html('รอยืนยันเข้าใช้งาน');
+                    alert('กรุณาเข้าใช้งานก่อน ' + data.datetime)
+                    $(`#${queueID} td:nth-child(6)`).html(data.datetime);
+                }
+            });
+        });
+
+        $('.checkin').on('click', function() {
+            var cf = confirm('ยืนยันการเข้าใช้งาน');
+            if (cf == true) {
+                var queueID = $(this).val();
+                $.ajax({
+                    url: "<?= site_url('admin/queuewalkin/checkin') ?>",
+                    method: "POST",
+                    data: {
+                        queueID: queueID,
+                    },
+                    success: function() {
+                        alert('เข้าใช้งาน');
+                        $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
+                        $(`#${queueID} td:nth-child(8) `).html('เข้าใช้งาน');
+                    }
+                });
+            }
+
+
+        });
 
     });
 </script>

@@ -76,7 +76,7 @@
                                                                 } ?>>จองคิว</option>
                                             <option value="2" <?php if ($this->input->get('queueActive') == '2') {
                                                                     echo 'selected';
-                                                                } ?>>เข้าใช้งานคิว</option>
+                                                                } ?>>เข้าใช้งาน</option>
                                             <option value="3" <?php if ($this->input->get('queueActive') == '3') {
                                                                     echo 'selected';
                                                                 } ?>>หมดเวลาจองคิว</option>
@@ -157,14 +157,14 @@
                                                                 }
                                                             }
                                                         } ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DSTART.' '.$row->QUEUE_TSTART?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND.' '.$row->QUEUE_TEND?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DSTART . ' ' . $row->QUEUE_TSTART ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_DEND . ' ' . $row->QUEUE_TEND ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->QUEUE_NOTE; ?></td>
                                                     <td class="align-middle" style="text-align: center;">
                                                         <?php if ($row->QUEUE_ACTIVE == '1') {
                                                             echo 'จองคิว';
                                                         } else if ($row->QUEUE_ACTIVE == '2') {
-                                                            echo 'เข้าใช้งานคิว';
+                                                            echo 'เข้าใช้งาน';
                                                         } else if ($row->QUEUE_ACTIVE == '3') {
                                                             echo 'หมดเวลาจองคิว';
                                                         } else {
@@ -173,9 +173,9 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button type="button" name="checkin" class="btn btn-success  edit" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
-                                                                                                                                                                                            echo 'disabled';
-                                                                                                                                                                                        } ?>><i class="fa fa-check"></i></button>
+                                                            <button type="button" name="checkin" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
+                                                                                                                                                                                                echo 'disabled';
+                                                                                                                                                                                            } ?>><i class="fa fa-check"></i></button>
                                                         </center>
                                                     </td>
 
@@ -235,6 +235,28 @@
                 });
             }
         });
+
+        $('.checkin').on('click', function() {
+            var cf = confirm('ยืนยันการเข้าใช้งาน');
+            if (cf == true) {
+                var queueID = $(this).val();
+                $.ajax({
+                    url: "<?= site_url('admin/queue/checkin') ?>",
+                    method: "POST",
+                    data: {
+                        queueID: queueID,
+                    },
+                    success: function() {
+                        alert('เข้าใช้งาน');
+                        $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
+                        $(`#${queueID} td:nth-child(9) `).html('เข้าใช้งาน');
+                    }
+                });
+            }
+
+
+        });
+
 
 
     });

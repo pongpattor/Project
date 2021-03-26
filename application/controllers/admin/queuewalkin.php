@@ -16,17 +16,19 @@ class queuewalkin extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('queueStatus') == '1') {
-            $queueStatus =  1;
-        } else if ($this->input->get('queueStatus') == '2') {
-            $queueStatus = 2;
-        } else if ($this->input->get('queueStatus') == '3') {
-            $queueStatus = 3;
+        if ($this->input->get('queueActive') == '0') {
+            $queueActive =  0;
+        } else if ($this->input->get('queueActive') == '1') {
+            $queueActive =  1;
+        } else if ($this->input->get('queueActive') == '2') {
+            $queueActive = 2;
+        } else if ($this->input->get('queueActive') == '3') {
+            $queueActive = 3;
         } else {
-            $queueStatus = '1,2,3';
+            $queueActive = '0,1,2,3';
         }
         $config['base_url'] = site_url('admin/recipe/index');
-        $config['total_rows'] = $this->queue_model->countAllQueueWalkin($search, $queueStatus);
+        $config['total_rows'] = $this->queue_model->countAllQueueWalkin($search, $queueActive);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -53,7 +55,7 @@ class queuewalkin extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['queue'] = $this->queue_model->queueWalkin($search, $queueStatus, $limit, $offset);
+        $data['queue'] = $this->queue_model->queueWalkin($search, $queueActive, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['queueTime'] = $this->queue_model->queuetime('2');
         $data['page'] = 'queuewalkin_view';
@@ -140,11 +142,39 @@ class queuewalkin extends CI_Controller
         }
     }
 
-    public function editQueueWalkin(){
+    public function editQueueWalkin()
+    {
         $queueID = $this->input->get('queueID');
         $data['queueWalkin'] = $this->queue_model->editQueueWalkin($queueID);
         $data['page'] = 'queuewalkin_edit_view';
-        $this->load->view('admin/servicemain_view',$data);
+        $this->load->view('admin/servicemain_view', $data);
         // print_r($data['queueWalkin']);  
+    }
+
+    public function callWalkin()
+    {
+        $queueID = $this->input->post("queueID");
+        $queueTime = $this->input->post("queueTime");
+        $time =  strtotime(date('H:i')) + ($queueTime * 60);
+        $datetime = date('Y-m-d H:i:s', $time);
+        $time = date('H:i', $time);
+        $date = date('Y-m-d');
+        $dataWalkin = array(
+            'QUEUE_DEND' => $date,
+            'QUEUE_TEND' => $time,
+            'QUEUE_ACTIVE' => '0'
+        );
+        $this->crud_model->update('queue', $dataWalkin, 'QUEUE_ID', $queueID);
+        $data['datetime'] = $datetime;
+        echo json_encode($data);
+    }
+
+    public function checkin(){
+        
+        $queueID = $this->input->post("queueID");
+        $dataqueue = array(
+            'QUEUE_ACTIVE' => '2'
+        );
+        $this->crud_model->update('queue',$dataqueue,'QUEUE_ID',$queueID);
     }
 }
