@@ -21,14 +21,14 @@ class karaoke extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('karaokeActive') == 1) {
-            $karaokeActive = 1;
-        }
-        if ($this->input->get('karaokeActive') == 0) {
+        if ($this->input->get('karaokeActive') == '0') {
             $karaokeActive = 0;
-        } 
-         else {
-            $karaokeActive = '1,0';
+        } else if ($this->input->get('karaokeActive') == '1') {
+            $karaokeActive = 1;
+        } else if ($this->input->get('karaokeActive') == '2') {
+            $karaokeActive = 2;
+        } else {
+            $karaokeActive = '0,1,2';
         }
         $config['base_url'] = site_url('admin/karaoke/index');
         $config['total_rows'] = $this->seat_model->countAllkaraoke($search, $karaokeActive);
@@ -66,7 +66,7 @@ class karaoke extends CI_Controller
 
     public function addKaraoke()
     {
-        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
         $data['page'] = 'karaoke_add_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -137,7 +137,7 @@ class karaoke extends CI_Controller
     {
         $karaokeID = $this->input->get('karaokeID');
         $data['karaoke'] = $this->seat_model->editKaraoke($karaokeID);
-        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
         $data['page'] = 'karaoke_edit_view';
         $this->load->view('admin/main_view', $data);
         // echo '<pre>';
