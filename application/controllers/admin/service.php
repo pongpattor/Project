@@ -21,10 +21,102 @@ class service extends CI_Controller
     {
         $data['deskEmpty'] = $this->service_model->deskEmpty();
         $data['karaokeEmpty'] = $this->service_model->karaokeEmpty();
-        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
 
 
         $data['page'] = 'storefont_view';
         $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function insertEnterService()
+    {
+        // $data['type'] = $_POST;
+        $enterTypeService =  $this->input->post('enterServiceType');
+        $AmountCustomerE = $this->input->post('AmountCustomerE');
+        $serviceDStart = date('Y-m-d');
+        $serviceTStart = date('H:i');
+        $useKaraoke = 0;
+        if ($this->input->post('deskEmpty') != null) {
+            $serviceSeat = $this->input->post('deskEmpty');
+        } else {
+            $serviceSeat = $this->input->post('karaokeEmpty');
+            $useKaraoke = 1;
+        }
+        $data['serviceSeat'] = $serviceSeat;
+        if ($enterTypeService == '1') {
+            $serviceID = $this->genServiceID();
+            $dataService = array(
+                'SERVICE_ID' => $serviceID,
+                'SERVICE_CUSAMOUNT' => $AmountCustomerE,
+                'SERVICE_DSTART' => $serviceDStart,
+                'SERVICE_TSTART' => $serviceTStart,
+                'SERVICE_ACTIVE' => '1',
+                'SERVICE_STATUS' => '1'
+            );
+            $this->crud_model->insert('service', $dataService);
+            for ($i = 0; $i < count($serviceSeat); $i++) {
+                $dataServiceSeat = array(
+                    'SERSEAT_SEATID' => $serviceSeat[$i],
+                    'SERSEAT_SERVICEID' => $serviceID,
+                );
+                $this->crud_model->insert('serviceseat', $dataServiceSeat);
+                $dataSeatActive = array(
+                    'SEAT_ACTIVE' => '2'
+                );
+                $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[$i]);
+            }
+            if ($useKaraoke == 1) {
+                $karaokeUsetype = $this->input->post('karaokeUsetype');
+                $karaokeUseAmount = $this->input->post('karaokeUseAmount');
+            }
+        } else {
+            $abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for ($i = 0; $i < count($AmountCustomerE); $i++) {
+                $serviceID = $this->genServiceID();
+                $dataService = array(
+                    'SERVICE_ID' => $serviceID,
+                    'SERVICE_CUSAMOUNT' => $AmountCustomerE[$i],
+                    'SERVICE_DSTART' => $serviceDStart,
+                    'SERVICE_TSTART' => $serviceTStart,
+                    'SERVICE_ACTIVE' => '1',
+                    'SERVICE_STATUS' => '1'
+                );
+                $this->crud_model->insert('service', $dataService);
+                $dataServiceSeat = array(
+                    'SERSEAT_SEATID' => $serviceSeat[0],
+                    'SERSEAT_SERVICEID' => $serviceID,
+                    'SERSEAT_SEATSPLIT' => $abc[$i],
+                );
+                $this->crud_model->insert('serviceseat', $dataServiceSeat);
+            }
+            $dataSeatActive = array(
+                'SEAT_ACTIVE' => '2'
+            );
+            $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[0]);
+        }
+        // echo json_encode($data);
+    }
+
+    public function genServiceID()
+    {
+        $maxId = $this->crud_model->maxID('service', 'SERVICE_ID');
+        $ymd = date('ymd');
+        if ($maxId == '') {
+            $id = 'SER' . $ymd . '001';
+            return $id;
+        } else {
+            $ymdID = substr($maxId, 3, 6);
+            if ($ymdID != $ymd) {
+                return 'SER' . $ymd . '001';
+            } else {
+                $id = substr($maxId, 9);
+                $id += 1;
+                while (strlen($id) < 3) {
+                    $id = '0' . $id;
+                }
+                $id = 'SER' . $ymdID . $id;
+                return $id;
+            }
+        }
     }
 }
