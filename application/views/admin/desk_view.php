@@ -21,11 +21,14 @@
                                     <div class="col-3"> <label for="deskActive" class="col-form-label">สถานะ</label></div>
                                     <div class="col">
                                         <select name="deskActive" id="deskActive" class="form-control">
-                                            <option value="1,0" selected>ทั้งหมด</option>
+                                            <option value="0,1,2" selected>ทั้งหมด</option>
+                                            <option value="0" <?php if ($this->input->get('deskActive') == '0') {
+                                                                    echo 'selected';
+                                                                } ?>>ว่าง</option>
                                             <option value="1" <?php if ($this->input->get('deskActive') == '1') {
                                                                     echo 'selected';
-                                                                } ?>>พร้อมใช้งาน</option>
-                                            <option value="0" <?php if ($this->input->get('deskActive') == '0') {
+                                                                } ?>>ไม่ว่าง</option>
+                                            <option value="2" <?php if ($this->input->get('deskActive') == '2') {
                                                                     echo 'selected';
                                                                 } ?>>ไม่พร้อมใช้งาน</option>
                                         </select>
@@ -95,8 +98,10 @@
                                                                                                                 echo 'ไม่สามารถจองได้';
                                                                                                             }
                                                                                                             ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ACTIVE == '1') {
-                                                                                                                echo 'พร้อมใช้งาน';
+                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ACTIVE == '0') {
+                                                                                                                echo 'ว่าง';
+                                                                                                            } else if ($row->SEAT_ACTIVE == '1') {
+                                                                                                                echo 'ไม่ว่าง';
                                                                                                             } else {
                                                                                                                 echo 'ไม่พร้อมใช้งาน';
                                                                                                             }

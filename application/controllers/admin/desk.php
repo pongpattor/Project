@@ -23,12 +23,12 @@ class desk extends CI_Controller
         $search = $this->input->get('search');
         if ($this->input->get('deskActive') == '1') {
             $deskActive =  1;
-        }
-        else if ($this->input->get('deskActive') == '0') {
+        } else if ($this->input->get('deskActive') == '0') {
             $deskActive = 0;
-        }
-         else {
-            $deskActive = '1,0';
+        } else if ($this->input->get('deskActive') == '2') {
+            $deskActive = 2;
+        } else {
+            $deskActive = '0,1,2';
         }
         $config['base_url'] = site_url('admin/desk/index');
         $config['total_rows'] = $this->seat_model->countAllDesk($search, $deskActive);
@@ -62,12 +62,11 @@ class desk extends CI_Controller
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'desk_view';
         $this->load->view('admin/main_view', $data);
-
     }
 
     public function addDesk()
     {
-        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
         $data['page'] = 'desk_add_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -127,7 +126,7 @@ class desk extends CI_Controller
     {
         $deskID = $this->input->get('deskID');
         $data['desk'] = $this->seat_model->editDesk($deskID);
-        $data['zone'] = $this->crud_model->findSelectWhere('zone','ZONE_ID,ZONE_NAME','ZONE_STATUS','1');
+        $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
         $data['page'] = 'desk_edit_view';
         $this->load->view('admin/main_view', $data);
         // echo '<pre>';
