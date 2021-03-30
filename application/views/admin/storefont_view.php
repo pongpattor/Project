@@ -262,112 +262,121 @@
         }
 
         function validateEnterService() {
-            var serviceType = $('.enterServiceType:checked').val();
-            var d = 0;
-            var k = 0;
-            $('.useDeskEmpty:checked').each(function() {
-                d++;
-            });
-            $('.useKaraokeEmpty:checked').each(function() {
-                k++;
-            });
-            if (serviceType == '1') {
-                let seatAmount = parseInt($('#seatAmountAllE').val());
-                let cusamount = parseInt($('#AmountCustomerE').val());
-                if (cusamount > seatAmount) {
-                    text = `<div class="alert alert-danger" role="alert">
-                                    <strong>คำเตือน!</strong> จำนวนคนมากกว่าจำนวนที่นั่ง
-                                 </div>`
-                    $('#textWarning').html(text);
-                    return false;
-                } else {
-                    if (d > 0 && k > 0) {
-                        text = `<div class="alert alert-danger" role="alert">
-                                    <strong>คำเตือน!</strong> กรุณาเลือกเฉพาะโต๊ะหรือเฉพาะห้องคาราโอเกะ
-                                 </div>`
-                        $('#textWarning').html(text);
-                        return false;
-
-                    } else if (d == 0 && k == 0) {
-                        text = ` <div class="alert alert-danger" role="alert">
+            var seatAmount = parseInt($('#seatAmountAllE').val());
+            if (seatAmount == 0) {
+                text = `<div class="alert alert-danger" role="alert">
                                     <strong>คำเตือน!</strong> กรุณาเลือกที่นั่ง
                                  </div>`
+                $('#textWarning').html(text);
+                return false;
+            } else {
+                var serviceType = $('.enterServiceType:checked').val();
+                var d = 0;
+                var k = 0;
+                $('.useDeskEmpty:checked').each(function() {
+                    d++;
+                });
+                $('.useKaraokeEmpty:checked').each(function() {
+                    k++;
+                });
+                if (serviceType == '1') {
+
+                    let cusamount = parseInt($('#AmountCustomerE').val());
+                    if (cusamount > seatAmount) {
+                        text = `<div class="alert alert-danger" role="alert">
+                                    <strong>คำเตือน!</strong> จำนวนคนมากกว่าจำนวนที่นั่ง
+                                 </div>`
                         $('#textWarning').html(text);
                         return false;
+                    } else {
+                        if (d > 0 && k > 0) {
+                            text = `<div class="alert alert-danger" role="alert">
+                                    <strong>คำเตือน!</strong> กรุณาเลือกเฉพาะโต๊ะหรือเฉพาะห้องคาราโอเกะ
+                                 </div>`
+                            $('#textWarning').html(text);
+                            return false;
 
-                    } else if (d > 0 && k == 0) {
-                        let zoneList = [];
-                        let ZoneFalse = 0;
-                        $(`.deskZoneE:not(:disabled)`).each(function() {
-                            var zoneV = $(this).val();
-                            zoneList.push(zoneV);
-                        });
-                        for (var i = 0; i < zoneList.length; i++) {
-                            for (var j = 0; j < zoneList.length; j++) {
-                                if (i == j) {
-                                    continue;
-                                } else if (zoneList[i] != zoneList[j]) {
-                                    Errors = 1;
-                                    ZoneFalse = 1;
-                                    break;
+                        } else if (d == 0 && k == 0) {
+                            text = ` <div class="alert alert-danger" role="alert">
+                                    <strong>คำเตือน!</strong> กรุณาเลือกที่นั่ง
+                                 </div>`
+                            $('#textWarning').html(text);
+                            return false;
+
+                        } else if (d > 0 && k == 0) {
+                            let zoneList = [];
+                            let ZoneFalse = 0;
+                            $(`.deskZoneE:not(:disabled)`).each(function() {
+                                var zoneV = $(this).val();
+                                zoneList.push(zoneV);
+                            });
+                            for (var i = 0; i < zoneList.length; i++) {
+                                for (var j = 0; j < zoneList.length; j++) {
+                                    if (i == j) {
+                                        continue;
+                                    } else if (zoneList[i] != zoneList[j]) {
+                                        Errors = 1;
+                                        ZoneFalse = 1;
+                                        break;
+                                    }
                                 }
-                            }
-                            if (ZoneFalse == 1) {
-                                text = `  
+                                if (ZoneFalse == 1) {
+                                    text = `  
                                 <div class="alert alert-danger" role="alert">
                                     <strong>คำเตือน!</strong> กรุณาเลือกโซนเดียวกัน
                                 </div>`
-                                $('#textWarning').html(text);
+                                    $('#textWarning').html(text);
 
-                                break;
-                            } else {
-                                $('#textWarning').html('');
-                                return true;
+                                    break;
+                                } else {
+                                    $('#textWarning').html('');
+                                    return true;
+                                }
                             }
-                        }
-                        return false;
-                    } else if (d == 0 && k > 1) {
-                        text = ` <div class="alert alert-danger" role="alert">
+                            return false;
+                        } else if (d == 0 && k > 1) {
+                            text = ` <div class="alert alert-danger" role="alert">
                                     <strong>คำเตือน!</strong> กรุณาเลือกห้องคาราโอเกะเพียงห้องเดียว
                             </div>
                                 `
-                        $('#textWarning').html(text);
-                        return false;
-                    } else {
-                        $('#textWarning').html('');
-                        return true;
+                            $('#textWarning').html(text);
+                            return false;
+                        } else {
+                            $('#textWarning').html('');
+                            return true;
 
+                        }
                     }
-                }
-            } else {
-                if (d == 1 && k == 0) {
-                    let cusamount = 0;
-                    let seatAmount = parseInt($('#seatAmountAllE').val());
-                    $('.AmountCustomerE').each(function() {
-                        cusamount += parseInt($(this).val());
-                    });
-                    if (cusamount <= seatAmount) {
-                        $('#textWarning').html('');
-                        return true;
-                    } else {
-                        text = ` <div class="alert alert-danger" role="alert">
+                } else {
+                    if (d == 1 && k == 0) {
+                        let cusamount = 0;
+                        let seatAmount = parseInt($('#seatAmountAllE').val());
+                        $('.AmountCustomerE').each(function() {
+                            cusamount += parseInt($(this).val());
+                        });
+                        if (cusamount <= seatAmount) {
+                            $('#textWarning').html('');
+                            return true;
+                        } else {
+                            text = ` <div class="alert alert-danger" role="alert">
                                     <strong>คำเตือน!</strong> จำนวนคนมากกว่าจำนวนที่นั่ง
                                  </div>`
+                            $('#textWarning').html(text);
+                            return false;
+                        }
+                    } else if (k == 1) {
+                        text = ` <div class="alert alert-danger" role="alert">
+                                    <strong>คำเตือน!</strong> ไม่สามารถแยกห้องคาราโอเกะได้
+                                 </div>`
+                        $('#textWarning').html(text);
+                        return false;
+                    } else {
+                        text = ` <div class="alert alert-danger" role="alert">
+                                    <strong>คำเตือน!</strong> กรุณาเลือกเพียงโต๊ะหรือห้องเดียว
+                                 </div>`
                         $('#textWarning').html(text);
                         return false;
                     }
-                } else if (k == 1) {
-                    text = ` <div class="alert alert-danger" role="alert">
-                                    <strong>คำเตือน!</strong> ไม่สามารถแยกห้องคาราโอเกะได้
-                                 </div>`
-                    $('#textWarning').html(text);
-                    return false;
-                } else {
-                    text = ` <div class="alert alert-danger" role="alert">
-                                    <strong>คำเตือน!</strong> กรุณาเลือกเพียงโต๊ะหรือห้องเดียว
-                                 </div>`
-                    $('#textWarning').html(text);
-                    return false;
                 }
             }
         }

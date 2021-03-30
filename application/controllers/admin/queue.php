@@ -90,90 +90,97 @@ class queue extends CI_Controller
         echo json_encode($data);
     }
 
-    public function insertQueue()
+    public function checkCallQueue()
     {
-        $data['status'] = true;  
         $customerTel = $this->input->post('customerTel');
         $queueDStart = $this->input->post('queueDate');
+        $data['1'] = $customerTel;
+        $data['2'] = $queueDStart;
         $queueNo = $this->queue_model->CheckQueue($customerTel, $queueDStart);
-        if ($queueNo != 0) {
-            $data['status'] = false;
-        }
-        if ($data['status'] == true) {
-            $queue['queueType'] = $this->crud_model->findselectWhere('queuetype', 'QUEUETYPE_TIME', 'QUEUETYPE_ID', '1');
-            $queueTStart = $this->input->post('queueTime');
-            $queueTEnd = strtotime($queueTStart);
-            $queueTEnd += 60 * $queue['queueType']['0']->QUEUETYPE_TIME;
-            $queueTEnd = date('H:i', $queueTEnd);
-            $queueID = $this->genIdQueue();
-            $customerName = $this->input->post('customerName');
-            $customerAmount = $this->input->post('customerAmount');
-            $note = $this->input->post('note');
-            $queueType = 1; #จองคิวล่วงหน้า
-            $queueActive = 1; #1 Wait #2Use #3Late
-            $queueStatus = 1;
-            $employeeID = $_SESSION['employeeID'];
-            $desk = $this->input->post('deskID');
-            if ($desk == null) {
-                $countDesk = 0;
-            } else {
-                $countDesk = count($desk);
-            }
-            $karaoke = $this->input->post('karaokeID');
-            if ($karaoke == null) {
-                $countKaraoke = 0;
-            } else {
-                $countKaraoke = count($karaoke);
-            }
-            $karaokeAmount = $this->input->post('karaokeUseAmount');
-            $karaokeUseType = $this->input->post('karaokeUseType');
-            $dataQueue = array(
-                'QUEUE_ID' => $queueID,
-                'QUEUE_CUSNAME' => $customerName,
-                'QUEUE_CUSAMOUNT' => $customerAmount,
-                'QUEUE_CUSTEL' => $customerTel,
-                'QUEUE_DSTART' => $queueDStart,
-                'QUEUE_TSTART' => $queueTStart,
-                'QUEUE_DEND' => $queueDStart,
-                'QUEUE_TEND' => $queueTEnd,
-                'QUEUE_NOTE' => $note,
-                'QUEUE_TYPE' => $queueType,
-                'QUEUE_ACTIVE' => $queueActive,
-                'QUEUE_STATUS' => $queueStatus,
-                'QUEUE_EMPLOYEE' => $employeeID,
-            );
+        $data['checkCallQueue'] = $queueNo;
+        echo json_encode($data);
+    }
 
-            $this->crud_model->insert('queue', $dataQueue);
-            if ($countDesk > 0) {
-                for ($i = 0; $i < $countDesk; $i++) {
-                    $dataQS = array(
-                        'QS_QUEUEID' => $queueID,
-                        'QS_SEATID' => $desk[$i],
-                    );
-                    $this->crud_model->insert('queueseat', $dataQS);
-                }
-            }
-            if ($countKaraoke > 0) {
-                for ($i = 0; $i < $countKaraoke; $i++) {
-                    $dataQS = array(
-                        'QS_QUEUEID' => $queueID,
-                        'QS_SEATID' => $karaoke[$i],
+    public function insertQueue()
+    {
 
-                    );
-                    $this->crud_model->insert('queueseat', $dataQS);
-                }
-                for ($i = 0; $i < $countKaraoke; $i++) {
-                    $dataQSK = array(
-                        'QSK_QUEUEID' => $queueID,
-                        'QSK_KARAOKEID' => $karaoke[$i],
-                        'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
-                        'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
-                    );
-                    $this->crud_model->insert('queuekaraoke', $dataQSK);
-                }
-            }
-            $data['url'] = site_url('admin/queue');
+        $queue['queueType'] = $this->crud_model->findselectWhere('queuetype', 'QUEUETYPE_TIME', 'QUEUETYPE_ID', '1');
+        $customerTel = $this->input->post('customerTel');
+        $queueDStart = $this->input->post('queueDate');
+        $queueTStart = $this->input->post('queueTime');
+        $queueTEnd = strtotime($queueTStart);
+        $queueTEnd += 60 * $queue['queueType']['0']->QUEUETYPE_TIME;
+        $queueTEnd = date('H:i', $queueTEnd);
+        $queueID = $this->genIdQueue();
+        $customerName = $this->input->post('customerName');
+        $customerAmount = $this->input->post('customerAmount');
+
+        $note = $this->input->post('note');
+        $queueType = 1; #จองคิวล่วงหน้า
+        $queueActive = 1; #1 Wait #2Use #3Late
+        $queueStatus = 1;
+        $employeeID = $_SESSION['employeeID'];
+        $desk = $this->input->post('deskID');
+        if ($desk == null) {
+            $countDesk = 0;
+        } else {
+            $countDesk = count($desk);
         }
+        $karaoke = $this->input->post('karaokeID');
+        if ($karaoke == null) {
+            $countKaraoke = 0;
+        } else {
+            $countKaraoke = count($karaoke);
+        }
+        $karaokeAmount = $this->input->post('karaokeUseAmount');
+        $karaokeUseType = $this->input->post('karaokeUseType');
+        $dataQueue = array(
+            'QUEUE_ID' => $queueID,
+            'QUEUE_CUSNAME' => $customerName,
+            'QUEUE_CUSAMOUNT' => $customerAmount,
+            'QUEUE_CUSTEL' => $customerTel,
+            'QUEUE_DSTART' => $queueDStart,
+            'QUEUE_TSTART' => $queueTStart,
+            'QUEUE_DEND' => $queueDStart,
+            'QUEUE_TEND' => $queueTEnd,
+            'QUEUE_NOTE' => $note,
+            'QUEUE_TYPE' => $queueType,
+            'QUEUE_ACTIVE' => $queueActive,
+            'QUEUE_STATUS' => $queueStatus,
+            'QUEUE_EMPLOYEE' => $employeeID,
+        );
+
+        $this->crud_model->insert('queue', $dataQueue);
+        if ($countDesk > 0) {
+            for ($i = 0; $i < $countDesk; $i++) {
+                $dataQS = array(
+                    'QS_QUEUEID' => $queueID,
+                    'QS_SEATID' => $desk[$i],
+                );
+                $this->crud_model->insert('queueseat', $dataQS);
+            }
+        }
+        if ($countKaraoke > 0) {
+            for ($i = 0; $i < $countKaraoke; $i++) {
+                $dataQS = array(
+                    'QS_QUEUEID' => $queueID,
+                    'QS_SEATID' => $karaoke[$i],
+
+                );
+                $this->crud_model->insert('queueseat', $dataQS);
+            }
+            for ($i = 0; $i < $countKaraoke; $i++) {
+                $dataQSK = array(
+                    'QSK_QUEUEID' => $queueID,
+                    'QSK_KARAOKEID' => $karaoke[$i],
+                    'QSK_KARAOKEUSETYPE' =>  $karaokeUseType[$i],
+                    'QSK_KARAOKEUSEAMOUNT' => $karaokeAmount[$i]
+                );
+                $this->crud_model->insert('queuekaraoke', $dataQSK);
+            }
+        }
+        $data['url'] = site_url('admin/queue');
+
 
         echo json_encode($data);
     }
@@ -263,7 +270,7 @@ class queue extends CI_Controller
                 'QUEUE_TEND' => $queueTEnd,
                 'QUEUE_NOTE' => $note,
             );
-            $as = $this->crud_model->update('queue', $dataQueue, 'QUEUE_ID', $queueID);
+            $this->crud_model->update('queue', $dataQueue, 'QUEUE_ID', $queueID);
             $this->crud_model->delete('queueseat', 'QS_QUEUEID', $queueID);
             if ($countDesk > 0) {
                 for ($i = 0; $i < $countDesk; $i++) {
@@ -299,22 +306,23 @@ class queue extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteQueue(){
+    public function deleteQueue()
+    {
         $queueID = $this->input->post('queueID');
         $dataDelete = array(
             'QUEUE_STATUS' => '0'
         );
-        $this->crud_model->update('queue',$dataDelete,'QUEUE_ID',$queueID);
+        $this->crud_model->update('queue', $dataDelete, 'QUEUE_ID', $queueID);
     }
 
-    public function checkin(){
+    public function checkin()
+    {
         // $data['status'] = true;
         $queueID = $this->input->post("queueID");
         $dataqueue = array(
             'QUEUE_ACTIVE' => '2'
         );
-        $this->crud_model->update('queue',$dataqueue,'QUEUE_ID',$queueID);
+        $this->crud_model->update('queue', $dataqueue, 'QUEUE_ID', $queueID);
         // echo json_encode($data);
     }
-
 }

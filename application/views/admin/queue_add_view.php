@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>
-                                <input type="tel" class="form-control" name="customerTel" maxlength="10" minlength="10" required>
+                                <input type="tel" class="form-control" name="customerTel" id="customerTel" maxlength="10" minlength="10" required>
                             </div>
                         </div>
                         <div class="row">
@@ -46,12 +46,12 @@
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="queueTime">วันเวลาที่จอง </label>
-                                <input type="time" name="queueTime" id="queueTime" class="form-control" required  min="09:00" max="21:00">
+                                <input type="time" name="queueTime" id="queueTime" class="form-control" required  min="09:00" max="23:59">
                             </div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-sm col-md col-xl-6 ">
+                            <div class="col-5">
                                 <div class="card boder-0 ">
                                     <div class="card-body">
                                         <!-- Button trigger modal -->
@@ -99,6 +99,7 @@
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th class="align-middle" style="text-align: center;">โต๊ะ</th>
+                                                        <th class="align-middle" style="text-align: center;">โซน</th>
                                                         <th class="align-middle" style="text-align: center;">จำนวนที่นั่ง</th>
                                                         <th class="align-middle" style="text-align: center;">ลบ</th>
                                                     </tr>
@@ -110,7 +111,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm col-md col-xl-6 ">
+                            <div class="col">
                                 <div class="card boder-0 ">
                                     <div class="card-body">
                                         <!-- Button trigger modal -->
@@ -161,7 +162,8 @@
                                                     <tr>
                                                         <th class="align-middle" style="text-align: center;">ห้องคาราโอเกะ</th>
                                                         <th class="align-middle" style="text-align: center;">จำนวนที่นั่ง</th>
-                                                        <th class="align-middle" style="text-align: center;">ประเภทใช้งาน</th>
+                                                        <th class="align-middle" style="text-align: center;">โซน</th>
+                                                        <th class="align-middle" style="text-align: center; width:20%">ประเภทใช้งาน</th>
                                                         <th class="align-middle" style="text-align: center;">จำนวนใช้งาน</th>
                                                         <th class="align-middle" style="text-align: center;">ลบ</th>
                                                     </tr>

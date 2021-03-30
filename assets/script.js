@@ -1886,9 +1886,9 @@ $(document).ready(function () {
         var rowId = $(this).parents('tr').attr('id');
         var deskID = $(`#${rowId} td`).html();
         var deskName = $(`#${rowId} td:nth-child(2)`).html();
+        var zoneName = $(`#${rowId} td:nth-child(3)`).html();
         var deskAmount = $(`#${rowId} td:nth-child(4)`).html();
         var idTr = $('#SdeskBody tr:last-child').attr('id');
-
         if (idTr == null) {
             var rowsd = 1;
         } else {
@@ -1901,7 +1901,10 @@ $(document).ready(function () {
                                             <input type="hidden" name="deskID[]" class="deskID" value="${deskID}">
                                             </td>
                                             <td style="text-align: center;" class="align-middle">
-                                            <input type="text" value="${deskAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
+                                            <input type="text" value="${zoneName}" style="text-align: center;" class="form-control seatZone"  disabled>
+                                            </td>
+                                            <td style="text-align: center; " class="align-middle">
+                                            <input type="text" value="${deskAmount}" style="text-align: center; " class="form-control seatAmount"  disabled>
                                             </td>
                                             <td style="text-align: center;" class="align-middle">
                                                 <button type="button" class="btn btn-danger deleteSD" value="${rowsd}">ลบ</button>
@@ -1921,6 +1924,7 @@ $(document).ready(function () {
         var karaokeID = $(`#${rowId} td`).html();
         var karaokeName = $(`#${rowId} td:nth-child(2)`).html();
         var karaokeAmount = $(`#${rowId} td:nth-child(4)`).html();
+        var zoneName = $(`#${rowId} td:nth-child(3)`).html();
         var idTr = $('#SkaraokeBody tr:last-child').attr('id');
         if (idTr == null) {
             var rowsk = 1;
@@ -1937,9 +1941,12 @@ $(document).ready(function () {
                 <td style="text-align: center;" class="align-middle">
                     <input type="text" value="${karaokeAmount}" style="text-align: center;" class="form-control seatAmount"  disabled>
                 </td>
-                <td>
+                <td style="text-align: center;" class="align-middle">
+                <input type="text" value="${zoneName}" style="text-align: center;" class="form-control seatZone"  disabled>
+            </td>
+                <td >
                     <select name="karaokeUseType[]" class="form-control karaokeUseType" required>
-                        <option value="" selected disabled>กรุณาเลือกประเภทใช้งาน</option>
+                        <option value="" selected disabled>กรุณาเลือก</option>
                         <option value="1">เหมาห้อง</option>
                         <option value="2">รายชั่วโมง</option>
                     </select>
@@ -2008,6 +2015,8 @@ $(document).ready(function () {
         var karaokeList = [];
         var breakDesk = 0;
         var breakKaraoke = 0;
+        var d = 0;
+        var k = 0;
         var seatAll = parseInt($('#seatAll').val());
         var customerAmount = parseInt($('#customerAmount').val());
 
@@ -2020,50 +2029,90 @@ $(document).ready(function () {
                 $('#customerAmountError').html('');
                 $('.deskID').each(function () {
                     deskList.push($(this).val());
-                    for (var i = 0; i < deskList.length; i++) {
-                        for (var j = 0; j < deskList.length; j++) {
-                            if (i == j) {
-                                continue;
-                            }
-                            else if (deskList[i] == deskList[j]) {
-                                $('#deskError').html('***กรุณาอย่าเลือกโต๊ะซ้ำ')
-                                Errors = 1;
-                                breakDesk = 1;
-                                break;
-                            }
+                    d++;
+                });
+                for (var i = 0; i < deskList.length; i++) {
+                    for (var j = 0; j < deskList.length; j++) {
+                        if (i == j) {
+                            continue;
                         }
-                        if (breakDesk == 1) {
+                        else if (deskList[i] == deskList[j]) {
+                            $('#deskError').html('***กรุณาอย่าเลือกโต๊ะซ้ำ')
+                            Errors = 1;
+                            breakDesk = 1;
                             break;
                         }
-                        else {
-                            $('#deskError').html('')
-                        }
                     }
-                });
+                    if (breakDesk == 1) {
+                        break;
+                    }
+                    else {
+                        $('#deskError').html('')
+                    }
+                }
+
 
                 $('.karaokeID').each(function () {
                     karaokeList.push($(this).val());
-                    for (var i = 0; i < karaokeList.length; i++) {
-                        for (var j = 0; j < karaokeList.length; j++) {
+                    k++;
+                });
+                for (var i = 0; i < karaokeList.length; i++) {
+                    for (var j = 0; j < karaokeList.length; j++) {
+                        if (i == j) {
+                            continue;
+                        }
+                        else if (karaokeList[i] == karaokeList[j]) {
+                            $('#karaokeError').html('***กรุณาอย่าเลือกห้องคาราโอเกะซ้ำ')
+                            Errors = 1;
+                            breakKaraoke = 1;
+                            break;
+                        }
+                    }
+                    if (breakKaraoke == 1) {
+                        break;
+                    }
+                    else {
+                        $('#karaokeError').html('')
+                    }
+                }
+
+
+                if (breakKaraoke == 0 && breakDesk == 0) {
+                    let zoneList = [];
+                    let zonebreak = 0;
+                    $('.seatZone').each(function () {
+                        zoneList.push($(this).val());
+                    });
+                    for (var i = 0; i < zoneList.length; i++) {
+                        for (var j = 0; j < zoneList.length; j++) {
                             if (i == j) {
                                 continue;
                             }
-                            else if (karaokeList[i] == karaokeList[j]) {
-                                $('#karaokeError').html('***กรุณาอย่าเลือกห้องคาราโอเกะซ้ำ')
+                            else if (zoneList[i] != zoneList[j]) {
+                                $('#seatAllError').html('***กรุณาเลือกโซนเดียวกัน')
                                 Errors = 1;
-                                breakKaraoke = 1;
+                                zonebreak = 1;
                                 break;
                             }
                         }
-                        if (breakKaraoke == 1) {
+                        if (zonebreak == 1) {
                             break;
                         }
+                    }
+                    if (zonebreak == 0) {
+                        if (d > 0 && k > 0) {
+                            $('#seatAllError').html('***กรุณาเลือกแค่โต๊ะหรือแค่ห้องคาราโอเกะ');
+                            Errors = 1;
+                        }
+                        else if (k > 1) {
+                            $('#seatAllError').html('***กรุณาเลือกห้องคาราโอเกะเพียงห้องเดียว');
+                            Errors = 1;
+                        }
                         else {
-                            $('#karaokeError').html('')
+                            $('#seatAllError').html('');
                         }
                     }
-                });
-
+                }
             }
             else {
                 $('#customerAmountError').html('***จำนวนคนมากกว่าจำนวนที่นั่ง');
@@ -2076,30 +2125,73 @@ $(document).ready(function () {
         return Errors;
     }
 
+    function checkCallQueue() {
+        var customerTel = $('#customerTel').val();
+        var queueDate = $('#queueDate').val();
+        var result;
+        $.ajax({
+            url: "../queue/checkCallQueue",
+            method: "POST",
+            async: false,
+            data: {
+                customerTel: customerTel,
+                queueDate: queueDate
+            },
+            dataType: "JSON",
+            success: function (data) {
+                result = data.checkCallQueue;
+            }
+        });
+
+        return result;
+    }
+
     $('#addQueueForm').on('submit', function (e) {
         e.preventDefault();
-        var Errors = validationQueueForm();
-        if (Errors == 0) {
-            $.ajax({
-                url: "../queue/insertQueue",
-                method: "POST",
-                data: $(this).serialize(),
-                dataType: "JSON",
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status == true) {
+        var checkCall = checkCallQueue();
+        if (checkCall != 0) {
+            var cf = confirm('เบอร์นี้มีการลงคิวสำหรับวันนี้แล้ว\nต้องการเพิ่มคิวหรือไม่')
+            if (cf == true) {
+                var Errors = validationQueueForm();
+                if (Errors == 0) {
+                    $.ajax({
+                        url: "../queue/insertQueue",
+                        method: "POST",
+                        data: $(this).serialize(),
+                        dataType: "JSON",
+                        success: function (data) {
+                            // console.log(data);
+                            alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                            location.replace(data.url);
+
+                        }
+                    });
+                } else {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                }
+            }
+        }
+        else if (checkCall == 0) {
+            var Errors = validationQueueForm();
+            if (Errors == 0) {
+                $.ajax({
+                    url: "../queue/insertQueue",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
                         alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
                         location.replace(data.url);
+
                     }
-                    else {
-                        $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
-                        alert('กรุณากรอกข้อมูลให้ถูกต้อง')
-                    }
-                }
-            });
-        } else {
-            alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                });
+            } else {
+                alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+            }
+
         }
+
+
     });
 
 
