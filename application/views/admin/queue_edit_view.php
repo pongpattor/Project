@@ -23,7 +23,7 @@
                                     <label for="employeeName">พนักงานที่รับจอง </label>
                                     <input type="text" name="employeeName" id="employeeName" class="form-control" disabled value="<?= $row->EMPLOYEE_FIRSTNAME . ' ' . $row->EMPLOYEE_LASTNAME; ?>">
                                     <input type="hidden" name="queueID" value="<?= $row->QUEUE_ID; ?>">
-
+                                    <input type="hidden" name="queueActive" value="<?= $row->QUEUE_ACTIVE; ?>">
                                 </div>
                             </div>
                             <div class="row">
@@ -34,7 +34,6 @@
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>
                                     <input type="tel" class="form-control" name="customerTel" maxlength="10" minlength="10" required value="<?= $row->QUEUE_CUSTEL; ?>">
-                                    <input type="hidden" name="customerTelOld" value="<?= $row->QUEUE_CUSTEL; ?>">
                                 </div>
                             </div>
                             <div class="row">
@@ -52,21 +51,20 @@
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="queueDate">วันเวลาที่จอง </label>
                                     <input type="date" name="queueDate" id="queueDate" class="form-control" required min="<?php echo date('Y-m-d') ?>" value="<?php echo $row->QUEUE_DSTART ?>">
-                                    <input type="hidden" name="queueDateOld" id="queueDateOld"  value="<?php echo $row->QUEUE_DSTART ?>">
                                 </div>
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label for="queueTime">วันเวลาที่จอง </label>
-                                    <input type="time" name="queueTime" id="queueTime" class="form-control" required min="09:00" max="21:00" value="<?php echo $row->QUEUE_TSTART ?>">
+                                    <input type="time" name="queueTime" id="queueTime" class="form-control" required min="09:00" max="23:59" value="<?php echo $row->QUEUE_TSTART ?>">
                                 </div>
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-sm col-md col-xl-6 ">
-                                    <div class="card boder-0 ">
+                                <div class="col-5">
+                                    <div class="card boder-0 h-100 ">
                                         <div class="card-body">
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deskModal">
-                                                เลือกโต๊ะ 
+                                                เลือกโต๊ะ
                                             </button>
                                             <span id="deskError" style="color:red;"></span>
                                             <!-- Modal -->
@@ -124,6 +122,7 @@
                                                         <tr>
                                                             <th class="align-middle" style="text-align: center;">โต๊ะ</th>
                                                             <th class="align-middle" style="text-align: center;">จำนวนที่นั่ง</th>
+                                                            <th class="align-middle" style="text-align: center;">โซน</th>
                                                             <th class="align-middle" style="text-align: center;">ลบ</th>
                                                         </tr>
                                                     </thead>
@@ -141,7 +140,10 @@
                                                                         <input type="text" value="<?= $row2->SEAT_AMOUNT ?>" style="text-align: center;" class="form-control seatAmount" disabled>
                                                                     </td>
                                                                     <td style="text-align: center;" class="align-middle">
-                                                                        <button type="button" class="btn btn-danger deleteSD" value="<?= $rowsd; ?>" >ลบ</button>
+                                                                        <input type="text" value="<?= $row2->ZONE_NAME ?>" style="text-align: center;" class="form-control seatZone" disabled>
+                                                                    </td>
+                                                                    <td style="text-align: center;" class="align-middle">
+                                                                        <button type="button" class="btn btn-danger deleteSD" value="<?= $rowsd; ?>">ลบ</button>
                                                                     </td>
                                                                 </tr>
                                                         <?php $rowsd++;
@@ -153,8 +155,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm col-md col-xl-6 ">
-                                    <div class="card boder-0 ">
+                                <div class="col">
+                                    <div class="card boder-0 h-100">
                                         <div class="card-body">
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#karokeModal">
@@ -220,7 +222,8 @@
                                                         <tr>
                                                             <th class="align-middle" style="text-align: center;">ห้องคาราโอเกะ</th>
                                                             <th class="align-middle" style="text-align: center;">จำนวนที่นั่ง</th>
-                                                            <th class="align-middle" style="text-align: center;">ประเภทใช้งาน</th>
+                                                            <th class="align-middle" style="text-align: center; ">โซน</th>
+                                                            <th class="align-middle" style="text-align: center;width:20%">ประเภทใช้งาน</th>
                                                             <th class="align-middle" style="text-align: center;">จำนวนใช้งาน</th>
                                                             <th class="align-middle" style="text-align: center;">ลบ</th>
                                                         </tr>
@@ -237,6 +240,9 @@
                                                                     </td>
                                                                     <td style="text-align: center;" class="align-middle">
                                                                         <input type="text" value="<?= $row2->SEAT_AMOUNT ?>" style="text-align: center;" class="form-control seatAmount" disabled>
+                                                                    </td>
+                                                                    <td style="text-align: center;" class="align-middle">
+                                                                        <input type="text" value="<?= $row2->ZONE_NAME ?>" style="text-align: center;" class="form-control seatZone" disabled>
                                                                     </td>
                                                                     <td>
                                                                         <select name="karaokeUseType[]" class="form-control karaokeUseType" required>
@@ -272,7 +278,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm col-md col-xl-6 ">
+                                <div class="col">
                                     <label for="note">หมายเหตุ </label>
                                     <textarea name="note" class="form-control" cols="30" rows="3" maxlength="50"><?= $row->QUEUE_NOTE; ?></textarea>
                                 </div>
@@ -286,7 +292,9 @@
                                                 <a href="<?= site_url('admin/queue/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                             </div>
                                             <div class="col">
-                                                <input class="btn btn-success btn-xs" type="submit" value="บันทึก" <?php if($row->QUEUE_ACTIVE == '2'){echo 'disabled';}?>>
+                                                <input class="btn btn-success btn-xs" type="submit" value="บันทึก" <?php if ($row->QUEUE_ACTIVE != '1') {
+                                                                                                                        echo 'disabled';
+                                                                                                                    } ?>>
                                             </div>
                                         </div>
                                     </center>

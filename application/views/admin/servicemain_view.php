@@ -15,7 +15,7 @@
     <!-- Icon -->
     <script src="<?= base_url('assets/icon_fontawesome/js/all.min.js'); ?>" crossorigin="anonymous"></script>
     <!-- script -->
-    <script src="<?= base_url('assets/script.js') ?>"></script>
+    <script src="<?= base_url('assets/script2.js') ?>"></script>
     <!-- Data Table -->
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets\datatable\datatables.css') ?>" />
     <script type="text/javascript" src="<?= base_url('assets\datatable\datatables.js') ?>"></script>
@@ -69,12 +69,13 @@
     <br>
     <br>
     <main>
-        <div id="content" class="container-fluid">
-            <?php $this->load->view('admin/'.$page); 
+        <div id="content" class="container-fluid ">
+            <?php $this->load->view("admin/$page");
             ?>
         </div>
     </main>
     <br><br>
+
 
 </body>
 

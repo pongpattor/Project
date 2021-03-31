@@ -29,7 +29,7 @@ class queue_model extends CI_Model
                          AND queue.QUEUE_ACTIVE IN ($queueActive)    
                          AND queue.QUEUE_STATUS = '1'                
                     GROUP BY queue.QUEUE_ID) que
-                    ORDER BY que.QUEUE_ACTIVE ASC,que.QUEUE_DSTART ASC
+                    ORDER BY que.QUEUE_ACTIVE ASC,que.QUEUE_DSTART ASC ,que.QUEUE_TSTART
                 LIMIT $offset,$limit ";
         $query = $this->db->query(
             $sql,
@@ -117,34 +117,61 @@ class queue_model extends CI_Model
         return $query->result();
     }
 
-    public function CheckQueue($tel, $date)
+    public function checkCallQueue($tel, $date)
     {
         $sql = "SELECT COUNT(*) as cnt FROM queue
         WHERE QUEUE_DSTART = '$date'
-        AND QUEUE_CUSTEL = '$tel'";
+        AND QUEUE_CUSTEL = '$tel'
+        AND QUEUE_STATUS = '1'
+        AND QUEUE_ACTIVE = '1'";
         $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->cnt;
         }
     }
 
+    public function queueTimeOut()
+    {
+        $sql = "UPDATE queue
+        SET QUEUE_ACTIVE = '3'
+        WHERE QUEUE_ID IN (
+        SELECT QUEUE_ID FROM queue
+        WHERE (QUEUE_DEND <= CURRENT_DATE
+        AND QUEUE_TEND < CURRENT_TIME
+        AND QUEUE_STATUS = '1'
+        AND QUEUE_ACTIVE = '1'))";
+        $this->db->query($sql);
+    }
+
+    public function checkStatusQueue($queueID)
+    {
+        $sql = "SELECT QUEUE_ACTIVE FROM queue
+        WHERE QUEUE_ID = '$queueID'";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->QUEUE_ACTIVE;
+        }
+    }
+
     public function selectSeat($date)
     {
         $sql = "SELECT s.SEAT_ID,s.SEAT_NAME,s.SEAT_AMOUNT,s.SEAT_TYPE,
-            s.SEAT_ZONE,s.KARAOKE_PRICEPERHOUR,s.KARAOKE_FLATRATE,zone.ZONE_NAME FROM zone
-            JOIN
-            (
-            SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_TYPE,
-            seat.SEAT_ZONE,karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE FROM seat 
-            LEFT JOIN karaoke
-            ON seat.SEAT_ID = karaoke.KARAOKE_ID
-            WHERE SEAT_ID NOT IN((SELECT queueseat.QS_SEATID FROM queue JOIN queueseat 
-            ON queue.QUEUE_ID = queueseat.QS_QUEUEID
-            WHERE QUEUE_DSTART = '$date'))
-            AND SEAT_QUEUE = '1'
-            AND SEAT_ACTIVE != '0'
-            AND SEAT_STATUS = '1') s
-            ON zone.ZONE_ID = s.SEAT_ZONE";
+        s.SEAT_ZONE,s.KARAOKE_PRICEPERHOUR,s.KARAOKE_FLATRATE,zone.ZONE_NAME FROM zone
+        JOIN
+        (
+        SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_TYPE,
+        seat.SEAT_ZONE,karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE FROM seat 
+        LEFT JOIN karaoke
+        ON seat.SEAT_ID = karaoke.KARAOKE_ID
+        WHERE SEAT_ID NOT IN((SELECT queueseat.QS_SEATID FROM queue JOIN queueseat 
+        ON queue.QUEUE_ID = queueseat.QS_QUEUEID
+        WHERE QUEUE_DSTART = '$date'
+        AND QUEUE_ACTIVE = '1'
+                    GROUP BY queueseat.QS_SEATID))
+        AND SEAT_QUEUE = '1'
+        AND SEAT_ACTIVE != '0'
+        AND SEAT_STATUS = '1') s
+        ON zone.ZONE_ID = s.SEAT_ZONE";
         $query = $this->db->query($sql);
         //    echo '<pre>';
         // print_r($this->db->last_query($query));
@@ -172,7 +199,9 @@ class queue_model extends CI_Model
 
     public function editQueueSeat($queueID)
     {
-        $sql = "SELECT seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_TYPE,qs.QS_QUEUEID,qs.QS_SEATID,qs.QSK_KARAOKEUSETYPE,qs.QSK_KARAOKEUSEAMOUNT FROM seat JOIN (
+        $sql = "SELECT seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_TYPE,zone.ZONE_NAME,qs.QS_QUEUEID,qs.QS_SEATID,qs.QSK_KARAOKEUSETYPE,qs.QSK_KARAOKEUSEAMOUNT FROM seat 
+            JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID
+            JOIN (
             SELECT queueseat.QS_QUEUEID,queueseat.QS_SEATID,queuekaraoke.QSK_KARAOKEUSETYPE,queuekaraoke.QSK_KARAOKEUSEAMOUNT
             FROM queueseat LEFT JOIN queuekaraoke
             ON (queueseat.QS_QUEUEID = queuekaraoke.QSK_QUEUEID AND queueseat.QS_SEATID = queuekaraoke.QSK_KARAOKEID)) qs
@@ -224,9 +253,7 @@ class queue_model extends CI_Model
                 '%' . $this->db->escape_like_str($search) . '%',
             )
         );
-        // echo '<pre>';
-        // print_r($this->db->last_query($query));
-        // echo '</pre>';
+
         return $query->result();
     }
 

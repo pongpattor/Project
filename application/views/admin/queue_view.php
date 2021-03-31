@@ -58,7 +58,7 @@
     </div>
 </div>
 ฺ<br>
-<div class="row ">
+<div class="row">
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
@@ -246,10 +246,17 @@
                     data: {
                         queueID: queueID,
                     },
-                    success: function() {
-                        alert('เข้าใช้งาน');
-                        $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
-                        $(`#${queueID} td:nth-child(9) `).html('เข้าใช้งาน');
+                    dataType: "JSON",
+                    success: function(data) {
+                        if (data.chkQueue == 1) {
+                            alert('เข้าใช้งาน');
+                            $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
+                            $(`#${queueID} td:nth-child(9) `).html('เข้าใช้งาน');
+                        } else {
+                            alert('คิวนี้เลยเวลากำหนด');
+                            location.reload();
+                        }
+
                     }
                 });
             }
@@ -257,7 +264,27 @@
 
         });
 
+        $('#queueTimeForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "<?= site_url('admin/queue/updateQueueTime') ?>",
+                method: "POST",
+                data: $(this).serialize(),
+                success: function() {
+                    alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
+                    location.reload();
+                }
+            });
+        });
 
-
+        function queueTimeOut() {
+            $.ajax({
+                url: "<?= site_url('admin/queue/queueTimeOut') ?>",
+                async: false,
+            });
+            // alert('hello');
+        }
+        queueTimeOut();
+        setInterval(queueTimeOut, 1000 * 60);
     });
 </script>
