@@ -275,9 +275,20 @@
                     }
                 });
             }
-
-
         });
 
+
+        $('#queueWalkinTimeForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "<?= site_url('admin/queuewalkin/updateQueueWalkinTime')?>",
+                method: "POST",
+                data: $(this).serialize(),
+                success: function() {
+                    alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
+                    location.reload();
+                }
+            });
+        });
     });
 </script>

@@ -214,6 +214,30 @@ class queue_model extends CI_Model
         return $query->result();
     }
 
+    public function queueCheckIn($queueID)
+    {
+        $sql = "SELECT
+        queue.QUEUE_ID,
+        seat.SEAT_TYPE,
+        seat.SEAT_ID,
+        queuekaraoke.QSK_KARAOKEUSETYPE,
+        queuekaraoke.QSK_KARAOKEUSEAMOUNT 
+        FROM
+        queue
+        INNER JOIN queueseat ON queue.QUEUE_ID = queueseat.QS_QUEUEID
+        INNER JOIN seat ON queueseat.QS_SEATID = seat.SEAT_ID
+        LEFT JOIN queuekaraoke ON queueseat.QS_SEATID = queuekaraoke.QSK_KARAOKEID 
+        WHERE
+        QUEUE_ID = '$queueID'
+        ";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+
+        
+    }
+
+
     public function queueWalkin($search, $queueActive, $limit, $offset)
     {
         $sql = "SELECT

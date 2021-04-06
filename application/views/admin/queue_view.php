@@ -239,15 +239,19 @@
         $('.checkin').on('click', function() {
             var cf = confirm('ยืนยันการเข้าใช้งาน');
             if (cf == true) {
+                var rowid = $(this).parents('tr').attr('id');
                 var queueID = $(this).val();
+                var amount = $(`#${rowid} td:nth-child(4)`).html();
                 $.ajax({
                     url: "<?= site_url('admin/queue/checkin') ?>",
                     method: "POST",
                     data: {
                         queueID: queueID,
+                        amount : amount,
                     },
                     dataType: "JSON",
                     success: function(data) {
+                        console.log(data);
                         if (data.chkQueue == 1) {
                             alert('เข้าใช้งาน');
                             $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);

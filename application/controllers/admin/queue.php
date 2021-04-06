@@ -302,9 +302,31 @@ class queue extends CI_Controller
         $this->crud_model->update('queue', $dataDelete, 'QUEUE_ID', $queueID);
     }
 
+    public function genServiceID()
+    {
+        $maxId = $this->crud_model->maxID('service', 'SERVICE_ID');
+        $ymd = date('ymd');
+        if ($maxId == '') {
+            $id = 'SER' . $ymd . '001';
+            return $id;
+        } else {
+            $ymdID = substr($maxId, 3, 6);
+            if ($ymdID != $ymd) {
+                return 'SER' . $ymd . '001';
+            } else {
+                $id = substr($maxId, 9);
+                $id += 1;
+                while (strlen($id) < 3) {
+                    $id = '0' . $id;
+                }
+                $id = 'SER' . $ymdID . $id;
+                return $id;
+            }
+        }
+    }
+
     public function checkin()
     {
-        // $data['status'] = true;
         $queueID = $this->input->post("queueID");
         $chkQueue = $this->queue_model->checkStatusQueue($queueID);
         $data['chkQueue'] = $chkQueue;
@@ -313,6 +335,54 @@ class queue extends CI_Controller
                 'QUEUE_ACTIVE' => '2'
             );
             $this->crud_model->update('queue', $dataqueue, 'QUEUE_ID', $queueID);
+
+            $serviceID = $this->genServiceID();
+            $AmountCustomerE = $this->input->post('amount');
+            $serviceDStart = date('Y-m-d');
+            $serviceTStart = date('H:i');
+            $dataService = array(
+                'SERVICE_ID' => $serviceID,
+                'SERVICE_CUSAMOUNT' => $AmountCustomerE,
+                'SERVICE_DSTART' => $serviceDStart,
+                'SERVICE_TSTART' => $serviceTStart,
+                'SERVICE_ACTIVE' => '1',
+                'SERVICE_STATUS' => '1'
+            );
+            $this->crud_model->insert('service', $dataService);;
+
+            $dataQueue =  $this->queue_model->queueCheckIn($queueID);
+            $i = 1;
+            foreach ($dataQueue as $row) {
+                $dataServiceSeat = array(
+                    'SERSEAT_SEATID' => $row->SEAT_ID,
+                    'SERSEAT_SERVICEID' => $serviceID,
+                );
+                $this->crud_model->insert('serviceseat', $dataServiceSeat);
+                if ($row->SEAT_TYPE == '2') {
+                    $dataDetailService = array(
+                        'DTSER_ID' => $serviceID,
+                        'DTSER_NO' => $i,
+                        'DTSER_TYPE' => '2', #DTSERTYPE 1 = PRODUCT , 2 = KARAOKE , 3 = PROMOTION
+                        'DTSER_DATE' => $serviceDStart,
+                        'DTSER_TIME' => $serviceTStart,
+                        'DTSER_AMOUNT' => $AmountCustomerE,
+                        'DTSER_NOTE' => '',
+                        'DTSER_REMAINDER' => '1',
+                        'DTSER_ACTIVE' => '1',
+                        'DTSER_STATUS' => '1',
+                    );
+                    $this->crud_model->insert('servicedetail', $dataDetailService);
+                    $dataKaraokeService = array(
+                        'KARADTSER_ID' => $serviceID,
+                        'KARADTSER_NO' => $i,
+                        'KARADTSER_KARAOKEID' => $row->SEAT_ID,
+                        'KARADTSER_AMOUNT' => $row->QSK_KARAOKEUSEAMOUNT,
+                        'KARADTSER_USETYPE' => $row->QSK_KARAOKEUSETYPE
+                    );
+                    $this->crud_model->insert('servicedetailkaraoke', $dataKaraokeService);
+                    $i++;
+                }
+            }
         }
 
         echo json_encode($data);

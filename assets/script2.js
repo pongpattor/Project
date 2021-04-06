@@ -466,23 +466,9 @@ $(document).ready(function () {
                 }
             }
         }
-        else{
+        else {
             alert('ไม่สามารถแก้ไขข้อมูลคิวได้');
         }
-    });
-
-
-    $('#queueWalkinTimeForm').on('submit', function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: "./queuewalkin/updateQueueWalkinTime",
-            method: "POST",
-            data: $(this).serialize(),
-            success: function () {
-                alert('แก้ไขเวลาเลยกำหนดเสร็จสิ้น');
-                location.reload();
-            }
-        });
     });
 
 
@@ -494,14 +480,8 @@ $(document).ready(function () {
             data: $(this).serialize(),
             dataType: "JSON",
             success: function (data) {
-                if (data.status == true) {
-                    alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
-                    location.replace(data.url);
-                }
-                else {
-                    $('#cusTelError').html('***เบอร์โทรนี้ได้จองคิววันนี้แล้ว');
-                    alert('กรุณากรอกข้อมูลให้ถูกต้อง')
-                }
+                alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                location.replace(data.url);
             }
         });
     });

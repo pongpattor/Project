@@ -79,43 +79,37 @@ class queuewalkin extends CI_Controller
 
     public function insertQueueWalkin()
     {
-        $data['status'] = true;
         $queue['queueType'] = $this->crud_model->findselectWhere('queuetype', 'QUEUETYPE_TIME', 'QUEUETYPE_ID', '1');
         $queueDStart = date('Y-m-d');
         $customerTel = $this->input->post('customerTel');
-        $queueNo = $this->queue_model->CheckQueue($customerTel, $queueDStart);
-        if ($queueNo != 0) {
-            $data['status'] = false;
-        }
-        if ($data['status'] == true) {
-            $queueTStart = date('H:i');
-            $queueTEnd = strtotime($queueTStart);
-            $queueTEnd += 60 * $queue['queueType']['0']->QUEUETYPE_TIME;
-            $queueTEnd = date('H:i', $queueTEnd);
-            $queueID = $this->genIdQueue();
-            $customerName = $this->input->post('customerName');
-            $customerAmount = $this->input->post('customerAmount');
-            $note = $this->input->post('QUEUE_NOTE');
-            $queueType = 2;
-            $queueActive = 1; #1 Wait #2Use #3Late
-            $queueStatus = 1;
-            $employeeID = $_SESSION['employeeID'];
-            $dataWalkin = array(
-                'QUEUE_ID' => $queueID,
-                'QUEUE_CUSNAME' => $customerName,
-                'QUEUE_CUSAMOUNT' => $customerAmount,
-                'QUEUE_CUSTEL' => $customerTel,
-                'QUEUE_DSTART' => $queueDStart,
-                'QUEUE_TSTART' => $queueTStart,
-                'QUEUE_NOTE' => $note,
-                'QUEUE_TYPE' => $queueType,
-                'QUEUE_ACTIVE' => $queueActive,
-                'QUEUE_STATUS' => $queueStatus,
-                'QUEUE_EMPLOYEE' => $employeeID,
-            );
-            $this->crud_model->insert('queue', $dataWalkin);
-            $data['url'] = site_url('admin/queueWalkin');
-        }
+        $queueTStart = date('H:i');
+        $queueTEnd = strtotime($queueTStart);
+        $queueTEnd += 60 * $queue['queueType']['0']->QUEUETYPE_TIME;
+        $queueTEnd = date('H:i', $queueTEnd);
+        $queueID = $this->genIdQueue();
+        $customerName = $this->input->post('customerName');
+        $customerAmount = $this->input->post('customerAmount');
+        $note = $this->input->post('QUEUE_NOTE');
+        $queueType = 2;
+        $queueActive = 1; #1 Wait #2Use #3Late
+        $queueStatus = 1;
+        $employeeID = $_SESSION['employeeID'];
+        $dataWalkin = array(
+            'QUEUE_ID' => $queueID,
+            'QUEUE_CUSNAME' => $customerName,
+            'QUEUE_CUSAMOUNT' => $customerAmount,
+            'QUEUE_CUSTEL' => $customerTel,
+            'QUEUE_DSTART' => $queueDStart,
+            'QUEUE_TSTART' => $queueTStart,
+            'QUEUE_NOTE' => $note,
+            'QUEUE_TYPE' => $queueType,
+            'QUEUE_ACTIVE' => $queueActive,
+            'QUEUE_STATUS' => $queueStatus,
+            'QUEUE_EMPLOYEE' => $employeeID,
+        );
+        $this->crud_model->insert('queue', $dataWalkin);
+        $data['url'] = site_url('admin/queueWalkin');
+
         echo json_encode($data);
     }
 
@@ -169,12 +163,13 @@ class queuewalkin extends CI_Controller
         echo json_encode($data);
     }
 
-    public function checkin(){
-        
+    public function checkin()
+    {
+
         $queueID = $this->input->post("queueID");
         $dataqueue = array(
             'QUEUE_ACTIVE' => '2'
         );
-        $this->crud_model->update('queue',$dataqueue,'QUEUE_ID',$queueID);
+        $this->crud_model->update('queue', $dataqueue, 'QUEUE_ID', $queueID);
     }
 }
