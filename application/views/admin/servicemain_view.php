@@ -20,6 +20,19 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url('assets\datatable\datatables.css') ?>" />
     <script type="text/javascript" src="<?= base_url('assets\datatable\datatables.js') ?>"></script>
 
+    <style>
+        .btn-purple {
+            color: #212529;
+            background-color: #AD00FF;
+            border-color: #AD00FF;
+        }
+
+        .btn-purple:hover {
+            color: #212529;
+            background-color: #BA61E4;
+            border-color: #C189DC;
+        }
+    </style>
 </head>
 
 <body>
@@ -53,7 +66,8 @@
                     <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ  <!-- <span id="alertServe" class="badge badge-danger">20</span> -->
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ
+                        <!-- <span id="alertServe" class="badge badge-danger">20</span> -->
                     </a>
                 </li>
                 <li class="nav-item">

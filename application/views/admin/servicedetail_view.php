@@ -3,16 +3,22 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">เซอร์วิส </h3>
+                <h3 class="d-inline">รายการที่สั่ง </h3>
             </div>
         </div>
     </div>
 </div>
-ฺ<br>
+<br>
 <div class="row">
     <div class="col-12">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5>รหัสเซอร์วิส <span id="serviceID"><?= $this->input->get('detailServiceID') ?></span></h5>
+                        <h5>โต๊ะ</h5>
+                    </div>
+                </div>
                 <form action="#" method="GET">
                     <div class="row">
                         <div class="col-10">
@@ -27,14 +33,13 @@
                         </div>
                     </div>
                 </form>
-               
                 <div class="row">
                     <div class="col-12">
-                        <?php
-                        echo '<div class="row">';
-                        echo '<div class="col-12">';
-                        echo '<div class="row">';
-                        echo '<div class="col-8">'; ?>
+                        <!-- <?php
+                                echo '<div class="row">';
+                                echo '<div class="col-12">';
+                                echo '<div class="row">';
+                                echo '<div class="col-8">'; ?>
                         <?php if ($this->input->get('search'))  echo '<h4>คำที่คุณค้นหาคือ "' . $this->input->get('search') . '"</h4>'; ?>
                         <?php echo '</div>';
                         echo '<div class="col-4">';
@@ -43,26 +48,23 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        ?>
+                        ?> -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
                                     <table class="table  table-bordered table-sm" width="100%" cellspacing="0">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th style="text-align: center;">รหัสเซอร์วิส</th>
-                                                <th style="text-align: center;">จำนวนคน</th>
-                                                <th style="text-align: center;">ที่นั่ง</th>
-                                                <th style="text-align: center;">วันเวลาเข้าใช้งาน</th>
-                                                <th style="text-align: center;">รายละเอียดที่สั่ง</th>
-                                                <th style="text-align: center;">สั่งอาหาร</th>
-                                                <th style="text-align: center;">ย้ายโต๊ะ</th>
-                                                <th style="text-align: center;">คิดเงิน</th>
-                                                <th style="text-align: center;">ลบ</th>
+                                                <th style="text-align: center;">ลำดับ</th>
+                                                <th style="text-align: center;">รายการ</th>
+                                                <th style="text-align: center;">จำนวน</th>
+                                                <th style="text-align: center;">หมายเหตุ</th>
+                                                <th style="text-align: center;">สถานะ</th>
+                                                <th style="text-align: center;">ยกเลิก</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($service as $row) : ?>
+                                            <!-- <?php foreach ($service as $row) : ?>
                                                 <tr id="<?= $row->SERVICE_ID ?>" class=" bgtable">
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SERVICE_ID; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SERVICE_CUSAMOUNT; ?></td>
@@ -90,19 +92,19 @@
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-info"><i class="fa fa-credit-card"></i></button></td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php endforeach; ?> -->
                                         </tbody>
                                     </table>
-                                    <?php if ($links != null) {
-                                        echo $links;
-                                    } else { ?>
+                                    <!-- <?php if ($links != null) {
+                                                echo $links;
+                                            } else { ?>
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
                                                 <li class="page-item active"><a class="page-link ">1</a></li>
 
                                             </ul>
                                         </nav>
-                                    <?php } ?>
+                                    <?php } ?> -->
                                 </div>
                             </div>
                         </div>

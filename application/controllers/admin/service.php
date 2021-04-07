@@ -153,7 +153,7 @@ class service extends CI_Controller
             $productActive = '1,2';
         }
 
-        $config['base_url'] = site_url('admin/product/index');
+        $config['base_url'] = site_url('admin/service/instore');
         $config['total_rows'] = $this->service_model->countAllService($search, $productActive);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
@@ -194,5 +194,13 @@ class service extends CI_Controller
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'serviceinstore_view';
         $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function serviceDetail(){
+        $serviceID = $this->input->get('detailServiceID');
+        // echo $serviceID;
+        $data['page'] = 'servicedetail_view';
+        $this->load->view('admin/servicemain_view', $data);
+
     }
 }
