@@ -68,6 +68,28 @@ class service extends CI_Controller
             if ($useKaraoke == 1) {
                 $karaokeUsetype = $this->input->post('karaokeUsetype');
                 $karaokeUseAmount = $this->input->post('karaokeUseAmount');
+
+                $dataDetailService = array(
+                    'DTSER_ID' => $serviceID,
+                    'DTSER_NO' => '1',
+                    'DTSER_TYPE' => '2', #DTSERTYPE 1 = PRODUCT , 2 = KARAOKE , 3 = PROMOTION
+                    'DTSER_DATE' => $serviceDStart,
+                    'DTSER_TIME' => $serviceTStart,
+                    'DTSER_AMOUNT' => $AmountCustomerE,
+                    'DTSER_NOTE' => '',
+                    'DTSER_REMAINDER' => '1',
+                    'DTSER_ACTIVE' => '1',
+                    'DTSER_STATUS' => '1',
+                );
+                $this->crud_model->insert('servicedetail', $dataDetailService);
+                $dataKaraokeService = array(
+                    'KARADTSER_ID' => $serviceID,
+                    'KARADTSER_NO' => '1',
+                    'KARADTSER_KARAOKEID' => $serviceSeat['0'],
+                    'KARADTSER_AMOUNT' => $karaokeUseAmount,
+                    'KARADTSER_USETYPE' => $karaokeUsetype,
+                );
+                $this->crud_model->insert('servicedetailkaraoke', $dataKaraokeService);
             }
         } else {
             $abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
