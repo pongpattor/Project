@@ -407,7 +407,8 @@
                     data: $(this).serialize(),
                     dataType: "JSON",
                     success: function(data) {
-                        console.log(data);
+                        alert('เข้าใช้งานเสร็จสิ้น');
+                        location.replace(data.url);
                     }
                 });
             }

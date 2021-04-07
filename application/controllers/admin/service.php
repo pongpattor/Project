@@ -28,9 +28,9 @@ class service extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
+
     public function insertEnterService()
     {
-        // $data['type'] = $_POST;
         $enterTypeService =  $this->input->post('enterServiceType');
         $AmountCustomerE = $this->input->post('AmountCustomerE');
         $serviceDStart = date('Y-m-d');
@@ -116,6 +116,8 @@ class service extends CI_Controller
             );
             $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[0]);
         }
+        $data['url'] = site_url('admin/service/instore');
+        
         echo json_encode($data);
     }
 
@@ -140,5 +142,57 @@ class service extends CI_Controller
                 return $id;
             }
         }
+    }
+
+    public function instore(){
+
+        $search = $this->input->get('search');
+        if ($this->input->get('productActive')) {
+            $productActive = $this->input->get('productActive');
+        } else {
+            $productActive = '1,2';
+        }
+
+        $config['base_url'] = site_url('admin/product/index');
+        $config['total_rows'] = $this->service_model->countAllService($search, $productActive);
+        $config['per_page'] = 5;
+        $config['reuse_query_string'] = TRUE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<nav><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item ">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+        $limit = $config['per_page'];
+        $offset = $this->uri->segment(4, 0);
+        $this->pagination->initialize($config);
+        $data['total'] = $config['total_rows'];
+        $data['service'] = $this->service_model->service($search, $limit, $offset);
+        if ($data['service'] != null) {
+            $arrService = [];
+            foreach ($data['service'] as $row) {
+                array_push($arrService, $row->serID);
+            }
+            $serviceID = implode(",", $arrService);
+
+            $data['serviceSeat'] = $this->service_model->fetchServiceSeat($serviceID);
+        }
+        $data['links'] = $this->pagination->create_links();
+        $data['page'] = 'serviceinstore_view';
+        $this->load->view('admin/servicemain_view', $data);
     }
 }

@@ -44,7 +44,7 @@
                     <a class="nav-link" href="<?= site_url('admin/queuewalkin') ?>" style="margin-left: 30px; margin-right: 30px;">คิวหน้าร้าน</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">บริการในร้าน</a>
+                    <a class="nav-link" href="<?= site_url('admin/service/instore') ?>" style="margin-left: 30px; margin-right: 30px;">เซอร์วิสในร้าน</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
@@ -53,7 +53,8 @@
                     <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ</a>
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ  <!-- <span id="alertServe" class="badge badge-danger">20</span> -->
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ชำระเงิน</a>
