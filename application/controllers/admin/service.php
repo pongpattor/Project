@@ -94,7 +94,7 @@ class service extends CI_Controller
             );
             $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[0]);
         }
-        // echo json_encode($data);
+        echo json_encode($data);
     }
 
     public function genServiceID()

@@ -77,6 +77,17 @@ class queuewalkin extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
+    public function checkCallQueueWalkin()
+    {
+        $customerTel = $this->input->post('customerTel');
+        $queueDStart = date('Y-m-d');
+        $data['1'] = $customerTel;
+        $data['2'] = $queueDStart;
+        $queueNo = $this->queue_model->checkCallQueue($customerTel, $queueDStart,'2');
+        $data['checkCallQueue'] = $queueNo;
+        echo json_encode($data);
+    }
+
     public function insertQueueWalkin()
     {
         $queue['queueType'] = $this->crud_model->findselectWhere('queuetype', 'QUEUETYPE_TIME', 'QUEUETYPE_ID', '1');
@@ -89,7 +100,7 @@ class queuewalkin extends CI_Controller
         $queueID = $this->genIdQueue();
         $customerName = $this->input->post('customerName');
         $customerAmount = $this->input->post('customerAmount');
-        $note = $this->input->post('QUEUE_NOTE');
+        $note = $this->input->post('note');
         $queueType = 2;
         $queueActive = 1; #1 Wait #2Use #3Late
         $queueStatus = 1;
@@ -171,5 +182,9 @@ class queuewalkin extends CI_Controller
             'QUEUE_ACTIVE' => '2'
         );
         $this->crud_model->update('queue', $dataqueue, 'QUEUE_ID', $queueID);
+    }
+
+    public function walkinTimeOut(){
+        $this->queue_model->walkinTimeOut();
     }
 }

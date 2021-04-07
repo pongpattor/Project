@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="customerTel">เบอร์โทร <span id="cusTelError" style="color:red;"></span></label>
-                                <input type="tel" class="form-control" name="customerTel" maxlength="10" minlength="10" required>
+                                <input type="tel" class="form-control" name="customerTel" id="customerTel" maxlength="10" minlength="10" required>
                             </div>
                         </div>
                         <div class="row">

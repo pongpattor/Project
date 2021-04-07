@@ -8,7 +8,7 @@ class service_model extends CI_Model
         $sql = "SELECT SEAT_ID,SEAT_NAME,SEAT_AMOUNT,SEAT_ZONE FROM seat
         WHERE SEAT_STATUS = '1'
         AND SEAT_TYPE = '1'
-        AND SEAT_ACTIVE = '1'
+        AND SEAT_ACTIVE = '0'
         AND SEAT_ID NOT IN (SELECT queueseat.QS_SEATID FROM queue INNER JOIN queueseat
         ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         WHERE queue.QUEUE_DSTART = CURRENT_DATE
@@ -26,7 +26,7 @@ class service_model extends CI_Model
         INNER JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
         WHERE SEAT_STATUS = '1'
         AND SEAT_TYPE = '2'
-        AND SEAT_ACTIVE = '1'
+        AND SEAT_ACTIVE = '0'
         AND SEAT_ID NOT IN (SELECT queueseat.QS_SEATID FROM queue INNER JOIN queueseat
         ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         WHERE queue.QUEUE_DSTART = CURRENT_DATE

@@ -125,7 +125,12 @@
                                     <div class="row">
                                         <div class="col" id="enterServiceDetail">
                                             <label for="AmountCustomer">จำนวนผู้เข้าใช้</label>
-                                            <input type="number" class="form-control" id="AmountCustomerE" name="AmountCustomerE" required min="1">
+                                            <input type="number" class="form-control" id="AmountCustomerE" name="AmountCustomerE" required min="1" <?php if ($this->input->get('amount')) {
+                                                                                                                                                        echo 'value=';
+                                                                                                                                                        echo '"';
+                                                                                                                                                        echo $this->input->get('amount');
+                                                                                                                                                        echo '"';
+                                                                                                                                                    } ?>>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -411,6 +416,6 @@
 
 
 
-  
+
     });
 </script>

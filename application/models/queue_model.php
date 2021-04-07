@@ -117,13 +117,14 @@ class queue_model extends CI_Model
         return $query->result();
     }
 
-    public function checkCallQueue($tel, $date)
+    public function checkCallQueue($tel, $date, $type)
     {
         $sql = "SELECT COUNT(*) as cnt FROM queue
         WHERE QUEUE_DSTART = '$date'
         AND QUEUE_CUSTEL = '$tel'
         AND QUEUE_STATUS = '1'
-        AND QUEUE_ACTIVE = '1'";
+        AND QUEUE_ACTIVE = '1'
+        AND QUEUE_TYPE = '$type'";
         $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->cnt;
@@ -233,8 +234,6 @@ class queue_model extends CI_Model
 
         $query = $this->db->query($sql);
         return $query->result();
-
-        
     }
 
 
@@ -340,5 +339,18 @@ class queue_model extends CI_Model
         QUEUE_ID = '$queueID'";
         $query = $this->db->query($sql);
         return $query->result();
+    }
+
+    public function walkinTimeOut()
+    {
+        $sql = "UPDATE queue 
+        SET QUEUE_ACTIVE = '3' 
+        WHERE QUEUE_ID IN ( SELECT QUEUE_ID FROM queue 
+                            WHERE QUEUE_TYPE = '2' 
+                            AND QUEUE_DEND <= CURRENT_DATE 
+                            AND QUEUE_TEND < CURRENT_TIME 
+                            AND QUEUE_ACTIVE = '0' 
+                            AND QUEUE_STATUS = '1' )";
+        $this->db->query($sql);
     }
 }

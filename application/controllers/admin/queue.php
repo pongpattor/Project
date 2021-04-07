@@ -96,7 +96,7 @@ class queue extends CI_Controller
         $queueDStart = $this->input->post('queueDate');
         $data['1'] = $customerTel;
         $data['2'] = $queueDStart;
-        $queueNo = $this->queue_model->checkCallQueue($customerTel, $queueDStart);
+        $queueNo = $this->queue_model->checkCallQueue($customerTel, $queueDStart,'1');
         $data['checkCallQueue'] = $queueNo;
         echo json_encode($data);
     }

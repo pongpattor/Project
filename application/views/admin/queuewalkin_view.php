@@ -174,9 +174,9 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
-                                                            <button type="button" name="checkin" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '0') {
-                                                                                                                                                                                                echo 'disabled';
-                                                                                                                                                                                            } ?>><i class="fa fa-check"></i></button>
+                                                                <button type="button" name="queueID" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '0') {
+                                                                                                                                                                                                    echo 'disabled';
+                                                                                                                                                                                                } ?>><i class="fa fa-check"></i></button>
                                                         </center>
                                                     </td>
                                                     <td class="align-middle">
@@ -270,8 +270,11 @@
                     },
                     success: function() {
                         alert('เข้าใช้งาน');
+                        let amount = $(`#${queueID} td:nth-child(4)`).html();
                         $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
                         $(`#${queueID} td:nth-child(8) `).html('เข้าใช้งาน');
+                        window.location.href = '<?=site_url('admin/service/storefont?queueID=')?>'+queueID+'&amount='+amount;
+
                     }
                 });
             }
@@ -281,7 +284,7 @@
         $('#queueWalkinTimeForm').on('submit', function(e) {
             e.preventDefault();
             $.ajax({
-                url: "<?= site_url('admin/queuewalkin/updateQueueWalkinTime')?>",
+                url: "<?= site_url('admin/queuewalkin/updateQueueWalkinTime') ?>",
                 method: "POST",
                 data: $(this).serialize(),
                 success: function() {
@@ -290,5 +293,14 @@
                 }
             });
         });
+
+        function walkinTimeout() {
+            $.ajax({
+                url: "<?= site_url('admin/queuewalkin/walkinTimeOut') ?>",
+            });
+        }
+
+        walkinTimeout();
+        setInterval(walkinTimeout, 1000 * 60);
     });
 </script>

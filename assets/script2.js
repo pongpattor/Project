@@ -365,10 +365,7 @@ $(document).ready(function () {
                 $('#customerAmountError').html('***จำนวนคนมากกว่าจำนวนที่นั่ง');
                 Errors = 1;
             }
-
         }
-
-
         return Errors;
     }
 
@@ -434,10 +431,7 @@ $(document).ready(function () {
             } else {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง')
             }
-
         }
-
-
     });
 
 
@@ -472,18 +466,58 @@ $(document).ready(function () {
     });
 
 
-    $('#addQueueWalkinForm').on('submit', function (e) {
-        e.preventDefault();
+    function checkCallQueueWalkin() {
+        var customerTel = $('#customerTel').val();
+        var result;
         $.ajax({
-            url: "../queuewalkin/insertQueueWalkin",
+            url: "../queuewalkin/checkCallQueueWalkin",
             method: "POST",
-            data: $(this).serialize(),
+            async: false,
+            data: {
+                customerTel: customerTel,
+            },
             dataType: "JSON",
             success: function (data) {
-                alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
-                location.replace(data.url);
+                result = data.checkCallQueue;
             }
         });
+
+        return result;
+    }
+
+    $('#addQueueWalkinForm').on('submit', function (e) {
+        e.preventDefault();
+        var chkcallQueue = checkCallQueueWalkin();
+        if (chkcallQueue == 0) {
+            $.ajax({
+                url: "../queuewalkin/insertQueueWalkin",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                    location.replace(data.url);
+                }
+            });
+        }
+        else {
+            var cf = confirm('เบอร์โทรนี้มีอยู่ในคิวแล้วต้องการเพิ่มหรือไม่');
+            if (cf == true) {
+                $.ajax({
+                    url: "../queuewalkin/insertQueueWalkin",
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (data) {
+                        alert('เพิ่มข้อมูลจองคิวเสร็จสิ้น');
+                        location.replace(data.url);
+                    }
+                });
+            }
+        }
+
+
+
     });
 
 
