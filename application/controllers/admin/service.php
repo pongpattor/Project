@@ -203,4 +203,27 @@ class service extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
 
     }
+
+    public function serviceOrder(){
+        $data['order'] = $this->service_model->order();
+        $data['page'] = 'serviceorder_view';
+        $this->load->view('admin/servicemain_view', $data); 
+    }
+
+    public function indexOrder(){
+        $data['order'] = $this->service_model->order();
+        echo json_encode($data);
+    }
+
+
+    public function indexPromotionSet(){
+        $data['order'] = $this->service_model->promotionSet();
+        echo json_encode($data);
+    }
+
+    public function indexPromotionSetDetail(){
+        $promotionSetID = $this->input->post('promotionSetID');
+        $data['promotionSetDetail'] = $this->service_model->promotionSetDetail($promotionSetID);
+        echo json_encode($data);
+    }
 }

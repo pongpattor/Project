@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </form>
-               
+
                 <div class="row">
                     <div class="col-12">
                         <?php
@@ -82,10 +82,14 @@
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SERVICE_DSTART . ' ' . $row->SERVICE_TSTART; ?></td>
                                                     <td class="align-middle" style="text-align: center;width: 10%;">
                                                         <form action="<?= site_url('admin/service/serviceDetail') ?>" method="get">
-                                                            <button name="detailServiceID" class="btn btn-purple" value="<?= $row->SERVICE_ID ?>"><i class="far fa-bookmark"></i></button>
+                                                            <button name="detailServiceID" class="btn btn-purple" value="<?= $row->SERVICE_ID ?>"><i class="far fa-file-alt"></i></button>
                                                         </form>
                                                     </td>
-                                                    <td class="align-middle" style="text-align: center; "><button class="btn btn-warning"><i class="fa fa-book-open"></i></button></td>
+                                                    <td class="align-middle" style="text-align: center; ">
+                                                        <form action="<?= site_url('admin/service/serviceOrder') ?>" method="get">
+                                                            <button name="orderServiceID" class="btn btn-warning" value="<?= $row->SERVICE_ID ?>"><i class="fa fa-book-open"></i></button>
+                                                        </form>
+                                                    </td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-success"><i class="fa fa-chair"></i></button></td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-info"><i class="fa fa-credit-card"></i></button></td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>

@@ -129,4 +129,72 @@ class service_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function Order()
+    {
+        $sql = "SELECT
+        product.PRODUCT_ID,
+        product.PRODUCT_NAME,
+        product.PRODUCT_IMAGE,
+        product.PRODUCT_SELLPRICE,
+        typeproduct.TYPEPRODUCT_NAME,
+        proprice.PROMOTIONPRICE_ID,
+        proprice.PROMOTIONPRICE_NAME,
+        proprice.PROMOTIONPRICE_DISCOUNT,
+        ( product.PRODUCT_SELLPRICE - ( ( product.PRODUCT_SELLPRICE / 100 ) * proprice.PROMOTIONPRICE_DISCOUNT ) ) AS PRICE_DISCOUNT 
+    FROM
+        product
+        JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
+        LEFT JOIN (
+        SELECT
+            promotionprice.PROMOTIONPRICE_ID,
+            promotionprice.PROMOTIONPRICE_NAME,
+            promotionprice.PROMOTIONPRICE_DISCOUNT,
+            promotionpricedetail.PROPRICE_PRODUCT 
+        FROM
+            promotionprice
+            JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID 
+        WHERE
+            ( CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
+            AND promotionprice.PROMOTIONPRICE_STATUS = '1' 
+        ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT 
+    WHERE
+        product.PRODUCT_STATUS = '1'
+    ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    public function promotionset()
+    {
+        $sql = " SELECT
+        promotionset.PROMOTIONSET_ID,
+        promotionset.PROMOTIONSET_NAME,
+        promotionset.PROMOTIONSET_PRICE 
+        FROM
+        promotionset
+        JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID 
+        WHERE
+        promotionset.PROMOTIONSET_STATUS = '1' 
+        AND ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND ) 
+        GROUP BY
+        promotionset.PROMOTIONSET_ID";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function promotionSetDetail($promotionSetID)
+    {
+        $sql = "SELECT
+                    product.PRODUCT_NAME,
+                    promotionsetdetail.PROSETDETAIL_AMOUNT ,
+                    product.PRODUCT_SELLPRICE,
+                    (product.PRODUCT_SELLPRICE*promotionsetdetail.PROSETDETAIL_AMOUNT) as SUMEACHORDER
+                FROM
+                    promotionsetdetail
+                    JOIN product ON promotionsetdetail.PROSETDETAIL_PRODUCT = product.PRODUCT_ID 
+                WHERE
+                    PROSETDETAIL_ID = '$promotionSetID'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 }
