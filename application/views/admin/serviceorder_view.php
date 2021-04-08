@@ -42,7 +42,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($order as $row) : ?>
+                                            <?php $j = 1;
+                                            foreach ($order as $row) : ?>
                                                 <tr id="<?= $row->PRODUCT_ID; ?>">
                                                     <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
                                                     <td class="align-middle"><?= $row->PRODUCT_NAME; ?></td>
@@ -55,9 +56,44 @@
                                                                                     echo '</font>';
                                                                                 } ?></td>
                                                     <td class="align-middle"><?= $row->PROMOTIONPRICE_NAME; ?></td>
-                                                    <td class="align-middle"><button class="btn btn-success addOrder"> <i class="fa fa-plus"></i></button></td>
+                                                    <td class="align-middle">
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal<?= $j ?>">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                        <div class="modal fade" id="addModal<?= $j ?>" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="addModalLabel"><?= $row->PRODUCT_NAME; ?></h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col text-left">
+                                                                                <label for="orderAmount<?= $j ?>">จำนวน</label>
+                                                                                <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount<?= $j ?>" value="1" min='1'>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col text-left">
+                                                                                <label for="orderNote<?= $j ?>">หมายเหตุ</label>
+                                                                                <textarea name="" class="form-control orderNote" id="orderNote<?= $j ?>" cols="30" rows="5"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                                                        <button type="button" class="btn btn-primary addOrder" data-dismiss="modal" value="<?= $row->PRODUCT_ID ?>">เพิ่ม</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php $j++;
+                                            endforeach; ?>
                                         </tbody>
                                     </table>
 
@@ -69,17 +105,49 @@
             </div>
         </div>
     </div>
-
     <div class="col">
-        <div class="card border-0 shadow-lg">
+        <div class="card border-0 shadow-lg h-100">
             <div class="card-header">
                 <h4>รายการที่สั่ง</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="table-responsive">
+                                <table class="table  table-bordered " width="100%" cellspacing="0" id="detailOrderTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th style="text-align: center;">#</th>
+                                            <th style="text-align: center;">ชื่อรายการ</th>
+                                            <th style="text-align: center;">จำนวน</th>
+                                            <th style="text-align: center;">หมายเหตุ</th>
+                                            <th style="text-align: center;">ลบ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detailOrderBody">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row mt-auto">
+                        <div class="col ">
+                            <div class="row justify-content-center">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary form-control">สั่ง</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     $(document).ready(function() {
@@ -136,7 +204,7 @@
                                         <td class="align-middle">${value.PRODUCT_NAME}</td> 
                                         <td class="align-middle">`;
                             if (value.PRICE_DISCOUNT == null) {
-                                table +=`
+                                table += `
                                         ${price}
                                         `;
                             } else {
@@ -199,7 +267,7 @@
                                                         ...
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
                                                     </div>
                                                     </div>
                                                 </div>
@@ -276,7 +344,7 @@
                         i++;
                         totalprice += parseFloat(value.SUMEACHORDER);
                     });
-                    var saveMoney = sellprice - totalprice;
+                    var saveMoney = totalprice - sellprice;
                     totalprice = totalprice.toFixed(2);
                     saveMoney = saveMoney.toFixed(2);
                     table += ` </tbody>
@@ -308,9 +376,80 @@
 
         });
 
+
+        function checkAllOrder(orderID) {
+            var checkOrder = true;
+            var sameOrder;
+            var arr = []
+            var rowid;
+            $('.selectOrderID').each(function() {
+                var orderAll = $(this).val();
+                if (orderID == orderAll) {
+                    rowid = $(this).parents('tr').attr('id');
+                    checkOrder = false;
+                    sameOrder = orderAll;
+                    return false;
+                }
+            });
+            arr.push(checkOrder);
+            arr.push(rowid);
+            return arr;
+        }
+
+
         $(document).on('click', '.addOrder', function() {
-            var rowid = $(this).parents('tr').attr('id');
-            alert(rowid);
+            var rowid = $(this).val();
+            var arr = checkAllOrder(rowid);
+            var amount = $(`#${rowid} .orderAmount`).val();
+            var amountInt = parseInt(amount);
+            var check = arr[0];
+            if (check == true) {
+                var note = $(`#${rowid} .orderNote`).val();
+                var productname = $(`#${rowid} td:nth-child(2)`).html();
+                var orderrowid = $(`#detailOrderBody tr:last-child td`).html();
+                if (orderrowid == null) {
+                    var ordertrId = 1;
+                } else {
+                    var ordertrId = orderrowid.substring(0, 7)
+                    ordertrId = parseInt(ordertrId) + 1;
+                }
+                var table = `<tr id="orderTr${ordertrId}" class="orderTr">
+                                <td class="align-middle orderno" style="text-align: center;">${ordertrId}</td>
+                                <td class="align-middle" style="text-align: center;">${productname}<input type="hidden" class="selectOrderID" name="selectOrderID[]" value="${rowid}"></td>
+                                <td class="align-middle" style="text-align: center; width:20%;"><input type="number" class="form-control text-center amountOrder" min="1" value="${amount}"></td>
+                                <td class="align-middle" style="text-align: center;">${note}</td>
+                                <td class="align-middle" style="text-align: center;"><button class="btn btn-danger orderTrDelete" value="${ordertrId}"><i class="fa fa-trash"></i></button></td>
+                            </tr>`;
+                $('#detailOrderBody').append(table);
+            } else {
+                var sameRowID = arr[1];
+                var amountVal = parseInt($(`#${sameRowID} .amountOrder`).val());
+                amountVal = amountVal + amountInt;
+                $(`#${sameRowID} .amountOrder`).val(amountVal);
+            }
+
+
+        });
+
+        function runNoOrder() {
+            var num = 1;
+
+            $('.orderTr').each(function() {
+                $(this).find('.orderno').html(num);
+                num++;
+            });
+
+        }
+
+        $(document).on('click', '.orderTrDelete', function() {
+            var ordertrId = $(this).val();
+            $(`#orderTr${ordertrId}`).remove();
+            runNoOrder();
+        });
+
+        $('#orderForm').on('submit', function(e) {
+            e.preventDefault();
+            console.log('hello');
         });
     });
 </script>
