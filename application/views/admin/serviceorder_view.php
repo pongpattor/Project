@@ -10,7 +10,7 @@
 </div>
 ฺ<br>
 <div class="row">
-    <div class="col-7">
+    <div class="col-6">
         <div class="card border-0 shadow-lg">
             <div class="card-body">
                 <div class="row">
@@ -48,12 +48,14 @@
                                                     <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
                                                     <td class="align-middle"><?= $row->PRODUCT_NAME; ?></td>
                                                     <td class="align-middle"><?php if ($row->PRICE_DISCOUNT == NULL) {
+                                                                                    echo "<span class=\"price\">";
                                                                                     echo  $row->PRODUCT_SELLPRICE;
+                                                                                    echo '</span>';
                                                                                 } else {
                                                                                     echo "<font style=\"color:#BFBFBF;\"><del>$row->PRODUCT_SELLPRICE</del></font><br>";
-                                                                                    echo '<font style="color:red;">';
+                                                                                    echo "<span style=\"color:red;\" class=\"price\">";
                                                                                     echo number_format($row->PRICE_DISCOUNT, 2);
-                                                                                    echo '</font>';
+                                                                                    echo '</span>';
                                                                                 } ?></td>
                                                     <td class="align-middle"><?= $row->PROMOTIONPRICE_NAME; ?></td>
                                                     <td class="align-middle">
@@ -71,6 +73,18 @@
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input orderType" type="radio" name="orderType" id="orderType<?= $j ?>" value="1">
+                                                                                    <label class="form-check-label" for="orderType<?= $j ?>">รับประทานที่นี่</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input orderType" type="radio" name="orderType" id="orderProType<?= $j ?>" value="2">
+                                                                                    <label class="form-check-label" for="orderProType<?= $j ?>">สั่งกลับบ้าน</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
                                                                             <div class="col text-left">
                                                                                 <label for="orderAmount<?= $j ?>">จำนวน</label>
                                                                                 <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount<?= $j ?>" value="1" min='1'>
@@ -85,7 +99,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                                                                        <button type="button" class="btn btn-primary addOrder" data-dismiss="modal" value="<?= $row->PRODUCT_ID ?>">เพิ่ม</button>
+                                                                        <button type="button" class="btn btn-primary addOrder" value="<?= $row->PRODUCT_ID ?>">เพิ่ม</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -110,10 +124,10 @@
             <div class="card-header">
                 <h4>รายการที่สั่ง</h4>
             </div>
-            <div class="card-body d-flex flex-column">
+            <form id="orderForm">
+                <div class="card-body d-flex flex-column">
                     <div class="row">
                         <div class="col">
-
                             <div class="table-responsive">
                                 <table class="table  table-bordered " width="100%" cellspacing="0" id="detailOrderTable">
                                     <thead class="thead-dark">
@@ -122,6 +136,9 @@
                                             <th style="text-align: center;">ชื่อรายการ</th>
                                             <th style="text-align: center;">จำนวน</th>
                                             <th style="text-align: center;">หมายเหตุ</th>
+                                            <th style="text-align: center;">ประเภทการสั่ง</th>
+                                            <th style="text-align: center;">ราคา/หน่วย</th>
+                                            <th style="text-align: center;">ราคารวม</th>
                                             <th style="text-align: center;">ลบ</th>
                                         </tr>
                                     </thead>
@@ -131,6 +148,13 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right">
+                            ราคารวมทั้งหมด
+                        </div>
+                        <div class="col-3 text-right" id="totalPrice">0</div>
+                        <div class="col-3 text-right">บาท</div>
                     </div>
                     <br>
                     <div class="row mt-auto">
@@ -142,8 +166,8 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -175,7 +199,8 @@
                     dataType: "JSON",
                     async: false,
                     success: function(data) {
-                        console.log(data.order);
+                        // console.log(data.order);
+                        let j = 1;
                         table = `
                         <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
                                         <thead class="thead-dark">
@@ -193,7 +218,6 @@
                             let proname = "";
                             let discount = 0;
                             let price = parseFloat(value.PRODUCT_SELLPRICE).toFixed(2);
-
                             if (value.PROMOTIONPRICE_NAME != null) {
                                 proname = value.PROMOTIONPRICE_NAME;
                             }
@@ -216,10 +240,47 @@
                             }
                             table += `  </td> 
                                         <td class="align-middle">${proname} </td> 
-                                        <td class = "align-middle"><button class="btn btn-success addOrder"> <i class="fa fa-plus"> </i></button> </td> 
+                                        <td class = "align-middle">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${j}">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <div class="modal fade" id="addModal${j}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="addModalLabel">${value.PRODUCT_NAME}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col text-left">
+                                                                    <label for="orderAmount${j}">จำนวน</label>
+                                                                    <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount${j}" value="1" min='1'>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col text-left">
+                                                                    <label for="orderNote${j}">หมายเหตุ</label>
+                                                                    <textarea name="" class="form-control orderNote" id="orderNote${j}" cols="30" rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                                            <button type="button" class="btn btn-primary addOrder" data-dismiss="modal" value="${value.PRODUCT_ID}">เพิ่ม</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td> 
                                     </tr>             
                                 `;
+                            j++;
                         });
+
+
                         table += ` </tbody>
                                     </table>`;
                     }
@@ -245,6 +306,7 @@
                         `;
                         // <button class="btn btn-warning" value="${value.PROMOTIONSET_ID}" ><i class="far fa-file-alt"></i>
                         var i = 1;
+                        var k = 1;
                         $.each(data.order, function(key, value) {
                             table += `
                                     <tr id="${value.PROMOTIONSET_ID}">
@@ -272,10 +334,45 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </button></td>
-                                        <td class="align-middle" style="width:18%"><button class="btn btn-success addOrder" value="${value.PROMOTIONSET_ID}" ><i class="fa fa-plus"></i></button></td>
+                                        </td>                                     
+                                        <td class = "align-middle">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${k}">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <div class="modal fade" id="addModal${k}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="addModalLabel">${value.PROMOTIONSET_NAME}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col text-left">
+                                                                    <label for="orderAmount${k}">จำนวน</label>
+                                                                    <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount${k}" value="1" min='1'>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col text-left">
+                                                                    <label for="orderNote${k}">หมายเหตุ</label>
+                                                                    <textarea name="" class="form-control orderNote" id="orderNote${k}" cols="30" rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                                            <button type="button" class="btn btn-primary addOrder" data-dismiss="modal" value="${value.PROMOTIONSET_ID}">เพิ่ม</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td> 
                                     </tr>`
                             i++;
+                            k++;
                         });
                         table += ` </tbody>
                                     </table>`;
@@ -396,39 +493,94 @@
             return arr;
         }
 
+        function sumTotalPrice() {
+            var total = 0;
+            $('.sumprice').each(function() {
+                total += parseFloat($(this).val());
+            });
+            total = total.toFixed(2);
+            $(`#totalPrice`).html(total);
+        }
+
+        $(document).on('change', '.amountOrder', function() {
+            if ($(this).val() == "") {
+                $(this).val(1);
+            }
+            var rowid = $(this).parents('tr').attr('id');
+            var amount = $(`#${rowid} .amountOrder`).val();
+            var price = $(`#${rowid}  .priceunit`).html();
+            var sumprice = parseFloat(price) * parseFloat(amount);
+            sumprice = sumprice.toFixed(2);
+            $(`#${rowid}  .spanprice`).html(sumprice);
+            $(`#${rowid} .sumprice`).val(sumprice);
+            sumTotalPrice();
+
+        });
 
         $(document).on('click', '.addOrder', function() {
             var rowid = $(this).val();
-            var arr = checkAllOrder(rowid);
-            var amount = $(`#${rowid} .orderAmount`).val();
-            var amountInt = parseInt(amount);
-            var check = arr[0];
-            if (check == true) {
-                var note = $(`#${rowid} .orderNote`).val();
-                var productname = $(`#${rowid} td:nth-child(2)`).html();
-                var orderrowid = $(`#detailOrderBody tr:last-child td`).html();
-                if (orderrowid == null) {
-                    var ordertrId = 1;
-                } else {
-                    var ordertrId = orderrowid.substring(0, 7)
-                    ordertrId = parseInt(ordertrId) + 1;
-                }
-                var table = `<tr id="orderTr${ordertrId}" class="orderTr">
+            var orderType = $(`#${rowid} .orderType:checked`).val();
+
+            if (orderType == null) {
+                alert('กรุณาเลือกทานนี่หรือกลับบ้าน');
+            } else {
+                $(`#${rowid} .modal`).modal('toggle');
+                var arr = checkAllOrder(rowid);
+                var amount = $(`#${rowid} .orderAmount`).val();
+                var amountInt = parseInt(amount);
+                var check = arr[0];
+                if (check == true) {
+                    var textOrderType;
+                    if (orderType == '1') {
+                        textOrderType = 'รับประทานที่นี่';
+                    } else {
+                        textOrderType = 'สั่งกลับบ้าน';
+                    }
+                    var note = $(`#${rowid} .orderNote`).val();
+                    let changeType = $('.changeTypeOrder:checked').val();
+                    if (changeType == '1') {
+                        var productname = $(`#${rowid} td:nth-child(2)`).html();
+                        var price = $(`#${rowid} .price`).html();
+                        var sumprice = parseFloat(price) * parseFloat(amount);
+                        sumprice = sumprice.toFixed(2);
+                    } else {
+                        var productname = $(`#${rowid} td:nth-child(1)`).html();
+                    }
+                    var orderrowid = $(`#detailOrderBody tr:last-child td`).html();
+                    if (orderrowid == null) {
+                        var ordertrId = 1;
+                    } else {
+                        var ordertrId = orderrowid.substring(0, 7)
+                        ordertrId = parseInt(ordertrId) + 1;
+                    }
+                    var table = `<tr id="orderTr${ordertrId}" class="orderTr">
                                 <td class="align-middle orderno" style="text-align: center;">${ordertrId}</td>
                                 <td class="align-middle" style="text-align: center;">${productname}<input type="hidden" class="selectOrderID" name="selectOrderID[]" value="${rowid}"></td>
                                 <td class="align-middle" style="text-align: center; width:20%;"><input type="number" class="form-control text-center amountOrder" min="1" value="${amount}"></td>
                                 <td class="align-middle" style="text-align: center;">${note}</td>
+                                <td class="align-middle" style="text-align: center;">${textOrderType} <input type="hidden" name="selectOrderType[]" class="selectOrderType" value="${orderType}"></td>
+                                <td class="align-middle" style="text-align: center;"><span class="priceunit">${price}</span></td>
+                                <td class="align-middle" style="text-align: center;"><span class="spanprice">${sumprice}</span> <input type="hidden" name="sumprice[]" class="sumprice" value="${sumprice}"></td>
                                 <td class="align-middle" style="text-align: center;"><button class="btn btn-danger orderTrDelete" value="${ordertrId}"><i class="fa fa-trash"></i></button></td>
                             </tr>`;
-                $('#detailOrderBody').append(table);
-            } else {
-                var sameRowID = arr[1];
-                var amountVal = parseInt($(`#${sameRowID} .amountOrder`).val());
-                amountVal = amountVal + amountInt;
-                $(`#${sameRowID} .amountOrder`).val(amountVal);
+                    $('#detailOrderBody').append(table);
+                } else {
+                    var sameRowID = arr[1];
+                    var sumprice = 0;
+                    var amountVal = parseInt($(`#${sameRowID} .amountOrder`).val());
+                    var priceunit = $(`#${sameRowID} .priceunit`).html();
+                    priceunit = parseFloat(priceunit);
+                    priceunit = priceunit.toFixed(2);
+                    amountVal = amountVal + amountInt;
+                    sumprice = parseFloat(amountVal) * parseFloat(priceunit);
+                    sumprice = sumprice.toFixed(2);
+                    $(`#${sameRowID} .spanprice`).html(sumprice);
+                    $(`#${sameRowID} .sumprice`).val(sumprice);
+                    $(`#${sameRowID} .amountOrder`).val(amountVal);
+                }
+                sumTotalPrice();
+
             }
-
-
         });
 
         function runNoOrder() {
@@ -445,11 +597,21 @@
             var ordertrId = $(this).val();
             $(`#orderTr${ordertrId}`).remove();
             runNoOrder();
+            sumTotalPrice();
+
         });
 
         $('#orderForm').on('submit', function(e) {
             e.preventDefault();
-            console.log('hello');
+            $.ajax({
+                url: "<?= site_url('admin/service/insertOrder') ?>",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function(data) {
+                    console.log(data);
+                }
+            });
         });
     });
 </script>

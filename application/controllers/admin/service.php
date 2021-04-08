@@ -226,4 +226,9 @@ class service extends CI_Controller
         $data['promotionSetDetail'] = $this->service_model->promotionSetDetail($promotionSetID);
         echo json_encode($data);
     }
+
+    public function insertOrder(){
+        $data['test'] = $_POST;
+        echo json_encode($data);
+    }
 }
