@@ -30,29 +30,32 @@
                                                 <th style="text-align: center;">#</th>
                                                 <th style="text-align: center;">รายการ</th>
                                                 <th style="text-align: center;">จำนวน</th>
+                                                <th style="text-align: center;">หมายเหตุ</th>
                                                 <th style="text-align: center;">สถานะ</th>
-                                                <th style="text-align: center;">แก้ไข</th>
                                                 <th style="text-align: center;">ยกเลิก</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $i = 1;
                                             foreach ($serviceDetail as $row) : ?>
-                                                <tr id="
-                                                 <?php if ($row->PRODUCT_ID == null) {
-                                                        echo $row->PROMOTIONSET_ID;
-                                                    } else {
-                                                        echo $row->PRODUCT_ID;
-                                                    } ?>">
-                                                    <td class="align-middle" style="text-align: center;"><?= $i; ?></td>
+                                                <?php if ($row->PRODUCT_ID == null) {
+                                                    $orderId = $row->PROMOTIONSET_ID;
+                                                } else {
+                                                    $orderId = $row->PRODUCT_ID;
+                                                } ?>
+                                                <tr id="rowOrder<?= $i ?>">
                                                     <td class="align-middle" style="text-align: center;">
-                                                        <?php if ($row->PRODUCT_ID == null) {
-                                                            echo $row->PROMOTIONSET_NAME;
-                                                        } else {
-                                                            echo $row->PRODUCT_NAME;
-                                                        } ?>
+                                                        <span class="noShow"><?= $i; ?></span>
+                                                        <input type="hidden" name="no" class="no" value="<?= $row->DTSER_NO ?>">
                                                     </td>
-                                                    <td class="align-middle" style="text-align: center;"><?= $row->sumAmount ?></td>
+                                                    <?php if ($row->PRODUCT_ID == null) {
+                                                        $orderName = $row->PROMOTIONSET_NAME;
+                                                    } else {
+                                                        $orderName = $row->PRODUCT_NAME;
+                                                    } ?>
+                                                    <td class="align-middle" style="text-align: center;"><?= $orderName ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->DTSER_AMOUNT ?></td>
+                                                    <td class="align-middle" style="text-align: center;"><?= $row->DTSER_NOTE ?></td>
                                                     <td class="align-middle" style="text-align: center;">
                                                         <?php
                                                         if ($row->DTSER_STATUS == '0') {
@@ -68,16 +71,13 @@
                                                         }
                                                         ?>
                                                     </td>
-                                                    <td class="align-middle" style="text-align: center;"><button type="button" class="btn btn-warning editOrder" value="<?php if ($row->PRODUCT_ID == null) {
-                                                                                                                                                                            echo $row->PROMOTIONSET_ID;
-                                                                                                                                                                        } else {
-                                                                                                                                                                            echo $row->PRODUCT_ID;
-                                                                                                                                                                        } ?>"><i class="fa fa-edit"></i></button></td>
-                                                    <td class="align-middle" style="text-align: center;"><button type="button" class="btn btn-danger deleteOrder" value="<?php if ($row->PRODUCT_ID == null) {
-                                                                                                                                                                                echo $row->PROMOTIONSET_ID;
-                                                                                                                                                                            } else {
-                                                                                                                                                                                echo $row->PRODUCT_ID;
-                                                                                                                                                                            } ?>"><i class="fa fa-trash"></i></button></td>
+                                                    <td class="align-middle" style="text-align: center;">
+                                                        <button type="button" class="btn btn-danger deleteOrder" value="<?= $orderId ?>" <?php if ($row->DTSER_STATUS != 0) {
+                                                                                                                                                echo 'disabled';
+                                                                                                                                            } ?>>
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
 
                                                 </tr>
                                             <?php $i++;
@@ -98,8 +98,8 @@
     $(document).ready(function() {
         $('#orderDetailTable').dataTable({
             "lengthMenu": [
-                [10, 15, 25, -1],
-                [10, 15, 25, "All"]
+                [8, 15, 25, -1],
+                [8, 15, 25, "All"]
             ],
             "columnDefs": [{
                 "className": "dt-center",
@@ -111,5 +111,29 @@
             }
         });
 
+        $(document).on('click', '.deleteOrder', function() {
+            var rowid = $(this).parents('tr').attr('id');
+            var serviceID = $('#serviceID').html();
+            var no = $(`#${rowid} .no`).val();
+            $.ajax({
+                url: "<?= site_url('admin/service/checkOrderForDelete') ?>",
+                method: "POST",
+                data: {
+                    serviceID: serviceID,
+                    serviceNO: no
+                },
+                dataType: "JSON",
+                success: function(data) {
+                    if(data.status == true){
+                        alert('ยกเลิกรายการเสร็จสิ้น');
+                        location.reload();
+                    }
+                    else{
+                        alert('ไม่สามารถยกเลิกรายได้');
+                        location.reload();
+                    }
+                }
+            })
+        });
     });
 </script>

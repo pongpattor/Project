@@ -305,4 +305,17 @@ class service extends CI_Controller
         $data['url'] = site_url("admin/service/serviceDetail?detailServiceID=$serviceID");
         echo json_encode($data);
     }
+
+    public function checkOrderForDelete(){
+        $serviceID = $this->input->post('serviceID');
+        $serviceNO = $this->input->post('serviceNO');
+        $checkOrderStatus = $this->service_model->checkOrderForDelete($serviceID,$serviceNO);
+        if($checkOrderStatus !=0){
+            $data['status'] = false;
+        }else{
+            $data['status'] = true;
+            $this->crud_model->delete2Where('servicedetail','DTSER_ID',$serviceID,'DTSER_NO',$serviceNO);
+        }
+        echo json_encode($data);
+    }
 }

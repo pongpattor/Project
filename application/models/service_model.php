@@ -133,14 +133,16 @@ class service_model extends CI_Model
     public function serviceDetail($serviceID)
     {
         $sql = "SELECT
+                    detail.DTSER_NO,
                     detail.PRODUCT_ID,
                     detail.PRODUCT_NAME,
                     detail.PROMOTIONSET_ID,
                     detail.PROMOTIONSET_NAME,
-                    SUM(detail.DTSER_AMOUNT) AS sumAmount, 
-                    detail.DTSER_STATUS
+                    detail.DTSER_NOTE,
+                    detail.DTSER_AMOUNT, 
+                    detail.DTSER_STATUS 
                 FROM
-                (
+                    (
                     SELECT
                         servicedetail.DTSER_NO,
                         product.PRODUCT_ID,
@@ -148,7 +150,8 @@ class service_model extends CI_Model
                         promotionset.PROMOTIONSET_ID,
                         promotionset.PROMOTIONSET_NAME,
                         servicedetail.DTSER_STATUS,
-                        servicedetail.DTSER_AMOUNT
+                        servicedetail.DTSER_NOTE,
+                        servicedetail.DTSER_AMOUNT 
                     FROM
                         servicedetail
                         LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
@@ -156,21 +159,34 @@ class service_model extends CI_Model
                         LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
                         LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
                         LEFT JOIN product ON servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID 
-                        WHERE servicedetail.DTSER_ID = '$serviceID'
+                    WHERE
+                        servicedetail.DTSER_ID = '$serviceID' 
                     GROUP BY
                         servicedetail.DTSER_ID,
                         servicedetail.DTSER_NO 
-                ) as detail
-                GROUP BY 
-                detail.PRODUCT_ID,
-                detail.PROMOTIONSET_ID,
-                detail.PRODUCT_NAME,
-                detail.PROMOTIONSET_NAME,
-                detail.DTSER_STATUS
-                ORDER BY detail.DTSER_NO
+                    ) AS detail 
+                ORDER BY
+                    detail.DTSER_NO
                 ";
         $query = $this->db->query($sql);
         return $query->result();
+    }
+
+    
+    public function checkOrderForDelete($serviceID, $serviceNO)
+    {
+        $sql = "SELECT
+                    DTSER_STATUS 
+                FROM
+                    servicedetail 
+                WHERE
+                    DTSER_ID = '$serviceID' 
+                    AND DTSER_NO = '$serviceNO'
+        ";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->DTSER_STATUS;
+        }
     }
 
     public function Order()
@@ -208,6 +224,7 @@ class service_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
+
     public function promotionset()
     {
         $sql = " SELECT
