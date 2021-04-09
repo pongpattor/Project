@@ -199,7 +199,10 @@ class service extends CI_Controller
     public function serviceDetail()
     {
         $serviceID = $this->input->get('detailServiceID');
-        // echo $serviceID;
+        $data['serviceDetail'] = $this->service_model->serviceDetail($serviceID);
+        // echo '<pre>';
+        // print_r($data['serviceDetail']);
+        // echo '</pre>';
         $data['page'] = 'servicedetail_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -233,7 +236,6 @@ class service extends CI_Controller
 
     public function insertOrder()
     {
-        $data['test'] = $_POST;
         $serviceID = $this->input->post('serviceID');
         $ServiceMaxNo = $this->crud_model->maxWhere('servicedetail', 'DTSER_NO', 'DTSER_ID', $serviceID);
         if ($ServiceMaxNo == null) {
@@ -300,6 +302,7 @@ class service extends CI_Controller
             }
             $ServiceMaxNo++;
         }
+        $data['url'] = site_url("admin/service/serviceDetail?detailServiceID=$serviceID");
         echo json_encode($data);
     }
 }

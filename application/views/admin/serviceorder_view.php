@@ -46,7 +46,9 @@
                                             foreach ($order as $row) : ?>
                                                 <tr id="<?= $row->PRODUCT_ID; ?>">
                                                     <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
-                                                    <td class="align-middle"><?= $row->PRODUCT_NAME; ?></td>
+                                                    <td class="align-middle" <?php if ($row->PRODUCT_ACTIVE == '2') {
+                                                                                    echo "style=\"background-color:#FE4141\"";
+                                                                                } ?>><?= $row->PRODUCT_NAME; ?></td>
                                                     <td class="align-middle"><?php if ($row->PRICE_DISCOUNT == NULL) {
                                                                                     echo "<span class=\"price\">";
                                                                                     echo  $row->PRODUCT_SELLPRICE;
@@ -59,7 +61,9 @@
                                                                                 } ?></td>
                                                     <td class="align-middle"><?= $row->PROMOTIONPRICE_NAME; ?></td>
                                                     <td class="align-middle">
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal<?= $j ?>">
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal<?= $j ?>" <?php if ($row->PRODUCT_ACTIVE == '2') {
+                                                                                                                                                                echo 'disabled';
+                                                                                                                                                            } ?>>
                                                             <i class="fa fa-plus"></i>
                                                         </button>
                                                         <div class="modal fade" id="addModal<?= $j ?>" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -128,7 +132,7 @@
                 <div class="card-body d-flex flex-column">
                     <div class="row">
                         <div class="col">
-                            <h5>รหัสเซอร์วิส <span><?= $this->input->get('orderServiceID');?><input type="hidden" name="serviceID" value="<?=$this->input->get('orderServiceID') ;?>"></span></h5>
+                            <h5>รหัสเซอร์วิส <span><?= $this->input->get('orderServiceID'); ?><input type="hidden" name="serviceID" value="<?= $this->input->get('orderServiceID'); ?>"></span></h5>
                         </div>
                     </div>
                     <br>
@@ -205,6 +209,7 @@
                     success: function(data) {
                         // console.log(data.order);
                         let j = 1;
+                        var diss, bgdiss
                         table = `
                         <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
                                         <thead class="thead-dark">
@@ -218,7 +223,15 @@
                                         </thead>
                                         <tbody>
                         `;
+
                         $.each(data.order, function(key, value) {
+                            if (value.PRODUCT_ACTIVE == '2') {
+                                diss = 'disabled';
+                                bgdiss = "style=\"background-color:#FE4141\"";
+                            } else {
+                                diss = '';
+                                bgdiss = '';
+                            }
                             let proname = "";
                             let discount = 0;
                             let price = parseFloat(value.PRODUCT_SELLPRICE).toFixed(2);
@@ -229,7 +242,7 @@
                             table += `  
                                     <tr id = "${value.PRODUCT_ID}" >
                                         <td class="align-middle"> <img src="<?= base_url('assets/image/product/'); ?>${value.PRODUCT_IMAGE}" alt="" width="50px" height="50px"> </td> 
-                                        <td class="align-middle">${value.PRODUCT_NAME}</td> 
+                                        <td class="align-middle"  ${bgdiss}>${value.PRODUCT_NAME}</td> 
                                         <td class="align-middle">`;
                             if (value.PRICE_DISCOUNT == null) {
                                 table += `
@@ -237,16 +250,13 @@
                                         `;
                             } else {
                                 discount = parseFloat(value.PRICE_DISCOUNT).toFixed(2);
-                                // <font style="color:#BFBFBF;"><del>
-                                //         ${price}
-                                //         </del></font><br> priceBefore discount
                                 table += `
                                         <span style="color:red;" class="price">${discount} </span>`;
                             }
                             table += `  </td> 
                                         <td class="align-middle">${proname} </td> 
                                         <td class = "align-middle">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${j}">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${j}" ${diss}>
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                             <div class="modal fade" id="addModal${j}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -649,7 +659,8 @@
                 data: $(this).serialize(),
                 dataType: "JSON",
                 success: function(data) {
-                    console.log(data);
+                    alert('สั่งอาหารเสร็จสิ้น');
+                    location.replace(data.url);
                 }
             });
         });
