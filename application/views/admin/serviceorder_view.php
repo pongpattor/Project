@@ -52,7 +52,7 @@
                                                                                     echo  $row->PRODUCT_SELLPRICE;
                                                                                     echo '</span>';
                                                                                 } else {
-                                                                                    echo "<font style=\"color:#BFBFBF;\"><del>$row->PRODUCT_SELLPRICE</del></font><br>";
+                                                                                    // echo "<font style=\"color:#BFBFBF;\"><del>$row->PRODUCT_SELLPRICE</del></font><br>";
                                                                                     echo "<span style=\"color:red;\" class=\"price\">";
                                                                                     echo number_format($row->PRICE_DISCOUNT, 2);
                                                                                     echo '</span>';
@@ -128,6 +128,12 @@
                 <div class="card-body d-flex flex-column">
                     <div class="row">
                         <div class="col">
+                            <h5>รหัสเซอร์วิส <span><?= $this->input->get('orderServiceID');?><input type="hidden" name="serviceID" value="<?=$this->input->get('orderServiceID') ;?>"></span></h5>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col">
                             <div class="table-responsive">
                                 <table class="table  table-bordered " width="100%" cellspacing="0" id="detailOrderTable">
                                     <thead class="thead-dark">
@@ -171,8 +177,6 @@
         </div>
     </div>
 </div>
-
-
 <script>
     $(document).ready(function() {
         $('#orderTable').dataTable({
@@ -229,14 +233,15 @@
                                         <td class="align-middle">`;
                             if (value.PRICE_DISCOUNT == null) {
                                 table += `
-                                        ${price}
+                                        <span class="price">${price} </span>
                                         `;
                             } else {
                                 discount = parseFloat(value.PRICE_DISCOUNT).toFixed(2);
-                                table += ` <font style="color:#BFBFBF;"><del>
-                                        ${price}
-                                        </del></font><br>
-                                        <font style="color:red;">${discount} </font>`;
+                                // <font style="color:#BFBFBF;"><del>
+                                //         ${price}
+                                //         </del></font><br> priceBefore discount
+                                table += `
+                                        <span style="color:red;" class="price">${discount} </span>`;
                             }
                             table += `  </td> 
                                         <td class="align-middle">${proname} </td> 
@@ -255,6 +260,18 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input orderType" type="radio" name="orderType" id="orderType${j}" value="1">
+                                                                        <label class="form-check-label" for="orderType${j}">รับประทานที่นี่</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input orderType" type="radio" name="orderType" id="orderProType${j}" value="2">
+                                                                        <label class="form-check-label" for="orderProType${j}">สั่งกลับบ้าน</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
                                                                 <div class="col text-left">
                                                                     <label for="orderAmount${j}">จำนวน</label>
                                                                     <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount${j}" value="1" min='1'>
@@ -269,7 +286,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                                                            <button type="button" class="btn btn-primary addOrder" data-dismiss="modal" value="${value.PRODUCT_ID}">เพิ่ม</button>
+                                                            <button type="button" class="btn btn-primary addOrder" value="${value.PRODUCT_ID}">เพิ่ม</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -311,7 +328,9 @@
                             table += `
                                     <tr id="${value.PROMOTIONSET_ID}">
                                         <td class="align-middle">${value.PROMOTIONSET_NAME}</td>
-                                        <td class="align-middle">${value.PROMOTIONSET_PRICE}</td>
+                                    
+
+                                        <td class="align-middle"> <span class="price">${value.PROMOTIONSET_PRICE}</span></td>
                                         <td class="align-middle" style="width:18%">                                                                                                                   
                                             <button type="button" class="btn btn-warning detailPromotionset" data-toggle="modal" data-target="#modal${i}" value="${value.PROMOTIONSET_ID}" >
                                             <i class="far fa-file-alt"></i>
@@ -334,7 +353,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>                                     
+                                        </td>                                       
                                         <td class = "align-middle">
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${k}">
                                                 <i class="fa fa-plus"></i>
@@ -350,6 +369,18 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input orderType" type="radio" name="orderType" id="orderType${k}" value="1">
+                                                                        <label class="form-check-label" for="orderType${k}">รับประทานที่นี่</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input orderType" type="radio" name="orderType" id="orderProType${k}" value="2">
+                                                                        <label class="form-check-label" for="orderProType${k}">สั่งกลับบ้าน</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
                                                                 <div class="col text-left">
                                                                     <label for="orderAmount${k}">จำนวน</label>
                                                                     <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount${k}" value="1" min='1'>
@@ -364,7 +395,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                                                            <button type="button" class="btn btn-primary addOrder" data-dismiss="modal" value="${value.PROMOTIONSET_ID}">เพิ่ม</button>
+                                                            <button type="button" class="btn btn-primary addOrder"  value="${value.PROMOTIONSET_ID}">เพิ่ม</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -402,7 +433,7 @@
         $(document).on('click', '.detailPromotionset', function() {
             var promotionSetID = $(this).val();
             var rowid = $(this).parents('tr').attr('id');
-            var sellprice = $(`#${rowid} td:nth-child(2)`).html();
+            var sellprice = $(`#${rowid} .price`).html();
             $.ajax({
                 url: "<?= site_url('admin/service/indexPromotionSetDetail') ?>",
                 method: "POST",
@@ -474,15 +505,19 @@
         });
 
 
-        function checkAllOrder(orderID) {
+        function checkAllOrder(orderID, orderType, note) {
             var checkOrder = true;
             var sameOrder;
             var arr = []
             var rowid;
+            var rownote;
+            var roworderType;
             $('.selectOrderID').each(function() {
+                rowid = $(this).parents('tr').attr('id');
+                roworderType = $(`#${rowid} .selectOrderType`).val();
+                rownote = $(`#${rowid} .selectNote`).val();
                 var orderAll = $(this).val();
-                if (orderID == orderAll) {
-                    rowid = $(this).parents('tr').attr('id');
+                if (orderAll == orderID && roworderType == orderType && rownote == note) {
                     checkOrder = false;
                     sameOrder = orderAll;
                     return false;
@@ -520,12 +555,12 @@
         $(document).on('click', '.addOrder', function() {
             var rowid = $(this).val();
             var orderType = $(`#${rowid} .orderType:checked`).val();
-
             if (orderType == null) {
                 alert('กรุณาเลือกทานนี่หรือกลับบ้าน');
             } else {
-                $(`#${rowid} .modal`).modal('toggle');
-                var arr = checkAllOrder(rowid);
+                $(`#${rowid} .modal`).modal('hide');
+                var note = $(`#${rowid} .orderNote`).val();
+                var arr = checkAllOrder(rowid, orderType, note);
                 var amount = $(`#${rowid} .orderAmount`).val();
                 var amountInt = parseInt(amount);
                 var check = arr[0];
@@ -536,13 +571,10 @@
                     } else {
                         textOrderType = 'สั่งกลับบ้าน';
                     }
-                    var note = $(`#${rowid} .orderNote`).val();
                     let changeType = $('.changeTypeOrder:checked').val();
+                    var price = $(`#${rowid} .price`).html();
                     if (changeType == '1') {
                         var productname = $(`#${rowid} td:nth-child(2)`).html();
-                        var price = $(`#${rowid} .price`).html();
-                        var sumprice = parseFloat(price) * parseFloat(amount);
-                        sumprice = sumprice.toFixed(2);
                     } else {
                         var productname = $(`#${rowid} td:nth-child(1)`).html();
                     }
@@ -552,12 +584,20 @@
                     } else {
                         var ordertrId = orderrowid.substring(0, 7)
                         ordertrId = parseInt(ordertrId) + 1;
+
                     }
+                    var sumprice = parseFloat(price) * parseFloat(amount);
+                    sumprice = sumprice.toFixed(2);
+                    // alert(price);
                     var table = `<tr id="orderTr${ordertrId}" class="orderTr">
                                 <td class="align-middle orderno" style="text-align: center;">${ordertrId}</td>
-                                <td class="align-middle" style="text-align: center;">${productname}<input type="hidden" class="selectOrderID" name="selectOrderID[]" value="${rowid}"></td>
-                                <td class="align-middle" style="text-align: center; width:20%;"><input type="number" class="form-control text-center amountOrder" min="1" value="${amount}"></td>
-                                <td class="align-middle" style="text-align: center;">${note}</td>
+                                <td class="align-middle" style="text-align: center;">
+                                    ${productname}
+                                    <input type="hidden" class="selectOrderID" name="selectOrderID[]" value="${rowid}">
+                                    <input type="hidden" class="changeTypeOrder" name="changeTypeOrder[]" value="${changeType}">
+                                </td>
+                                <td class="align-middle" style="text-align: center; width:20%;"><input type="number" name="amountOrder[]" class="form-control text-center amountOrder" min="1" value="${amount}"></td>
+                                <td class="align-middle" style="text-align: center;">${note}<input type="hidden" class="selectNote" name="selectNote[]" value="${note}"></td>
                                 <td class="align-middle" style="text-align: center;">${textOrderType} <input type="hidden" name="selectOrderType[]" class="selectOrderType" value="${orderType}"></td>
                                 <td class="align-middle" style="text-align: center;"><span class="priceunit">${price}</span></td>
                                 <td class="align-middle" style="text-align: center;"><span class="spanprice">${sumprice}</span> <input type="hidden" name="sumprice[]" class="sumprice" value="${sumprice}"></td>

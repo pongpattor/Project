@@ -72,13 +72,13 @@ class service extends CI_Controller
                 $dataDetailService = array(
                     'DTSER_ID' => $serviceID,
                     'DTSER_NO' => '1',
-                    'DTSER_TYPE' => '2', #DTSERTYPE 1 = PRODUCT , 2 = KARAOKE , 3 = PROMOTION
+                    'DTSER_TYPEORDER' => '3', #DTSERTYPE 1 = PRODUCT , 2 = PROMOTION , 3 = KARAOKE
+                    'DTSER_TYPEUSE' => '2', #DTSERTYPE 1 = HERE , 2 = HOME 
                     'DTSER_DATE' => $serviceDStart,
                     'DTSER_TIME' => $serviceTStart,
-                    'DTSER_AMOUNT' => $AmountCustomerE,
+                    'DTSER_AMOUNT' => $karaokeUseAmount,
                     'DTSER_NOTE' => '',
                     'DTSER_REMAINDER' => '1',
-                    'DTSER_ACTIVE' => '1',
                     'DTSER_STATUS' => '1',
                 );
                 $this->crud_model->insert('servicedetail', $dataDetailService);
@@ -86,7 +86,6 @@ class service extends CI_Controller
                     'KARADTSER_ID' => $serviceID,
                     'KARADTSER_NO' => '1',
                     'KARADTSER_KARAOKEID' => $serviceSeat['0'],
-                    'KARADTSER_AMOUNT' => $karaokeUseAmount,
                     'KARADTSER_USETYPE' => $karaokeUsetype,
                 );
                 $this->crud_model->insert('servicedetailkaraoke', $dataKaraokeService);
@@ -117,7 +116,7 @@ class service extends CI_Controller
             $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[0]);
         }
         $data['url'] = site_url('admin/service/instore');
-        
+
         echo json_encode($data);
     }
 
@@ -144,7 +143,8 @@ class service extends CI_Controller
         }
     }
 
-    public function instore(){
+    public function instore()
+    {
 
         $search = $this->input->get('search');
         if ($this->input->get('productActive')) {
@@ -196,39 +196,110 @@ class service extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
-    public function serviceDetail(){
+    public function serviceDetail()
+    {
         $serviceID = $this->input->get('detailServiceID');
         // echo $serviceID;
         $data['page'] = 'servicedetail_view';
         $this->load->view('admin/servicemain_view', $data);
-
     }
 
-    public function serviceOrder(){
+    public function serviceOrder()
+    {
         $data['order'] = $this->service_model->order();
         $data['page'] = 'serviceorder_view';
-        $this->load->view('admin/servicemain_view', $data); 
+        $this->load->view('admin/servicemain_view', $data);
     }
 
-    public function indexOrder(){
+    public function indexOrder()
+    {
         $data['order'] = $this->service_model->order();
         echo json_encode($data);
     }
 
 
-    public function indexPromotionSet(){
+    public function indexPromotionSet()
+    {
         $data['order'] = $this->service_model->promotionSet();
         echo json_encode($data);
     }
 
-    public function indexPromotionSetDetail(){
+    public function indexPromotionSetDetail()
+    {
         $promotionSetID = $this->input->post('promotionSetID');
         $data['promotionSetDetail'] = $this->service_model->promotionSetDetail($promotionSetID);
         echo json_encode($data);
     }
 
-    public function insertOrder(){
+    public function insertOrder()
+    {
         $data['test'] = $_POST;
+        $serviceID = $this->input->post('serviceID');
+        $ServiceMaxNo = $this->crud_model->maxWhere('servicedetail', 'DTSER_NO', 'DTSER_ID', $serviceID);
+        if ($ServiceMaxNo == null) {
+            $ServiceMaxNo = 1;
+        } else {
+            $ServiceMaxNo++;
+        }
+        $data['testss'] = $ServiceMaxNo;
+        $changeTypeOrder = $this->input->post('changeTypeOrder');
+        $selectOrderID = $this->input->post('selectOrderID');
+        $amountOrder = $this->input->post('amountOrder');
+        $selectNote = $this->input->post('selectNote');
+        $selectOrderType = $this->input->post('selectOrderType');
+        $date = date('Y-m-d');
+        $time = date('H:i:s');
+        for ($i = 0; $i < count($selectOrderID); $i++) {
+            $dataDetailService = array(
+                'DTSER_ID' => $serviceID,
+                'DTSER_NO' => $ServiceMaxNo,
+                'DTSER_TYPEORDER' => $changeTypeOrder[$i], #DTSER_TYPEORDER 1 = FD, 2 = PROSET
+                'DTSER_TYPEUSE' => $selectOrderType[$i], #DTSERTYPE 1 = HERE , 2 = HOME 
+                'DTSER_DATE' => $date,
+                'DTSER_TIME' => $time,
+                'DTSER_AMOUNT' =>  $amountOrder[$i],
+                'DTSER_REMAINDER' => $amountOrder[$i],
+                'DTSER_NOTE' => $selectNote[$i],
+                'DTSER_STATUS' => '0',
+            );
+            $this->crud_model->insert('servicedetail', $dataDetailService);
+            if ($changeTypeOrder[$i] == 1) {
+                $dataDetailServiceType = array(
+                    'FDDTSER_SERVICEID' => $serviceID,
+                    'FDDTSER_NO' => $ServiceMaxNo,
+                    'FDDTSER_PRODUCTID' => $selectOrderID[$i],
+                );
+                $this->crud_model->insert('servicedetailfd', $dataDetailServiceType);
+            } else {
+                $dataDetailServiceType = array(
+                    'PRODTSER_SERVICEID' => $serviceID,
+                    'PRODTSER_NO' => $ServiceMaxNo,
+                    'PRODTSER_PROSETID' => $selectOrderID[$i],
+                );
+                $this->crud_model->insert('servicedetailproset', $dataDetailServiceType);
+                $dataprosetDetail = $this->crud_model->findSelectWhere('promotionsetdetail', 'PROSETDETAIL_PRODUCT,PROSETDETAIL_AMOUNT', 'PROSETDETAIL_ID', $selectOrderID[$i]);
+                $maxnoProset = $this->crud_model->maxWhere('servicedetailprosetdetail', 'DPRODTSER_DETAILNO', 'DPRODTSER_SERVICEID', $serviceID);
+                if ($maxnoProset == null) {
+                    $maxnoProset = 1;
+                } else {
+                    $maxnoProset++;
+                }
+                foreach ($dataprosetDetail as $row) {
+                    $amountdetailproset = $amountOrder[$i] * $row->PROSETDETAIL_AMOUNT;
+                    $dataServiceProsetDetail = array(
+                        'DPRODTSER_SERVICEID' => $serviceID,
+                        'DPRODTSER_NO' => $ServiceMaxNo,
+                        'DPRODTSER_DETAILNO' => $maxnoProset,
+                        'DPRODTSER_PRODUCTID' => $row->PROSETDETAIL_PRODUCT,
+                        'DPRODTSER_AMOUNT' => $amountdetailproset,
+                        'DPRODTSER_STATUS' => '0',
+                    );
+                    $this->crud_model->insert('servicedetailprosetdetail', $dataServiceProsetDetail);
+                    $maxnoProset++;
+                }
+            }
+            $ServiceMaxNo++;
+        }
         echo json_encode($data);
     }
 }

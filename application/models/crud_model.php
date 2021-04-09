@@ -112,5 +112,14 @@ class crud_model extends CI_Model
         }
     }
 
+    public function maxWhere($table, $select,$where,$whereData)
+    {
+        $sql = "SELECT MAX($select) as maxx FROM $table WHERE $where = '$whereData' ";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->maxx;
+        }
+    }
+
 
 }

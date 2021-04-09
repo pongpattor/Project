@@ -365,7 +365,7 @@ class queue extends CI_Controller
                         'DTSER_TYPE' => '2', #DTSERTYPE 1 = PRODUCT , 2 = KARAOKE , 3 = PROMOTION
                         'DTSER_DATE' => $serviceDStart,
                         'DTSER_TIME' => $serviceTStart,
-                        'DTSER_AMOUNT' => $AmountCustomerE,
+                        'DTSER_AMOUNT' => $row->QSK_KARAOKEUSEAMOUNT,
                         'DTSER_NOTE' => '',
                         'DTSER_REMAINDER' => '1',
                         'DTSER_ACTIVE' => '1',
@@ -376,7 +376,6 @@ class queue extends CI_Controller
                         'KARADTSER_ID' => $serviceID,
                         'KARADTSER_NO' => $i,
                         'KARADTSER_KARAOKEID' => $row->SEAT_ID,
-                        'KARADTSER_AMOUNT' => $row->QSK_KARAOKEUSEAMOUNT,
                         'KARADTSER_USETYPE' => $row->QSK_KARAOKEUSETYPE
                     );
                     $this->crud_model->insert('servicedetailkaraoke', $dataKaraokeService);
