@@ -86,7 +86,7 @@ class desk extends CI_Controller
                 'SEAT_ZONE' => $this->input->post('deskZone'),
                 'SEAT_QUEUE' => $this->input->post('deskQueue'),
                 'SEAT_STATUS' => '1',
-                'SEAT_ACTIVE' => '1',
+                'SEAT_ACTIVE' => '0',
             );
             $this->crud_model->insert('seat', $dataSeat);
             $data['url'] = site_url('admin/desk');

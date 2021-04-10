@@ -47,14 +47,15 @@ class kitchen extends CI_Controller
                 foreach($dataKeySameOrder as $rowSameOrder){
                     $this->kitchen_model->updateDetailProset($rowSameOrder->DTSER_ID,$rowSameOrder->DTSER_NO,$rowSameOrder->DPRODTSER_DETAILNO);
                 }
-                
+                $dataCheckStatusProset = $this->kitchen_model->checkStatusProset($serviceID[$i], $serviceNO[$i]);
+                foreach($dataCheckStatusProset as $rowStatusProset){
+                    if($rowStatusProset->CNT > 0){
+                        $this->kitchen_model->updateServiceDetailProset($serviceID[$i], $serviceNO[$i]);
+                    }
+                }
             }
         }
         $data['serviceID'] = $serviceID;
-        // $data['serviceNO'] = $serviceNO;
-        // $data['serviceDate'] = $serviceDate;
-        // $data['serviceTime'] = $serviceTime;
-
         echo json_encode($data);
     }
 }

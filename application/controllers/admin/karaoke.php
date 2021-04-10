@@ -82,6 +82,7 @@ class karaoke extends CI_Controller
             $seatID = $this->genIdSeat();
             $karaokeAmount =  $this->input->post('karaokeAmount');
             $karaokeZone = $this->input->post('karaokeZone');
+            $karaokeQueue = $this->input->post('karaokeQueue');
             $karaokePricePerHour = $this->input->post('karaokePricePerHour');
             $karaokeFlatRate = $this->input->post('karaokeFlatRate');
             $dataSeat = array(
@@ -90,8 +91,9 @@ class karaoke extends CI_Controller
                 'SEAT_AMOUNT' => $karaokeAmount,
                 'SEAT_TYPE' => '2',
                 'SEAT_ZONE' => $karaokeZone,
+                'SEAT_QUEUE' => $karaokeQueue,
+                'SEAT_ACTIVE' => '0',
                 'SEAT_STATUS' => '1',
-                'SEAT_ACTIVE' => '1',
             );
             $this->crud_model->insert('seat', $dataSeat);
             $dataKaraoke = array(

@@ -30,6 +30,7 @@
                                                 <th style="text-align: center;">#</th>
                                                 <th style="text-align: center;">รายการ</th>
                                                 <th style="text-align: center;">จำนวน</th>
+                                                <th style="text-align: center;">ประเภท</th>
                                                 <th style="text-align: center;">หมายเหตุ</th>
                                                 <th style="text-align: center;">สถานะ</th>
                                                 <th style="text-align: center;">ยกเลิก</th>
@@ -55,6 +56,13 @@
                                                     } ?>
                                                     <td class="align-middle" style="text-align: center;"><?= $orderName ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->DTSER_AMOUNT ?></td>
+                                                    <?php $usetype = '';
+                                                    if ($row->DTSER_TYPEUSE == 1) {
+                                                        $usetype = 'ทานนี่';
+                                                    } else {
+                                                        $usetype = 'กลับบ้าน';
+                                                    } ?>
+                                                    <td class="align-middle" style="text-align: center;"><?= $usetype ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->DTSER_NOTE ?></td>
                                                     <td class="align-middle" style="text-align: center;">
                                                         <?php
@@ -124,11 +132,10 @@
                 },
                 dataType: "JSON",
                 success: function(data) {
-                    if(data.status == true){
+                    if (data.status == true) {
                         alert('ยกเลิกรายการเสร็จสิ้น');
                         location.reload();
-                    }
-                    else{
+                    } else {
                         alert('ไม่สามารถยกเลิกรายได้');
                         location.reload();
                     }

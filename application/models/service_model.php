@@ -27,6 +27,7 @@ class service_model extends CI_Model
             OR service.SERVICE_TSTART LIKE ? 
             OR CONCAT( seat.SEAT_NAME, IFNULL( serviceseat.SERSEAT_SEATSPLIT, '' ) ) LIKE ? 
         )
+        GROUP BY service.SERVICE_ID
         LIMIT $offset,$limit
         ";
         $query = $this->db->query(
@@ -138,6 +139,7 @@ class service_model extends CI_Model
                     detail.PRODUCT_NAME,
                     detail.PROMOTIONSET_ID,
                     detail.PROMOTIONSET_NAME,
+                    detail.DTSER_TYPEUSE,
                     detail.DTSER_NOTE,
                     detail.DTSER_AMOUNT, 
                     detail.DTSER_STATUS 
@@ -149,6 +151,7 @@ class service_model extends CI_Model
                         product.PRODUCT_NAME,
                         promotionset.PROMOTIONSET_ID,
                         promotionset.PROMOTIONSET_NAME,
+                        servicedetail.DTSER_TYPEUSE,
                         servicedetail.DTSER_STATUS,
                         servicedetail.DTSER_NOTE,
                         servicedetail.DTSER_AMOUNT 

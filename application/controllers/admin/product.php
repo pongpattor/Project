@@ -172,7 +172,6 @@ class product extends CI_Controller
             $productType = $this->input->post('productType');
             $productCostPrice = $this->input->post('productCostPrice');
             $productSellPrice = $this->input->post('productSellPrice');
-            $productActive = $this->input->post('productActive');
             if (!empty($_FILES['productImage']['name'])) {
                 $productImageOld = $this->input->post('productImageOld');
                 unlink('./assets/image/product/' . $productImageOld);
@@ -191,7 +190,6 @@ class product extends CI_Controller
                 'PRODUCT_TYPEPRODUCT' => $productType,
                 'PRODUCT_COSTPRICE' => $productCostPrice,
                 'PRODUCT_SELLPRICE' => $productSellPrice,
-                'PRODUCT_ACTIVE' => $productActive,
             );
             $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
             $data['url'] = site_url('admin/product');

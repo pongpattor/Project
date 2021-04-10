@@ -60,8 +60,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
-                                    <label for="deskQueue">อนุมัติการจอง</label>
-                                    <select name="deskQueue" class="form-control" required>
+                                    <label for="karaokeQueue">อนุมัติการจอง</label>
+                                    <select name="karaokeQueue" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกอนุมัติการจอง</option>
                                         <option value="1" <?php if ($row->SEAT_QUEUE == '1') {
                                                                 echo 'selected';
@@ -77,10 +77,10 @@
                                     <label>สถานะการใช้งาน </label>
                                     <select name="karaokeActive" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกสถานะการใช้งาน</option>
-                                        <option value="1" <?php if ($row->SEAT_ACTIVE == '1') {
+                                        <option value="0" <?php if ($row->SEAT_ACTIVE == '0') {
                                                                 echo 'selected';
                                                             } ?>>พร้อมใช้งาน</option>
-                                        <option value="0" <?php if ($row->SEAT_ACTIVE == '0') {
+                                        <option value="2" <?php if ($row->SEAT_ACTIVE == '2') {
                                                                 echo 'selected';
                                                             } ?>>ไม่พร้อมใช้งาน</option>
                                     </select>

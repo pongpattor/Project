@@ -59,7 +59,7 @@ class service extends CI_Controller
                 );
                 $this->crud_model->insert('serviceseat', $dataServiceSeat);
                 $dataSeatActive = array(
-                    'SEAT_ACTIVE' => '2'
+                    'SEAT_ACTIVE' => '1'
                 );
                 $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[$i]);
             }
@@ -109,7 +109,7 @@ class service extends CI_Controller
                 $this->crud_model->insert('serviceseat', $dataServiceSeat);
             }
             $dataSeatActive = array(
-                'SEAT_ACTIVE' => '2'
+                'SEAT_ACTIVE' => '1'
             );
             $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[0]);
         }
@@ -318,20 +318,20 @@ class service extends CI_Controller
         echo json_encode($data);
     }
 
-    public function test()
-    {
-        $price = 50000000.55;
-        $sellPrice = substr($price,0,strlen($price)-3);
-        $decimalPrice = substr($price,-2);
-        if($decimalPrice < 50){
-            $decimalPrice = '.00';
-        }
-        else{
-            $sellPrice += 1;
-            $decimalPrice = '.00';
-        }
-        $price =  $sellPrice.''.$decimalPrice;
-        echo number_format($price,2,'.','');
+    // public function test()
+    // {
+    //     $price = 50000000.55;
+    //     $sellPrice = substr($price,0,strlen($price)-3);
+    //     $decimalPrice = substr($price,-2);
+    //     if($decimalPrice < 50){
+    //         $decimalPrice = '.00';
+    //     }
+    //     else{
+    //         $sellPrice += 1;
+    //         $decimalPrice = '.00';
+    //     }
+    //     $price =  $sellPrice.''.$decimalPrice;
+    //     echo number_format($price,2,'.','');
       
-    }
+    // }
 }
