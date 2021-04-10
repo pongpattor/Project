@@ -46,9 +46,7 @@
                                             foreach ($order as $row) : ?>
                                                 <tr id="<?= $row->PRODUCT_ID; ?>">
                                                     <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $row->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
-                                                    <td class="align-middle" <?php if ($row->PRODUCT_ACTIVE == '2') {
-                                                                                    echo "style=\"background-color:#FE4141\"";
-                                                                                } ?>><?= $row->PRODUCT_NAME; ?></td>
+                                                    <td class="align-middle"><?= $row->PRODUCT_NAME; ?></td>
                                                     <td class="align-middle"><?php if ($row->PRICE_DISCOUNT == NULL) {
                                                                                     echo "<span class=\"price\">";
                                                                                     echo  $row->PRODUCT_SELLPRICE;
@@ -56,58 +54,62 @@
                                                                                 } else {
                                                                                     // echo "<font style=\"color:#BFBFBF;\"><del>$row->PRODUCT_SELLPRICE</del></font><br>";
                                                                                     echo "<span style=\"color:red;\" class=\"price\">";
-                                                                                    echo number_format($row->PRICE_DISCOUNT, 2);
+                                                                                    echo number_format(intval($row->PRICE_DISCOUNT + 0.5), 2);
                                                                                     echo '</span>';
                                                                                 } ?></td>
                                                     <td class="align-middle"><?= $row->PROMOTIONPRICE_NAME; ?></td>
-                                                    <td class="align-middle">
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal<?= $j ?>" <?php if ($row->PRODUCT_ACTIVE == '2') {
-                                                                                                                                                                echo 'disabled';
-                                                                                                                                                            } ?>>
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                        <div class="modal fade" id="addModal<?= $j ?>" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="addModalLabel"><?= $row->PRODUCT_NAME; ?></h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <div class="form-check form-check-inline">
-                                                                                    <input class="form-check-input orderType" type="radio" name="orderType" id="orderType<?= $j ?>" value="1">
-                                                                                    <label class="form-check-label" for="orderType<?= $j ?>">รับประทานที่นี่</label>
+                                                    <td class="align-middle" <?php if ($row->PRODUCT_ACTIVE == '2') {
+                                                                                    echo "style=\"background-color:#FE4141\"";
+                                                                                } ?>>
+                                                        <?php if ($row->PRODUCT_ACTIVE == '1') { ?>
+                                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal<?= $j ?>">
+                                                                <i class="fa fa-plus"></i>
+                                                            </button>
+                                                            <div class="modal fade" id="addModal<?= $j ?>" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="addModalLabel"><?= $row->PRODUCT_NAME; ?></h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col">
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input class="form-check-input orderType" type="radio" name="orderType" id="orderType<?= $j ?>" value="1">
+                                                                                        <label class="form-check-label" for="orderType<?= $j ?>">รับประทานที่นี่</label>
+                                                                                    </div>
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input class="form-check-input orderType" type="radio" name="orderType" id="orderProType<?= $j ?>" value="2">
+                                                                                        <label class="form-check-label" for="orderProType<?= $j ?>">สั่งกลับบ้าน</label>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div class="form-check form-check-inline">
-                                                                                    <input class="form-check-input orderType" type="radio" name="orderType" id="orderProType<?= $j ?>" value="2">
-                                                                                    <label class="form-check-label" for="orderProType<?= $j ?>">สั่งกลับบ้าน</label>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col text-left">
+                                                                                    <label for="orderAmount<?= $j ?>">จำนวน</label>
+                                                                                    <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount<?= $j ?>" value="1" min='1'>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col text-left">
+                                                                                    <label for="orderNote<?= $j ?>">หมายเหตุ</label>
+                                                                                    <textarea name="" class="form-control orderNote" id="orderNote<?= $j ?>" cols="30" rows="5"></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="row">
-                                                                            <div class="col text-left">
-                                                                                <label for="orderAmount<?= $j ?>">จำนวน</label>
-                                                                                <input type="number" class="form-control orderAmount" name="orderAmount" id="orderAmount<?= $j ?>" value="1" min='1'>
-                                                                            </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                                                            <button type="button" class="btn btn-primary addOrder" value="<?= $row->PRODUCT_ID ?>">เพิ่ม</button>
                                                                         </div>
-                                                                        <div class="row">
-                                                                            <div class="col text-left">
-                                                                                <label for="orderNote<?= $j ?>">หมายเหตุ</label>
-                                                                                <textarea name="" class="form-control orderNote" id="orderNote<?= $j ?>" cols="30" rows="5"></textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                                                                        <button type="button" class="btn btn-primary addOrder" value="<?= $row->PRODUCT_ID ?>">เพิ่ม</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        <?php } else {
+                                                            echo "<span style=\"color:white;font-size:30px; font-weight: bold;\">หมด</span>";
+                                                        } ?>
                                                     </td>
                                                 </tr>
                                             <?php $j++;
@@ -209,7 +211,7 @@
                     success: function(data) {
                         // console.log(data.order);
                         let j = 1;
-                        var diss, bgdiss
+                        var diss,bgdiss
                         table = `
                         <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
                                         <thead class="thead-dark">
@@ -223,11 +225,11 @@
                                         </thead>
                                         <tbody>
                         `;
-
                         $.each(data.order, function(key, value) {
+
                             if (value.PRODUCT_ACTIVE == '2') {
-                                diss = 'disabled';
-                                bgdiss = "style=\"background-color:#FE4141\"";
+                                bgdiss = `style="background-color:red"`;
+                                diss = `<span style="color:white;font-size:30px; font-weight: bold;">หมด</span>`;;
                             } else {
                                 diss = '';
                                 bgdiss = '';
@@ -242,21 +244,26 @@
                             table += `  
                                     <tr id = "${value.PRODUCT_ID}" >
                                         <td class="align-middle"> <img src="<?= base_url('assets/image/product/'); ?>${value.PRODUCT_IMAGE}" alt="" width="50px" height="50px"> </td> 
-                                        <td class="align-middle"  ${bgdiss}>${value.PRODUCT_NAME}</td> 
+                                        <td class="align-middle"  >${value.PRODUCT_NAME}</td> 
                                         <td class="align-middle">`;
                             if (value.PRICE_DISCOUNT == null) {
                                 table += `
                                         <span class="price">${price} </span>
                                         `;
                             } else {
-                                discount = parseFloat(value.PRICE_DISCOUNT).toFixed(2);
+
+                                discount = parseFloat(value.PRICE_DISCOUNT) + 0.5;
+                                discount = parseInt(discount).toFixed(2);
                                 table += `
                                         <span style="color:red;" class="price">${discount} </span>`;
                             }
+                        
                             table += `  </td> 
                                         <td class="align-middle">${proname} </td> 
-                                        <td class = "align-middle">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${j}" ${diss}>
+                                        <td class = "align-middle" ${bgdiss}>
+                                        `
+                            if (value.PRODUCT_ACTIVE == 1) {
+                                table += `                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${j}" >
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                             <div class="modal fade" id="addModal${j}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -300,7 +307,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>`;
+                            }
+                            else{
+                                table += `${diss}`;
+                            }
+                            table += `          
                                         </td> 
                                     </tr>             
                                 `;

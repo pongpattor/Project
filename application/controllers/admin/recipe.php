@@ -58,7 +58,7 @@ class recipe extends CI_Controller
 
     public function addRecipe()
     {
-        $data['product'] = $this->crud_model->findselectWhere('product', 'PRODUCT_ID,PRODUCT_NAME', 'PRODUCT_STATUS', '1');
+        $data['product'] = $this->recipe_model->productMenuRecipe();
         $data['ingredient'] = $this->crud_model->findselectWhere('ingredient', 'INGREDIENT_ID,INGREDIENT_NAME', 'INGREDIENT_STATUS', '1');
         $data['page'] = 'recipe_add_view';
         // $data['customer'] = $this->crud_model->findAll('customer');
@@ -130,7 +130,7 @@ class recipe extends CI_Controller
         $recipeID = $this->input->get('recipeID');
         $data['recipe'] =  $this->recipe_model->editRecipe($recipeID);
         $data['recipeDetail'] =  $this->recipe_model->editRecipeDetail($recipeID);
-        $data['product'] = $this->crud_model->findselectWhere('product', 'PRODUCT_ID,PRODUCT_NAME', 'PRODUCT_STATUS', '1');
+        $data['product'] = $this->recipe_model->productMenuRecipe();
         $data['ingredient'] = $this->crud_model->findselectWhere('ingredient', 'INGREDIENT_ID,INGREDIENT_NAME', 'INGREDIENT_STATUS', '1');
         $data['page'] = 'recipe_edit_view';
         $this->load->view('admin/main_view', $data);

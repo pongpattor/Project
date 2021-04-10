@@ -116,7 +116,7 @@
             var serviceID = $('#serviceID').html();
             var no = $(`#${rowid} .no`).val();
             $.ajax({
-                url: "<?= site_url('admin/service/checkOrderForDelete') ?>",
+                url: "<?= site_url('admin/service/checkOrderForCancel') ?>",
                 method: "POST",
                 data: {
                     serviceID: serviceID,

@@ -60,7 +60,7 @@
                     <a class="nav-link" href="<?= site_url('admin/service/instore') ?>" style="margin-left: 30px; margin-right: 30px;">เซอร์วิสในร้าน</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
+                    <a class="nav-link" href="<?= site_url('admin/kitchen/kitchenfood') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>

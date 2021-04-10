@@ -33,6 +33,12 @@ class crud_model extends CI_Model
         return $this->db->query($sql)->result();
     }
 
+    public function findSelect2Where($table, $select, $where1, $Wheredata1, $where2, $wheredata2)
+    {
+        $sql = "SELECT $select FROM $table WHERE $where1 = '$Wheredata1' AND $where2 = '$wheredata2'";
+        return $this->db->query($sql)->result();
+    }
+
     public function findIn($table, $select, $where, $data)
     {
         $sql = "SELECT $select FROM $table

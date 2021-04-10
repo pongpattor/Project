@@ -22,8 +22,6 @@ class service extends CI_Controller
         $data['deskEmpty'] = $this->service_model->deskEmpty();
         $data['karaokeEmpty'] = $this->service_model->karaokeEmpty();
         $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
-
-
         $data['page'] = 'storefont_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -306,16 +304,34 @@ class service extends CI_Controller
         echo json_encode($data);
     }
 
-    public function checkOrderForDelete(){
+    public function checkOrderForCancel()
+    {
         $serviceID = $this->input->post('serviceID');
         $serviceNO = $this->input->post('serviceNO');
-        $checkOrderStatus = $this->service_model->checkOrderForDelete($serviceID,$serviceNO);
-        if($checkOrderStatus !=0){
+        $checkOrderStatus = $this->service_model->checkOrderForCancel($serviceID, $serviceNO);
+        if ($checkOrderStatus != 0) {
             $data['status'] = false;
-        }else{
+        } else {
             $data['status'] = true;
-            $this->crud_model->delete2Where('servicedetail','DTSER_ID',$serviceID,'DTSER_NO',$serviceNO);
+            $this->crud_model->delete2Where('servicedetail', 'DTSER_ID', $serviceID, 'DTSER_NO', $serviceNO);
         }
         echo json_encode($data);
+    }
+
+    public function test()
+    {
+        $price = 50000000.55;
+        $sellPrice = substr($price,0,strlen($price)-3);
+        $decimalPrice = substr($price,-2);
+        if($decimalPrice < 50){
+            $decimalPrice = '.00';
+        }
+        else{
+            $sellPrice += 1;
+            $decimalPrice = '.00';
+        }
+        $price =  $sellPrice.''.$decimalPrice;
+        echo number_format($price,2,'.','');
+      
     }
 }

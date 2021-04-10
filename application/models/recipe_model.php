@@ -52,6 +52,21 @@ class recipe_model extends CI_Model
         }
     }
 
+    public function productMenuRecipe(){
+        $sql = "SELECT
+                    product.PRODUCT_ID,
+                    product.PRODUCT_NAME 
+                FROM
+                    product
+                    JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+                WHERE
+                    product.PRODUCT_STATUS = '1' 
+                    AND typeproduct.TYPEPRODUCT_GROUP = '1'
+        ";
+         $query = $this->db->query($sql);
+         return $query->result();
+    }
+
     public function editRecipe($recipeID)
     {
         $sql = "SELECT recipe.RECIPE_ID,product.PRODUCT_ID,product.PRODUCT_NAME 
