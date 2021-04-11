@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class kitchen_model extends CI_Model
 {
-    public function kitchenFood()
+    public function kitchen($typrproductGroup)
     {
         $sql = "SELECT
                     servicedetail.DTSER_ID,
@@ -26,7 +26,7 @@ class kitchen_model extends CI_Model
                     LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
                     LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
                 WHERE
-                    typeproduct.TYPEPRODUCT_GROUP = '1' 
+                    typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
                     AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
                 ORDER BY
                     servicedetail.DTSER_DATE ASC,
@@ -36,7 +36,7 @@ class kitchen_model extends CI_Model
         return $query->result();
     }
 
-    public function kitchenFoodSame()
+    public function kitchenSame($typrproductGroup)
     {
         // $sql = "SELECT
         //             product.PRODUCT_ID,
@@ -93,7 +93,7 @@ class kitchen_model extends CI_Model
                         LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
                         LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
                     WHERE
-                        typeproduct.TYPEPRODUCT_GROUP = '1' 
+                        typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
                         AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
                     GROUP BY
                         servicedetail.DTSER_NOTE,
@@ -202,6 +202,16 @@ class kitchen_model extends CI_Model
         return $query->result();
     }
 
+    public function updateDetailFoodDrink($serviceID, $serviceNO)
+    {
+        $sql = "UPDATE servicedetail 
+                SET DTSER_STATUS = '1' 
+                WHERE
+                    DTSER_ID = '$serviceID' 
+                    AND DTSER_NO = '$serviceNO'
+            ";
+        $this->db->query($sql);
+    }
 
     public function updateDetailProset($serviceID, $serviceNO, $serviceDetailNo)
     {
@@ -211,10 +221,10 @@ class kitchen_model extends CI_Model
                 AND DPRODTSER_NO = '$serviceNO'
                 AND DPRODTSER_DETAILNO = '$serviceDetailNo'
         ";
-         $this->db->query($sql);
+        $this->db->query($sql);
     }
 
-    
+
     public function updateServiceDetailProset($serviceID, $serviceNO)
     {
         $sql = "UPDATE servicedetail
@@ -222,7 +232,6 @@ class kitchen_model extends CI_Model
                 WHERE DTSER_ID = '$serviceID'
                 AND   DTSER_NO = '$serviceNO'
                 ";
-         $this->db->query($sql);
+        $this->db->query($sql);
     }
-
 }

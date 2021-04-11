@@ -77,7 +77,7 @@ class service extends CI_Controller
                     'DTSER_AMOUNT' => $karaokeUseAmount,
                     'DTSER_NOTE' => '',
                     'DTSER_REMAINDER' => '1',
-                    'DTSER_STATUS' => '1',
+                    'DTSER_STATUS' => '4',
                 );
                 $this->crud_model->insert('servicedetail', $dataDetailService);
                 $dataKaraokeService = array(

@@ -14,10 +14,12 @@ class kitchen extends CI_Controller
 
     public function kitchenFood()
     {
-        $data['food'] = $this->kitchen_model->kitchenFood();
-        $data['foodsame'] = $this->kitchen_model->kitchenFoodSame();
+        $data['food'] = $this->kitchen_model->kitchen('1');
+        $data['foodsame'] = $this->kitchen_model->kitchenSame('1');
         $data['foodsameIdNo'] = $this->kitchen_model->kitchenFoodSameIdNo();
-        // print_r($data['foodsameIdNo']);
+        // echo '<pre>';
+        // print_r($data['food']);
+        // echo '</pre>';
         $data['page'] = 'kitchenfood_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -40,7 +42,7 @@ class kitchen extends CI_Controller
         for ($i = 0; $i < count($serviceID); $i++) {
             $typeOrder = $this->kitchen_model->checkSameTypeOrder($serviceID[$i], $serviceNO[$i]);
             if ($typeOrder == 1) {
-
+                $this->kitchen_model->updateDetailFoodDrink($serviceID[$i], $serviceNO[$i]);
             } 
             else {
                 $dataKeySameOrder = $this->kitchen_model->findKeySameOrder($serviceID[$i], $serviceNO[$i], $serviceDate[$i], $serviceTime[$i], $productID);

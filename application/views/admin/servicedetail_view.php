@@ -39,7 +39,9 @@
                                         <tbody>
                                             <?php $i = 1;
                                             foreach ($serviceDetail as $row) : ?>
-                                                <?php if ($row->PRODUCT_ID == null) {
+                                                <?php if ($row->PRODUCT_ID == null  && $row->PROMOTIONSET_ID == null) {
+                                                    $orderId = $row->SEAT_ID;
+                                                } else if ($row->PRODUCT_ID == null  && $row->SEAT_ID == null) {
                                                     $orderId = $row->PROMOTIONSET_ID;
                                                 } else {
                                                     $orderId = $row->PRODUCT_ID;
@@ -49,19 +51,30 @@
                                                         <span class="noShow"><?= $i; ?></span>
                                                         <input type="hidden" name="no" class="no" value="<?= $row->DTSER_NO ?>">
                                                     </td>
-                                                    <?php if ($row->PRODUCT_ID == null) {
+                                                    <?php $orderName = '';
+                                                    if ($row->PRODUCT_NAME == null  && $row->PROMOTIONSET_NAME == null) {
+                                                        $orderName = $row->SEAT_NAME;
+                                                    } else if ($row->PRODUCT_NAME == null  && $row->SEAT_NAME == null) {
                                                         $orderName = $row->PROMOTIONSET_NAME;
                                                     } else {
                                                         $orderName = $row->PRODUCT_NAME;
                                                     } ?>
+
                                                     <td class="align-middle" style="text-align: center;"><?= $orderName ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->DTSER_AMOUNT ?></td>
                                                     <?php $usetype = '';
-                                                    if ($row->DTSER_TYPEUSE == 1) {
+                                                    if ($row->DTSER_TYPEUSE == 1 && $row->KARADTSER_USETYPE == null) {
                                                         $usetype = 'ทานนี่';
-                                                    } else {
+                                                    } else if ($row->DTSER_TYPEUSE == 2 && $row->KARADTSER_USETYPE == null) {
                                                         $usetype = 'กลับบ้าน';
-                                                    } ?>
+                                                    } else if($row->KARADTSER_USETYPE == '1') {
+                                                        $usetype = 'เหมาห้อง';
+                                                    } 
+                                                    else if($row->KARADTSER_USETYPE == '2'){
+                                                        $usetype = 'รายชั่วโมง';
+
+                                                    }
+                                                    ?>
                                                     <td class="align-middle" style="text-align: center;"><?= $usetype ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->DTSER_NOTE ?></td>
                                                     <td class="align-middle" style="text-align: center;">
@@ -74,17 +87,18 @@
                                                             echo 'รอเสิร์ฟ';
                                                         } else if ($row->DTSER_STATUS == '3') {
                                                             echo 'เสิร์ฟแล้ว';
-                                                        } else if ($row->DTSER_STATUS == '4') {
-                                                            echo 'จ่ายแล้ว';
+                                                        } else{
+                                                            echo 'ใช้งานอยู่';
                                                         }
                                                         ?>
                                                     </td>
                                                     <td class="align-middle" style="text-align: center;">
-                                                        <button type="button" class="btn btn-danger deleteOrder" value="<?= $orderId ?>" <?php if ($row->DTSER_STATUS != 0) {
-                                                                                                                                                echo 'disabled';
-                                                                                                                                            } ?>>
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <?php if ($row->DTSER_STATUS == 0) { ?>
+                                                            <button type="button" class="btn btn-danger deleteOrder" value="<?= $orderId ?>">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        <?php } ?>
+
                                                     </td>
 
                                                 </tr>

@@ -62,38 +62,50 @@
                                             } ?>
                                             <td class="align-middle" style="text-align: center;"><?= $typeUse ?></td>
                                             <?php $status = '';
-                                            if ($row->DPRODTSER_STATUS == 1 && $row->DTSER_STATUS == 1) {
+                                            if ($row->DPRODTSER_STATUS == '1' && $row->DTSER_STATUS == '1') {
                                                 $status = 'กำลังทำ';
-                                            } else if ($row->DPRODTSER_STATUS == 0 && $row->DTSER_STATUS == 1) {
+                                            } else if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '1') {
+                                                $status = 'กำลังทำ';
+                                            } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '1') {
                                                 $status = 'ยังไม่ทำ';
-                                            } else if ($row->DPRODTSER_STATUS == 0 && $row->DTSER_STATUS == 0) {
+                                            } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '0') {
+                                                $status = 'ยังไม่ทำ';
+                                            }else if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '0') {
                                                 $status = 'ยังไม่ทำ';
                                             }
                                             ?>
                                             <td class="align-middle" style="text-align: center;"><?= $status ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
-                                                if ($row->DPRODTSER_STATUS == 0 && $row->DTSER_STATUS == 0) {
+                                                if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-info \">ปรุง</button>";
-                                                } else if ($row->DPRODTSER_STATUS == 0 && $row->DTSER_STATUS == 1) {
+                                                } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '1') {
+                                                    echo "<button class=\"btn btn-info \">ปรุง</button>";
+                                                } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-info \">ปรุง</button>";
                                                 }
                                                 ?>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
-                                                if ($row->DPRODTSER_STATUS == 1 && $row->DTSER_STATUS == 1) {
+
+                                                if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '1') {
+                                                    echo "<button class=\"btn btn-success \">เสิร์ฟ</button>";
+                                                } else if ($row->DPRODTSER_STATUS == '1' && $row->DTSER_STATUS == '1') {
                                                     echo "<button class=\"btn btn-success \">เสิร์ฟ</button>";
                                                 }
                                                 ?>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
-                                                if ($row->DPRODTSER_STATUS == 0 && $row->DTSER_STATUS == 0) {
+                                                if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-danger\">ยกเลิก</button>";
-                                                } else if ($row->DPRODTSER_STATUS == 0 && $row->DTSER_STATUS == 1) {
+                                                } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '1') {
+                                                    echo "<button class=\"btn btn-danger\">ยกเลิก</button>";
+                                                } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-danger\">ยกเลิก</button>";
                                                 }
+
                                                 ?>
                                             </td>
                                         </tr>
@@ -178,20 +190,25 @@
                                             } ?>
                                             <td class="align-middle" style="text-align: center;"><?= $typeUse ?></td>
                                             <?php $status = '';
-                                            if ($row2->DPRODTSER_STATUS == 1 && $row2->DTSER_STATUS == 1) {
+                                            if ($row2->DPRODTSER_STATUS ==  null && $row2->DTSER_STATUS == '1') {
                                                 $status = 'กำลังทำ';
-                                            } else if ($row2->DPRODTSER_STATUS == 0 && $row2->DTSER_STATUS == 1) {
+                                            } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '1') {
                                                 $status = 'ยังไม่ทำ';
-                                            } else if ($row2->DPRODTSER_STATUS == 0 && $row2->DTSER_STATUS == 0) {
+                                            } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '0') {
+                                                $status = 'ยังไม่ทำ';
+                                            } else if ($row2->DPRODTSER_STATUS == null && $row2->DTSER_STATUS == '0') {
                                                 $status = 'ยังไม่ทำ';
                                             }
+
                                             ?>
                                             <td class="align-middle" style="text-align: center;"><?= $status ?></td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
-                                                if ($row2->DPRODTSER_STATUS == 0 && $row2->DTSER_STATUS == 0) {
+                                                if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-info sameCook\">ปรุง</button>";
-                                                } else if ($row2->DPRODTSER_STATUS == 0 && $row2->DTSER_STATUS == 1) {
+                                                } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '1') {
+                                                    echo "<button class=\"btn btn-info sameCook\">ปรุง</button>";
+                                                } else if ($row2->DPRODTSER_STATUS == null && $row2->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-info sameCook\">ปรุง</button>";
                                                 }
                                                 ?>
@@ -199,16 +216,20 @@
                                             <td class="align-middle" style="text-align: center;">
 
                                                 <?php
-                                                if ($row2->DPRODTSER_STATUS == 1 && $row2->DTSER_STATUS == 1) {
+                                                if ($row2->DPRODTSER_STATUS == null && $row2->DTSER_STATUS == '1') {
+                                                    echo "<button class=\"btn btn-success sameServe\">เสิร์ฟ</button>";
+                                                } else if ($row2->DPRODTSER_STATUS == '1' && $row2->DTSER_STATUS == '1') {
                                                     echo "<button class=\"btn btn-success sameServe\">เสิร์ฟ</button>";
                                                 }
                                                 ?>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
-                                                if ($row2->DPRODTSER_STATUS == 0 && $row2->DTSER_STATUS == 0) {
+                                                if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-danger\">ยกเลิก</button>";
-                                                } else if ($row2->DPRODTSER_STATUS == 0 && $row2->DTSER_STATUS == 1) {
+                                                } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '1') {
+                                                    echo "<button class=\"btn btn-danger\">ยกเลิก</button>";
+                                                } else if ($row2->DPRODTSER_STATUS == null && $row2->DTSER_STATUS == '0') {
                                                     echo "<button class=\"btn btn-danger\">ยกเลิก</button>";
                                                 }
                                                 ?>

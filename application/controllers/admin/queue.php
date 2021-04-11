@@ -368,8 +368,7 @@ class queue extends CI_Controller
                         'DTSER_AMOUNT' => $row->QSK_KARAOKEUSEAMOUNT,
                         'DTSER_NOTE' => '',
                         'DTSER_REMAINDER' => '1',
-                        'DTSER_ACTIVE' => '1',
-                        'DTSER_STATUS' => '1',
+                        'DTSER_STATUS' => '4',
                     );
                     $this->crud_model->insert('servicedetail', $dataDetailService);
                     $dataKaraokeService = array(
