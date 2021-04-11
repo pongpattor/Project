@@ -221,7 +221,7 @@ class service_model extends CI_Model
                     ) AS detail 
                 ORDER BY
                     detail.DTSER_NO
-        "; 
+        ";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -243,39 +243,51 @@ class service_model extends CI_Model
         }
     }
 
+    public function recommendedProduct()
+    {
+        $sql = "SELECT PRODUCT_NAME,PRODUCT_SELLPRICE,PRODUCT_IMAGE FROM product
+        WHERE PRODUCT_RECOMMENDED = '1'
+        AND PRODUCT_ACTIVE = '1'
+        AND PRODUCT_STATUS = '1'
+        ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function viewProPrice($productID)
+    {
+        $sql = "SELECT
+                    promotionprice.PROMOTIONPRICE_NAME,promotionprice.PROMOTIONPRICE_DISCOUNT
+                FROM
+                    promotionprice
+                     JOIN promotionpricedetail ON ( promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID )
+                     JOIN product ON promotionpricedetail.PROPRICE_PRODUCT = product.PRODUCT_ID
+                    WHERE product.PRODUCT_ID = '$productID'
+                    AND (CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND)
+        ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function viewProSet($productID)
+    {
+        $sql = "SELECT
+                    promotionset.PROMOTIONSET_NAME,
+                    promotionset.PROMOTIONSET_PRICE 
+                FROM
+                    promotionset
+                    JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID
+                    JOIN product ON promotionsetdetail.PROSETDETAIL_PRODUCT = product.PRODUCT_ID 
+                WHERE
+                    product.PRODUCT_ID = 'PD21010005' 
+                    AND ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND )
+        ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function Order()
     {
-        //     $sql = "SELECT
-        //     product.PRODUCT_ID,
-        //     product.PRODUCT_NAME,
-        //     product.PRODUCT_IMAGE,
-        //     product.PRODUCT_SELLPRICE,
-        //     product.PRODUCT_ACTIVE,
-        //     typeproduct.TYPEPRODUCT_NAME,
-        //     proprice.PROMOTIONPRICE_ID,
-        //     proprice.PROMOTIONPRICE_NAME,
-        //     proprice.PROMOTIONPRICE_DISCOUNT,
-        //     ( product.PRODUCT_SELLPRICE - ( ( product.PRODUCT_SELLPRICE / 100 ) * proprice.PROMOTIONPRICE_DISCOUNT ) ) AS PRICE_DISCOUNT 
-        // FROM
-        //     product
-        //     JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
-        //     LEFT JOIN (
-        //     SELECT
-        //         promotionprice.PROMOTIONPRICE_ID,
-        //         promotionprice.PROMOTIONPRICE_NAME,
-        //         promotionprice.PROMOTIONPRICE_DISCOUNT,
-        //         promotionpricedetail.PROPRICE_PRODUCT 
-        //     FROM
-        //         promotionprice
-        //         JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID 
-        //     WHERE
-        //         ( CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
-        //         AND promotionprice.PROMOTIONPRICE_STATUS = '1' 
-        //     ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT 
-        // WHERE
-        //     product.PRODUCT_STATUS = '1'
-        // ";
-
         $sql = "SELECT
                     product.PRODUCT_ID,
                     product.PRODUCT_NAME,
@@ -313,19 +325,46 @@ class service_model extends CI_Model
 
     public function promotionset()
     {
-        $sql = " SELECT
-        promotionset.PROMOTIONSET_ID,
-        promotionset.PROMOTIONSET_NAME,
-        promotionset.PROMOTIONSET_PRICE 
-        FROM
-        promotionset
-        JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID 
-        WHERE
-        promotionset.PROMOTIONSET_STATUS = '1' 
-        AND ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND ) 
-        GROUP BY
-        promotionset.PROMOTIONSET_ID";
-        $query = $this->db->query($sql);
+
+        $sql2 ="SELECT
+                    promotionset.PROMOTIONSET_ID,
+                    promotionset.PROMOTIONSET_NAME,
+                    promotionset.PROMOTIONSET_PRICE,
+                    IFNULL( psd.PRODUCT_ACTIVE, 0 ) AS PSD_ACTIVE 
+                FROM
+                    promotionset
+                    LEFT JOIN (
+                    SELECT
+                        promotionsetdetail.PROSETDETAIL_ID,
+                        product.PRODUCT_ACTIVE 
+                    FROM
+                        product
+                        JOIN promotionsetdetail ON product.PRODUCT_ID = promotionsetdetail.PROSETDETAIL_PRODUCT 
+                    WHERE
+                        PRODUCT_ACTIVE = '2' 
+                        AND PRODUCT_STATUS = '1' 
+                    ) psd ON promotionset.PROMOTIONSET_ID = psd.PROSETDETAIL_ID 
+                WHERE
+                    promotionset.PROMOTIONSET_STATUS = '1' 
+                    AND ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND ) 
+                GROUP BY
+                    promotionset.PROMOTIONSET_ID
+                ";
+
+
+        // $sql = " SELECT
+        // promotionset.PROMOTIONSET_ID,
+        // promotionset.PROMOTIONSET_NAME,
+        // promotionset.PROMOTIONSET_PRICE 
+        // FROM
+        // promotionset
+        // JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID 
+        // WHERE
+        // promotionset.PROMOTIONSET_STATUS = '1' 
+        // AND ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND ) 
+        // GROUP BY
+        // promotionset.PROMOTIONSET_ID";
+        $query = $this->db->query($sql2);
         return $query->result();
     }
 

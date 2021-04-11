@@ -38,31 +38,6 @@ class kitchen_model extends CI_Model
 
     public function kitchenSame($typrproductGroup)
     {
-        // $sql = "SELECT
-        //             product.PRODUCT_ID,
-        //             product.PRODUCT_NAME,
-        //             servicedetail.DTSER_STATUS,
-        //             servicedetail.DTSER_NOTE,
-        //             servicedetail.DTSER_TYPEUSE,
-        //             servicedetailprosetdetail.DPRODTSER_STATUS,
-        //             IFNULL(SUM(servicedetailprosetdetail.DPRODTSER_AMOUNT),SUM(servicedetail.DTSER_AMOUNT))AS sumAmount
-        //         FROM
-        //             servicedetail
-        //             LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
-        //             LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
-        //             LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
-        //             LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
-        //             LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
-        //             LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
-        //         WHERE
-        //             typeproduct.TYPEPRODUCT_GROUP = '1' 
-        //             AND servicedetail.DTSER_STATUS IN (0,1)
-        //     GROUP BY product.PRODUCT_ID,servicedetail.DTSER_NOTE,servicedetail.DTSER_TYPEUSE,servicedetail.DTSER_STATUS 
-
-        //     HAVING sumAmount >1
-        //     ORDER BY servicedetail.DTSER_DATE,servicedetail.DTSER_TIME
-        //     ";
-
         $sql = "SELECT
                     dtser.PRODUCT_ID,
                     dtser.PRODUCT_NAME,
@@ -110,13 +85,13 @@ class kitchen_model extends CI_Model
                 HAVING  	sumAmount > 1   
                 ORDER BY
                     dtser.DTSER_DATE ASC,
-                    dtser.DTSER_TIME ASC 
+                    dtser.DTSER_TIME ASC
                 ";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
-    public function kitchenFoodSameIdNo()
+    public function kitchenSameIdNo($typrproductGroup)
     {
         $sql = "SELECT
                     servicedetail.DTSER_ID,
@@ -136,7 +111,7 @@ class kitchen_model extends CI_Model
                     LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
                     LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
                 WHERE
-                    typeproduct.TYPEPRODUCT_GROUP = '1' 
+                    typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
                     AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
                 ORDER BY
                     servicedetail.DTSER_DATE,
@@ -232,6 +207,18 @@ class kitchen_model extends CI_Model
                 WHERE DTSER_ID = '$serviceID'
                 AND   DTSER_NO = '$serviceNO'
                 ";
+        $this->db->query($sql);
+    }
+
+    public function updateServiceDetailProsetServed($serviceID, $serviceNO)
+    {
+        $sql = "UPDATE serviceDetail 
+        SET DTSER_STATUS = '3' 
+        WHERE
+            DTSER_ID = '$serviceID' 
+            AND DTSER_NO = '$serviceNO' 
+            AND ( SELECT COUNT( * ) FROM servicedetailprosetdetail WHERE DPRODTSER_SERVICEID = '$serviceID' AND DPRODTSER_NO = '$serviceNO' ) 
+            = ( SELECT COUNT( * ) FROM servicedetailprosetdetail WHERE DPRODTSER_SERVICEID = '$serviceID' AND DPRODTSER_NO = '$serviceNO' AND DPRODTSER_STATUS = '3' )";
         $this->db->query($sql);
     }
 }

@@ -81,7 +81,23 @@
                                     <input type="number" class="form-control" value="<?= $row->PRODUCT_SELLPRICE ?>" name="productSellPrice" id="productSellPrice" required step="0.01" min="0" max="9999999.99">
                                 </div>
                             </div>
-
+                            <?php if ($row->PRODUCT_RECOMMENDED == 1) {
+                                $recom1 = 'selected';
+                                $recom2 = '';
+                            } else {
+                                $recom1 = '';
+                                $recom2 = 'selected';
+                            } ?>
+                            <div class="row justify-content-center">
+                                <div class="col-sm col-md col-xl-6">
+                                    <label>แนะนำสินค้า</label><br>
+                                    <select name="productRecommended" id="productRecommended" class="form-control" required>
+                                        <option value="" selected disabled>กรุณาเลือกแนะนำสินค้า</option>
+                                        <option value="1" <?=$recom1?>>แนะนำ</option>
+                                        <option value="0" <?=$recom2?>>ไม่แนะนำ</option>
+                                    </select>
+                                </div>
+                            </div>
                             <br>
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6  ">

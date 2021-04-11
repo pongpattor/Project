@@ -29,6 +29,52 @@
                         </div>
                         <br>
                         <div class="row">
+                            <div class="col">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#recomModal">
+                                    สินค้าแนะนำ
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="recomModal" tabindex="-1" role="dialog" aria-labelledby="recomModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="recomModalLabel">สินค้าแนะนำ</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <table class="table  table-bordered " width="100%" cellspacing="0" id="recomTable">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                <th style="text-align: center;">#</th>
+                                                                <th style="text-align: center;">ชื่อรายการ</th>
+                                                                <th style="text-align: center;">ราคา</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach ($recom as $roww) : ?>
+                                                                <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $roww->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
+                                                                <td class="align-middle"><?= $roww->PRODUCT_NAME; ?></td>
+                                                                <td class="align-middle"><?= $roww->PRODUCT_SELLPRICE; ?></td>
+                                                            <?php endforeach; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive" id="headOrderTable">
                                     <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
@@ -57,7 +103,45 @@
                                                                                     echo number_format(intval($row->PRICE_DISCOUNT + 0.5), 2);
                                                                                     echo '</span>';
                                                                                 } ?></td>
-                                                    <td class="align-middle"><?= $row->PROMOTIONPRICE_NAME; ?></td>
+                                                    <td class="align-middle"><?php if ($row->PROMOTIONPRICE_NAME != null) { ?>
+                                                            <button type="button" class="btn btn-warning viewPro" data-toggle="modal" data-target="#viewProModal<?= $j ?>" value="<?= $row->PRODUCT_ID; ?>">
+                                                                <i class="fa fa-eye"></i>
+                                                            </button>
+                                                            <div class="modal fade" id="viewProModal<?= $j ?>" tabindex="-1" role="dialog" aria-labelledby="viewProModalLabel<?= $j ?>" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="viewProModalLabel<?= $j ?>">โปรโมชั่นของ<?= $row->PRODUCT_NAME; ?></h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table  table-bordered " width="100%" cellspacing="0" id="proTable">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th style="text-align: center;">#</th>
+                                                                                            <th style="text-align: center;">ชื่อโปรโมชั่น</th>
+                                                                                            <th style="text-align: center;">ประเภทโปรโมชั่น</th>
+                                                                                            <th style="text-align: center;">ลด%</th>
+                                                                                            <th style="text-align: center;">ราคา</th>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody class="bodyViewPro">
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> <?php }  ?>
+                                                    </td>
                                                     <td class="align-middle" <?php if ($row->PRODUCT_ACTIVE == '2') {
                                                                                     echo "style=\"background-color:#FE4141\"";
                                                                                 } ?>>
@@ -185,6 +269,23 @@
 </div>
 <script>
     $(document).ready(function() {
+
+        $('#recomTable').dataTable({
+            "lengthMenu": [
+                [5, 10, 25, -1],
+                [5, 10, 25, "All"]
+            ],
+            "columnDefs": [{
+                "className": "dt-center",
+                "targets": "_all"
+            }],
+            "language": {
+                "emptyTable": "ไม่มีข้อมูล",
+                "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+            }
+        });
+
+
         $('#orderTable').dataTable({
             "lengthMenu": [
                 [5, 10, 25, -1],
@@ -200,6 +301,8 @@
             }
         });
 
+
+
         $('.changeTypeOrder').on('change', function() {
             var type = $(this).val();
             var table = "";
@@ -211,7 +314,7 @@
                     success: function(data) {
                         // console.log(data.order);
                         let j = 1;
-                        var diss,bgdiss
+                        var diss, bgdiss
                         table = `
                         <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
                                         <thead class="thead-dark">
@@ -257,11 +360,51 @@
                                 table += `
                                         <span style="color:red;" class="price">${discount} </span>`;
                             }
-                        
-                            table += `  </td> 
-                                        <td class="align-middle">${proname} </td> 
-                                        <td class = "align-middle" ${bgdiss}>
-                                        `
+
+
+                            table +=  `</td><td class="align-middle"> `;
+                            if (value.PROMOTIONPRICE_NAME != null) {
+                                table += `  <button type="button" class="btn btn-warning viewPro" data-toggle="modal" data-target="#viewProModal${j}" value="${value.PRODUCT_ID}">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                            <div class="modal fade" id="viewProModal${j}" tabindex="-1" role="dialog" aria-labelledby="viewProModalLabel${j}" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="viewProModalLabel${j}">โปรโมชั่นของ${value.PRODUCT_NAME}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table  table-bordered " width="100%" cellspacing="0" id="proTable">
+                                                                    <thead class="thead-dark">
+                                                                        <tr>
+                                                                            <th style="text-align: center;">#</th>
+                                                                            <th style="text-align: center;">ชื่อโปรโมชั่น</th>
+                                                                            <th style="text-align: center;">ประเภทโปรโมชั่น</th>
+                                                                            <th style="text-align: center;">ลด%</th>
+                                                                            <th style="text-align: center;">ราคา</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="bodyViewPro">
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    `;
+                            }
+                            else{
+                                 
+                            }
+                            table += `</td> <td class = "align-middle" ${bgdiss}>`
                             if (value.PRODUCT_ACTIVE == 1) {
                                 table += `                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${j}" >
                                                 <i class="fa fa-plus"></i>
@@ -308,8 +451,7 @@
                                                     </div>
                                                 </div>
                                             </div>`;
-                            }
-                            else{
+                            } else {
                                 table += `${diss}`;
                             }
                             table += `          
@@ -330,7 +472,7 @@
                     dataType: "JSON",
                     async: false,
                     success: function(data) {
-                        // console.log(data.order);
+                        console.log(data.order);
                         table = `
                         <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
                                         <thead class="thead-dark">
@@ -346,7 +488,15 @@
                         // <button class="btn btn-warning" value="${value.PROMOTIONSET_ID}" ><i class="far fa-file-alt"></i>
                         var i = 1;
                         var k = 1;
+                        
                         $.each(data.order, function(key, value) {
+                            if (value.PSD_ACTIVE == '2') {
+                                bgdiss = `style="background-color:red"`;
+                                diss = `<span style="color:white;font-size:30px; font-weight: bold;">หมด</span>`;;
+                            } else {
+                                diss = '';
+                                bgdiss = '';
+                            }
                             table += `
                                     <tr id="${value.PROMOTIONSET_ID}">
                                         <td class="align-middle">${value.PROMOTIONSET_NAME}</td>
@@ -376,8 +526,9 @@
                                                 </div>
                                             </div>
                                         </td>                                       
-                                        <td class = "align-middle">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${k}">
+                                        <td class = "align-middle" ${bgdiss}>`;
+                                  if(value.PSD_ACTIVE == 0){
+                                      table+= ` <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal${k}">
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                             <div class="modal fade" id="addModal${k}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -422,8 +573,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            `;}
+                                            else{
+                                                table += `${diss}`;
+                                            }
+                                   table += `         
                                         </td> 
-                                    </tr>`
+                                    </tr>`;
+
                             i++;
                             k++;
                         });
@@ -673,6 +830,46 @@
                 success: function(data) {
                     alert('สั่งอาหารเสร็จสิ้น');
                     location.replace(data.url);
+                }
+            });
+        });
+
+
+        $(document).on('click', '.viewPro', function() {
+            var productID = $(this).val();
+            var table = '';
+            var rowi = 1;
+            $.ajax({
+                url: "<?= site_url('admin/service/viewProductAllPro') ?>",
+                method: "POST",
+                data: {
+                    productID: productID,
+                },
+                dataType: "JSON",
+                success: function(data) {
+                    $(data.proset).each(function(key, value) {
+                        table += `<tr>
+                        <td class="align-middle" style="text-align: center;">${rowi}</td>
+                        <td class="align-middle" style="text-align: center;">${value.PROMOTIONSET_NAME}</td>
+                        <td class="align-middle" style="text-align: center;">โปรโมชั่นเซ็ท</td>
+                        <td class="align-middle" style="text-align: center;"></td>
+                        <td class="align-middle" style="text-align: center;">${value.PROMOTIONSET_PRICE}</td>
+                        </tr>
+                        `;
+                        rowi++;
+                    });
+                    $(data.proprice).each(function(key, value) {
+                        table += `<tr>
+                        <td class="align-middle" style="text-align: center;">${rowi}</td>
+                        <td class="align-middle" style="text-align: center;">${value.PROMOTIONPRICE_NAME}</td>
+                        <td class="align-middle" style="text-align: center;">โปรโมชั่นส่วนลด</td>
+                        <td class="align-middle" style="text-align: center;">${value.PROMOTIONPRICE_DISCOUNT}</td>
+                        <td class="align-middle" style="text-align: center;"></td>
+                        </tr>
+                        `;
+                        rowi++;
+                    });
+                    $(`#${productID} .bodyViewPro`).html(table);
                 }
             });
         });

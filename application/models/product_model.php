@@ -76,7 +76,7 @@ class product_model extends CI_Model
 
     public function editProduct($productID)
     {
-        $sql = "SELECT product.PRODUCT_ID,product.PRODUCT_NAME,product.PRODUCT_COSTPRICE,product.PRODUCT_SELLPRICE,
+        $sql = "SELECT product.PRODUCT_ID,product.PRODUCT_NAME,product.PRODUCT_COSTPRICE,product.PRODUCT_SELLPRICE,product.PRODUCT_RECOMMENDED,
                        product.PRODUCT_IMAGE,product.PRODUCT_ACTIVE,typeproduct.TYPEPRODUCT_ID,typeproduct.TYPEPRODUCT_GROUP
                 FROM product LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
                 WHERE product.PRODUCT_ID = '$productID'";

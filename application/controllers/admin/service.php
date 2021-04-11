@@ -13,9 +13,6 @@ class service extends CI_Controller
         $this->load->library('pagination');
     }
 
-    public function index()
-    {
-    }
 
     public function storefont()
     {
@@ -208,6 +205,7 @@ class service extends CI_Controller
     public function serviceOrder()
     {
         $data['order'] = $this->service_model->order();
+        $data['recom'] = $this->service_model->recommendedProduct();
         $data['page'] = 'serviceorder_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -315,6 +313,13 @@ class service extends CI_Controller
             $data['status'] = true;
             $this->crud_model->delete2Where('servicedetail', 'DTSER_ID', $serviceID, 'DTSER_NO', $serviceNO);
         }
+        echo json_encode($data);
+    }
+    
+    public function viewProductAllPro(){
+        $productID = $this->input->post('productID');
+        $data['proset'] = $this->service_model->viewProSet($productID);
+        $data['proprice'] = $this->service_model->viewProPrice($productID);
         echo json_encode($data);
     }
 

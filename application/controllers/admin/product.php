@@ -95,6 +95,7 @@ class product extends CI_Controller
                 $productCostPrice = $this->input->post('productCostPrice');
                 $productSellPrice = $this->input->post('productSellPrice');
                 $productImage = $data['img']['file_name'];
+                $productRecommended = $this->input->post('productRecommended');
                 $dataProduct = array(
                     'PRODUCT_ID' => $productID,
                     'PRODUCT_NAME' => $productName,
@@ -102,6 +103,7 @@ class product extends CI_Controller
                     'PRODUCT_COSTPRICE' => $productCostPrice,
                     'PRODUCT_SELLPRICE' => $productSellPrice,
                     'PRODUCT_IMAGE' => $productImage,
+                    'PRODUCT_RECOMMENDED' => $productRecommended,
                     'PRODUCT_ACTIVE' => '1',
                     'PRODUCT_STATUS' => '1',
                 );
@@ -145,9 +147,6 @@ class product extends CI_Controller
         $typeProductGroup = $data['product']['0']->TYPEPRODUCT_GROUP;
         $data['typeProduct'] = $this->crud_model->findSelectWhere('typeproduct', 'TYPEPRODUCT_ID,TYPEPRODUCT_NAME', 'TYPEPRODUCT_GROUP', $typeProductGroup);
         $data['page'] = 'product_edit_view';
-        // echo '<pre>';
-        // print_r($data);
-        // echo '</pre>';
         $this->load->view('admin/main_view', $data);
     }
 
@@ -172,6 +171,7 @@ class product extends CI_Controller
             $productType = $this->input->post('productType');
             $productCostPrice = $this->input->post('productCostPrice');
             $productSellPrice = $this->input->post('productSellPrice');
+            $productRecommended = $this->input->post('productRecommended');
             if (!empty($_FILES['productImage']['name'])) {
                 $productImageOld = $this->input->post('productImageOld');
                 unlink('./assets/image/product/' . $productImageOld);
@@ -190,6 +190,7 @@ class product extends CI_Controller
                 'PRODUCT_TYPEPRODUCT' => $productType,
                 'PRODUCT_COSTPRICE' => $productCostPrice,
                 'PRODUCT_SELLPRICE' => $productSellPrice,
+                'PRODUCT_RECOMMENDED' => $productRecommended,
             );
             $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
             $data['url'] = site_url('admin/product');

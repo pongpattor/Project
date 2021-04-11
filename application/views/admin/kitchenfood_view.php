@@ -70,7 +70,7 @@
                                                 $status = 'ยังไม่ทำ';
                                             } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '0') {
                                                 $status = 'ยังไม่ทำ';
-                                            }else if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '0') {
+                                            } else if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '0') {
                                                 $status = 'ยังไม่ทำ';
                                             }
                                             ?>
@@ -151,18 +151,18 @@
                                             $textNo = "";
                                             $textDate = "";
                                             $textTime = "";
+
                                             for ($k = 0; $k < count($foodsameIdNo); $k++) {
                                                 if (
                                                     $row2->PRODUCT_ID == $foodsameIdNo[$k]->PRODUCT_ID &&
                                                     $row2->DTSER_NOTE  == $foodsameIdNo[$k]->DTSER_NOTE &&
                                                     $row2->DTSER_TYPEUSE == $foodsameIdNo[$k]->DTSER_TYPEUSE &&
-                                                    $row2->DTSER_STATUS == $foodsameIdNo[$k]->DTSER_STATUS
+                                                    ($row2->DTSER_STATUS == $foodsameIdNo[$k]->DTSER_STATUS || $foodsameIdNo[$k]->DTSER_STATUS == '1')
                                                 ) {
                                                     $textId .= $foodsameIdNo[$k]->DTSER_ID;
                                                     $textNo .= $foodsameIdNo[$k]->DTSER_NO;
                                                     $textDate .= $foodsameIdNo[$k]->DTSER_DATE;
                                                     $textTime .= $foodsameIdNo[$k]->DTSER_TIME;
-
                                                     if ($k < count($foodsameIdNo)) {
                                                         $textId .= ',';
                                                         $textNo .= ',';
@@ -192,6 +192,8 @@
                                             <?php $status = '';
                                             if ($row2->DPRODTSER_STATUS ==  null && $row2->DTSER_STATUS == '1') {
                                                 $status = 'กำลังทำ';
+                                            } else if ($row2->DPRODTSER_STATUS == '1' && $row2->DTSER_STATUS == '1') {
+                                                $status = 'กำลังทำ';
                                             } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '1') {
                                                 $status = 'ยังไม่ทำ';
                                             } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '0') {
@@ -217,9 +219,9 @@
 
                                                 <?php
                                                 if ($row2->DPRODTSER_STATUS == null && $row2->DTSER_STATUS == '1') {
-                                                    echo "<button class=\"btn btn-success sameServe\">เสิร์ฟ</button>";
+                                                    echo "<button class=\"btn btn-success sameServed\">เสิร์ฟ</button>";
                                                 } else if ($row2->DPRODTSER_STATUS == '1' && $row2->DTSER_STATUS == '1') {
-                                                    echo "<button class=\"btn btn-success sameServe\">เสิร์ฟ</button>";
+                                                    echo "<button class=\"btn btn-success sameServed\">เสิร์ฟ</button>";
                                                 }
                                                 ?>
                                             </td>
@@ -298,11 +300,20 @@
                     serviceDate: serviceDate,
                     serviceTime: serviceTime,
                 },
-                dataType: "JSON",
-                success: function(data) {
-                    console.log(data);
+                success: function() {
+                    location.reload();
                 }
             });
         });
+
+        $(document).on('click','.sameServed',function(){
+
+        });
+
+        function refreshpage() {
+            location.reload();
+        }
+
+        setInterval(refreshpage, 60000);
     });
 </script>

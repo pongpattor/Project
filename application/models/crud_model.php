@@ -63,9 +63,6 @@ class crud_model extends CI_Model
         $query = $this->db->query($sql, array(
             $this->db->escape_like_str($data),
         ));
-        // echo '<pre>';
-        // print_r($this->db->last_query($query));
-        // echo '</pre>';
         foreach ($query->result() as $row) {
             return $row->cnt;
         }
