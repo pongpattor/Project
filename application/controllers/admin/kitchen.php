@@ -176,6 +176,7 @@ class kitchen extends CI_Controller
             'INGREDIENT_ACTIVE' => '1',
         );
         $this->crud_model->update('ingredient',$dataIngredient,'INGREDIENT_ID',$ingredientID);
+        $this->kitchen_model->changeStatusProduct($ingredientID);
     }
 
     public function haventIngredient(){

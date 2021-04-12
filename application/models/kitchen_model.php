@@ -29,19 +29,19 @@ class kitchen_model extends CI_Model
         //             typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
         //             AND 
         //             (
-		// 				(
-		// 		    	servicedetail.DTSER_STATUS IN ( 0, 1 ) OR  servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 )
-		// 				)
-		// 				OR
-		// 				(
-		// 				servicedetail.DTSER_STATUS IN ( 0, 1 ) AND  servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 )
-		// 				)
-		// 			)										
+        // 				(
+        // 		    	servicedetail.DTSER_STATUS IN ( 0, 1 ) OR  servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 )
+        // 				)
+        // 				OR
+        // 				(
+        // 				servicedetail.DTSER_STATUS IN ( 0, 1 ) AND  servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 )
+        // 				)
+        // 			)										
         //         ORDER BY
         //             servicedetail.DTSER_DATE ASC,
         //             servicedetail.DTSER_TIME ASC
         // ";
-        $sql ="SELECT
+        $sql = "SELECT
                     * 
                 FROM
                     (
@@ -324,7 +324,7 @@ class kitchen_model extends CI_Model
             $sql,
             array(
                 $this->db->escape_like_str($search) . '%',
-                $this->db->escape_like_str($search) ,
+                $this->db->escape_like_str($search),
 
             )
         );
@@ -333,7 +333,8 @@ class kitchen_model extends CI_Model
         }
     }
 
-    public function ingredientFood($ingredientID){
+    public function ingredientFood($ingredientID)
+    {
         $sql = "UPDATE product 
                 SET PRODUCT_ACTIVE = '2' 
                 WHERE
@@ -365,5 +366,44 @@ class kitchen_model extends CI_Model
         ";
 
         $this->db->query($sql);
+    }
+
+    public function changeStatusProduct($ingredientID)
+    {
+        $sql = "UPDATE product 
+                SET PRODUCT_ACTIVE ='1'
+                WHERE PRODUCT_ID IN (SELECT ss.PRODUCT_ID FROM 
+                (SELECT
+                    product.PRODUCT_ID,
+                    COUNT( * ) AS impAll,
+                    dts.impnow 
+                FROM
+                    recipedetail
+                    JOIN (
+                    SELECT
+                        recipe.RECIPE_ID,
+                        COUNT( * ) AS impnow 
+                    FROM
+                        recipe
+                        JOIN recipedetail ON recipe.RECIPE_ID = recipedetail.RECIPEDETAIL_RECIPEID
+                        JOIN ingredient ON recipedetail.RECIPEDETAIL_INGREDIENT = ingredient.INGREDIENT_ID 
+                    WHERE
+                        recipedetail.RECIPEDETAIL_RECIPEID IN ( SELECT RECIPEDETAIL_RECIPEID FROM recipedetail WHERE RECIPEDETAIL_INGREDIENT = '$ingredientID' AND RECIPEDETAIL_IMPORTANT = '1' ) 
+                        AND recipedetail.RECIPEDETAIL_IMPORTANT = '1' 
+                        AND ingredient.INGREDIENT_ACTIVE = '1' 
+                    GROUP BY
+                        recipe.RECIPE_ID 
+                    ) dts ON recipedetail.RECIPEDETAIL_RECIPEID = dts.RECIPE_ID 
+                    LEFT JOIN recipe ON recipe.RECIPE_ID = recipedetail.RECIPEDETAIL_RECIPEID
+                    LEFT JOIN product ON recipe.RECIPE_PRODUCT = product.PRODUCT_ID
+                WHERE
+                    recipedetail.RECIPEDETAIL_RECIPEID IN ( SELECT RECIPEDETAIL_RECIPEID FROM recipedetail WHERE RECIPEDETAIL_INGREDIENT = '$ingredientID' AND RECIPEDETAIL_IMPORTANT = '1' ) 
+                    AND recipedetail.RECIPEDETAIL_IMPORTANT = '1' 
+                GROUP BY
+                    recipedetail.RECIPEDETAIL_RECIPEID
+                    HAVING impAll = dts.impnow) ss)
+                ";
+                $this->db->query($sql);
+
     }
 }
