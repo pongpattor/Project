@@ -5,33 +5,81 @@ class kitchen_model extends CI_Model
 {
     public function kitchen($typrproductGroup)
     {
-        $sql = "SELECT
-                    servicedetail.DTSER_ID,
-                    servicedetail.DTSER_NO,
-                    product.PRODUCT_ID,
-                    product.PRODUCT_NAME,
-                    servicedetail.DTSER_TYPEORDER,
-                    servicedetail.DTSER_TYPEUSE,
-                    servicedetail.DTSER_AMOUNT,
-                    servicedetailprosetdetail.DPRODTSER_AMOUNT,
-                    servicedetail.DTSER_NOTE,
-                    servicedetail.DTSER_STATUS,
-                    servicedetailprosetdetail.DPRODTSER_STATUS
+        // $sql = "SELECT
+        //             servicedetail.DTSER_ID,
+        //             servicedetail.DTSER_NO,
+        //             product.PRODUCT_ID,
+        //             product.PRODUCT_NAME,
+        //             servicedetail.DTSER_TYPEORDER,
+        //             servicedetail.DTSER_TYPEUSE,
+        //             servicedetail.DTSER_AMOUNT,
+        //             servicedetailprosetdetail.DPRODTSER_AMOUNT,
+        //             servicedetail.DTSER_NOTE,
+        //             servicedetail.DTSER_STATUS,
+        //             servicedetailprosetdetail.DPRODTSER_STATUS
+        //         FROM
+        //             servicedetail
+        //             LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
+        //             LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
+        //             LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
+        //             LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
+        //             LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
+        //             LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+        //         WHERE
+        //             typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
+        //             AND 
+        //             (
+		// 				(
+		// 		    	servicedetail.DTSER_STATUS IN ( 0, 1 ) OR  servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 )
+		// 				)
+		// 				OR
+		// 				(
+		// 				servicedetail.DTSER_STATUS IN ( 0, 1 ) AND  servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 )
+		// 				)
+		// 			)										
+        //         ORDER BY
+        //             servicedetail.DTSER_DATE ASC,
+        //             servicedetail.DTSER_TIME ASC
+        // ";
+        $sql ="SELECT
+                    * 
                 FROM
-                    servicedetail
-                    LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
-                    LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
-                    LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
-                    LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
-                    LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
-                    LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+                    (
+                    SELECT
+                        servicedetail.DTSER_ID,
+                        servicedetail.DTSER_NO,
+                        product.PRODUCT_ID,
+                        product.PRODUCT_NAME,
+                        servicedetail.DTSER_DATE,
+                        servicedetail.DTSER_TIME,
+                        servicedetail.DTSER_TYPEORDER,
+                        servicedetail.DTSER_TYPEUSE,
+                        servicedetail.DTSER_AMOUNT,
+                        servicedetailprosetdetail.DPRODTSER_AMOUNT,
+                        servicedetail.DTSER_NOTE,
+                        servicedetail.DTSER_STATUS,
+                        servicedetailprosetdetail.DPRODTSER_STATUS,
+                        IFNULL( servicedetailprosetdetail.DPRODTSER_STATUS, servicedetail.DTSER_STATUS ) AS cc 
+                    FROM
+                        servicedetail
+                        LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
+                        LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
+                        LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
+                        LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
+                        LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
+                        LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+                    WHERE
+                        typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
+                        AND (
+                            ( servicedetail.DTSER_STATUS IN ( 0, 1 ) ) 
+                            OR ( servicedetail.DTSER_STATUS IN ( 0, 1 ) AND servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 ) ) 
+                        ) 
+                    ) std 
                 WHERE
-                    typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
-                    AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
+                    std.cc != 2 
                 ORDER BY
-                    servicedetail.DTSER_DATE ASC,
-                    servicedetail.DTSER_TIME ASC
-        ";
+                    std.DTSER_DATE ASC,
+                    std.DTSER_TIME ASC";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -46,7 +94,8 @@ class kitchen_model extends CI_Model
                     dtser.DT_STATUS,
                     dtser.DTSER_STATUS,
                     dtser.DPRODTSER_STATUS,
-                    SUM( dtser.DT_AMOUNT ) AS sumAmount 
+                    SUM( dtser.DT_AMOUNT ) AS sumAmount,
+                    IFNULL(dtser.DPRODTSER_STATUS,dtser.DTSER_STATUS) AS cc
                 FROM
                     (
                     SELECT
@@ -70,6 +119,7 @@ class kitchen_model extends CI_Model
                     WHERE
                         typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
                         AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
+                    OR servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 ) 
                     GROUP BY
                         servicedetail.DTSER_NOTE,
                         servicedetail.DTSER_TYPEUSE,
@@ -83,6 +133,8 @@ class kitchen_model extends CI_Model
                     dtser.DTSER_TYPEUSE,
                     dtser.DT_STATUS
                 HAVING  	sumAmount > 1   
+                AND cc !=2
+
                 ORDER BY
                     dtser.DTSER_DATE ASC,
                     dtser.DTSER_TIME ASC
@@ -101,7 +153,8 @@ class kitchen_model extends CI_Model
                     servicedetail.DTSER_NOTE,
                     servicedetail.DTSER_TYPEUSE,
                     servicedetail.DTSER_DATE,
-	                servicedetail.DTSER_TIME 
+	                servicedetail.DTSER_TIME,
+                    servicedetailprosetdetail.DPRODTSER_STATUS
                 FROM
                     servicedetail
                     LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
@@ -113,6 +166,7 @@ class kitchen_model extends CI_Model
                 WHERE
                     typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
                     AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
+                    OR servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 ) 
                 ORDER BY
                     servicedetail.DTSER_DATE,
                     servicedetail.DTSER_TIME
@@ -133,7 +187,10 @@ class kitchen_model extends CI_Model
         }
     }
 
-    public function findKeySameOrder($serviceID, $serviceNO, $serviceDate, $serviceTime, $productID)
+    // AND servicedetail.DTSER_DATE = '$serviceDate' 
+    // AND servicedetail.DTSER_TIME = '$serviceTime' 
+    // $serviceDate, $serviceTime,
+    public function findKeySameOrder($serviceID, $serviceNO,  $productID)
     {
         $sql = "SELECT
                     servicedetail.DTSER_ID,
@@ -146,8 +203,6 @@ class kitchen_model extends CI_Model
                 WHERE
                     servicedetail.DTSER_ID = '$serviceID' 
                     AND servicedetail.DTSER_NO = '$serviceNO' 
-                    AND servicedetail.DTSER_DATE = '$serviceDate' 
-                    AND servicedetail.DTSER_TIME = '$serviceTime' 
                     AND servicedetailprosetdetail.DPRODTSER_PRODUCTID = '$productID'
         ";
         $query = $this->db->query($sql);
@@ -177,10 +232,10 @@ class kitchen_model extends CI_Model
         return $query->result();
     }
 
-    public function updateDetailFoodDrink($serviceID, $serviceNO)
+    public function updateDetailFoodDrink($serviceID, $serviceNO, $status)
     {
         $sql = "UPDATE servicedetail 
-                SET DTSER_STATUS = '1' 
+                SET DTSER_STATUS = '$status' 
                 WHERE
                     DTSER_ID = '$serviceID' 
                     AND DTSER_NO = '$serviceNO'
@@ -188,10 +243,10 @@ class kitchen_model extends CI_Model
         $this->db->query($sql);
     }
 
-    public function updateDetailProset($serviceID, $serviceNO, $serviceDetailNo)
+    public function updateDetailProset($serviceID, $serviceNO, $serviceDetailNo, $status)
     {
         $sql = "UPDATE servicedetailprosetdetail
-                SET DPRODTSER_STATUS = '1'
+                SET DPRODTSER_STATUS = '$status'
                 WHERE  DPRODTSER_SERVICEID = '$serviceID'
                 AND DPRODTSER_NO = '$serviceNO'
                 AND DPRODTSER_DETAILNO = '$serviceDetailNo'
@@ -219,6 +274,96 @@ class kitchen_model extends CI_Model
             AND DTSER_NO = '$serviceNO' 
             AND ( SELECT COUNT( * ) FROM servicedetailprosetdetail WHERE DPRODTSER_SERVICEID = '$serviceID' AND DPRODTSER_NO = '$serviceNO' ) 
             = ( SELECT COUNT( * ) FROM servicedetailprosetdetail WHERE DPRODTSER_SERVICEID = '$serviceID' AND DPRODTSER_NO = '$serviceNO' AND DPRODTSER_STATUS = '3' )";
+        $this->db->query($sql);
+    }
+
+    public function ingredient($search, $limit, $offset)
+    {
+        $sql = "SELECT
+                    INGREDIENT_ID,
+                    INGREDIENT_NAME,
+                    INGREDIENT_ACTIVE,
+                CASE 
+                        WHEN INGREDIENT_ACTIVE = '1' THEN
+                        'มี' ELSE 'หมด' 
+                    END AS INGREDIENT_ACTIVEE 
+                FROM
+                    ingredient 
+                WHERE
+                    INGREDIENT_STATUS = '1' 
+                    AND ( 
+                        INGREDIENT_NAME LIKE ? OR 
+                        CASE WHEN INGREDIENT_ACTIVE = '1' THEN 'มี' ELSE 'หมด' END LIKE ?
+                        )
+                 LIMIT $offset,$limit   
+                    ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search),
+            )
+        );
+        return $query->result();
+    }
+
+    public function countAllIngredient($search)
+    {
+        $sql = "SELECT COUNT(*) as cnt
+    FROM
+        ingredient 
+    WHERE
+        INGREDIENT_STATUS = '1' 
+        AND ( 
+            INGREDIENT_NAME LIKE ? OR 
+            CASE WHEN INGREDIENT_ACTIVE = '1' THEN 'มี' ELSE 'หมด' END LIKE ? 
+            )
+        ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) ,
+
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function ingredientFood($ingredientID){
+        $sql = "UPDATE product 
+                SET PRODUCT_ACTIVE = '2' 
+                WHERE
+                    PRODUCT_ID IN (
+                    SELECT
+                        ingd.PRODUCT_ID 
+                    FROM
+                        (
+                        SELECT
+                            recipe.RECIPE_ID,
+                            recipedetail.RECIPEDETAIL_NO,
+                            recipedetail.RECIPEDETAIL_IMPORTANT,
+                            ingredient.INGREDIENT_NAME,
+                            product.PRODUCT_ID,
+                            product.PRODUCT_NAME,
+                            ingredient.INGREDIENT_ACTIVE 
+                        FROM
+                            ingredient
+                            JOIN recipedetail ON ingredient.INGREDIENT_ID = recipedetail.RECIPEDETAIL_INGREDIENT
+                            JOIN recipe ON recipedetail.RECIPEDETAIL_RECIPEID = recipe.RECIPE_ID
+                            JOIN product ON recipe.RECIPE_PRODUCT = product.PRODUCT_ID 
+                        WHERE
+                            ingredient.INGREDIENT_ID = '$ingredientID' 
+                            AND recipedetail.RECIPEDETAIL_IMPORTANT = '1' 
+                        ) ingd 
+                    GROUP BY
+                        ingd.PRODUCT_ID 
+                    )
+        ";
+
         $this->db->query($sql);
     }
 }
