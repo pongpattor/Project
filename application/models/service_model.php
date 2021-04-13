@@ -159,6 +159,9 @@ class service_model extends CI_Model
         AND SEAT_ID NOT IN (SELECT queueseat.QS_SEATID FROM queue INNER JOIN queueseat
         ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         WHERE queue.QUEUE_DSTART = CURRENT_DATE
+        AND queue.QUEUE_STATUS = '1'
+        AND queue.QUEUE_TYPE = '1'
+        AND queue.QUEUE_ACTIVE = '1'
         GROUP BY queueseat.QS_SEATID )";
 
         $query = $this->db->query($sql);
@@ -177,6 +180,9 @@ class service_model extends CI_Model
         AND SEAT_ID NOT IN (SELECT queueseat.QS_SEATID FROM queue INNER JOIN queueseat
         ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         WHERE queue.QUEUE_DSTART = CURRENT_DATE
+        AND queue.QUEUE_STATUS = '1'
+        AND queue.QUEUE_TYPE = '1'
+        AND queue.QUEUE_ACTIVE = '1'
         GROUP BY queueseat.QS_SEATID )";
         $query = $this->db->query($sql);
         return $query->result();

@@ -135,7 +135,7 @@
                                                 <th style="text-align: center;">สถานะ</th>
                                                 <th style="text-align: center;">เช็คอิน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
-                                                <th style="text-align: center;">ลบ</th>
+                                                <th style="text-align: center;">ยกเลิก</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -172,11 +172,13 @@
                                                         } ?>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <center>
-                                                            <button type="button" name="checkin" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
-                                                                                                                                                                                                echo 'disabled';
-                                                                                                                                                                                            } ?>><i class="fa fa-check"></i></button>
-                                                        </center>
+                                                        <?php if ($row->QUEUE_ACTIVE == '1') : ?>
+                                                            <center>
+                                                                <button type="button" name="checkin" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
+                                                                                                                                                                                                    echo 'disabled';
+                                                                                                                                                                                                } ?>><i class="fa fa-check"></i></button>
+                                                            </center>
+                                                        <?php endif; ?>
                                                     </td>
 
                                                     <td class="align-middle">
@@ -187,9 +189,11 @@
                                                         </center>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <center>
-                                                            <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-trash"></i></button>
-                                                        </center>
+                                                        <?php if ($row->QUEUE_ACTIVE == '1') : ?>
+                                                            <center>
+                                                                <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-times"></i></button>
+                                                            </center>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -218,8 +222,8 @@
 <script>
     $(document).ready(function() {
 
-        $('.delete').click(function() {
-            var queueID = $(this).val();
+        $(document).on('click', '.delete', function() {
+            var queueID = $(this).parents('tr').attr('id');
             var result = confirm(`ยืนยันการลบคิว รหัส ${queueID}`);
             if (result) {
                 $.ajax({
@@ -229,33 +233,31 @@
                         queueID: queueID,
                     },
                     success: function() {
-                        alert(`ลบโปรโมชั่นเซ็ต รหัส ${queueID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/queue') ?>";
+                        alert(`ยกเลิกคิวล่วงหน้า รหัส ${queueID} เสร็จสิ้น`);
+                        location.reload();
                     }
                 });
             }
         });
 
-        $('.checkin').on('click', function() {
+        $(document).on('click','.checkin', function() {
             var cf = confirm('ยืนยันการเข้าใช้งาน');
             if (cf == true) {
                 var rowid = $(this).parents('tr').attr('id');
-                var queueID = $(this).val();
                 var amount = $(`#${rowid} td:nth-child(4)`).html();
                 $.ajax({
                     url: "<?= site_url('admin/queue/checkin') ?>",
                     method: "POST",
                     data: {
-                        queueID: queueID,
-                        amount : amount,
+                        queueID: rowid,
+                        amount: amount,
                     },
                     dataType: "JSON",
                     success: function(data) {
                         console.log(data);
                         if (data.chkQueue == 1) {
                             alert('เข้าใช้งาน');
-                            $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
-                            $(`#${queueID} td:nth-child(9) `).html('เข้าใช้งาน');
+                            location.reload();
                         } else {
                             alert('คิวนี้เลยเวลากำหนด');
                             location.reload();

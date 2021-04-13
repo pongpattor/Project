@@ -353,6 +353,10 @@ class queue extends CI_Controller
             $dataQueue =  $this->queue_model->queueCheckIn($queueID);
             $i = 1;
             foreach ($dataQueue as $row) {
+                $dataSeat = array(
+                    'SEAT_ACTIVE' => '1',
+                );
+                $this->crud_model->update('seat', $dataSeat,'SEAT_ID',$row->SEAT_ID);
                 $dataServiceSeat = array(
                     'SERSEAT_SEATID' => $row->SEAT_ID,
                     'SERSEAT_SERVICEID' => $serviceID,

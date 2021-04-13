@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">เซอร์วิส </h3>
+                <h3 class="d-inline">เซอร์วิส</h3>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                                                 <th style="text-align: center;">สั่งอาหาร</th>
                                                 <th style="text-align: center;">ย้ายโต๊ะ</th>
                                                 <th style="text-align: center;">คิดเงิน</th>
-                                                <th style="text-align: center;">ลบ</th>
+                                                <th style="text-align: center;">ยกเลิก</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -96,7 +96,7 @@
                                                         <input type="hidden" class="serviceSeatType" value="<?=$row->SERVICE_SEATTYPE;?>">
                                                         <?php foreach ($cancel as $row3) :
                                                             if ($row3->SERVICE_ID == $row->SERVICE_ID && $row3->cnt == 0) : ?>
-                                                                <button class="btn btn-danger cancelService"><i class="fa fa-trash"></i></button>
+                                                                <button class="btn btn-danger cancelService"><i class="fa fa-times"></i></button>
                                                         <?php endif;
                                                         endforeach; ?>
                                                     </td>

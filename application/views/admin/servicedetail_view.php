@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">รายการที่สั่ง </h3>
+                <h3 class="d-inline"><a href="<?= site_url('admin/service/instore') ?>">เซอร์วิส</a>/รายการที่สั่ง</h3>
             </div>
         </div>
     </div>
@@ -95,7 +95,7 @@
                                                     <td class="align-middle" style="text-align: center;">
                                                         <?php if ($row->DTSER_STATUS == 0) { ?>
                                                             <button type="button" class="btn btn-danger deleteOrder" value="<?= $orderId ?>">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-times"></i>
                                                             </button>
                                                         <?php } ?>
 

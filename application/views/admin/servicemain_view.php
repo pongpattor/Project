@@ -108,7 +108,7 @@
         });
     }
     callServed();
-    setInterval(callServed,60000);
+    setInterval(callServed,10000);
 </script>
 </body>
 

@@ -27,7 +27,7 @@ class queuewalkin extends CI_Controller
         } else {
             $queueActive = '0,1,2,3';
         }
-        $config['base_url'] = site_url('admin/recipe/index');
+        $config['base_url'] = site_url('admin/queuewalkin/index');
         $config['total_rows'] = $this->queue_model->countAllQueueWalkin($search, $queueActive);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;

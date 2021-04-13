@@ -138,7 +138,7 @@
                                                 <th style="text-align: center;">เรียก</th>
                                                 <th style="text-align: center;">เช็คอิน</th>
                                                 <th style="text-align: center;">แก้ไข</th>
-                                                <th style="text-align: center;">ลบ</th>
+                                                <th style="text-align: center;">ยกเลิก</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -166,18 +166,22 @@
                                                         } ?>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <center>
-                                                            <button type="button" name="callWalkin" class="btn btn-info  callWalkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
-                                                                                                                                                                                                    echo 'disabled';
-                                                                                                                                                                                                } ?>><i class="fa fa-hand-paper"></i></button>
-                                                        </center>
+                                                        <?php if ($row->QUEUE_ACTIVE == '1') : ?>
+                                                            <center>
+                                                                <button type="button" name="callWalkin" class="btn btn-info  callWalkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '1') {
+                                                                                                                                                                                                        echo 'disabled';
+                                                                                                                                                                                                    } ?>><i class="fa fa-hand-paper"></i></button>
+                                                            </center>
+                                                        <?php endif; ?>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <center>
+                                                        <?php if ($row->QUEUE_ACTIVE == '0') : ?>
+                                                            <center>
                                                                 <button type="button" name="queueID" class="btn btn-success  checkin" style="text-align: center;" value="<?= $row->QUEUE_ID ?>" <?php if ($row->QUEUE_ACTIVE != '0') {
                                                                                                                                                                                                     echo 'disabled';
                                                                                                                                                                                                 } ?>><i class="fa fa-check"></i></button>
-                                                        </center>
+                                                            </center>
+                                                        <?php endif; ?>
                                                     </td>
                                                     <td class="align-middle">
                                                         <center>
@@ -187,9 +191,12 @@
                                                         </center>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <center>
-                                                            <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-trash"></i></button>
-                                                        </center>
+                                                        <?php if ($row->QUEUE_ACTIVE == '1') : ?>
+
+                                                            <center>
+                                                                <button class="btn btn-danger  delete" style="text-align: center;" value="<?= $row->QUEUE_ID ?>"><i class="fa fa-times"></i></button>
+                                                            </center>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -235,9 +242,10 @@
                 });
             }
         });
+        
 
-        $('.callWalkin').on('click', function() {
-            var queueID = $(this).val();
+        $(document).on('click', '.callWalkin', function() {
+            var queueID = $(this).parents('tr').attr('id');
             var queueTime = $('#queueTimeShow').html();
 
             $.ajax({
@@ -249,19 +257,24 @@
                 },
                 dataType: "JSON",
                 success: function(data) {
-                    $(`#${queueID} td:nth-child(9) .callWalkin`).prop('disabled', true);
-                    $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', false);
-                    $(`#${queueID} td:nth-child(8)`).html('รอยืนยันเข้าใช้งาน');
                     alert('กรุณาเข้าใช้งานก่อน ' + data.datetime)
+                    let btn = `<center>
+                        <button type="button" name="queueID" class="btn btn-success  checkin" style="text-align: center;" >
+                            <i class="fa fa-check"></i>
+                        </button>
+                    </center>`;
+                    $(`#${queueID} td:nth-child(9)`).html('');
+                    $(`#${queueID} td:nth-child(10)`).html(btn);
+                    $(`#${queueID} td:nth-child(8)`).html('รอยืนยันเข้าใช้งาน');
                     $(`#${queueID} td:nth-child(6)`).html(data.datetime);
                 }
             });
         });
 
-        $('.checkin').on('click', function() {
+        $(document).on('click', '.checkin', function() {
             var cf = confirm('ยืนยันการเข้าใช้งาน');
             if (cf == true) {
-                var queueID = $(this).val();
+                var queueID = $(this).parents('tr').attr('id');
                 $.ajax({
                     url: "<?= site_url('admin/queuewalkin/checkin') ?>",
                     method: "POST",
@@ -269,11 +282,12 @@
                         queueID: queueID,
                     },
                     success: function() {
-                        alert('เข้าใช้งาน');
                         let amount = $(`#${queueID} td:nth-child(4)`).html();
-                        $(`#${queueID} td:nth-child(10) .checkin`).prop('disabled', true);
+                        alert('เข้าใช้งาน');
+                        // $(`#${queueID} td:nth-child(10)`).html('');
+                        // $(`#${queueID} td:nth-child(12)`).html('');
                         $(`#${queueID} td:nth-child(8) `).html('เข้าใช้งาน');
-                        window.location.href = '<?=site_url('admin/service/storefont?queueID=')?>'+queueID+'&amount='+amount;
+                        window.location.href = '<?= site_url('admin/service/storefont?queueID=') ?>' + queueID + '&amount=' + amount;
 
                     }
                 });

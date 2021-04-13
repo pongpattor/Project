@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">สั่งอาหารและเครื่องดื่ม </h3>
+                <h3 class="d-inline"><a href="<?= site_url('admin/service/instore') ?>">เซอร์วิส</a>/สั่งอาหารและเครื่องดื่ม </h3>
             </div>
         </div>
     </div>
@@ -95,10 +95,10 @@
                                                     <td class="align-middle"><?= $row->PRODUCT_NAME; ?></td>
                                                     <td class="align-middle"><?php if ($row->PRICE_DISCOUNT == NULL) {
                                                                                     echo "<span class=\"price\">";
-                                                                                    echo  $row->PRODUCT_SELLPRICE;
+                                                                                    echo  number_format($row->PRODUCT_SELLPRICE,2);
                                                                                     echo '</span>';
                                                                                 } else {
-                                                                                    // echo "<font style=\"color:#BFBFBF;\"><del>$row->PRODUCT_SELLPRICE</del></font><br>";
+                                                                                    echo "<font style=\"color:#BFBFBF;\"><del>$row->PRODUCT_SELLPRICE</del></font><br>";
                                                                                     echo "<span style=\"color:red;\" class=\"price\">";
                                                                                     echo number_format(intval($row->PRICE_DISCOUNT + 0.5), 2);
                                                                                     echo '</span>';
@@ -472,7 +472,7 @@
                     dataType: "JSON",
                     async: false,
                     success: function(data) {
-                        console.log(data.order);
+                        // console.log(data.order);
                         table = `
                         <table class="table  table-bordered " width="100%" cellspacing="0" id="orderTable">
                                         <thead class="thead-dark">
