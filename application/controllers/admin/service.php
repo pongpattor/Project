@@ -45,7 +45,7 @@ class service extends CI_Controller
                 'SERVICE_CUSAMOUNT' => $AmountCustomerE,
                 'SERVICE_DSTART' => $serviceDStart,
                 'SERVICE_TSTART' => $serviceTStart,
-                'SERVICE_ACTIVE' => '1',
+                'SERVICE_SEATTYPE' => '1',
                 'SERVICE_STATUS' => '1'
             );
             $this->crud_model->insert('service', $dataService);
@@ -94,7 +94,7 @@ class service extends CI_Controller
                     'SERVICE_CUSAMOUNT' => $AmountCustomerE[$i],
                     'SERVICE_DSTART' => $serviceDStart,
                     'SERVICE_TSTART' => $serviceTStart,
-                    'SERVICE_ACTIVE' => '1',
+                    'SERVICE_SEATTYPE' => '2',
                     'SERVICE_STATUS' => '1'
                 );
                 $this->crud_model->insert('service', $dataService);
@@ -183,21 +183,55 @@ class service extends CI_Controller
                 array_push($arrService, $row->serID);
             }
             $serviceID = implode(",", $arrService);
-
+            $data['cancel'] = $this->service_model->checkCancelService($serviceID);
             $data['serviceSeat'] = $this->service_model->fetchServiceSeat($serviceID);
         }
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'serviceinstore_view';
         $this->load->view('admin/servicemain_view', $data);
+        // print_r($data['cancel']);
+    }
+
+    public function cancelService()
+    {
+        $serviceSeatType = $this->input->post('serviceSeatType');
+        $serviceID = $this->input->post('serviceID');
+        $countOrder = $this->crud_model->countWhere('servicedetail', 'DTSER_ID', $serviceID);
+        if ($serviceSeatType == '1') {
+            if ($countOrder == 0) {
+                $serviceSeat = $this->crud_model->findSelectWhere('serviceseat', 'SERSEAT_SEATID', 'SERSEAT_SERVICEID', $serviceID);
+                foreach ($serviceSeat as $row) {
+                    $statusSeat = array(
+                        'SEAT_ACTIVE' => '0'
+                    );
+                    $this->crud_model->update('seat', $statusSeat, 'SEAT_ID', $row->SERSEAT_SEATID);
+                }
+                $this->crud_model->delete('service', 'SERVICE_ID', $serviceID);
+            }
+        } else {
+            if ($countOrder == 0) {
+                $serviceSeat = $this->crud_model->findSelectWhere('serviceseat', 'SERSEAT_SEATID', 'SERSEAT_SERVICEID', $serviceID);
+                $this->crud_model->delete('service', 'SERVICE_ID', $serviceID);
+                foreach ($serviceSeat as $row) {
+                    $cntSeatSplit =  $this->service_model->checkCancelServiceSplit($row->SERSEAT_SEATID);
+                    if ($cntSeatSplit == 0) {
+                        $statusSeat = array(
+                            'SEAT_ACTIVE' => '0'
+                        );
+                        $this->crud_model->update('seat', $statusSeat, 'SEAT_ID', $row->SERSEAT_SEATID);
+                    }
+                }
+            }
+        }
+        $data['count'] = $countOrder;
+        echo json_encode($data);
     }
 
     public function serviceDetail()
     {
         $serviceID = $this->input->get('detailServiceID');
         $data['serviceDetail'] = $this->service_model->serviceDetail($serviceID);
-        // echo '<pre>';
-        // print_r($data['serviceDetail']);
-        // echo '</pre>';
+
         $data['page'] = 'servicedetail_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -315,12 +349,79 @@ class service extends CI_Controller
         }
         echo json_encode($data);
     }
-    
-    public function viewProductAllPro(){
+
+    public function viewProductAllPro()
+    {
         $productID = $this->input->post('productID');
         $data['proset'] = $this->service_model->viewProSet($productID);
         $data['proprice'] = $this->service_model->viewProPrice($productID);
         echo json_encode($data);
+    }
+
+    public function servedFront()
+    {
+        $this->load->model('data_model');
+        $config['base_url'] = site_url('admin/service/servedFront');
+        $config['total_rows'] = $this->data_model->allServed();
+        $config['per_page'] = 10;
+        $config['reuse_query_string'] = TRUE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<nav><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item ">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+        $limit = $config['per_page'];
+        $offset = $this->uri->segment(4, 0);
+        $this->pagination->initialize($config);
+        $data['total'] = $config['total_rows'];
+        $data['serviceServed'] = $this->service_model->servedFront($limit, $offset);
+        if ($data['serviceServed'] != null) {
+            $arrServiceSeat = [];
+            foreach ($data['serviceServed'] as $row) {
+                array_push($arrServiceSeat, $row->serID);
+            }
+            $arrServiceSeat = array_unique($arrServiceSeat);
+            $allServiceID = implode(",", $arrServiceSeat);
+
+            $data['seatAll'] = $this->service_model->fetchServiceSeat($allServiceID);
+        }
+        $data['links'] = $this->pagination->create_links();
+        $data['page'] = 'allserved_view';
+        $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function servedCustomer()
+    {
+        $this->load->model('kitchen_model');
+        $serviceID = $this->input->post('serviceID');
+        $serviceNO = $this->input->post('serviceNO');
+        $serviceTypeOrder = $this->input->post('serviceTypeOrder');
+        $productID = $this->input->post('productID');
+        if ($serviceTypeOrder == '1') {
+            $this->kitchen_model->updateDetailFoodDrink($serviceID, $serviceNO, '3');
+        } else {
+            $this->service_model->servedProset($serviceID, $serviceNO, $productID);
+            $all = $this->service_model->checkProsetAll($serviceID, $serviceNO);
+            $allServed = $this->service_model->checkProsetAllServed($serviceID, $serviceNO);
+            if ($all == $allServed) {
+                $this->kitchen_model->updateDetailFoodDrink($serviceID, $serviceNO, '3');
+            }
+        }
     }
 
     // public function test()
@@ -337,6 +438,6 @@ class service extends CI_Controller
     //     }
     //     $price =  $sellPrice.''.$decimalPrice;
     //     echo number_format($price,2,'.','');
-      
+
     // }
 }

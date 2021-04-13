@@ -87,6 +87,14 @@ class admin extends CI_Controller
         $this->load->model('test_model');
         $this->test_model->update();
     } 
+    
+    public function callServed(){
+        $this->load->model('data_model');
+        $cnt = $this->data_model->allServed();
+        $data['cnt'] = $cnt;
+        echo json_encode($data);
+
+    }
 
 
 }

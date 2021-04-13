@@ -3,6 +3,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class data_model extends CI_Model
 {
+
+    public function allServed()
+    {
+        $sql = "SELECT
+                    COUNT(*) as cnt
+                FROM
+                    service
+                    JOIN servicedetail ON service.SERVICE_ID = servicedetail.DTSER_ID
+                    LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
+                    LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
+                    LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
+                    LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
+                WHERE (servicedetail.DTSER_STATUS ='2' OR servicedetailprosetdetail.DPRODTSER_STATUS ='2')
+    ";
+    $query = $this->db->query($sql);
+     foreach ($query->result() as $row) {
+        return $row->cnt;
+    }
+    }
+
     public function fetchAmphur($provinceID)
     {
         $sql = "SELECT * from amphur where A_PROVINCE_ID = $provinceID";
@@ -38,7 +58,8 @@ class data_model extends CI_Model
         return $output;
     }
 
-    public function fetchPosition($departmentID){
+    public function fetchPosition($departmentID)
+    {
         $sql = "SELECT POSITION_ID,POSITION_NAME from position where POSITION_DEPARTMENT = '$departmentID'";
         $query =  $this->db->query($sql)->result();
         $output = '<option value="" selected disabled >กรุณาเลือกตำแหน่ง</option>';
@@ -61,6 +82,4 @@ class data_model extends CI_Model
         }
         return $output;
     }
-
- 
 }

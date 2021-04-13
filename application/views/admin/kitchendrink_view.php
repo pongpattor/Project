@@ -5,10 +5,10 @@
             <div class="card-header  bg-white">
                 <div class="row ">
                     <div class="col">
-                        <h3 class="d-inline">ครัวอาหาร </h3>
+                        <h3 class="d-inline">ครัวเครื่องดื่ม </h3>
                         <div class="row float-right">
                             <div class="col">
-                                <a href="<?= site_url('admin/kitchen/changeIngredient') ?>" class="btn btn-primary">วัตถุดิบ</a>
+                                <a href="<?= site_url('admin/kitchen/changeIngredientDrink') ?>" class="btn btn-primary">เครื่องดื่ม</a>
                             </div>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
     <div class="col-6">
         <div class="card border-0 shadow-lg h-100">
             <div class="card-header">
-                <h4>รายการอาหาร</h4>
+                <h4>รายการเครื่องดื่ม</h4>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -44,7 +44,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $i = 1;
-                                    foreach ($food as $row) : ?>
+                                    foreach ($drink as $row) : ?>
                                         <tr id="rowFood<?= $i ?>">
                                             <td class="align-middle" style="text-align: center;"><?= $i ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME ?>
@@ -136,7 +136,7 @@
     <div class="col-6">
         <div class="card border-0 shadow-lg h-100">
             <div class="card-header">
-                <h4>รายการอาหารซ้ำ</h4>
+                <h4>รายการเครื่องดื่มซ้ำ</h4>
             </div>
             <div class="card-body ">
                 <div class="row">
@@ -158,7 +158,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $j = 1;
-                                    foreach ($foodsame as $row2) : ?>
+                                    foreach ($drinksame as $row2) : ?>
                                         <tr id="rowsame<?= $j ?>">
                                             <td class="align-middle" style="text-align: center;"><?= $j ?></td>
                                             <?php $textId = "";
@@ -166,19 +166,19 @@
                                             $textDate = "";
                                             $textTime = "";
 
-                                            for ($k = 0; $k < count($foodsameIdNo); $k++) {
+                                            for ($k = 0; $k < count($drinksameIdNo); $k++) {
                                                 if (
-                                                    $row2->PRODUCT_ID == $foodsameIdNo[$k]->PRODUCT_ID &&
-                                                    $row2->DTSER_NOTE  == $foodsameIdNo[$k]->DTSER_NOTE &&
-                                                    $row2->DTSER_TYPEUSE == $foodsameIdNo[$k]->DTSER_TYPEUSE &&
-                                                    (($row2->DTSER_STATUS == $foodsameIdNo[$k]->DTSER_STATUS || $foodsameIdNo[$k]->DPRODTSER_STATUS == '0')
-                                                        && (($row2->DTSER_STATUS == $foodsameIdNo[$k]->DTSER_STATUS || $foodsameIdNo[$k]->DPRODTSER_STATUS == '1')))
+                                                    $row2->PRODUCT_ID == $drinksameIdNo[$k]->PRODUCT_ID &&
+                                                    $row2->DTSER_NOTE  == $drinksameIdNo[$k]->DTSER_NOTE &&
+                                                    $row2->DTSER_TYPEUSE == $drinksameIdNo[$k]->DTSER_TYPEUSE &&
+                                                    (($row2->DTSER_STATUS == $drinksameIdNo[$k]->DTSER_STATUS || $drinksameIdNo[$k]->DPRODTSER_STATUS == '0')
+                                                        && (($row2->DTSER_STATUS == $drinksameIdNo[$k]->DTSER_STATUS || $drinksameIdNo[$k]->DPRODTSER_STATUS == '1')))
                                                 ) {
-                                                    $textId .= $foodsameIdNo[$k]->DTSER_ID;
-                                                    $textNo .= $foodsameIdNo[$k]->DTSER_NO;
-                                                    $textDate .= $foodsameIdNo[$k]->DTSER_DATE;
-                                                    $textTime .= $foodsameIdNo[$k]->DTSER_TIME;
-                                                    if ($k < count($foodsameIdNo)) {
+                                                    $textId .= $drinksameIdNo[$k]->DTSER_ID;
+                                                    $textNo .= $drinksameIdNo[$k]->DTSER_NO;
+                                                    $textDate .= $drinksameIdNo[$k]->DTSER_DATE;
+                                                    $textTime .= $drinksameIdNo[$k]->DTSER_TIME;
+                                                    if ($k < count($drinksameIdNo)) {
                                                         $textId .= ',';
                                                         $textNo .= ',';
                                                         $textDate .= ',';
@@ -389,27 +389,6 @@
                 }
             });
         });
-
-        // $(document).on('click', '.ingredientModalTable', function() {
-        //     $.ajax({
-        //         url: "<?= site_url('admin/kitchen/changeIngredient') ?>",
-        //         dataType: "JSON",
-        //         success: function(data) {
-        //             let table = '';
-        //             let rowi = 1;
-        //             $.each(data.ingredient, function(key, value) {
-        //                 table += `<tr id="${value.INGREDIENT_ID}">
-        //                             <td class="align-middle" style="text-align: center;">${rowi}</td>
-        //                             <td class="align-middle" style="text-align: center;">${value.INGREDIENT_NAME}</td>
-        //                             <td class="align-middle" style="text-align: center;">${rowi}</td>
-
-        //                          </tr>`;
-        //                 rowi++;
-        //             });
-        //             $('.ingredientBody').html(table);
-        //         },
-        //     });
-        // });
 
         function refreshpage() {
             location.reload();

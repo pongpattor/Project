@@ -403,7 +403,63 @@ class kitchen_model extends CI_Model
                     recipedetail.RECIPEDETAIL_RECIPEID
                     HAVING impAll = dts.impnow) ss)
                 ";
-                $this->db->query($sql);
-
+        $this->db->query($sql);
     }
+
+    public function drink($search, $limit, $offset)
+    {
+        $sql = "SELECT
+                    PRODUCT_ID,
+                    PRODUCT_NAME,
+                    PRODUCT_ACTIVE,
+                CASE
+                        
+                        WHEN PRODUCT_ACTIVE = '1' THEN
+                        'มี' ELSE 'หมด' 
+                    END AS PRODUCT_ACTIVEE 
+                FROM
+                    product
+                    JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+                WHERE
+                    PRODUCT_STATUS = '1' 
+                    AND typeproduct.TYPEPRODUCT_GROUP = '2' 
+                    AND ( PRODUCT_NAME LIKE ? OR CASE WHEN PRODUCT_ACTIVE = '1' THEN 'มี' ELSE 'หมด' END LIKE ? )
+                LIMIT $offset,$limit   
+                    ";
+
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search),
+            )
+        );
+        return $query->result();
+    }
+
+    public function countAlldrink($search)
+    {
+        $sql = "SELECT
+                    COUNT(*) as cnt
+                FROM
+                    product
+                    JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+                WHERE
+                    PRODUCT_STATUS = '1' 
+                    AND typeproduct.TYPEPRODUCT_GROUP = '2' 
+                    AND ( PRODUCT_NAME LIKE ? OR CASE WHEN PRODUCT_ACTIVE = '1' THEN 'มี' ELSE 'หมด' END LIKE ? )
+                ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search),
+
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+   
 }

@@ -92,7 +92,14 @@
                                                     </td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-success"><i class="fa fa-chair"></i></button></td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-info"><i class="fa fa-credit-card"></i></button></td>
-                                                    <td class="align-middle" style="text-align: center;"><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                                                    <td class="align-middle" style="text-align: center;">
+                                                        <input type="hidden" class="serviceSeatType" value="<?=$row->SERVICE_SEATTYPE;?>">
+                                                        <?php foreach ($cancel as $row3) :
+                                                            if ($row3->SERVICE_ID == $row->SERVICE_ID && $row3->cnt == 0) : ?>
+                                                                <button class="btn btn-danger cancelService"><i class="fa fa-trash"></i></button>
+                                                        <?php endif;
+                                                        endforeach; ?>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -116,3 +123,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).on('click', '.cancelService', function() {
+        var rowid = $(this).parents('tr').attr('id');
+        var serviceSeatType = $(`.${rowid} .serviceSeatType`).val();
+        $.ajax({
+            url: "<?= site_url('admin/service/cancelService') ?>",
+            method: "POST",
+            data: {
+                serviceID: rowid,
+                serviceSeatType : serviceSeatType
+            },
+            dataType: "JSON",
+            success: function(data) {
+                // console.log(data);
+                if (data.count == 0) {
+                    alert('ยกเลิกบริการเสร็จสิ้น');
+                    location.reload();
+                } else {
+                    alert('ไม่สามารถยกเลิกได้\nกรุณายกเลิกออเดอร์หรือชำระเงินก่อน');
+                    location.reload();
+                }
+            }
+        });
+    });
+</script>

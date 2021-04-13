@@ -345,7 +345,7 @@ class queue extends CI_Controller
                 'SERVICE_CUSAMOUNT' => $AmountCustomerE,
                 'SERVICE_DSTART' => $serviceDStart,
                 'SERVICE_TSTART' => $serviceTStart,
-                'SERVICE_ACTIVE' => '1',
+                'SERVICE_SEATTYPE' => '1',
                 'SERVICE_STATUS' => '1'
             );
             $this->crud_model->insert('service', $dataService);;

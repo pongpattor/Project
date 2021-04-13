@@ -63,11 +63,11 @@
                     <a class="nav-link" href="<?= site_url('admin/kitchen/kitchenfood') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
+                    <a class="nav-link" href="<?= site_url('admin/kitchen/kitchendrink') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ
-                        <!-- <span id="alertServe" class="badge badge-danger">20</span> -->
+                    <a class="nav-link" href="<?= site_url('admin/service/servedFront') ?>" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ
+                        <span id="alertServe" class="badge badge-danger"></span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -91,7 +91,25 @@
     </main>
     <br><br>
 
+<script>
+    function callServed(){
+        $.ajax({
+            url : "<?=site_url('admin/admin/callServed')?>",
+            dataType : "JSON",
+            success:function(data){
+                if(data.cnt >0){
+                    $('#alertServe').html(data.cnt);
+                }
+                else{
+                    $('#alertServe').html('');
 
+                }
+            }
+        });
+    }
+    callServed();
+    setInterval(callServed,60000);
+</script>
 </body>
 
 </html>

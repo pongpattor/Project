@@ -11,6 +11,7 @@ class service_model extends CI_Model
         service.SERVICE_CUSAMOUNT,
         service.SERVICE_DSTART,
         service.SERVICE_TSTART,
+        service.SERVICE_SEATTYPE,
         CONCAT( seat.SEAT_NAME, IFNULL( serviceseat.SERSEAT_SEATSPLIT, '' ) ) AS SEAT_NAMES,
         RPAD( LPAD( SERVICE_ID, 13, \"'\" ), 14, \"'\" ) AS serID 
          FROM
@@ -18,8 +19,7 @@ class service_model extends CI_Model
         JOIN serviceseat ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID
         JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID 
         WHERE
-        service.SERVICE_ACTIVE = '1' 
-        AND service.SERVICE_STATUS = '1' 
+         service.SERVICE_STATUS = '1' 
         AND (
             service.SERVICE_ID LIKE ? 
             OR service.SERVICE_CUSAMOUNT LIKE ? 
@@ -49,23 +49,29 @@ class service_model extends CI_Model
     public function countAllService($search)
     {
         $sql = "SELECT
-        COUNT(*) as cnt
-         FROM
-        service
-        JOIN serviceseat ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID
-        JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID 
-        WHERE
-        service.SERVICE_ACTIVE = '1' 
-        AND service.SERVICE_STATUS = '1' 
-        AND (
-            service.SERVICE_ID LIKE ? 
-            OR service.SERVICE_CUSAMOUNT LIKE ? 
-            OR service.SERVICE_DSTART LIKE ? 
-            OR service.SERVICE_TSTART LIKE ? 
-            OR CONCAT( seat.SEAT_NAME, IFNULL( serviceseat.SERSEAT_SEATSPLIT, '' ) ) LIKE ? 
-        )
-        ";
-
+                    COUNT( * ) AS cnt 
+                FROM
+                    (
+                    SELECT
+                        service.SERVICE_ID,
+                        COUNT( * ) AS cnt 
+                    FROM
+                        service
+                        JOIN serviceseat ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID
+                        JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID 
+                    WHERE
+                         service.SERVICE_STATUS = '1' 
+                        AND (
+                            service.SERVICE_ID LIKE ? 
+                            OR service.SERVICE_CUSAMOUNT LIKE ? 
+                            OR service.SERVICE_DSTART LIKE ? 
+                            OR service.SERVICE_TSTART LIKE ? 
+                            OR CONCAT( seat.SEAT_NAME, IFNULL( serviceseat.SERSEAT_SEATSPLIT, '' ) ) LIKE ? 
+                        ) 
+                    GROUP BY
+                    service.SERVICE_ID 
+                    ) dts
+                    ";
         $query = $this->db->query(
             $sql,
             array(
@@ -76,11 +82,56 @@ class service_model extends CI_Model
                 '%' . $this->db->escape_like_str($search) . '%',
             )
         );
-
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
         foreach ($query->result() as $row) {
             return $row->cnt;
         }
     }
+
+    public function checkCancelService($serviceID)
+    {
+        $sql = "SELECT
+                    service.SERVICE_ID,
+                    IFNULL(cnt,0) as cnt
+                FROM
+                    service
+                    LEFT JOIN (
+                    SELECT
+                        DTSER_ID,
+                        COUNT( * ) AS cnt 
+                    FROM
+                        servicedetail 
+                    WHERE
+                        DTSER_ID IN ($serviceID) 
+                    GROUP BY
+                        DTSER_ID 
+                    ) dts ON service.SERVICE_ID = dts.DTSER_ID
+                GROUP BY
+                    service.SERVICE_ID
+                    ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function checkCancelServiceSplit($seatID)
+    {
+        $sql = "SELECT
+                    COUNT( * ) as cnt
+                FROM
+                    serviceseat
+                    JOIN service ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID 
+                WHERE
+                    serviceseat.SERSEAT_SEATID = '$seatID' 
+                    AND service.SERVICE_STATUS = '1'
+                    ";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
 
     public function fetchServiceSeat($serviceID)
     {
@@ -133,46 +184,6 @@ class service_model extends CI_Model
 
     public function serviceDetail($serviceID)
     {
-        // $sql = "SELECT
-        //             detail.DTSER_NO,
-        //             detail.PRODUCT_ID,
-        //             detail.PRODUCT_NAME,
-        //             detail.PROMOTIONSET_ID,
-        //             detail.PROMOTIONSET_NAME,
-        //             detail.DTSER_TYPEUSE,
-        //             detail.DTSER_NOTE,
-        //             detail.DTSER_AMOUNT, 
-        //             detail.DTSER_STATUS 
-        //         FROM
-        //             (
-        //             SELECT
-        //                 servicedetail.DTSER_NO,
-        //                 product.PRODUCT_ID,
-        //                 product.PRODUCT_NAME,
-        //                 promotionset.PROMOTIONSET_ID,
-        //                 promotionset.PROMOTIONSET_NAME,
-        //                 servicedetail.DTSER_TYPEUSE,
-        //                 servicedetail.DTSER_STATUS,
-        //                 servicedetail.DTSER_NOTE,
-        //                 servicedetail.DTSER_AMOUNT 
-        //             FROM
-        //                 servicedetail
-        //                 LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
-        //                 LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
-        //                 LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
-        //                 LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
-        //                 LEFT JOIN product ON servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID 
-        //             WHERE
-        //                 servicedetail.DTSER_ID = '$serviceID' 
-        //                 AND servicedetail.DTSER_TYPEORDER IN (1,2)
-
-        //             GROUP BY
-        //                 servicedetail.DTSER_ID,
-        //                 servicedetail.DTSER_NO 
-        //             ) AS detail 
-        //         ORDER BY
-        //             detail.DTSER_NO
-        //         ";
         $sql = "SELECT
                     detail.DTSER_ID,
                     detail.DTSER_NO,
@@ -186,7 +197,7 @@ class service_model extends CI_Model
                     detail.DTSER_TYPEUSE,
                     detail.DTSER_NOTE,
                     detail.DTSER_AMOUNT,
-                    detail.DTSER_STATUS 
+                    detail.DTSER_STATUS
                 FROM
                     (
                     SELECT
@@ -326,7 +337,7 @@ class service_model extends CI_Model
     public function promotionset()
     {
 
-        $sql2 ="SELECT
+        $sql2 = "SELECT
                     promotionset.PROMOTIONSET_ID,
                     promotionset.PROMOTIONSET_NAME,
                     promotionset.PROMOTIONSET_PRICE,
@@ -382,5 +393,76 @@ class service_model extends CI_Model
                     PROSETDETAIL_ID = '$promotionSetID'";
         $query = $this->db->query($sql);
         return $query->result();
+    }
+
+    public function servedFront($limit, $offset)
+    {
+        $sql = "SELECT
+                    servicedetail.DTSER_ID,
+                    servicedetail.DTSER_NO,
+                    servicedetail.DTSER_TYPEORDER,
+                    product.PRODUCT_ID,
+                    product.PRODUCT_NAME,
+                    IFNULL(servicedetailprosetdetail.DPRODTSER_AMOUNT,DTSER_AMOUNT) as AMOUNT,
+                    RPAD(LPAD( servicedetail.DTSER_ID,13,\"'\"),14,\"'\") as serID
+                FROM
+                    servicedetail 
+                    LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
+                    LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
+                    LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
+                    LEFT JOIN promotionset ON servicedetailproset.PRODTSER_PROSETID = promotionset.PROMOTIONSET_ID
+                    LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
+                WHERE (servicedetail.DTSER_STATUS ='2' OR servicedetailprosetdetail.DPRODTSER_STATUS ='2')
+                ORDER BY servicedetail.DTSER_DATE ASC,servicedetail.DTSER_TIME ASC
+                LIMIT $offset,$limit
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+
+
+    public function servedProset($serviceID, $serviceNO, $productID)
+    {
+        $sql = "UPDATE servicedetailprosetdetail
+                SET DPRODTSER_STATUS = '3'
+                WHERE DPRODTSER_SERVICEID = '$serviceID'
+                AND DPRODTSER_NO = '$serviceNO'
+                AND DPRODTSER_PRODUCTID = '$productID'
+                ";
+        $this->db->query($sql);
+    }
+
+    public function checkProsetAll($serviceID, $serviceNO)
+    {
+        $sql = "SELECT
+                    COUNT(*) as cnt
+                FROM
+                    servicedetailprosetdetail 
+                WHERE
+                    servicedetailprosetdetail.DPRODTSER_SERVICEID = '$serviceID' 
+                    AND servicedetailprosetdetail.DPRODTSER_NO = '$serviceNO' 
+                ";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function checkProsetAllServed($serviceID, $serviceNO)
+    {
+        $sql = "SELECT
+                    COUNT(*) as cnt
+                FROM
+                    servicedetailprosetdetail 
+                WHERE
+                    servicedetailprosetdetail.DPRODTSER_SERVICEID = '$serviceID' 
+                    AND servicedetailprosetdetail.DPRODTSER_NO = '$serviceNO' 
+                    AND servicedetailprosetdetail.DPRODTSER_STATUS = '3' 
+                ";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
     }
 }
