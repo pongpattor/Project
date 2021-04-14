@@ -21,17 +21,15 @@ class desk extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('deskActive') == '1') {
-            $deskActive =  1;
-        } else if ($this->input->get('deskActive') == '0') {
-            $deskActive = 0;
-        } else if ($this->input->get('deskActive') == '2') {
-            $deskActive = 2;
+        if ($this->input->get('deskEnable') == '1') {
+            $deskEnable =  1;
+        } else if ($this->input->get('deskEnable') == '0') {
+            $deskEnable = 0;
         } else {
-            $deskActive = '0,1,2';
+            $deskEnable = '0,1';
         }
         $config['base_url'] = site_url('admin/desk/index');
-        $config['total_rows'] = $this->seat_model->countAllDesk($search, $deskActive);
+        $config['total_rows'] = $this->seat_model->countAllDesk($search, $deskEnable);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -58,7 +56,7 @@ class desk extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['desk'] = $this->seat_model->desk($search, $deskActive, $limit, $offset);
+        $data['desk'] = $this->seat_model->desk($search, $deskEnable, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'desk_view';
         $this->load->view('admin/main_view', $data);
@@ -86,6 +84,7 @@ class desk extends CI_Controller
                 'SEAT_ZONE' => $this->input->post('deskZone'),
                 'SEAT_QUEUE' => $this->input->post('deskQueue'),
                 'SEAT_STATUS' => '1',
+                'SEAT_ENABLE' => '1',
                 'SEAT_ACTIVE' => '0',
             );
             $this->crud_model->insert('seat', $dataSeat);
@@ -144,13 +143,13 @@ class desk extends CI_Controller
             $deskID =  $this->input->post('deskID');
             $deskAmount =  $this->input->post('deskAmount');
             $deskZone =  $this->input->post('deskZone');
-            $deskActive =  $this->input->post('deskActive');
+            $deskEnable =  $this->input->post('deskEnable');
             $deskQueue = $this->input->post('deskQueue');
             $dataSeat = array(
                 'SEAT_NAME' => $deskName,
                 'SEAT_AMOUNT' => $deskAmount,
                 'SEAT_ZONE' => $deskZone,
-                'SEAT_ACTIVE' => $deskActive,
+                'SEAT_ENABLE' => $deskEnable,
                 'SEAT_QUEUE' => $deskQueue,
 
             );
@@ -164,13 +163,13 @@ class desk extends CI_Controller
                 $deskID =  $this->input->post('deskID');
                 $deskAmount =  $this->input->post('deskAmount');
                 $deskZone =  $this->input->post('deskZone');
-                $deskActive =  $this->input->post('deskActive');
+                $deskEnable =  $this->input->post('deskEnable');
                 $deskQueue = $this->input->post('deskQueue');
                 $dataSeat = array(
                     'SEAT_NAME' => $deskName,
                     'SEAT_AMOUNT' => $deskAmount,
                     'SEAT_ZONE' =>  $deskZone,
-                    'SEAT_ACTIVE' => $deskActive,
+                    'SEAT_ENABLE' => $deskEnable,
                     'SEAT_QUEUE' => $deskQueue,
                 );
                 $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $deskID);

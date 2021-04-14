@@ -75,12 +75,12 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>สถานะการใช้งาน </label>
-                                    <select name="karaokeActive" class="form-control" required>
+                                    <select name="karaokeEnable" class="form-control" required>
                                         <option value="" selected disabled>กรุณาเลือกสถานะการใช้งาน</option>
-                                        <option value="0" <?php if ($row->SEAT_ACTIVE == '0') {
+                                        <option value="1" <?php if ($row->SEAT_ENABLE == '1') {
                                                                 echo 'selected';
                                                             } ?>>พร้อมใช้งาน</option>
-                                        <option value="2" <?php if ($row->SEAT_ACTIVE == '2') {
+                                        <option value="0" <?php if ($row->SEAT_ENABLE == '0') {
                                                                 echo 'selected';
                                                             } ?>>ไม่พร้อมใช้งาน</option>
                                     </select>
@@ -95,7 +95,9 @@
                                                 <a href="<?= site_url('admin/karaoke/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                             </div>
                                             <div class="col">
-                                                <input class="btn btn-success btn-xs" type="submit" value="แก้ไข">
+                                                <input class="btn btn-success btn-xs" type="submit" value="แก้ไข" <?php if($row->SEAT_ACTIVE=='1'){
+                                                    echo 'disabled';
+                                                } ?>>
                                             </div>
                                         </div>
                                     </center>

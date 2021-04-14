@@ -21,17 +21,15 @@ class karaoke extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        if ($this->input->get('karaokeActive') == '0') {
-            $karaokeActive = 0;
-        } else if ($this->input->get('karaokeActive') == '1') {
-            $karaokeActive = 1;
-        } else if ($this->input->get('karaokeActive') == '2') {
-            $karaokeActive = 2;
+        if ($this->input->get('karaokeEnable') == '0') {
+            $karaokeEnable = 0;
+        } else if ($this->input->get('karaokeEnable') == '1') {
+            $karaokeEnable = 1;
         } else {
-            $karaokeActive = '0,1,2';
+            $karaokeEnable = '0,1';
         }
         $config['base_url'] = site_url('admin/karaoke/index');
-        $config['total_rows'] = $this->seat_model->countAllkaraoke($search, $karaokeActive);
+        $config['total_rows'] = $this->seat_model->countAllkaraoke($search, $karaokeEnable);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
         $config['uri_segment'] = 4;
@@ -58,7 +56,7 @@ class karaoke extends CI_Controller
         $offset = $this->uri->segment(4, 0);
         $this->pagination->initialize($config);
         $data['total'] = $config['total_rows'];
-        $data['karaoke'] = $this->seat_model->karaoke($search, $karaokeActive, $limit, $offset);
+        $data['karaoke'] = $this->seat_model->karaoke($search, $karaokeEnable, $limit, $offset);
         $data['links'] = $this->pagination->create_links();
         $data['page'] = 'karaoke_view';
         $this->load->view('admin/main_view', $data);
@@ -93,6 +91,7 @@ class karaoke extends CI_Controller
                 'SEAT_ZONE' => $karaokeZone,
                 'SEAT_QUEUE' => $karaokeQueue,
                 'SEAT_ACTIVE' => '0',
+                'SEAT_ENABLE' => '1',
                 'SEAT_STATUS' => '1',
             );
             $this->crud_model->insert('seat', $dataSeat);
@@ -149,22 +148,22 @@ class karaoke extends CI_Controller
 
     public function updateKaraoke()
     {
-        $data['input'] = $this->input->post();
+
         $data['status'] = true;
+        $karaokeID =  $this->input->post('karaokeID');
         $karaokeName = $this->input->post('karaokeName');
         $karaokeNameOld = $this->input->post('karaokeNameOld');
         if (strtolower($karaokeName) == strtolower($karaokeNameOld)) {
-            $karaokeID =  $this->input->post('karaokeID');
             $karaokeAmount =  $this->input->post('karaokeAmount');
             $karaokeZone =  $this->input->post('karaokeZone');
             $karaokePricePerHour =  $this->input->post('karaokePricePerHour');
             $karaokeFlatRate =  $this->input->post('karaokeFlatRate');
-            $karaokeActive = $this->input->post('karaokeActive');
+            $karaokeEnable = $this->input->post('karaokeEnable');
             $karaokeQueue = $this->input->post('karaokeQueue');
             $dataSeat = array(
                 'SEAT_AMOUNT' => $karaokeAmount,
                 'SEAT_ZONE' => $karaokeZone,
-                'SEAT_ACTIVE' => $karaokeActive,
+                'SEAT_ENABLE' => $karaokeEnable,
                 'SEAT_QUEUE' => $karaokeQueue,
             );
             $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $karaokeID);
@@ -179,18 +178,17 @@ class karaoke extends CI_Controller
             $checkSeatName = $this->seat_model->checkSeatName($karaokeName);
             // $data['sa'] = $cheakSeatName;
             if ($checkSeatName == 0) {
-                $karaokeID =  $this->input->post('karaokeID');
                 $karaokeAmount =  $this->input->post('karaokeAmount');
                 $karaokeZone =  $this->input->post('karaokeZone');
                 $karaokePricePerHour =  $this->input->post('karaokePricePerHour');
                 $karaokeFlatRate =  $this->input->post('karaokeFlatRate');
-                $karaokeActive = $this->input->post('karaokeActive');
+                $karaokeEnable = $this->input->post('karaokeEnable');
                 $karaokeQueue = $this->input->post('karaokeQueue');
                 $dataSeat = array(
                     'SEAT_NAME' => $karaokeName,
                     'SEAT_AMOUNT' => $karaokeAmount,
                     'SEAT_ZONE' => $karaokeZone,
-                    'SEAT_ACTIVE' => $karaokeActive,
+                    'SEAT_ENABLE' => $karaokeEnable,
                     'SEAT_QUEUE' => $karaokeQueue,
                 );
                 $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $karaokeID);
@@ -207,6 +205,7 @@ class karaoke extends CI_Controller
                 $data['karaokeNameError'] = 'ชื่อนี้ได้ถูกใช้ไปแล้ว';
             }
         }
+
         echo json_encode($data);
     }
 

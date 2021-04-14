@@ -424,6 +424,8 @@ class service extends CI_Controller
         }
     }
 
+    
+
     // public function test()
     // {
     //     $price = 50000000.55;

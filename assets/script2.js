@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+    $(document).on('keypress','input[type="tel"]', function (e) {
+        if (e.charCode >= 48 && e.charCode <= 57) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     //QUEUE START
 
     $('#deskTable').dataTable({
@@ -548,5 +555,5 @@ $(document).ready(function () {
         var ID = $(this).attr("ID");
         $('#' + ID).css("background-color", "");
     });
-    
+
 });

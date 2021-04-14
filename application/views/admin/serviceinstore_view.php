@@ -62,7 +62,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($service as $row) : ?>
+                                            <?php $rowi = 1;
+                                            foreach ($service as $row) : ?>
                                                 <tr id="<?= $row->SERVICE_ID ?>" class=" bgtable">
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SERVICE_ID; ?></td>
                                                     <td class="align-middle" style="text-align: center;"><?= $row->SERVICE_CUSAMOUNT; ?></td>
@@ -91,9 +92,36 @@
                                                         </form>
                                                     </td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-success"><i class="fa fa-chair"></i></button></td>
-                                                    <td class="align-middle" style="text-align: center;"><button class="btn btn-info"><i class="fa fa-credit-card"></i></button></td>
                                                     <td class="align-middle" style="text-align: center;">
-                                                        <input type="hidden" class="serviceSeatType" value="<?=$row->SERVICE_SEATTYPE;?>">
+                                                        <!-- <button class="btn btn-info"><i class="fa fa-credit-card"></i></button> -->
+                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#creditModal<?= $rowi ?>">
+                                                            <i class="fa fa-credit-card"></i>
+                                                        </button>
+                                                        <div class="modal fade" id="creditModal<?= $rowi ?>" tabindex="-1" role="dialog" aria-labelledby="creditModalLabel<?= $rowi ?>" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="creditModalLabel<?= $rowi ?>">ชำระเงิน</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="row">
+                                                                            <div class="col"><a href="<?=site_url('admin/payment/pay?serviceID=').$row->SERVICE_ID.'&typePayment=1';?>" class="btn btn-primary">ชำระเงิน</a></div>
+                                                                            <div class="col"><a class="btn btn-success">แยกชำระเงิน</a></div>
+                                                                            <div class="col"><a class="btn btn-info">ชำระเงินรวม</a></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                       
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle" style="text-align: center;">
+                                                        <input type="hidden" class="serviceSeatType" value="<?= $row->SERVICE_SEATTYPE; ?>">
                                                         <?php foreach ($cancel as $row3) :
                                                             if ($row3->SERVICE_ID == $row->SERVICE_ID && $row3->cnt == 0) : ?>
                                                                 <button class="btn btn-danger cancelService"><i class="fa fa-times"></i></button>
@@ -101,7 +129,8 @@
                                                         endforeach; ?>
                                                     </td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php $rowi++;
+                                            endforeach; ?>
                                         </tbody>
                                     </table>
                                     <?php if ($links != null) {
@@ -133,7 +162,7 @@
             method: "POST",
             data: {
                 serviceID: rowid,
-                serviceSeatType : serviceSeatType
+                serviceSeatType: serviceSeatType
             },
             dataType: "JSON",
             success: function(data) {

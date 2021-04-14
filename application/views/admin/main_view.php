@@ -48,7 +48,7 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
                         <!-- ไประบบหน้าร้าน -->
-                        <a class="nav-link" href="<?=site_url('admin/service/storefont')?>">
+                        <a class="nav-link" href="<?= site_url('admin/service/storefont') ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
                             ระบบจัดการหน้าร้าน
                         </a>
@@ -151,18 +151,18 @@
                         </div>
                         <!-- รับล็อต -->
                         <?php if ($_SESSION['employeePermission']['12'] == '1') {
-                                                            ?>
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#LotcollapseLayouts" aria-expanded="false" aria-controls="LotcollapseLayouts" >
-                            <div class="sb-nav-link-icon"><i class="fa fa-box"></i></div>
-                            รับล็อต
-                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="LotcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?=site_url('admin/lotdrink')?>" >รับล็อตเครื่องดื่ม</a>
-                                <a class="nav-link" href="<?=site_url('admin/lotingredient')?>">รับล็อตวัตถุดิบ</a>
-                            </nav>
-                        </div>
+                        ?>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#LotcollapseLayouts" aria-expanded="false" aria-controls="LotcollapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa fa-box"></i></div>
+                                รับล็อต
+                                <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="LotcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?= site_url('admin/lotdrink') ?>">รับล็อตเครื่องดื่ม</a>
+                                    <a class="nav-link" href="<?= site_url('admin/lotingredient') ?>">รับล็อตวัตถุดิบ</a>
+                                </nav>
+                            </div>
                         <?php } ?>
                         <!-- โปรโมชั่น -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PromotioncollapseLayouts" aria-expanded="false" aria-controls="PromotioncollapseLayouts" <?php if ($_SESSION['employeePermission']['13'] != '1' && $_SESSION['employeePermission']['14'] != '1') {
@@ -175,9 +175,9 @@
                         <div class="collapse" id="PromotioncollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= site_url('admin/promotionprice') ?>" <?php if ($_SESSION['employeePermission']['13'] != '1') {
-                                                                echo 'hidden';
-                                                            }
-                                                            ?>>โปรโมชั่นลดราคา</a>
+                                                                                                        echo 'hidden';
+                                                                                                    }
+                                                                                                    ?>>โปรโมชั่นลดราคา</a>
                                 <a class="nav-link" href="<?= site_url('admin/promotionset') ?>" <?php if ($_SESSION['employeePermission']['14'] != '1') {
                                                                                                         echo 'hidden';
                                                                                                     }
@@ -202,6 +202,14 @@
                                     <a class="nav-link" href="#">รายการสินค้า</a>
                                 </nav>
                             </div>
+                        <?php }
+                        ?>
+                        <?php if ($_SESSION['employeePermission']['18'] == '1') { ?>
+                            <a class="nav-link collapsed" href="<?= site_url('admin/payment/typePayment') ?>">
+                                <div class="sb-nav-link-icon"><i class="far fa-money-bill-alt"></i></div>
+                                ประเภทชำระเงิน
+                            </a>
+
                         <?php }
                         ?>
                     </div>

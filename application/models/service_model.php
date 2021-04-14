@@ -156,6 +156,7 @@ class service_model extends CI_Model
         WHERE SEAT_STATUS = '1'
         AND SEAT_TYPE = '1'
         AND SEAT_ACTIVE = '0'
+        AND SEAT_ENABLE = '1'
         AND SEAT_ID NOT IN (SELECT queueseat.QS_SEATID FROM queue INNER JOIN queueseat
         ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         WHERE queue.QUEUE_DSTART = CURRENT_DATE
@@ -177,6 +178,7 @@ class service_model extends CI_Model
         WHERE SEAT_STATUS = '1'
         AND SEAT_TYPE = '2'
         AND SEAT_ACTIVE = '0'
+        AND SEAT_ENABLE = '1'
         AND SEAT_ID NOT IN (SELECT queueseat.QS_SEATID FROM queue INNER JOIN queueseat
         ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         WHERE queue.QUEUE_DSTART = CURRENT_DATE

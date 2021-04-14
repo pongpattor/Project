@@ -18,17 +18,14 @@
                         <div class="col-10">
                             <div class="row">
                                 <div class="col-3 form-group row">
-                                    <div class="col-3"> <label for="deskActive" class="col-form-label">สถานะ</label></div>
+                                    <div class="col-3"> <label for="deskEnable" class="col-form-label">สถานะ</label></div>
                                     <div class="col">
-                                        <select name="deskActive" id="deskActive" class="form-control">
-                                            <option value="0,1,2" selected>ทั้งหมด</option>
-                                            <option value="0" <?php if ($this->input->get('deskActive') == '0') {
+                                        <select name="deskEnable" id="deskEnable" class="form-control">
+                                            <option value="0,1" selected>ทั้งหมด</option>
+                                            <option value="1" <?php if ($this->input->get('deskEnable') == '1') {
                                                                     echo 'selected';
-                                                                } ?>>ว่าง</option>
-                                            <option value="1" <?php if ($this->input->get('deskActive') == '1') {
-                                                                    echo 'selected';
-                                                                } ?>>ไม่ว่าง</option>
-                                            <option value="2" <?php if ($this->input->get('deskActive') == '2') {
+                                                                } ?>>พร้อมใช้งาน</option>
+                                            <option value="0" <?php if ($this->input->get('deskEnable') == '0') {
                                                                     echo 'selected';
                                                                 } ?>>ไม่พร้อมใช้งาน</option>
                                         </select>
@@ -98,10 +95,8 @@
                                                                                                                 echo 'ไม่สามารถจองได้';
                                                                                                             }
                                                                                                             ?></td>
-                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ACTIVE == '0') {
-                                                                                                                echo 'ว่าง';
-                                                                                                            } else if ($row->SEAT_ACTIVE == '1') {
-                                                                                                                echo 'ไม่ว่าง';
+                                                    <td class="align-middle" style="text-align: center;"><?php if ($row->SEAT_ENABLE == '1') {
+                                                                                                                echo 'พร้อมใช้งาน';
                                                                                                             } else {
                                                                                                                 echo 'ไม่พร้อมใช้งาน';
                                                                                                             }

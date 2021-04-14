@@ -5,9 +5,9 @@ class seat_model extends CI_Model
 {
 
     //Department Start
-    public function desk($search, $deskActive, $limit, $offset)
+    public function desk($search, $deskEnable, $limit, $offset)
     {
-        $sql = "SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ACTIVE,SEAT_QUEUE,zone.ZONE_NAME
+        $sql = "SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ENABLE,SEAT_QUEUE,zone.ZONE_NAME
         FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
         where seat.SEAT_TYPE = '1' 
         AND seat.SEAT_STATUS = '1'
@@ -18,7 +18,7 @@ class seat_model extends CI_Model
             seat.SEAT_AMOUNT LIKE ? OR
             zone.ZONE_NAME LIKE ?
         )
-        AND seat.SEAT_ACTIVE IN ($deskActive)
+        AND seat.SEAT_ENABLE IN ($deskEnable)
         LIMIT $offset,$limit
         ";
 
@@ -37,7 +37,7 @@ class seat_model extends CI_Model
         return $query->result();
     }
 
-    public function countAlldesk($search, $deskActive)
+    public function countAlldesk($search, $deskEnable)
     {
         $sql = "SELECT COUNT(*) as cnt FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
         where seat.SEAT_TYPE = '1' 
@@ -49,7 +49,7 @@ class seat_model extends CI_Model
             seat.SEAT_AMOUNT LIKE ? OR
             zone.ZONE_NAME LIKE ?
         )
-        AND seat.SEAT_ACTIVE IN ($deskActive)
+        AND seat.SEAT_ENABLE IN ($deskEnable)
         ";
 
         $query = $this->db->query(
@@ -68,17 +68,17 @@ class seat_model extends CI_Model
 
     public function editDesk($deskID)
     {
-        $sql = "SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ACTIVE,seat.SEAT_ZONE,seat.SEAT_QUEUE FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID
+        $sql = "SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ACTIVE,seat.SEAT_ENABLE,seat.SEAT_ZONE,seat.SEAT_QUEUE FROM seat LEFT JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID
                 WHERE SEAT_ID = '$deskID'";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
-    public function karaoke($search, $karaokeActive, $limit, $offset)
+    public function karaoke($search, $karaokeEnable, $limit, $offset)
     {
         $sql = "SELECT * FROM ZONE 
         RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,seat.SEAT_ACTIVE,
-                     karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE 
+                     karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE,seat.SEAT_ENABLE
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                 WHERE seat.SEAT_STATUS = '1' 
                 AND seat.SEAT_TYPE = '2') s
@@ -90,7 +90,7 @@ class seat_model extends CI_Model
                 s.KARAOKE_PRICEPERHOUR LIKE ? OR
                 s.KARAOKE_FLATRATE LIKE ?
                 )
-        AND s.SEAT_ACTIVE IN ($karaokeActive)
+        AND s.SEAT_ENABLE IN ($karaokeEnable)
         LIMIT $offset,$limit
         ";
 
@@ -111,11 +111,11 @@ class seat_model extends CI_Model
         return $query->result();
     }
 
-    public function countAllKaraoke($search, $karaokeActive)
+    public function countAllKaraoke($search, $karaokeEnable)
     {
         $sql = "SELECT COUNT(*) as cnt FROM ZONE 
         RIGHT JOIN (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,
-                    seat.SEAT_ACTIVE,karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE 
+                    seat.SEAT_ACTIVE,karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE,seat.SEAT_ENABLE
                 FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                 WHERE seat.SEAT_STATUS = '1' 
                 AND seat.SEAT_TYPE = '2') s
@@ -127,7 +127,7 @@ class seat_model extends CI_Model
                 s.KARAOKE_PRICEPERHOUR LIKE ? OR
                 s.KARAOKE_FLATRATE LIKE ?
                 )
-                AND s.SEAT_ACTIVE IN ($karaokeActive)
+                AND s.SEAT_ENABLE IN ($karaokeEnable)
         ";
 
         $query = $this->db->query(
@@ -152,7 +152,7 @@ class seat_model extends CI_Model
     public function editKaraoke($karaokeID)
     {
         $sql = "SELECT * FROM ZONE 
-                RIGHT JOIN  (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,seat.SEAT_ACTIVE,
+                RIGHT JOIN  (SELECT seat.SEAT_ID,seat.SEAT_NAME,seat.SEAT_AMOUNT,seat.SEAT_ZONE,seat.SEAT_ACTIVE,seat.SEAT_ENABLE,
                              karaoke.KARAOKE_PRICEPERHOUR,karaoke.KARAOKE_FLATRATE,seat.SEAT_QUEUE
                         FROM seat JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
                         WHERE seat.SEAT_STATUS != '0' 

@@ -700,17 +700,23 @@ $(document).ready(function () {
                 dataType: "JSON",
                 success: function (data) {
                     // console.log(data);
-                    if (data.status == true) {
-                        alert(data.message);
+                    if (data.seatActive == '0') {
+                        if (data.status == true) {
+                            alert(data.message);
+                            location.replace(data.url);
+                        } else {
+                            if (data.karaokeNameError == '') {
+                                $('#karaokeNameError').html('');
+                            }
+                            else {
+                                $('#karaokeNameError').html(data.karaokeNameError);
+                            }
+                            alert(data.message);
+                        }
+                    }
+                    else {
+                        alert('ห้องคาราโอเกะนี้ถูกใช้งานอยู่ไม่สามารถอัพเดทได้')
                         location.replace(data.url);
-                    } else {
-                        if (data.karaokeNameError == '') {
-                            $('#karaokeNameError').html('');
-                        }
-                        else {
-                            $('#karaokeNameError').html(data.karaokeNameError);
-                        }
-                        alert(data.message);
                     }
                 }
             });
@@ -1738,6 +1744,55 @@ $(document).ready(function () {
     });
 
     //PromotionPrice End
+
+    //typePayment
+
+
+    $('#addTypePaymentForm').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "../payment/insertTypePayment",
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == true) {
+                    alert('เพิ่มข้อมูลเสร็จสิ้น');
+                    location.replace(data.url);
+
+                } else {
+                    alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                    $('#typePaymentNameError').html('ประเภทการชำระเงินนี้มีอยู่ในระบบแล้ว');
+                }
+            }
+        });
+    });
+
+    $('#editTypePaymentForm').on('submit', function (e) {
+        e.preventDefault();
+        var cf = confirm('กรุณายืนยันการแก้ไข');
+        if (cf == true) {
+            $.ajax({
+                url: "../payment/updateTypePayment",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.status == true) {
+                        alert('แก้ไขข้อมูลเสร็จสิ้น');
+                        location.replace(data.url);
+                    } else {
+                        alert('กรุณากรอกข้อมูลให้ถูกต้อง')
+                        $('#typePaymentNameError').html('ประเภทการชำระเงินนี้มีอยู่ในระบบแล้ว');
+                    }
+                }
+            });
+        }
+    });
+
+
+
+
 
     //Address Start
     $('#province').change(function () {
