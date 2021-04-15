@@ -13,11 +13,13 @@ class service_model extends CI_Model
         service.SERVICE_TSTART,
         service.SERVICE_SEATTYPE,
         CONCAT( seat.SEAT_NAME, IFNULL( serviceseat.SERSEAT_SEATSPLIT, '' ) ) AS SEAT_NAMES,
-        RPAD( LPAD( SERVICE_ID, 13, \"'\" ), 14, \"'\" ) AS serID 
+        RPAD( LPAD( SERVICE_ID, 13, \"'\" ), 14, \"'\" ) AS serID ,
+        dts.cnt as dtscnt
          FROM
         service
         JOIN serviceseat ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID
         JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID 
+        LEFT JOIN (SELECT DTSER_ID,COUNT(*) as cnt FROM servicedetail GROUP BY DTSER_ID) dts ON service.SERVICE_ID = dts.DTSER_ID
         WHERE
          service.SERVICE_STATUS = '1' 
         AND (
@@ -59,6 +61,7 @@ class service_model extends CI_Model
                         service
                         JOIN serviceseat ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID
                         JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID 
+                        LEFT JOIN (SELECT DTSER_ID,COUNT(*) FROM servicedetail GROUP BY DTSER_ID) dts ON service.SERVICE_ID = dts.DTSER_ID
                     WHERE
                          service.SERVICE_STATUS = '1' 
                         AND (

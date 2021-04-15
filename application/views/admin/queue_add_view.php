@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-sm col-md col-xl-6 ">
                                 <label for="queueTime">วันเวลาที่จอง </label>
-                                <input type="time" name="queueTime" id="queueTime" class="form-control" required  min="09:00" max="23:59">
+                                <input type="time" name="queueTime" id="queueTime" class="form-control" required  min="09:00" max="21:00">
                             </div>
                         </div>
                         <br>

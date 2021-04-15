@@ -93,32 +93,34 @@
                                                     </td>
                                                     <td class="align-middle" style="text-align: center;"><button class="btn btn-success"><i class="fa fa-chair"></i></button></td>
                                                     <td class="align-middle" style="text-align: center;">
-                                                        <!-- <button class="btn btn-info"><i class="fa fa-credit-card"></i></button> -->
-                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#creditModal<?= $rowi ?>">
-                                                            <i class="fa fa-credit-card"></i>
-                                                        </button>
-                                                        <div class="modal fade" id="creditModal<?= $rowi ?>" tabindex="-1" role="dialog" aria-labelledby="creditModalLabel<?= $rowi ?>" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="creditModalLabel<?= $rowi ?>">ชำระเงิน</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col"><a href="<?=site_url('admin/payment/pay?serviceID=').$row->SERVICE_ID.'&typePayment=1';?>" class="btn btn-primary">ชำระเงิน</a></div>
-                                                                            <div class="col"><a class="btn btn-success">แยกชำระเงิน</a></div>
-                                                                            <div class="col"><a class="btn btn-info">ชำระเงินรวม</a></div>
+                                                        <?php if ($row->dtscnt > 0) { ?>
+                                                            <!-- <button class="btn btn-info"><i class="fa fa-credit-card"></i></button> -->
+                                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#creditModal<?= $rowi ?>">
+                                                                <i class="fa fa-credit-card"></i>
+                                                            </button>
+                                                            <div class="modal fade" id="creditModal<?= $rowi ?>" tabindex="-1" role="dialog" aria-labelledby="creditModalLabel<?= $rowi ?>" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="creditModalLabel<?= $rowi ?>">ชำระเงิน</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                       
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <!-- <div class="col"><a href="<?= site_url('admin/payment/pay?serviceID=') . $row->SERVICE_ID; ?>" class="btn btn-primary" style="color:white">ชำระเงิน</a></div> -->
+                                                                                <div class="col"><a href="<?= site_url('admin/payment/selectManyService?serviceID=') . $row->SERVICE_ID ?>" class="btn btn-primary" style="color:white">ชำระเงิน</a></div>
+                                                                                <div class="col"><a class="btn btn-success" style="color:white">แยกชำระเงิน</a></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        <?php } ?>
                                                     </td>
                                                     <td class="align-middle" style="text-align: center;">
                                                         <input type="hidden" class="serviceSeatType" value="<?= $row->SERVICE_SEATTYPE; ?>">

@@ -8,6 +8,7 @@ class payment_model extends CI_Model
         $sql = "SELECT
         service.SERVICE_ID,
         servicedetail.DTSER_TYPEORDER,
+        IFNULL( product.PRODUCT_ID, IFNULL( promotionset.PROMOTIONSET_ID, karaoke.KARAOKE_ID ) ) AS ORDERID,
         IFNULL( product.PRODUCT_NAME, IFNULL( promotionset.PROMOTIONSET_NAME, seat.SEAT_NAME ) ) AS ORDERNAME,
         servicedetailkaraoke.KARADTSER_USETYPE,
         SUM( servicedetail.DTSER_AMOUNT ) AS AMOUNT,
@@ -60,6 +61,23 @@ class payment_model extends CI_Model
         return $query->result();
     }
 
+    public function detailProset($prosetID)
+    {
+        $sql = "SELECT
+                    promotionsetdetail.PROSETDETAIL_NO,
+                    product.PRODUCT_ID,
+                    promotionsetdetail.PROSETDETAIL_AMOUNT,
+                    product.PRODUCT_COSTPRICE,
+                    product.PRODUCT_SELLPRICE FROM promotionset
+                    JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID
+                    JOIN product ON promotionsetdetail.PROSETDETAIL_PRODUCT = product.PRODUCT_ID 
+                WHERE
+                    promotionset.PROMOTIONSET_ID = '$prosetID'
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function telMemberDiscount($tel)
     {
         $sql = "SELECT
@@ -68,7 +86,11 @@ class payment_model extends CI_Model
             CASE
                     WHEN customer.CUSTOMER_BDATE = CURRENT_DATE THEN
                     customertype.CUSTOMERTYPE_DISCOUNTBDATE ELSE customertype.CUSTOMERTYPE_DISCOUNT 
-                END AS discount 
+                END AS discount ,
+            CASE
+                WHEN customer.CUSTOMER_BDATE = CURRENT_DATE THEN
+                    '(วันเกิด)' ELSE '' 
+                END AS discountName 
             FROM
                 customer
                 JOIN customertype ON customer.CUSTOMER_CUSTOMERTYPE = customertype.CUSTOMERTYPE_ID
@@ -79,6 +101,37 @@ class payment_model extends CI_Model
             GROUP BY
                 customer.CUSTOMER_ID
                 ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function etcService($serviceID)
+    {
+        $sql = "SELECT service.SERVICE_ID FROM service
+        	    JOIN servicedetail ON service.SERVICE_ID = servicedetail.DTSER_ID 
+                WHERE service.SERVICE_STATUS ='1'
+                AND service.SERVICE_ID != '$serviceID'
+                GROUP BY service.SERVICE_ID
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function etcSeatService($serviceID)
+    {
+        $sql = "SELECT
+                    service.SERVICE_ID,
+                    CONCAT( seat.SEAT_NAME, IFNULL( serviceseat.SERSEAT_SEATSPLIT, '' ) ) AS SEATNAME 
+                FROM
+                    serviceseat
+                    JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID
+                    JOIN service ON serviceseat.SERSEAT_SERVICEID = service.SERVICE_ID 
+                    JOIN servicedetail ON service.SERVICE_ID = servicedetail.DTSER_ID
+                WHERE
+                    service.SERVICE_ID != '$serviceID' 
+                    AND service.SERVICE_STATUS = '1'
+                    GROUP BY service.SERVICE_ID
+                    ";
         $query = $this->db->query($sql);
         return $query->result();
     }

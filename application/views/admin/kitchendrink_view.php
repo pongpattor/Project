@@ -37,7 +37,7 @@
                                         <th style="text-align: center;">หมายเหตุ</th>
                                         <th style="text-align: center;">ประเภท</th>
                                         <th style="text-align: center;">สถานะ</th>
-                                        <th style="text-align: center;">ปรุง</th>
+                                        <th style="text-align: center;">เตรียม</th>
                                         <th style="text-align: center;">เสิร์ฟ</th>
                                         <!-- <th style="text-align: center;">ยกเลิก</th> -->
                                     </tr>
@@ -92,11 +92,11 @@
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
                                                 if ($row->DPRODTSER_STATUS == null && $row->DTSER_STATUS == '0') {
-                                                    echo "<button class=\"btn btn-info cook\">ปรุง</button>";
+                                                    echo "<button class=\"btn btn-info cook\">เตรียม</button>";
                                                 } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '1') {
-                                                    echo "<button class=\"btn btn-info cook\">ปรุง</button>";
+                                                    echo "<button class=\"btn btn-info cook\">เตรียม</button>";
                                                 } else if ($row->DPRODTSER_STATUS == '0' && $row->DTSER_STATUS == '0') {
-                                                    echo "<button class=\"btn btn-info cook\">ปรุง</button>";
+                                                    echo "<button class=\"btn btn-info cook\">เตรียม</button>";
                                                 }
                                                 ?>
                                             </td>
@@ -151,7 +151,7 @@
                                         <th style="text-align: center;">หมายเหตุ</th>
                                         <th style="text-align: center;">ประเภท</th>
                                         <th style="text-align: center;">สถานะ</th>
-                                        <th style="text-align: center;">ปรุง</th>
+                                        <th style="text-align: center;">เตรียม</th>
                                         <th style="text-align: center;">เสิร์ฟ</th>
                                         <!-- <th style="text-align: center;">ยกเลิก</th> -->
                                     </tr>
@@ -222,11 +222,11 @@
                                             <td class="align-middle" style="text-align: center;">
                                                 <?php
                                                 if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '0') {
-                                                    echo "<button class=\"btn btn-info sameCook\">ปรุง</button>";
+                                                    echo "<button class=\"btn btn-info sameCook\">เตรียม</button>";
                                                 } else if ($row2->DPRODTSER_STATUS == '0' && $row2->DTSER_STATUS == '1') {
-                                                    echo "<button class=\"btn btn-info sameCook\">ปรุง</button>";
+                                                    echo "<button class=\"btn btn-info sameCook\">เตรียม</button>";
                                                 } else if ($row2->DPRODTSER_STATUS == null && $row2->DTSER_STATUS == '0') {
-                                                    echo "<button class=\"btn btn-info sameCook\">ปรุง</button>";
+                                                    echo "<button class=\"btn btn-info sameCook\">เตรียม</button>";
                                                 }
                                                 ?>
                                             </td>

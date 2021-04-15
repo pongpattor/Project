@@ -377,7 +377,7 @@
                         return false;
                     } else {
                         text = ` <div class="alert alert-danger" role="alert">
-                                    <strong>คำเตือน!</strong> กรุณาเลือกเพียงโต๊ะหรือห้องเดียว
+                                    <strong>คำเตือน!</strong> กรุณาเลือกเพียงโต๊ะเดียว
                                  </div>`
                         $('#textWarning').html(text);
                         return false;
@@ -405,10 +405,9 @@
                     url: "<?= site_url('admin/service/insertEnterService') ?>",
                     method: "POST",
                     data: $(this).serialize(),
-                    dataType: "JSON",
-                    success: function(data) {
+                    success: function() {
                         alert('เข้าใช้งานเสร็จสิ้น');
-                        location.replace(data.url);
+                        location.reload();
                     }
                 });
             }

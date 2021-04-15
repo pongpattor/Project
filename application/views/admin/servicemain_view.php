@@ -71,7 +71,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ชำระเงิน</a>
+                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ประวัติการขาย</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

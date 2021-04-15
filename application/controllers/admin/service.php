@@ -110,9 +110,6 @@ class service extends CI_Controller
             );
             $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[0]);
         }
-        $data['url'] = site_url('admin/service/instore');
-
-        echo json_encode($data);
     }
 
     public function genServiceID()
@@ -424,22 +421,5 @@ class service extends CI_Controller
         }
     }
 
-    
 
-    // public function test()
-    // {
-    //     $price = 50000000.55;
-    //     $sellPrice = substr($price,0,strlen($price)-3);
-    //     $decimalPrice = substr($price,-2);
-    //     if($decimalPrice < 50){
-    //         $decimalPrice = '.00';
-    //     }
-    //     else{
-    //         $sellPrice += 1;
-    //         $decimalPrice = '.00';
-    //     }
-    //     $price =  $sellPrice.''.$decimalPrice;
-    //     echo number_format($price,2,'.','');
-
-    // }
 }
