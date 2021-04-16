@@ -366,7 +366,8 @@ class queue extends CI_Controller
                     $dataDetailService = array(
                         'DTSER_ID' => $serviceID,
                         'DTSER_NO' => $i,
-                        'DTSER_TYPE' => '2', #DTSERTYPE 1 = PRODUCT , 2 = KARAOKE , 3 = PROMOTION
+                        'DTSER_TYPEORDER' => '3', #DTSERTYPE 1 = PRODUCT , 2 = KARAOKE , 3 = PROMOTION
+                        'DTSER_TYPEUSE' => '1', #DTSERTYPE 1 = HERE , 2 = HOME 
                         'DTSER_DATE' => $serviceDStart,
                         'DTSER_TIME' => $serviceTStart,
                         'DTSER_AMOUNT' => $row->QSK_KARAOKEUSEAMOUNT,

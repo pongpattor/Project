@@ -151,58 +151,56 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">ราคาทั้งหมด</div>
-                                        <div class="col text-right">
-                                            <span id="freePriceShow"></span>
-                                            <input type="hidden" id="freePrice" name="freePrice" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">ส่วนลด</div>
-                                        <div class="col text-right">
-                                            <span id="totalDiscountShow"></span>
-                                            <input type="hidden" id="totalDiscount" name="totalDiscount" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">ราคารวม</div>
-                                        <div class="col text-right">
-                                            <span id="totalPriceShow"></span>
-                                            <input type="hidden" id="totalPrice" name="totalPrice" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col"> ภาษี7%</div>
-                                        <div class="col text-right">
-                                            <span id="totalVatShow"></span> <input type="hidden" name="totalVat" id="totalVat" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col"> ราคาสุทธิ</div>
-                                        <div class="col text-right">
-                                            <span id="totalShow"></span> <input type="hidden" name="total" id="total" class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="table-responsive">
+                                <table class="table" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3" class="align-middle">
+                                                ราคาทั้งหมด
+                                            </th>
+                                            <th class="align-middle text-right">
+                                                <span id="freePriceShow"></span>
+                                                <input type="hidden" id="freePrice" name="freePrice" class="form-control" readonly>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3" class="align-middle">
+                                                ส่วนลด
+                                            </th>
+                                            <th class="align-middle text-right">
+                                                <span id="totalDiscountShow"></span>
+                                                <input type="hidden" id="totalDiscount" name="totalDiscount" class="form-control" readonly>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3" class="align-middle">
+                                                ราคารวม
+                                            </th>
+                                            <th class="align-middle text-right">
+                                                <span id="totalPriceShow"></span>
+                                                <input type="hidden" id="totalPrice" name="totalPrice" class="form-control" readonly>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3" class="align-middle ">
+                                                ภาษี7%
+                                            </th>
+                                            <th class="align-middle text-right">
+                                                <span id="totalVatShow"></span>
+                                                <input type="hidden" name="totalVat" id="totalVat" class="form-control" readonly>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3" class="align-middle">
+                                                ราคาสุทธิ
+                                            </th>
+                                            <th class="align-middle text-right">
+                                                <span id="totalShow" ></span>
+                                                <input type="hidden" name="total" id="total" class="form-control" readonly>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                         <div class="col ">

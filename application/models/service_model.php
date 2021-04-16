@@ -226,6 +226,16 @@ class service_model extends CI_Model
         return $query->result();
     }
 
+    public function ZoneSeat()
+    {
+        $sql = "SELECT zone.ZONE_ID,zone.ZONE_NAME FROM zone
+        JOIN seat ON seat.SEAT_ZONE = zone.ZONE_ID
+        WHERE zone.ZONE_STATUS ='1'
+        GROUP BY zone.ZONE_ID";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function serviceDetail($serviceID)
     {
         $sql = "SELECT
@@ -412,7 +422,7 @@ class service_model extends CI_Model
         //             AND product.PRODUCT_STATUS = '1'
         // ";
 
-        $sql="SELECT
+        $sql = "SELECT
                 product.PRODUCT_ID,
                 product.PRODUCT_NAME,
                 product.PRODUCT_IMAGE,
@@ -450,6 +460,31 @@ class service_model extends CI_Model
                 ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT
                 WHERE product.PRODUCT_STATUS ='1'
                 GROUP BY product.PRODUCT_ID
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function seatCurrent($serviceID)
+    {
+        $sql = "SELECT
+                seat.SEAT_ID,
+                seat.SEAT_NAME,
+                seat.SEAT_AMOUNT,
+                seat.SEAT_TYPE,
+                zone.ZONE_ID,
+                zone.ZONE_NAME ,
+                karaoke.KARAOKE_PRICEPERHOUR,
+                karaoke.KARAOKE_FLATRATE,
+                service.SERVICE_CUSAMOUNT
+            FROM
+                service
+                JOIN serviceseat ON service.SERVICE_ID = serviceseat.SERSEAT_SERVICEID
+                JOIN seat ON serviceseat.SERSEAT_SEATID = seat.SEAT_ID
+                LEFT JOIN karaoke ON seat.SEAT_ID = karaoke.KARAOKE_ID
+                JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID 
+            WHERE
+                service.SERVICE_ID = '$serviceID'
                 ";
         $query = $this->db->query($sql);
         return $query->result();

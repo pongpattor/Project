@@ -18,7 +18,7 @@ class service extends CI_Controller
     {
         $data['deskEmpty'] = $this->service_model->deskEmpty();
         $data['karaokeEmpty'] = $this->service_model->karaokeEmpty();
-        $data['zone'] = $this->crud_model->findSelectWhere('zone', 'ZONE_ID,ZONE_NAME', 'ZONE_STATUS', '1');
+        $data['zone'] = $this->service_model->ZoneSeat();
         $data['page'] = 'storefont_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -73,12 +73,12 @@ class service extends CI_Controller
                     'DTSER_ID' => $serviceID,
                     'DTSER_NO' => '1',
                     'DTSER_TYPEORDER' => '3', #DTSERTYPE 1 = PRODUCT , 2 = PROMOTION , 3 = KARAOKE
-                    'DTSER_TYPEUSE' => '2', #DTSERTYPE 1 = HERE , 2 = HOME 
+                    'DTSER_TYPEUSE' => '1', #DTSERTYPE 1 = HERE , 2 = HOME 
                     'DTSER_DATE' => $serviceDStart,
                     'DTSER_TIME' => $serviceTStart,
                     'DTSER_AMOUNT' => $karaokeUseAmount,
                     'DTSER_NOTE' => '',
-                    'DTSER_REMAINDER' => '1',
+                    'DTSER_REMAINDER' => $karaokeUseAmount,
                     'DTSER_STATUS' => '4',
                 );
                 $this->crud_model->insert('servicedetail', $dataDetailService);
@@ -425,5 +425,93 @@ class service extends CI_Controller
                 $this->kitchen_model->updateDetailFoodDrink($serviceID, $serviceNO, '3');
             }
         }
+    }
+
+    public function selectChangeSeat()
+    {
+        $serviceID =  $this->input->get('serviceID');
+        $data['seatCurrent'] = $this->service_model->seatCurrent($serviceID);
+        $data['deskEmpty'] = $this->service_model->deskEmpty();
+        $data['karaokeEmpty'] = $this->service_model->karaokeEmpty();
+        $data['zone'] = $this->service_model->ZoneSeat();
+        $data['page'] = 'servicechangeseat_view';
+        $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function changeSeat()
+    {
+        $data['test'] = $_POST;
+        $serviceID = $this->input->post('serviceID');
+        $useKaraoke = 0;
+        if ($this->input->post('deskEmpty') != null) {
+            $serviceSeat = $this->input->post('deskEmpty');
+        } else {
+            $serviceSeat = $this->input->post('karaokeEmpty');
+            $useKaraoke = 1;
+        }
+        $OldSeat = $this->crud_model->findSelectWhere('serviceseat', 'SERSEAT_SEATID,SERSEAT_SEATSPLIT', 'SERSEAT_SERVICEID', $serviceID);
+        foreach ($OldSeat as $rowOld) {
+            if ($rowOld->SERSEAT_SEATSPLIT == null || $rowOld->SERSEAT_SEATSPLIT == '') {
+                $dataSeatActive = array(
+                    'SEAT_ACTIVE' => '0'
+                );
+                $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $rowOld->SERSEAT_SEATID);
+                $this->crud_model->delete('serviceseat', 'SERSEAT_SERVICEID', $serviceID);
+            } else {
+                $this->crud_model->delete('serviceseat', 'SERSEAT_SERVICEID', $serviceID);
+                $cntSeatSplit =  $this->service_model->checkCancelServiceSplit($rowOld->SERSEAT_SEATID);
+                if ($cntSeatSplit == 0) {
+                    $statusSeat = array(
+                        'SEAT_ACTIVE' => '0'
+                    );
+                    $this->crud_model->update('seat', $statusSeat, 'SEAT_ID', $rowOld->SERSEAT_SEATID);
+                }
+            }
+        }
+        for ($i = 0; $i < count($serviceSeat); $i++) {
+            $dataServiceSeat = array(
+                'SERSEAT_SEATID' => $serviceSeat[$i],
+                'SERSEAT_SERVICEID' => $serviceID,
+            );
+            $this->crud_model->insert('serviceseat', $dataServiceSeat);
+            $dataSeatActive = array(
+                'SEAT_ACTIVE' => '1'
+            );
+            $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $serviceSeat[$i]);
+        }
+        if ($useKaraoke == 1) {
+            $ServiceMaxNo = $this->crud_model->maxWhere('servicedetail', 'DTSER_NO', 'DTSER_ID', $serviceID);
+            if ($ServiceMaxNo == null) {
+                $ServiceMaxNo = 1;
+            } else {
+                $ServiceMaxNo++;
+            }
+            $karaokeUsetype = $this->input->post('karaokeUsetype');
+            $karaokeUseAmount = $this->input->post('karaokeUseAmount');
+            $date = date('Y-m-d');
+            $time = date('H:i:s');
+            $dataDetailService = array(
+                'DTSER_ID' => $serviceID,
+                'DTSER_NO' => $ServiceMaxNo,
+                'DTSER_TYPEORDER' => '3', #DTSERTYPE 1 = PRODUCT , 2 = PROMOTION , 3 = KARAOKE
+                'DTSER_TYPEUSE' => '1', #DTSERTYPE 1 = HERE , 2 = HOME 
+                'DTSER_DATE' => $date,
+                'DTSER_TIME' => $time,
+                'DTSER_AMOUNT' => $karaokeUseAmount,
+                'DTSER_NOTE' => '',
+                'DTSER_REMAINDER' => $karaokeUseAmount,
+                'DTSER_STATUS' => '4',
+            );
+            $this->crud_model->insert('servicedetail', $dataDetailService);
+            $dataKaraokeService = array(
+                'KARADTSER_ID' => $serviceID,
+                'KARADTSER_NO' => $ServiceMaxNo,
+                'KARADTSER_KARAOKEID' => $serviceSeat['0'],
+                'KARADTSER_USETYPE' => $karaokeUsetype,
+            );
+            $this->crud_model->insert('servicedetailkaraoke', $dataKaraokeService);
+        }
+        $data['url'] = site_url('admin/service/instore');
+        echo json_encode($data);
     }
 }

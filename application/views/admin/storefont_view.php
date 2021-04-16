@@ -74,7 +74,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <button type="button" class="btn btn-warning float-right" id="viewKaraoke" data-toggle="modal" data-target="#viewKaraokeModal">
-                                                <i class="fa fa-eye"></i>
+                                                ตารางห้องคาราโอเกะที่ถูกใช้งาน
                                             </button>
                                             <div class="modal fade" id="viewKaraokeModal" tabindex="-1" role="dialog" aria-labelledby="viewKaraokeModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">

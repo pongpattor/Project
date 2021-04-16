@@ -91,10 +91,9 @@
                                                             <button name="orderServiceID" class="btn btn-warning" value="<?= $row->SERVICE_ID ?>"><i class="fa fa-book-open"></i></button>
                                                         </form>
                                                     </td>
-                                                    <td class="align-middle" style="text-align: center;"><button class="btn btn-success"><i class="fa fa-chair"></i></button></td>
+                                                    <td class="align-middle" style="text-align: center;"><a  href="<?= site_url('admin/service/selectChangeSeat?serviceID=') . $row->SERVICE_ID ?>" class="btn btn-success"><i class="fa fa-chair"></i></a></td>
                                                     <td class="align-middle" style="text-align: center;">
                                                         <?php if ($row->dtscnt > 0) { ?>
-                                                            <!-- <button class="btn btn-info"><i class="fa fa-credit-card"></i></button> -->
                                                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#creditModal<?= $rowi ?>">
                                                                 <i class="fa fa-credit-card"></i>
                                                             </button>
