@@ -164,18 +164,5 @@
             $(`#${rowid}`).remove();
         });
 
-        // $('#SelectServicePaymentForm').on('submit', function(e) {
-        //     e.preventDefault();
-        //     $.ajax({
-        //         url: "",
-        //         method : "POST",
-        //         data: $(this).serialize(),
-        //         dataType : "JSON",
-        //         success:function(data){
-        //            console.log(data); 
-        //         }
-        //     })
-        // });
-
     });
 </script>

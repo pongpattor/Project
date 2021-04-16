@@ -390,27 +390,6 @@
             });
         });
 
-        // $(document).on('click', '.ingredientModalTable', function() {
-        //     $.ajax({
-        //         url: "<?= site_url('admin/kitchen/changeIngredient') ?>",
-        //         dataType: "JSON",
-        //         success: function(data) {
-        //             let table = '';
-        //             let rowi = 1;
-        //             $.each(data.ingredient, function(key, value) {
-        //                 table += `<tr id="${value.INGREDIENT_ID}">
-        //                             <td class="align-middle" style="text-align: center;">${rowi}</td>
-        //                             <td class="align-middle" style="text-align: center;">${value.INGREDIENT_NAME}</td>
-        //                             <td class="align-middle" style="text-align: center;">${rowi}</td>
-
-        //                          </tr>`;
-        //                 rowi++;
-        //             });
-        //             $('.ingredientBody').html(table);
-        //         },
-        //     });
-        // });
-
         function refreshpage() {
             location.reload();
         }

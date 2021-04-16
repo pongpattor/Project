@@ -97,17 +97,5 @@
             }
         });
 
-        // $('#splitOrderForm').on('submit', function(e) {
-        //     e.preventDefault();
-        //     $.ajax({
-        //         url: "<?= site_url('admin/payment/paySplit') ?>",
-        //         method: "POST",
-        //         data: $(this).serialize(),
-        //         dataType: "JSON",
-        //         success: function(data) {
-        //             console.log(data);
-        //         }
-        //     });
-        // });
     });
 </script>

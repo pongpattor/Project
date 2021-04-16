@@ -221,10 +221,4 @@ class product extends CI_Controller
 
     }
 
-    //ตัดช่องว่าง
-    // public function trimSpace($name)
-    // {
-    //     $newStr2 = mb_ereg_replace('[[:space:]]+', '', trim($name));
-    //     return $newStr2;
-    // }
 }
