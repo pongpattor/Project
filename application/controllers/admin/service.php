@@ -23,6 +23,11 @@ class service extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
+    public function  viewKaraokeUse()
+    {
+        $data['ViewKaraoke'] = $this->service_model->viewKaraokeUse();
+        echo json_encode($data);
+    }
 
     public function insertEnterService()
     {
@@ -228,15 +233,16 @@ class service extends CI_Controller
     {
         $serviceID = $this->input->get('detailServiceID');
         $data['serviceDetail'] = $this->service_model->serviceDetail($serviceID);
-
         $data['page'] = 'servicedetail_view';
         $this->load->view('admin/servicemain_view', $data);
     }
 
     public function serviceOrder()
     {
-        $data['order'] = $this->service_model->order();
+
+        $data['order'] = $this->service_model->Order();
         $data['recom'] = $this->service_model->recommendedProduct();
+        $data['hotsell'] = $this->service_model->orderHotSell();
         $data['page'] = 'serviceorder_view';
         $this->load->view('admin/servicemain_view', $data);
     }
@@ -420,6 +426,4 @@ class service extends CI_Controller
             }
         }
     }
-
-
 }

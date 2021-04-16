@@ -62,9 +62,52 @@
                         <div class="col-6">
                             <div class="card boder-0 shadow-lg h-100">
                                 <div class="card-header  bg-dark text-white ">
-                                    <h4 class="d-inline">ห้องคาราโอเกะว่าง</h4>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h4 class="d-inline ">
+                                                ห้องคาราโอเกะว่าง
+                                            </h4>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="button" class="btn btn-warning float-right" id="viewKaraoke" data-toggle="modal" data-target="#viewKaraokeModal">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                            <div class="modal fade" id="viewKaraokeModal" tabindex="-1" role="dialog" aria-labelledby="viewKaraokeModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="viewKaraokeModalLabel">ตารางการใช้งานห้องคาราโอเกะ</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="table-responsive ViewKaraokeMD" id="modal">
+                                                                <table class="table  table-bordered table-sm" width="100%" cellspacing="0" id="viewKaraokeTable">
+                                                                    <thead class="thead-dark">
+                                                                        <tr>
+                                                                            <th style="text-align: center;">ห้องคาราโอเกะ</th>
+                                                                            <th style="text-align: center;">โซน</th>
+                                                                            <th style="text-align: center;">เวลาหมด</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="ViewKaraokeBody">
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <?php
                                     foreach ($zone as $row) : ?>
                                         <h4><?= $row->ZONE_NAME; ?></h4>
@@ -155,6 +198,58 @@
 
 <script>
     $(document).ready(function() {
+
+
+
+        $(document).on('click', '#viewKaraoke', function() {
+            $.ajax({
+                url: "<?= site_url('admin/service/viewKaraokeUse') ?>",
+                dataType: "JSON",
+                success: function(data) {
+                    var time;
+                    let table = `<table class="table  table-bordered table-sm" width="100%" cellspacing="0" id="viewKaraokeTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="align-middle" style="text-align: center;">ห้องคาราโอเกะ</th>
+                                            <th class="align-middle" style="text-align: center;">โซน</th>
+                                            <th class="align-middle" style="text-align: center;">เวลาหมด</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ViewKaraokeBody">`;
+                    $(data.ViewKaraoke).each(function(key, value) {
+                        time = value.TIMEEND;
+                        time = time.substr(0, 5);
+                        time = time.replace(':', '.');
+                        time += ' น.';
+                        table += `
+                                <tr>
+                                <td class="align-middle" style="text-align: center;">${value.SEAT_NAME}</td>
+                                <td class="align-middle" style="text-align: center;">${value.ZONE_NAME}</td>
+                                <td class="align-middle" style="text-align: center;">${time}</td>
+                                </tr>
+                                `;
+                    });
+                    table += `      </tbody>
+                                </table>`;
+                    $('.ViewKaraokeMD').html(table);
+                    $('#viewKaraokeTable').dataTable({
+                        "lengthMenu": [
+                            [5, 10, 25, -1],
+                            [5, 10, 25, "All"]
+                        ],
+                        "columnDefs": [{
+                            "className": "dt-center",
+                            "targets": "_all"
+                        }],
+                        "language": {
+                            "emptyTable": "ไม่มีข้อมูล กรุณาเลือกวันที่จองก่อน",
+                            "zeroRecords": "ไม่มีข้อมูลที่คุณค้นหา"
+                        }
+                    });
+                }
+            });
+        });
+
         $('.useKaraokeEmpty').on('change', function() {
             seatAmountAllE();
             var rowid = $(this).parents('tr').attr('id');

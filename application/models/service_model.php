@@ -4,6 +4,39 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class service_model extends CI_Model
 {
 
+
+    public function viewKaraokeUse()
+    {
+        $sql = "SELECT
+                    seat.SEAT_NAME,	
+                    sk.TIMEEND,
+                    zone.ZONE_NAME 
+                FROM
+                    seat
+                    JOIN zone ON seat.SEAT_ZONE = zone.ZONE_ID
+                    JOIN serviceseat ON seat.SEAT_ID = serviceseat.SERSEAT_SEATID
+                    JOIN (
+                    SELECT
+                        service.SERVICE_ID,
+                        TIMESTAMPADD(HOUR,servicedetail.DTSER_AMOUNT,servicedetail.DTSER_TIME) AS TIMEEND
+                
+                    FROM
+                        service
+                        JOIN servicedetail ON service.SERVICE_ID = servicedetail.DTSER_ID
+                        JOIN servicedetailkaraoke ON ( servicedetail.DTSER_ID = servicedetailkaraoke.KARADTSER_ID AND servicedetail.DTSER_NO = servicedetailkaraoke.KARADTSER_NO ) 
+                    WHERE
+                        servicedetailkaraoke.KARADTSER_USETYPE = '2' 
+                        AND service.SERVICE_STATUS = '1' 
+                    ) sk ON sk.SERVICE_ID = serviceseat.SERSEAT_SERVICEID 
+                WHERE
+                    seat.SEAT_TYPE = '2' 
+                    AND seat.SEAT_STATUS = '1'
+                    ORDER BY TIMEEND ASC
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function service($search, $limit, $offset)
     {
         $sql = "SELECT
@@ -248,6 +281,42 @@ class service_model extends CI_Model
         return $query->result();
     }
 
+    public function orderHotSell()
+    {
+        $sql = "SELECT
+                    product.PRODUCT_ID,
+                    product.PRODUCT_NAME,
+                    product.PRODUCT_IMAGE,
+                    product.PRODUCT_SELLPRICE                
+                FROM
+                    receipt
+                    JOIN receiptdetail ON receipt.RECEIPT_ID = receiptdetail.DTREC_ID
+                    LEFT JOIN (
+                    SELECT
+                        receiptdetailproset.PROSDTREC_ID,
+                        receiptdetailproset.PROSDTREC_NO,
+                        receiptdetailprosetdetail.DPRODTREC_DETAILNO,
+                        receiptdetailprosetdetail.DPRODTREC_PRODUCT,
+                        receiptdetailprosetdetail.DPRODTREC_AMOUNT,
+                        receiptdetailprosetdetail.DPRODTREC_COSTPRICE,
+                        receiptdetailprosetdetail.DPRODTREC_SELLPRICE 
+                    FROM
+                        receiptdetailproset
+                        JOIN receiptdetailprosetdetail ON ( receiptdetailproset.PROSDTREC_ID = receiptdetailprosetdetail.DPRODTREC_ID AND receiptdetailproset.PROSDTREC_NO = receiptdetailprosetdetail.DPRODTREC_NO ) 
+                    ) prodtrec ON ( receiptdetail.DTREC_ID = prodtrec.PROSDTREC_ID AND receiptdetail.DTREC_NO = prodtrec.PROSDTREC_NO )
+                    LEFT JOIN receiptdetailfd ON ( receiptdetail.DTREC_ID = receiptdetailfd.FDDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailfd.FDDTREC_NO )
+                    JOIN product ON ( prodtrec.DPRODTREC_PRODUCT = product.PRODUCT_ID OR receiptdetailfd.FDDTREC_PRODUCTID = product.PRODUCT_ID ) 
+                WHERE
+                    receiptdetail.DTREC_TYPEORDER != '3'
+                    AND MONTH(receipt.RECEIPT_DATE) = MONTH(CURRENT_DATE)
+                    AND product.PRODUCT_STATUS = '1'
+                    GROUP BY 	product.PRODUCT_ID
+                LIMIT 0 ,10    
+        ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
 
     public function checkOrderForCancel($serviceID, $serviceNO)
     {
@@ -301,7 +370,7 @@ class service_model extends CI_Model
                     JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID
                     JOIN product ON promotionsetdetail.PROSETDETAIL_PRODUCT = product.PRODUCT_ID 
                 WHERE
-                    product.PRODUCT_ID = 'PD21010005' 
+                    product.PRODUCT_ID = '$productID' 
                     AND ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND )
         ";
         $query = $this->db->query($sql);
@@ -310,37 +379,78 @@ class service_model extends CI_Model
 
     public function Order()
     {
-        $sql = "SELECT
-                    product.PRODUCT_ID,
-                    product.PRODUCT_NAME,
-                    product.PRODUCT_IMAGE,
-                    product.PRODUCT_SELLPRICE,
-                    product.PRODUCT_ACTIVE,
-                    product.PRODUCT_STATUS,
-                    recipe.RECIPE_ID,
-                    proprice.PROMOTIONPRICE_NAME,
-                    proprice.PROMOTIONPRICE_DISCOUNT,
-                    ( product.PRODUCT_SELLPRICE - ( ( product.PRODUCT_SELLPRICE / 100 ) * proprice.PROMOTIONPRICE_DISCOUNT ) ) AS PRICE_DISCOUNT 
+        // $sql = "SELECT
+        //             product.PRODUCT_ID,
+        //             product.PRODUCT_NAME,
+        //             product.PRODUCT_IMAGE,
+        //             product.PRODUCT_SELLPRICE,
+        //             product.PRODUCT_ACTIVE,
+        //             product.PRODUCT_STATUS,
+        //             recipe.RECIPE_ID,
+        //             typeproduct.TYPEPRODUCT_NAME,
+        //             proprice.PROMOTIONPRICE_NAME,
+        //             proprice.PROMOTIONPRICE_DISCOUNT,
+        //             ( product.PRODUCT_SELLPRICE - ( ( product.PRODUCT_SELLPRICE / 100 ) * proprice.PROMOTIONPRICE_DISCOUNT ) ) AS PRICE_DISCOUNT 
+        //         FROM
+        //             product
+        //             JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
+        //             LEFT JOIN recipe ON product.PRODUCT_ID = recipe.RECIPE_PRODUCT
+        //             LEFT JOIN (
+        //             SELECT
+        //                 promotionprice.PROMOTIONPRICE_NAME,
+        //                 promotionprice.PROMOTIONPRICE_DISCOUNT,
+        //                 promotionpricedetail.PROPRICE_PRODUCT 
+        //             FROM
+        //                 promotionprice
+        //                 JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID 
+        //             WHERE
+        //                 ( CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
+        //                 AND promotionprice.PROMOTIONPRICE_STATUS = '1' 
+        //             ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT 
+        //         WHERE
+        //             ( ( typeproduct.TYPEPRODUCT_GROUP = '1' AND recipe.RECIPE_ID IS NOT NULL ) OR ( typeproduct.TYPEPRODUCT_GROUP = '2' ) ) 
+        //             AND product.PRODUCT_STATUS = '1'
+        // ";
+
+        $sql="SELECT
+                product.PRODUCT_ID,
+                product.PRODUCT_NAME,
+                product.PRODUCT_IMAGE,
+                typeproduct.TYPEPRODUCT_NAME,
+                product.PRODUCT_SELLPRICE,
+                product.PRODUCT_ACTIVE,
+                product.PRODUCT_SELLPRICE,
+                IFNULL(	proset.PROMOTIONSET_ID,proprice.PROMOTIONPRICE_ID) as pro,
+                ( product.PRODUCT_SELLPRICE - ( ( product.PRODUCT_SELLPRICE / 100 ) * proprice.PROMOTIONPRICE_DISCOUNT ) ) AS PRICE_DISCOUNT 
+            FROM
+                product
+                JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
+                LEFT JOIN (
+                SELECT
+                    promotionset.PROMOTIONSET_ID,
+                    promotionsetdetail.PROSETDETAIL_PRODUCT 
                 FROM
-                    product
-                    JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
-                    LEFT JOIN recipe ON product.PRODUCT_ID = recipe.RECIPE_PRODUCT
-                    LEFT JOIN (
-                    SELECT
-                        promotionprice.PROMOTIONPRICE_NAME,
-                        promotionprice.PROMOTIONPRICE_DISCOUNT,
-                        promotionpricedetail.PROPRICE_PRODUCT 
-                    FROM
-                        promotionprice
-                        JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID 
-                    WHERE
-                        ( CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
-                        AND promotionprice.PROMOTIONPRICE_STATUS = '1' 
-                    ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT 
+                    promotionset
+                    JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID 
                 WHERE
-                    ( ( typeproduct.TYPEPRODUCT_GROUP = '1' AND recipe.RECIPE_ID IS NOT NULL ) OR ( typeproduct.TYPEPRODUCT_GROUP = '2' ) ) 
-                    AND product.PRODUCT_STATUS = '1'
-        ";
+                    ( CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND ) 
+                    AND promotionset.PROMOTIONSET_STATUS = '1' 
+                ) proset ON product.PRODUCT_ID = proset.PROSETDETAIL_PRODUCT
+                LEFT JOIN (
+                SELECT
+                    promotionprice.PROMOTIONPRICE_ID,
+                    promotionpricedetail.PROPRICE_PRODUCT,
+                    promotionprice.PROMOTIONPRICE_DISCOUNT
+                FROM
+                    promotionprice
+                    JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID 
+                WHERE
+                    ( CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
+                AND promotionprice.PROMOTIONPRICE_STATUS = '1' 
+                ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT
+                WHERE product.PRODUCT_STATUS ='1'
+                GROUP BY product.PRODUCT_ID
+                ";
         $query = $this->db->query($sql);
         return $query->result();
     }
