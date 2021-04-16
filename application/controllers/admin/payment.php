@@ -78,9 +78,9 @@ class payment extends CI_Controller
         }
     }
 
+
     public function insertPayment()
     {
-        $data['test'] = $_POST;
         $memberType = $this->input->post('member');
         $receiptID = $this->genIdReceipt();
         $receiptDate = date('y-m-d');
@@ -150,7 +150,7 @@ class payment extends CI_Controller
 
             if ($receiptDetailTpyeOrder[$i] == '1') {
                 $proprice = null;
-                if($receiptDetailProprice[$i] != '' || $receiptDetailProprice[$i] != null){
+                if ($receiptDetailProprice[$i] != '' || $receiptDetailProprice[$i] != null) {
                     $proprice = $receiptDetailProprice[$i];
                 }
                 $dataReceiptDetailFD = array(
@@ -176,10 +176,10 @@ class payment extends CI_Controller
                         'DPRODTREC_DETAILNO' => $rowDetailSet->PROSETDETAIL_NO,
                         'DPRODTREC_COSTPRICE' => $rowDetailSet->PRODUCT_COSTPRICE,
                         'DPRODTREC_SELLPRICE' => $rowDetailSet->PRODUCT_SELLPRICE,
-                        'DPRODTREC_AMOUNT' => ($rowDetailSet->PROSETDETAIL_AMOUNT*$receiptDetailAmount[$i]),
+                        'DPRODTREC_AMOUNT' => ($rowDetailSet->PROSETDETAIL_AMOUNT * $receiptDetailAmount[$i]),
                         'DPRODTREC_PRODUCT' => $rowDetailSet->PRODUCT_ID,
                     );
-                    $this->crud_model->insert('receiptdetailprosetdetail',$dataDetailProset);
+                    $this->crud_model->insert('receiptdetailprosetdetail', $dataDetailProset);
                 };
             } else if ($receiptDetailTpyeOrder[$i] == '3') {
                 $dataReceiptDetailKaraoke = array(
@@ -226,6 +226,194 @@ class payment extends CI_Controller
                 }
             }
         }
+        $data['url'] = site_url('admin/service/storefont');
+        echo json_encode($data);
+    }
+
+    public function selectSplitOrder()
+    {
+        $this->load->model('service_model');
+        $serviceID = $this->input->get('serviceID');
+        $data['orderDetail'] = $this->payment_model->serviceSplitDetail($serviceID);
+        $data['page'] = 'paymentselectorder_view';
+        $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function paySplit()
+    {
+        // $data['test'] = $_POST;
+        $data['serviceID'] = $this->input->post('serviceID');
+        $data['serviceNo'] = $this->input->post('OrderNo');
+        $data['splitOrderID'] = $this->input->post('orderID');
+        $data['splitOrderAmount'] = $this->input->post('orderAmount');
+        $serviceNo = '';
+        for ($i = 0; $i < count($data['serviceNo']); $i++) {
+            $serviceNo .= $data['serviceNo'][$i];
+            if ($i < (count($data['serviceNo']) - 1)) {
+                $serviceNo .= ',';
+            }
+        }
+        $data['typepayment'] = $this->crud_model->findSelectWhere('typepayment', 'TYPEPAYMENT_ID,TYPEPAYMENT_NAME', 'TYPEPAYMENT_STATUS', '1');
+        $data['payment'] = $this->payment_model->paySplit($data['serviceID'], $serviceNo);
+        $data['page'] = 'paymentsplit_view';
+        $this->load->view('admin/servicemain_view', $data);
+    }
+
+    public function insertSplitPayment()
+    {
+        $memberType = $this->input->post('member');
+        $receiptID = $this->genIdReceipt();
+        $receiptDate = date('y-m-d');
+        $receiptTime = date('H:i');
+        $receiptDiscountTotal =   $this->input->post('totalDiscount');
+        $receiptPriceDiscount = $this->input->post('totalPrice');
+        $receiptVat = $this->input->post('totalVat');
+        $receiptPriceTotal = $this->input->post('total');
+        $receiptPayAll = $this->input->post('payAll');
+        $receiptPayChange = $this->input->post('payChange');
+        $receiptDetailTpyeOrder = $this->input->post('tpyeOrder');
+        $receiptDetailPriceUnit = $this->input->post('sellPrice');
+        $receiptDetailAmount = $this->input->post('Amount');
+        $receiptDetailDiscount = $this->input->post('discount');
+        $receiptDetailPriceAll = $this->input->post('sumPrice');
+        $receiptDetailOrderID = $this->input->post('orderID');
+        $receiptDetailCostFD = $this->input->post('costPrice');
+        $receiptDetailCostFD = $this->input->post('costPrice');
+        $receiptDetailProprice = $this->input->post('proprice');
+        $receiptDetailKaraokeUseType = $this->input->post('karaokeUsetype');
+        $typePaymentID = $this->input->post('typepaymentID');
+        $pricePayment = $this->input->post('pricePayment');
+        $serviceID = $this->input->post('serviceID');
+        $serviceNO = $this->input->post('serviceNO');
+        $splitOrderAmount = $this->input->post('splitOrderAmount');
+        if ($memberType == '1') {
+            $dataHeadReceipt = array(
+                'RECEIPT_ID' => $receiptID,
+                'RECEIPT_MEMBER' => null,
+                'RECEIPT_DATE' => $receiptDate,
+                'RECEIPT_TIME' => $receiptTime,
+                'RECEIPT_DISCOUNTTOTAL' => $receiptDiscountTotal,
+                'RECEIPT_PRICEDISCOUNT' => $receiptPriceDiscount,
+                'RECEIPT_VAT' => $receiptVat,
+                'RECEIPT_PRICETOTAL' => $receiptPriceTotal,
+                'RECEIPT_PAYALL' => $receiptPayAll,
+                'RECEIPT_PAYCHANGE' => $receiptPayChange,
+                'RECEIPT_STATUS' => '1',
+            );
+        } else {
+            $memberID = $this->input->post('memberID');
+            $dataHeadReceipt = array(
+                'RECEIPT_ID' => $receiptID,
+                'RECEIPT_MEMBER' => $memberID,
+                'RECEIPT_DATE' => $receiptDate,
+                'RECEIPT_TIME' => $receiptTime,
+                'RECEIPT_DISCOUNTTOTAL' => $receiptDiscountTotal,
+                'RECEIPT_PRICEDISCOUNT' => $receiptPriceDiscount,
+                'RECEIPT_VAT' => $receiptVat,
+                'RECEIPT_PRICETOTAL' => $receiptPriceTotal,
+                'RECEIPT_PAYALL' => $receiptPayAll,
+                'RECEIPT_PAYCHANGE' => $receiptPayChange,
+                'RECEIPT_STATUS' => '1',
+            );
+        }
+        $this->crud_model->insert('receipt', $dataHeadReceipt);
+
+        for ($i = 0; $i < count($receiptDetailTpyeOrder); $i++) {
+            $dataReceiptDetail = array(
+                'DTREC_ID' => $receiptID,
+                'DTREC_NO' => $i + 1,
+                'DTREC_TYPEORDER' => $receiptDetailTpyeOrder[$i],
+                'DTREC_PRICEUNIT' => $receiptDetailPriceUnit[$i],
+                'DTREC_AMOUNT' => $receiptDetailAmount[$i],
+                'DTREC_DISCOUNTALL' => $receiptDetailDiscount[$i],
+                'DTREC_PRICEALL' => $receiptDetailPriceAll[$i],
+            );
+            $this->crud_model->insert('receiptdetail', $dataReceiptDetail);
+
+            if ($receiptDetailTpyeOrder[$i] == '1') {
+                $proprice = null;
+                if ($receiptDetailProprice[$i] != '' || $receiptDetailProprice[$i] != null) {
+                    $proprice = $receiptDetailProprice[$i];
+                }
+                $dataReceiptDetailFD = array(
+                    'FDDTREC_ID' => $receiptID,
+                    'FDDTREC_NO' => $i + 1,
+                    'FDDTREC_PRODUCTID' => $receiptDetailOrderID[$i],
+                    'FDDTREC_COSTPRICE' => $receiptDetailCostFD[$i],
+                    'FDDTREC_PROPRICEID' => $proprice,
+                );
+                $this->crud_model->insert('receiptdetailfd', $dataReceiptDetailFD);
+            } else if ($receiptDetailTpyeOrder[$i] == '2') {
+                $dataReceiptDetailProset = array(
+                    'PROSDTREC_ID' => $receiptID,
+                    'PROSDTREC_NO' => $i + 1,
+                    'PROSDTREC_PROSET' => $receiptDetailOrderID[$i],
+                );
+                $this->crud_model->insert('receiptdetailproset', $dataReceiptDetailProset);
+                $DetailProset = $this->payment_model->detailProset($receiptDetailOrderID[$i]);
+                foreach ($DetailProset as $rowDetailSet) {
+                    $dataDetailProset = array(
+                        'DPRODTREC_ID' => $receiptID,
+                        'DPRODTREC_NO' => $i + 1,
+                        'DPRODTREC_DETAILNO' => $rowDetailSet->PROSETDETAIL_NO,
+                        'DPRODTREC_COSTPRICE' => $rowDetailSet->PRODUCT_COSTPRICE,
+                        'DPRODTREC_SELLPRICE' => $rowDetailSet->PRODUCT_SELLPRICE,
+                        'DPRODTREC_AMOUNT' => ($rowDetailSet->PROSETDETAIL_AMOUNT * $receiptDetailAmount[$i]),
+                        'DPRODTREC_PRODUCT' => $rowDetailSet->PRODUCT_ID,
+                    );
+                    $this->crud_model->insert('receiptdetailprosetdetail', $dataDetailProset);
+                };
+            } else if ($receiptDetailTpyeOrder[$i] == '3') {
+                $dataReceiptDetailKaraoke = array(
+                    'KARADTREC_ID' => $receiptID,
+                    'KARADTREC_NO' => $i + 1,
+                    'KARADTREC_KARAOKEID' => $receiptDetailOrderID[$i],
+                    'KARADTREC_USETYPE' => $receiptDetailKaraokeUseType[$i],
+                );
+                $this->crud_model->insert('receiptdetailkaraoke', $dataReceiptDetailKaraoke);
+            }
+        }
+        for ($i = 0; $i < count($typePaymentID); $i++) {
+            $dataSplitPayment = array(
+                'SPLITPAY_RECEIPTID' => $receiptID,
+                'SPLITPAY_TYPEPAYMENTID' => $typePaymentID[$i],
+                'SPLITPAY_AMOUNT' => $pricePayment[$i],
+            );
+            $this->crud_model->insert('splitpay', $dataSplitPayment);
+        }
+        for ($k = 0; $k < count($serviceID); $k++) {
+            for ($s = 0; $s < count($serviceNO); $s++) {
+                $remainder = $splitOrderAmount[$s];
+                $this->payment_model->updateSplitRemainder($serviceID[$k], $serviceNO[$s], $remainder);
+            }
+            $CheckRemainder = $this->payment_model->checkServiceRemainder($serviceID[$k]);
+            foreach ($CheckRemainder as $rowk) {
+                if ($rowk->Allcnt == $rowk->cnt) {
+                    $dataHeadService = array(
+                        'SERVICE_STATUS' => '2'
+                    );
+                    $this->crud_model->update('service', $dataHeadService, 'SERVICE_ID', $serviceID[$k]);
+                    $seatID = $this->crud_model->findSelectWhere('serviceseat', 'SERSEAT_SEATID,SERSEAT_SEATSPLIT', 'SERSEAT_SERVICEID', $serviceID[$k]);
+                    foreach ($seatID as $rowSeat) {
+                        if ($rowSeat->SERSEAT_SEATSPLIT == null || $rowSeat->SERSEAT_SEATSPLIT == '') {
+                            $dataSeatActive = array(
+                                'SEAT_ACTIVE' => '0'
+                            );
+                            $this->crud_model->update('seat', $dataSeatActive, 'SEAT_ID', $rowSeat->SERSEAT_SEATID);
+                        } else {
+                            $cntSeatSplit =  $this->service_model->checkCancelServiceSplit($rowSeat->SERSEAT_SEATID);
+                            if ($cntSeatSplit == 0) {
+                                $statusSeat = array(
+                                    'SEAT_ACTIVE' => '0'
+                                );
+                                $this->crud_model->update('seat', $statusSeat, 'SEAT_ID', $rowSeat->SERSEAT_SEATID);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         $data['url'] = site_url('admin/service/storefont');
         echo json_encode($data);
     }

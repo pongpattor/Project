@@ -112,7 +112,7 @@
                 },
                 success: function() {
                     callServed();
-                    $(`#${rowid}`).remove();
+                    location.reload();
                 }
             });
         });

@@ -109,9 +109,8 @@
                                                                         </div>
                                                                         <div class="modal-body">
                                                                             <div class="row">
-                                                                                <!-- <div class="col"><a href="<?= site_url('admin/payment/pay?serviceID=') . $row->SERVICE_ID; ?>" class="btn btn-primary" style="color:white">ชำระเงิน</a></div> -->
                                                                                 <div class="col"><a href="<?= site_url('admin/payment/selectManyService?serviceID=') . $row->SERVICE_ID ?>" class="btn btn-primary" style="color:white">ชำระเงิน</a></div>
-                                                                                <div class="col"><a class="btn btn-success" style="color:white">แยกชำระเงิน</a></div>
+                                                                                <div class="col"><a href="<?= site_url('admin/payment/SelectSplitOrder?serviceID=') . $row->SERVICE_ID ?>" class="btn btn-success" style="color:white">แยกชำระเงิน</a></div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
