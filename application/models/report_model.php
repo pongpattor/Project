@@ -131,4 +131,46 @@ class report_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function reportCrossTab($year)
+    {
+        $sql = "SELECT
+                product.PRODUCT_ID,
+                product.PRODUCT_NAME,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-01' ) ),0) AS Jan,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-02' ) ),0) AS Feb,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-03' ) ),0) AS Mar,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-04' ) ),0) AS Apr,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-05' ) ),0) AS May,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-06' ) ),0) AS Jun,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-07' ) ),0) AS Jul,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-08' ) ),0) AS Aug,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-09' ) ),0) AS Sep,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-10' ) ),0) AS Oct,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-11' ) ),0) AS Nov,
+                IFNULL(SUM( rec.price * ( rec.yymm = '$year-12' ) ),0) AS 'Dec'
+            FROM
+                product
+                LEFT JOIN
+                (
+                SELECT
+                receiptdetailfd.FDDTREC_PRODUCTID,
+                SUM( receiptdetail.DTREC_PRICEUNIT * receiptdetail.DTREC_AMOUNT ) AS price,
+                SUBSTR( receipt.RECEIPT_DATE, 1, 7 ) AS yymm 
+            FROM
+                receipt
+                JOIN receiptdetail ON receipt.RECEIPT_ID = receiptdetail.DTREC_ID
+                JOIN receiptdetailfd ON ( receiptdetailfd.FDDTREC_ID = receiptdetail.DTREC_ID AND receiptdetailfd.FDDTREC_NO = receiptdetail.DTREC_NO ) 
+            WHERE
+                YEAR ( receipt.RECEIPT_DATE ) = '$year'
+                GROUP BY 	receiptdetailfd.FDDTREC_PRODUCTID
+                )rec ON rec.FDDTREC_PRODUCTID = product.PRODUCT_ID
+                GROUP BY product.PRODUCT_ID";
+
+        $query = $this->db->query($sql);
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
+        return $query->result();
+    }
 }

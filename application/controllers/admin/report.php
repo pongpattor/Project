@@ -59,4 +59,19 @@ class report extends CI_Controller
         $data['page'] = 'reportamountpromotion_view';
         $this->load->view('admin/main_view', $data);
     }
+
+    public function reportCrossTab()
+    {
+        if ($_GET == null) {
+            $data['state'] = false;
+            $data['links'] = null;
+        } else {
+            $data['state'] = true;
+            $year = $this->input->get('year');
+            $data['report'] = $this->report_model->reportCrossTab($year);
+        }
+        // print_r($data);
+        $data['page'] = 'reportcrosstab_view';
+        $this->load->view('admin/main_view', $data);
+    }
 }
