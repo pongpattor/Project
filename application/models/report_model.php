@@ -163,14 +163,14 @@ class report_model extends CI_Model
                 JOIN receiptdetailfd ON ( receiptdetailfd.FDDTREC_ID = receiptdetail.DTREC_ID AND receiptdetailfd.FDDTREC_NO = receiptdetail.DTREC_NO ) 
             WHERE
                 YEAR ( receipt.RECEIPT_DATE ) = '$year'
-                GROUP BY 	receiptdetailfd.FDDTREC_PRODUCTID
+                GROUP BY 	receiptdetailfd.FDDTREC_PRODUCTID,yymm
                 )rec ON rec.FDDTREC_PRODUCTID = product.PRODUCT_ID
                 GROUP BY product.PRODUCT_ID";
 
         $query = $this->db->query($sql);
-        // echo '<pre>';
-        // print_r($this->db->last_query($query));
-        // echo '</pre>';
+        echo '<pre>';
+        print_r($this->db->last_query($query));
+        echo '</pre>';
         return $query->result();
     }
 }
