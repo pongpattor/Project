@@ -523,13 +523,7 @@ $(document).ready(function () {
             }
         }
 
-
-
     });
-
-
-    //QUEUE END
-
 
     $('input[type=tel]').on('keypress', function (e) {
         if (e.charCode >= 48 && e.charCode <= 57) {

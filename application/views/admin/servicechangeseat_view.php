@@ -391,8 +391,7 @@
                     dataType: "JSON",
                     success: function(data) {
                         alert('ย้ายโต๊ะเสร็จสิ้น');
-                        location.reload();
-                        // console.log(data);
+                        location.replace(data.url);
                     }
                 });
             }

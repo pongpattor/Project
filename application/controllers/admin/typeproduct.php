@@ -82,6 +82,7 @@ class typeproduct extends CI_Controller
                 'TYPEPRODUCT_ID' => $typeProductID,
                 'TYPEPRODUCT_NAME' => $typeProductName,
                 'TYPEPRODUCT_GROUP' => $typeProductGroup,
+                'TYPEPRODUCT_STATUS' => '1',
             );
             $this->crud_model->insert('typeproduct', $dataTypeProduct);
             $data['url'] = site_url('admin/typeproduct');
@@ -158,6 +159,9 @@ class typeproduct extends CI_Controller
     public function deleteTypeProduct()
     {
         $typeProductID = $this->input->post('typeProductID');
-        $this->crud_model->delete('typeproduct', 'TYPEPRODUCT_ID', $typeProductID);
+        $dataStatus = array(
+            'TYPEPRODUCT_STATUS' => '0',
+        );
+        $this->crud_model->update('typeproduct',$dataStatus, 'TYPEPRODUCT_ID', $typeProductID);
     }
 }

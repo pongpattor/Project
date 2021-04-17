@@ -441,7 +441,12 @@ class service extends CI_Controller
     public function changeSeat()
     {
         $data['test'] = $_POST;
+        $AmountCustomerE = $this->input->post('AmountCustomerE');
         $serviceID = $this->input->post('serviceID');
+        $dataServiceCusAmount = array(
+            'SERVICE_CUSAMOUNT' => $AmountCustomerE
+        );
+        $this->crud_model->update('service', $dataServiceCusAmount, 'SERVICE_ID', $serviceID);
         $useKaraoke = 0;
         if ($this->input->post('deskEmpty') != null) {
             $serviceSeat = $this->input->post('deskEmpty');
