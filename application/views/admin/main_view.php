@@ -196,8 +196,8 @@
                             </a>
                             <div class="collapse" id="ReportcollapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="#">รายการสินค้า</a>
-                                    <a class="nav-link" href="#">รายการสินค้า</a>
+                                    <a class="nav-link" href="<?= site_url('admin/report/reportAmount') ?>">ยอดจำนวนการขาย</a>
+                                    <a class="nav-link" href="<?= site_url('admin/report/reportProfits') ?>">กำไร/ขาดทุนแต่ละประเภท</a>
                                     <a class="nav-link" href="#">รายการสินค้า</a>
                                     <a class="nav-link" href="#">รายการสินค้า</a>
                                     <a class="nav-link" href="#">รายการสินค้า</a>

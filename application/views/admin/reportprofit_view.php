@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">ออกรายงานยอดจำนวนการขายตามช่วงเวลา </h3>
+                <h3 class="d-inline">รายงานสรุปกำไร/ขาดทุนประเภทสินค้าตามช่วงเวลา </h3>
             </div>
         </div>
     </div>
@@ -69,7 +69,7 @@
                                             <tr>
                                                 <th style="text-align: center;">#</th>
                                                 <th style="text-align: center;">ชื่อสินค้า</th>
-                                                <th style="text-align: center;">จำนวนที่ขายได้</th>
+                                                <th style="text-align: center;">กำไร/ขาดทุน</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -80,7 +80,7 @@
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
                                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->profitss; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= $row->profit; ?></td>
                                                         </tr>
                                                     <?php $no++;
                                                     } ?>
@@ -104,7 +104,7 @@
                                             <tr>
                                                 <th style="text-align: center;">#</th>
                                                 <th style="text-align: center;">ชื่อสินค้า</th>
-                                                <th style="text-align: center;">จำนวนที่ขายได้</th>
+                                                <th style="text-align: center;">กำไร/ขาดทุน</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,7 +115,7 @@
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
                                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->profitss; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= $row->profit; ?></td>
                                                         </tr>
                                                     <?php $no++;
                                                     } ?>
@@ -149,7 +149,7 @@
                     $Drink = '';
                     foreach ($report as $rowPie) :
                         if ($rowPie->TYPEPRODUCT_GROUP == '2') {
-                            $Drink .= "['$rowPie->TYPEPRODUCT_NAME',$rowPie->profitss]";
+                            $Drink .= "['$rowPie->TYPEPRODUCT_NAME',$rowPie->profit]";
                             if ($rowPieNo < (count($report) - 1)) {
                                 $Drink .= ',';
                             }
@@ -180,7 +180,7 @@
                     $Food = '';
                     foreach ($report as $rowPie) :
                         if ($rowPie->TYPEPRODUCT_GROUP == '1') {
-                            $Food .= "['$rowPie->TYPEPRODUCT_NAME',$rowPie->profitss]";
+                            $Food .= "['$rowPie->TYPEPRODUCT_NAME',$rowPie->profit]";
                             if ($rowPieNo < (count($report) - 1)) {
                                 $Food .= ',';
                             }
@@ -205,9 +205,7 @@
         <?php }  ?>
 
         $(document).ready(function() {
-
-
-
+            
             $('#foodReporttable').dataTable({
                 "lengthMenu": [
                     [5, 10, 25, -1],

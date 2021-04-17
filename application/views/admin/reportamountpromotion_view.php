@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">รายงานยอดจำนวนการขายตามช่วงเวลา </h3>
+                <h3 class="d-inline">รายงานยอดจำนวนการใช้โปรโมชั่นตามช่วงเวลา </h3>
             </div>
         </div>
     </div>
@@ -17,7 +17,7 @@
                     <div class="col">
                         <div class="row">
                             <div class="col">
-                                <form action="<?= site_url('admin/report/reportAmount') ?>" method="GET" id="reportAmountForm">
+                                <form action="<?= site_url('admin/report/reportAmountPromotion') ?>" method="GET" id="reportAmountPromotionForm">
                                     <div class="row">
                                         <div class="col">
                                             <div class="row">
@@ -47,28 +47,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group row">
-                                                        <div class="col-4">
-                                                            <label for="sorting" class="col col-form-label">เรียง</label>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <select name="sorting" id="sorting" class="form-control" required>
-                                                                <option value="" selected disabled>กรุณาเลือก</option>
-                                                                <option value="ASC" <?php
-                                                                                    if ($this->input->get('sorting') == 'ASC') {
-                                                                                        echo 'selected';
-                                                                                    }
-                                                                                    ?>>น้อยไปมาก</option>
-                                                                <option value="DESC" <?php
-                                                                                        if ($this->input->get('sorting') == 'DESC') {
-                                                                                            echo 'selected';
-                                                                                        }
-                                                                                        ?>>มากไปน้อย</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
                                                     <button type="submit" class="btn btn-secondary float-left">ค้นหา <i class="fa fa-search"></i></button>
                                                 </div>
                                             </div>
@@ -83,29 +61,27 @@
                     <div class="col-6">
                         <div class="card  shadow-lg text-center h-100">
                             <div class="card-body">
-                                <h2 class="d-inline">อาหาร</h2>
-                                <div id="foodpiechart"></div>
+                                <h2 class="d-inline">โปรโมชั่นลดราคา</h2>
+                                <div id="propricepiechart"></div>
                                 <div class="table-responsive">
-                                    <table id="foodReporttable" class="table table-bordered table-sm" cellspacing="0" width="100%">
+                                    <table id="propricetable" class="table table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th style="text-align: center;">#</th>
-                                                <th style="text-align: center;">ชื่อสินค้า</th>
-                                                <th style="text-align: center;">จำนวนที่ขายได้</th>
+                                                <th style="text-align: center;">ชื่อโปรโมชั่น</th>
+                                                <th style="text-align: center;">จำนวนที่ใช้งาน</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if ($state == true) {
                                                 $no = 1;
-                                                foreach ($report as $row) : ?>
-                                                    <?php if ($row->TYPEPRODUCT_GROUP == '1') { ?>
-                                                        <tr>
-                                                            <td class="align-middle " style="text-align: center;"><?= $no ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->AllAmount; ?></td>
-                                                        </tr>
-                                                    <?php $no++;
-                                                    } ?>
+                                                foreach ($reportproprice as $rowprice) : ?>
+                                                    <tr>
+                                                        <td class="align-middle " style="text-align: center;"><?= $no ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= $rowprice->PROMOTIONPRICE_NAME; ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= $rowprice->cntpro; ?></td>
+                                                    </tr>
+                                                    <?php $no++;?>
                                             <?php
                                                 endforeach;
                                             } ?>
@@ -118,29 +94,27 @@
                     <div class="col-6">
                         <div class="card shadow-lg text-center h-100">
                             <div class="card-body ">
-                                <h2 class="d-inline">เครื่องดื่ม</h2>
-                                <div id="drinkpiechart"></div>
+                                <h2 class="d-inline">โปรโมชั่นเซ็ท</h2>
+                                <div id="prosetpiechart"></div>
                                 <div class="table-responsive">
-                                    <table id="drinkReporttable" class="table  table-bordered table-sm" cellspacing="0" width="100%">
+                                    <table id="prosettable" class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th style="text-align: center;">#</th>
-                                                <th style="text-align: center;">ชื่อสินค้า</th>
-                                                <th style="text-align: center;">จำนวนที่ขายได้</th>
+                                                <th style="text-align: center;">ชื่อโปรโมชั่น</th>
+                                                <th style="text-align: center;">จำนวนที่ใช้งาน</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if ($state == true) {
                                                 $no = 1;
-                                                foreach ($report as $row) : ?>
-                                                    <?php if ($row->TYPEPRODUCT_GROUP == '2') { ?>
+                                                foreach ($reportproset as $row) : ?>
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->AllAmount; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_NAME; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= $row->cntpro; ?></td>
                                                         </tr>
-                                                    <?php $no++;
-                                                    } ?>
+                                                    <?php $no++;?>
                                             <?php
                                                 endforeach;
                                             } ?>
@@ -160,77 +134,72 @@
             google.charts.load('current', {
                 'packages': ['corechart']
             });
-            google.charts.setOnLoadCallback(foodpiechart);
-            google.charts.setOnLoadCallback(drinkpiechart);
-
-            function drinkpiechart() {
+            google.charts.setOnLoadCallback(propricepiechart);
+            google.charts.setOnLoadCallback(prosetpiechart);
+            
+            function prosetpiechart() {
 
                 var data = google.visualization.arrayToDataTable([
-                    ['Task', 'ReportAmountDrink'],
+                    ['Task', 'ReportAmountProset'],
                     <?php $rowPieNo = 0;
-                    $Drink = '';
-                    foreach ($report as $rowPie) :
-                        if ($rowPie->TYPEPRODUCT_GROUP == '2') {
-                            $Drink .= "['$rowPie->PRODUCT_NAME',$rowPie->AllAmount]";
-                            if ($rowPieNo < (count($report) - 1)) {
-                                $Drink .= ',';
+                    $proset = '';
+                    foreach ($reportproset as $rowPie) :
+                            $proset .= "['$rowPie->PROMOTIONSET_NAME',$rowPie->cntpro]";
+                            if ($rowPieNo < (count($reportproset) - 1)) {
+                                $proset .= ',';
                             }
                             $rowPieNo++;
-                        }
+                        
                         if ($rowPieNo == 9) {
                             break;
                         }
                     endforeach;
-                    echo $Drink;
+                    echo $proset;
                     //         
                     ?>
                 ]);
 
                 var options = {
-                    title: 'จำนวนยอดขายสินค้า'
+                    title: 'กำไร/ขาดทุนประเภทเครื่องดื่ม'
                 };
-                document.getElementById("drinkpiechart").style.width = "100%";
-                document.getElementById("drinkpiechart").style.height = "350px";
-                var chart = new google.visualization.PieChart(document.getElementById('drinkpiechart'));
+                document.getElementById("prosetpiechart").style.width = "100%";
+                document.getElementById("prosetpiechart").style.height = "350px";
+                var chart = new google.visualization.PieChart(document.getElementById('prosetpiechart'));
                 chart.draw(data, options);
             }
 
-            function foodpiechart() {
+            function propricepiechart() {
                 var data = google.visualization.arrayToDataTable([
-                    ['Task', 'ReportAmountFood'],
+                    ['Task', 'ReportAmountProprice'],
                     <?php $rowPieNo = 0;
-                    $Food = '';
-                    foreach ($report as $rowPie) :
-                        if ($rowPie->TYPEPRODUCT_GROUP == '1') {
-                            $Food .= "['$rowPie->PRODUCT_NAME',$rowPie->AllAmount]";
-                            if ($rowPieNo < (count($report) - 1)) {
-                                $Food .= ',';
+                    $proprice = '';
+                    foreach ($reportproprice as $rowPie) :
+                            $proprice .= "['$rowPie->PROMOTIONPRICE_NAME',$rowPie->cntpro]";
+                            if ($rowPieNo < (count($reportproprice) - 1)) {
+                                $proprice .= ',';
                             }
                             $rowPieNo++;
-                        }
                         if ($rowPieNo == 9) {
                             break;
                         }
                     endforeach;
-                    echo $Food;
+                    echo $proprice;
                     ?>
                 ]);
 
                 var options = {
-                    title: 'จำนวนยอดขายสินค้า'
+                    title: 'กำไร/ขาดทุนประเภทอาหาร'
                 };
-                document.getElementById("foodpiechart").style.width = "100%";
-                document.getElementById("foodpiechart").style.height = "350px";
-                var chart = new google.visualization.PieChart(document.getElementById('foodpiechart'));
+                document.getElementById("propricepiechart").style.width = "100%";
+                document.getElementById("propricepiechart").style.height = "350px";
+                var chart = new google.visualization.PieChart(document.getElementById('propricepiechart'));
                 chart.draw(data, options);
             }
         <?php }  ?>
 
         $(document).ready(function() {
 
-
-
-            $('#foodReporttable').dataTable({
+            $('#propricetable').dataTable({
                 "lengthMenu": [
                     [5, 10, 25, -1],
                     [5, 10, 25, "All"]
@@ -245,7 +214,7 @@
                 }
             });
 
-            $('#drinkReporttable').dataTable({
+            $('#prosettable').dataTable({
                 "lengthMenu": [
                     [5, 10, 25, -1],
                     [5, 10, 25, "All"]
@@ -268,19 +237,17 @@
 
 
             function validationForm() {
-                var typeproduct = $('#typeProduct').val();
                 var dateStart = $('#dateStart').val();
                 var dateEnd = $('#dateEnd').val();
-                var sorting = $('#sorting').val();
                 let check = true;
-                if (typeproduct == '' || dateStart == '' || dateEnd == '' || sorting == '') {
+                if (dateStart == '' || dateEnd == '') {
                     check = false;
                 }
                 return check;
 
             }
 
-            $('#reportAmountForm').on('submit', function(e) {
+            $('#reportAmountPromotionForm').on('submit', function(e) {
                 var chk = validationForm();
                 if (chk == false) {
                     e.preventDefault();

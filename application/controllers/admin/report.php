@@ -23,7 +23,6 @@ class report extends CI_Controller
             $sorting = $this->input->get('sorting');
             $data['report'] = $this->report_model->reportAmountProduct($dateStart, $dateEnd, $sorting);
         }
-        // print_r($data);
         $data['page'] = 'reportamountproduct_view';
         $this->load->view('admin/main_view', $data);
     }
@@ -41,6 +40,23 @@ class report extends CI_Controller
         }
         // print_r($data);
         $data['page'] = 'reportprofit_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function reportAmountPromotion()
+    {
+        if ($_GET == null) {
+            $data['state'] = false;
+            $data['links'] = null;
+        } else {
+            $data['state'] = true;
+            $dateStart = $this->input->get('dateStart');
+            $dateEnd = $this->input->get('dateEnd');
+            $data['reportproprice'] = $this->report_model->reportProprice($dateStart, $dateEnd);
+            $data['reportproset'] = $this->report_model->reportProset($dateStart, $dateEnd);
+        }
+        // print_r($data);
+        $data['page'] = 'reportamountpromotion_view';
         $this->load->view('admin/main_view', $data);
     }
 }
