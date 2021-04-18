@@ -419,6 +419,17 @@ class payment extends CI_Controller
     }
 
 
+    public function bill()
+    {
+        $mpdf = new \Mpdf\Mpdf();
+        $html = $this->load->view('welcome_message','',TRUE);
+        $mpdf->AddPage('');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+    }
+
+
+
     public function typePayment()
     {
         $search = $this->input->get('search');
