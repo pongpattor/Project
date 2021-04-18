@@ -8,6 +8,12 @@ class queuewalkin extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][16] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            echo '<script>window.history.back();</script>';
+        }
         $this->load->model('crud_model');
         $this->load->model('queue_model');
         $this->load->library('pagination');

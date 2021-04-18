@@ -47,12 +47,14 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
+                    <?php if ($_SESSION['employeePermission']['16'] == '1' || $_SESSION['employeePermission']['17'] == '1' || $_SESSION['employeePermission']['18'] == '1'):?>
                         <div class="sb-sidenav-menu-heading">ระบบหน้าร้าน</div>
                         <!-- ไประบบหน้าร้าน -->
-                        <a class="nav-link" href="<?= site_url('admin/service/storefont') ?>">
+                        <a class="nav-link" href="<?= site_url('admin/service/index') ?>">
                             <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
                             ระบบจัดการหน้าร้าน
                         </a>
+                        <?php endif; ?>
                         <div class="sb-sidenav-menu-heading">ระบบหลังร้าน</div>
                         <!-- สมาชิก -->
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#CustomercollapseLayouts" aria-expanded="false" aria-controls="CustomercollapseLayouts" <?php if ($_SESSION['employeePermission']['0'] != '1' && $_SESSION['employeePermission']['1'] != '1') {
@@ -199,7 +201,7 @@
                                     <a class="nav-link" href="<?= site_url('admin/report/reportCrossTab') ?>">รายงานปริมาณยอดขายประจำปี</a>
                                     <a class="nav-link" href="<?= site_url('admin/report/reportAmount') ?>">รายงานยอดจำนวนการขาย</a>
                                     <a class="nav-link" href="<?= site_url('admin/report/reportProfits') ?>">รายงานกำไร/ขาดทุนแต่ละประเภท</a>
-                                    <a class="nav-link" href="#">รายการสินค้า</a>
+                                    <a class="nav-link" href="<?= site_url('admin/report/reportAmountQueue') ?>">รายงานยอดจำนวนการจองคิว</a>
                                     <a class="nav-link" href="<?= site_url('admin/report/reportAmountPromotion') ?>">รายงานจำนวนใช้งานโปรโมชั่น</a>
 
                                 </nav>

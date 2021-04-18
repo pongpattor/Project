@@ -8,6 +8,12 @@ class queue extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][16] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            echo '<script>window.history.back();</script>';
+        }
         $this->load->model('crud_model');
         $this->load->model('queue_model');
         $this->load->library('pagination');
@@ -96,7 +102,7 @@ class queue extends CI_Controller
         $queueDStart = $this->input->post('queueDate');
         $data['1'] = $customerTel;
         $data['2'] = $queueDStart;
-        $queueNo = $this->queue_model->checkCallQueue($customerTel, $queueDStart,'1');
+        $queueNo = $this->queue_model->checkCallQueue($customerTel, $queueDStart, '1');
         $data['checkCallQueue'] = $queueNo;
         echo json_encode($data);
     }
@@ -356,7 +362,7 @@ class queue extends CI_Controller
                 $dataSeat = array(
                     'SEAT_ACTIVE' => '1',
                 );
-                $this->crud_model->update('seat', $dataSeat,'SEAT_ID',$row->SEAT_ID);
+                $this->crud_model->update('seat', $dataSeat, 'SEAT_ID', $row->SEAT_ID);
                 $dataServiceSeat = array(
                     'SERSEAT_SEATID' => $row->SEAT_ID,
                     'SERSEAT_SERVICEID' => $serviceID,

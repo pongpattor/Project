@@ -10,7 +10,7 @@ class zone extends CI_Controller
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
         } 
-        else if ($_SESSION['employeePermission'][12] != 1) {
+        else if ($_SESSION['employeePermission'][11] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }

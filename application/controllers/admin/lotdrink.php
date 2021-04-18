@@ -7,6 +7,12 @@ class lotdrink extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][12] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('lot_model');
         $this->load->library('pagination');
@@ -172,12 +178,12 @@ class lotdrink extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteLotDrink(){
+    public function deleteLotDrink()
+    {
         $lotDrinkID = $this->input->post('lotDrinkID');
         $dataLotDrink = array(
             'LOT_STATUS' => '0',
         );
         $this->crud_model->update('lot', $dataLotDrink, 'LOT_ID', $lotDrinkID);
-
     }
 }

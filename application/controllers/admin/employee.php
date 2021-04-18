@@ -9,7 +9,7 @@ class employee extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['employeePermission'][3] != 1) {
+        } else if ($_SESSION['employeePermission'][2] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -229,13 +229,9 @@ class employee extends CI_Controller
         $data['district'] = $this->crud_model->findSelectWhere('district', 'DISTRICT_ID,DISTRICT_NAME', 'D_AMPHUR_ID', $amphurID);
         $districtID =  $data['employee']['0']->DISTRICT_ID;
         $data['postcode'] = $this->crud_model->findSelectWhere('district', 'POSTCODE', 'DISTRICT_ID', $districtID);
-        $data['department'] = $this->crud_model->findAll('department');
-        $positionID = $data['employee']['0']->POSITION_ID;
-        $data['position'] = $this->crud_model->findSelectWhere('position', 'POSITION_ID,POSITION_NAME', 'POSITION_ID', $positionID);
+        $data['department'] = $this->crud_model->findSelectWhere('department', 'DEPARTMENT_ID,DEPARTMENT_NAME', 'DEPARTMENT_STATUS', '1');
+        $data['position'] =  $this->crud_model->findSelect2Where('position', 'POSITION_ID,POSITION_NAME', 'POSITION_DEPARTMENT', $data['employee']['0']->POSITION_DEPARTMENT, 'POSITION_STATUS', '1');
         $data['employeeTel'] = $this->crud_model->findSelectWhere('employeetel', 'EMPLOYEETEL_ID,EMPLOYEETEL_TEL', 'EMPLOYEETEL_ID',  $employeeID);
-        // echo '<pre>';
-        // print_r($data);   
-        // echo '</pre>' ;
         $data['page'] = 'employee_edit_view';
         $this->load->view('admin/main_view', $data);
     }

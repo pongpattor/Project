@@ -1741,10 +1741,7 @@ $(document).ready(function () {
                 $('#ProPriceProductError').html('');
             }
         }
-
-
     });
-
     //PromotionPrice End
 
     //typePayment

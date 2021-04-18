@@ -7,6 +7,12 @@ class lotingredient extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][12] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('lot_model');
         $this->load->library('pagination');
@@ -170,12 +176,12 @@ class lotingredient extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteLotIngredient(){
+    public function deleteLotIngredient()
+    {
         $lotIngredientID = $this->input->post('lotIngredientID');
         $dataLotIngredient = array(
             'LOT_STATUS' => '0',
         );
         $this->crud_model->update('lot', $dataLotIngredient, 'LOT_ID', $lotIngredientID);
-
     }
 }

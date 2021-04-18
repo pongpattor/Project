@@ -8,11 +8,23 @@ class service extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][16] != 1 && $_SESSION['employeePermission'][17] != 1 && $_SESSION['employeePermission'][18] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            echo '<script>window.history.back();</script>';
+        } 
         $this->load->model('crud_model');
         $this->load->model('service_model');
         $this->load->library('pagination');
     }
 
+
+    public function index()
+    {
+        $data['page'] = 'home';
+        $this->load->view('admin/servicemain_view', $data);
+    }
 
     public function storefont()
     {

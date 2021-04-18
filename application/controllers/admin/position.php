@@ -9,7 +9,7 @@ class position extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['employeePermission'][4] != 1) {
+        } else if ($_SESSION['employeePermission'][3] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -103,6 +103,7 @@ class position extends CI_Controller
                 'POSITION_NAME' => $positionName,
                 'POSITION_DEPARTMENT' => $positionDepartment,
                 'POSITION_PERMISSION' =>  $positionPermission,
+                'POSITION_STATUS' => '1'
             );
             $this->crud_model->insert('position', $dataPosition);
             $data['message'] = "เพิ่มข้อมูลตำแหน่งเสร็จสิ้น";
@@ -126,9 +127,7 @@ class position extends CI_Controller
         } else {
             $data['permission'] = explode(',', $data['position']['0']->POSITION_PERMISSION);
         }
-        // echo '<pre>';
-        // print_r($data);
-        // echo '</pre>';
+
         $data['page'] = 'position_edit_view';
         $this->load->view('admin/main_view', $data);
     }

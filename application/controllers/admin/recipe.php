@@ -8,12 +8,12 @@ class recipe extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        // if (empty($_SESSION['employeeLogin'])) {
-        //     return redirect(site_url('admin/login'));
-        // } else if ($_SESSION['employeePermission'][10] != 1) {
-        //     echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
-        //     return redirect(site_url('admin/admin/'));
-        // }
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][7] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('recipe_model');
         $this->load->library('pagination');
@@ -159,7 +159,7 @@ class recipe extends CI_Controller
                 'RECIPE_PRODUCT' => $productID,
             );
             $this->crud_model->update('recipe', $dataRecipe, 'RECIPE_ID', $recipeID);
-            $this->crud_model->delete('recipedetail','RECIPEDETAIL_RECIPEID',$recipeID);
+            $this->crud_model->delete('recipedetail', 'RECIPEDETAIL_RECIPEID', $recipeID);
             $recipeIngredientID = $this->input->post('recipeIngredientID');
             $ingredientImportant = $this->input->post('ingredientImportant');
             for ($i = 0; $i < count($recipeIngredientID); $i++) {
@@ -179,6 +179,6 @@ class recipe extends CI_Controller
     public function deleteRecipe()
     {
         $recipeID = $this->input->post('recipeID');
-        $this->crud_model->delete('recipe','RECIPE_ID',$recipeID);
+        $this->crud_model->delete('recipe', 'RECIPE_ID', $recipeID);
     }
 }

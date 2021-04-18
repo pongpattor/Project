@@ -8,12 +8,12 @@ class ingredient extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        // if (empty($_SESSION['employeeLogin'])) {
-        //     return redirect(site_url('admin/login'));
-        // } else if ($_SESSION['employeePermission'][10] != 1) {
-        //     echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
-        //     return redirect(site_url('admin/admin/'));
-        // }
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][8] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('crud_model');
         $this->load->model('ingredient_model');
         $this->load->library('pagination');
@@ -154,7 +154,7 @@ class ingredient extends CI_Controller
             'INGREDIENT_STATUS' => '0',
         );
         $this->crud_model->update('ingredient', $dataIngredient, 'INGREDIENT_ID', $ingredientID);
-        $this->crud_model->delete('recipedetail','RECIPEDETAIL_INGREDIENT',$ingredientID);
+        $this->crud_model->delete('recipedetail', 'RECIPEDETAIL_INGREDIENT', $ingredientID);
         // echo json_encode($data);
     }
 }

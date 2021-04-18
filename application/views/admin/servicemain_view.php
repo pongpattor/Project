@@ -40,39 +40,49 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="navbar-brand">
-            <img src="<?= base_url('assets/image/logo.jpg') ?>" width="30" height="30" class="d-inline-block align-top " alt="">
+            <a href="<?=site_url('admin/service/index')?>"> <img src="<?= base_url('assets/image/logo.jpg') ?>" width="30" height="30" class="d-inline-block align-top " alt=""></a>
         </div> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="<?= site_url('admin/service/storefont') ?>" style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('admin/queue') ?>" style="margin-left: 30px; margin-right: 30px;">คิวล่วงหน้า</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('admin/queuewalkin') ?>" style="margin-left: 30px; margin-right: 30px;">คิวหน้าร้าน</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('admin/service/instore') ?>" style="margin-left: 30px; margin-right: 30px;">เซอร์วิสในร้าน</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('admin/kitchen/kitchenfood') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('admin/kitchen/kitchendrink') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
-                </li>
+                <?php if ($_SESSION['employeePermission']['16'] == '1' || $_SESSION['employeePermission']['17'] == '1' || $_SESSION['employeePermission']['18'] == '1') : ?>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="<?= site_url('admin/service/storefont') ?>" style="margin-left: 30px; margin-right: 30px;">เข้าใช้บริการ</span></a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($_SESSION['employeePermission']['16'] == '1') : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('admin/queue') ?>" style="margin-left: 30px; margin-right: 30px;">คิวล่วงหน้า</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('admin/queuewalkin') ?>" style="margin-left: 30px; margin-right: 30px;">คิวหน้าร้าน</a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($_SESSION['employeePermission']['16'] == '1' || $_SESSION['employeePermission']['17'] == '1' || $_SESSION['employeePermission']['18'] == '1') : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('admin/service/instore') ?>" style="margin-left: 30px; margin-right: 30px;">เซอร์วิสในร้าน</a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($_SESSION['employeePermission']['17'] == '1') : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('admin/kitchen/kitchenfood') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวอาหาร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('admin/kitchen/kitchendrink') ?>" style="margin-left: 30px; margin-right: 30px;">ครัวเครื่องดื่ม</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= site_url('admin/service/servedFront') ?>" style="margin-left: 30px; margin-right: 30px;">แจ้งเสิร์ฟ
                         <span id="alertServe" class="badge badge-danger"></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('admin/payment/historyPayment') ?>" style="margin-left: 30px; margin-right: 30px;">ประวัติการขาย</a>
-                </li>
+                <?php if ($_SESSION['employeePermission']['18'] == '1') : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= site_url('admin/payment/historyPayment') ?>" style="margin-left: 30px; margin-right: 30px;">ประวัติการขาย</a>
+                    </li>
+                <?php endif; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item">
@@ -91,25 +101,24 @@
     </main>
     <br><br>
 
-<script>
-    function callServed(){
-        $.ajax({
-            url : "<?=site_url('admin/admin/callServed')?>",
-            dataType : "JSON",
-            success:function(data){
-                if(data.cnt >0){
-                    $('#alertServe').html(data.cnt);
-                }
-                else{
-                    $('#alertServe').html('');
+    <script>
+        function callServed() {
+            $.ajax({
+                url: "<?= site_url('admin/admin/callServed') ?>",
+                dataType: "JSON",
+                success: function(data) {
+                    if (data.cnt > 0) {
+                        $('#alertServe').html(data.cnt);
+                    } else {
+                        $('#alertServe').html('');
 
+                    }
                 }
-            }
-        });
-    }
-    callServed();
-    setInterval(callServed,10000);
-</script>
+            });
+        }
+        callServed();
+        setInterval(callServed, 10000);
+    </script>
 </body>
 
 </html>

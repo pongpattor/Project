@@ -168,9 +168,46 @@ class report_model extends CI_Model
                 GROUP BY product.PRODUCT_ID";
 
         $query = $this->db->query($sql);
-        // echo '<pre>';
-        // print_r($this->db->last_query($query));
-        // echo '</pre>';
+        return $query->result();
+    }
+
+    public function reportAmountQueue($dateStart, $dateEnd)
+    {
+        $sql = "SELECT
+            '09.00-12.00 น.' AS 'T1',
+            (
+            SELECT
+                COUNT( * ) 
+            FROM
+                queue 
+            WHERE
+                QUEUE_TYPE = '1' 
+                AND ( QUEUE_TSTART BETWEEN '09:00:00' AND '12:00:00' ) 
+                AND ( QUEUE_DSTART BETWEEN '$dateStart' AND '$dateEnd' ) 
+            ) AS 'Time1',
+            '12.01-16.00 น.' AS 'T2',
+            (
+            SELECT
+                COUNT( * ) 
+            FROM
+                queue 
+            WHERE
+                QUEUE_TYPE = '1' 
+                AND ( QUEUE_TSTART BETWEEN '12:01:00' AND '16:00:00' ) 
+                AND ( QUEUE_DSTART BETWEEN '$dateStart' AND '$dateEnd' ) 
+            ) AS 'Time2',
+            '16.01-21.00 น.' AS 'T3',
+            (
+            SELECT
+                COUNT( * ) 
+            FROM
+                queue 
+            WHERE
+                QUEUE_TYPE = '1' 
+                AND ( QUEUE_TSTART BETWEEN '16:01:00' AND '21:00:00' ) 
+            AND ( QUEUE_DSTART BETWEEN '$dateStart' AND '$dateEnd' ) 
+            ) AS 'Time3'";
+        $query = $this->db->query($sql);
         return $query->result();
     }
 }

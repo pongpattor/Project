@@ -9,7 +9,7 @@ class karaoke extends CI_Controller
         date_default_timezone_set('ASIA/BANGKOK');
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['employeePermission'][11] != 1) {
+        } else if ($_SESSION['employeePermission'][10] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }

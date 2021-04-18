@@ -8,6 +8,12 @@ class report extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
+        if (empty($_SESSION['employeeLogin'])) {
+            return redirect(site_url('admin/login'));
+        } else if ($_SESSION['employeePermission'][15] != 1) {
+            echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
+            return redirect(site_url('admin/admin/'));
+        }
         $this->load->model('report_model');
     }
 
@@ -72,6 +78,22 @@ class report extends CI_Controller
         }
         // print_r($data);
         $data['page'] = 'reportcrosstab_view';
+        $this->load->view('admin/main_view', $data);
+    }
+
+    public function reportAmountQueue()
+    {
+        if ($_GET == null) {
+            $data['state'] = false;
+            $data['links'] = null;
+        } else {
+            $data['state'] = true;
+            $dateStart = $this->input->get('dateStart');
+            $dateEnd = $this->input->get('dateEnd');
+            $data['report'] = $this->report_model->reportAmountQueue($dateStart, $dateEnd);
+        }
+        // print_r($data);
+        $data['page'] = 'reportamountqueue_view';
         $this->load->view('admin/main_view', $data);
     }
 }

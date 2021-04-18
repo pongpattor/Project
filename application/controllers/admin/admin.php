@@ -8,7 +8,7 @@ class admin extends CI_Controller
     {
         parent::__construct();
         date_default_timezone_set('ASIA/BANGKOK');
-        if(empty($_SESSION['employeeLogin'])){
+        if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
         }
         $this->load->model('crud_model');
@@ -16,7 +16,7 @@ class admin extends CI_Controller
         $this->load->library('pagination');
     }
 
-    
+
     public function index()
     {
         $data['page'] = 'home';
@@ -24,27 +24,29 @@ class admin extends CI_Controller
     }
 
 
-    public function logout(){
+    public function logout()
+    {
         $this->session->sess_destroy();
-       redirect(site_url('admin/login'));
+        redirect(site_url('admin/login'));
     }
 
-    public function changePassword(){
+    public function changePassword()
+    {
         $data['page'] = 'changepassword_view';
-        $this->load->view('admin/main_view',$data);
+        $this->load->view('admin/main_view', $data);
     }
 
 
-    public function rePassword(){
+    public function rePassword()
+    {
         $data['status'] = true;
         $passwordOld = $this->input->post('passwordOld');
-        $check = $this->crud_model->count2Where('employee','EMPLOYEE_ID',$_SESSION['employeeID'],'EMPLOYEE_PASSWORD',$passwordOld);
-        if($check==1){
+        $check = $this->crud_model->count2Where('employee', 'EMPLOYEE_ID', $_SESSION['employeeID'], 'EMPLOYEE_PASSWORD', $passwordOld);
+        if ($check == 1) {
             $passwordNew = $this->input->post('passwordNew');
-            $this->crud_model->updateStatus('employee','EMPLOYEE_PASSWORD',$passwordNew,'EMPLOYEE_ID',$_SESSION['employeeID']);
+            $this->crud_model->updateStatus('employee', 'EMPLOYEE_PASSWORD', $passwordNew, 'EMPLOYEE_ID', $_SESSION['employeeID']);
             $data['url'] = site_url('admin/admin');
-        }
-        else{
+        } else {
             $data['status'] = false;
         }
         echo json_encode($data);
@@ -72,27 +74,30 @@ class admin extends CI_Controller
         echo json_encode($data);
     }
 
-    
-    public function fetchPosition(){
+
+    public function fetchPosition()
+    {
         $departmentID = $this->input->post('departmentID');
         $data['position'] = $this->data_model->fetchPosition($departmentID);
         echo json_encode($data);
     }
 
-    public function test2(){
+    public function test2()
+    {
         $this->load->model('test_model');
         $this->test_model->insert();
-    } 
-    public function test3(){
+    }
+    public function test3()
+    {
         $this->load->model('test_model');
         $this->test_model->update();
-    } 
-    
-    public function callServed(){
+    }
+
+    public function callServed()
+    {
         $this->load->model('data_model');
         $cnt = $this->data_model->allServed();
         $data['cnt'] = $cnt;
         echo json_encode($data);
-
     }
 }
