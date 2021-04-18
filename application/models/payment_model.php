@@ -334,4 +334,113 @@ class payment_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function historyPayment($search, $limit, $offset)
+    {
+        $sql = "SELECT
+                    RECEIPT_ID,
+                    RECEIPT_DATE,
+                    SUBSTR( RECEIPT_TIME, 1, 5 ) AS 'RECEIPT_TIMES',
+                    RECEIPT_PRICETOTAL 
+                FROM
+                    receipt 
+                WHERE
+                    RECEIPT_STATUS = '1' 
+                    AND ( RECEIPT_ID LIKE ?
+                    OR RECEIPT_DATE LIKE ? 
+                    OR SUBSTR( RECEIPT_TIME, 1, 5 ) LIKE ?
+                    OR RECEIPT_PRICETOTAL LIKE ? )
+                    LIMIT $offset,$limit
+                    ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search)  . '%',
+            )
+        );
+        return $query->result();
+    }
+
+    public function countAllHistoryPayment($search)
+    {
+        $sql = "SELECT
+                    COUNT(*) as cnt
+                FROM
+                    receipt 
+                WHERE
+                    RECEIPT_STATUS = '1' 
+                    AND ( RECEIPT_ID LIKE ?
+                    OR RECEIPT_DATE LIKE ? 
+                    OR SUBSTR( RECEIPT_TIME, 1, 5 ) LIKE ?
+                    OR RECEIPT_PRICETOTAL LIKE ? )
+                    ";
+        $query = $this->db->query(
+            $sql,
+            array(
+                $this->db->escape_like_str($search) . '%',
+                '%' . $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search) . '%',
+                $this->db->escape_like_str($search),
+
+            )
+        );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function paymentBillHead($receiptID)
+    {
+        $sql = "SELECT
+                    RECEIPT_ID,
+                    RECEIPT_DATE,
+                    SUBSTR( RECEIPT_TIME, 1, 5 ) AS 'RECEIPT_TIMES',
+                    RECEIPT_DISCOUNTTOTAL,
+                    RECEIPT_PRICEDISCOUNT,
+                    RECEIPT_VAT,	
+                    RECEIPT_PRICETOTAL,
+                    RECEIPT_PAYALL,
+                    RECEIPT_PAYCHANGE,
+                    CONCAT( employee.EMPLOYEE_FIRSTNAME, employee.EMPLOYEE_LASTNAME ) AS 'FULLNAME' 
+                FROM
+                    receipt 
+                LEFT JOIN employee ON receipt.RECEIPT_EMPLOYEE = employee.EMPLOYEE_ID
+                WHERE RECEIPT_ID = '$receiptID'
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function paymentBillBody($receiptID)
+    {
+        $sql = "SELECT
+                    receiptdetail.DTREC_NO,
+                    receiptdetail.DTREC_TYPEORDER,
+                    receiptdetail.DTREC_AMOUNT,
+                    receiptdetail.DTREC_PRICEALL,
+                    receiptdetailfd.FDDTREC_PRODUCTID,
+                    receiptdetailproset.PROSDTREC_PROSET,
+                    receiptdetailkaraoke.KARADTREC_KARAOKEID,
+                    receiptdetailkaraoke.KARADTREC_USETYPE,
+                    product.PRODUCT_NAME,
+                    promotionset.PROMOTIONSET_NAME,
+                    seat.SEAT_NAME
+                FROM
+                    receiptdetail
+                    LEFT JOIN receiptdetailfd ON ( receiptdetail.DTREC_ID = receiptdetailfd.FDDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailfd.FDDTREC_NO )
+                    LEFT JOIN receiptdetailproset ON ( receiptdetail.DTREC_ID = receiptdetailproset.PROSDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailproset.PROSDTREC_NO )
+                    LEFT JOIN receiptdetailkaraoke ON ( receiptdetail.DTREC_ID = receiptdetailkaraoke.KARADTREC_ID AND receiptdetail.DTREC_NO = receiptdetailkaraoke.KARADTREC_NO ) 
+                    LEFT JOIN product ON receiptdetailfd.FDDTREC_PRODUCTID = product.PRODUCT_ID
+                    LEFT JOIN promotionset ON receiptdetailproset.PROSDTREC_PROSET = promotionset.PROMOTIONSET_ID
+                    LEFT JOIN karaoke ON receiptdetailkaraoke.KARADTREC_KARAOKEID = karaoke.KARAOKE_ID
+                    LEFT JOIN seat ON karaoke.KARAOKE_ID = seat.SEAT_ID
+                WHERE
+                    receiptdetail.DTREC_ID = '$receiptID'
+                ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 }

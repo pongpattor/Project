@@ -22,6 +22,7 @@
                                     <div class="input-group-append">
                                         <button class="input-group-text"><i class="fa fa-search"></i></button>
                                     </div>
+                               
                                 </div>
                             </div>
                         </div>

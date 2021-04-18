@@ -71,7 +71,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="margin-left: 30px; margin-right: 30px;">ประวัติการขาย</a>
+                    <a class="nav-link" href="<?= site_url('admin/payment/historyPayment') ?>" style="margin-left: 30px; margin-right: 30px;">ประวัติการขาย</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

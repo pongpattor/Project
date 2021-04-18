@@ -168,9 +168,9 @@ class report_model extends CI_Model
                 GROUP BY product.PRODUCT_ID";
 
         $query = $this->db->query($sql);
-        echo '<pre>';
-        print_r($this->db->last_query($query));
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($this->db->last_query($query));
+        // echo '</pre>';
         return $query->result();
     }
 }

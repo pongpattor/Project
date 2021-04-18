@@ -108,6 +108,7 @@ class payment extends CI_Controller
             $dataHeadReceipt = array(
                 'RECEIPT_ID' => $receiptID,
                 'RECEIPT_MEMBER' => null,
+                'RECEIPT_EMPLOYEE' => $_SESSION['employeeID'],
                 'RECEIPT_DATE' => $receiptDate,
                 'RECEIPT_TIME' => $receiptTime,
                 'RECEIPT_DISCOUNTTOTAL' => $receiptDiscountTotal,
@@ -123,6 +124,7 @@ class payment extends CI_Controller
             $dataHeadReceipt = array(
                 'RECEIPT_ID' => $receiptID,
                 'RECEIPT_MEMBER' => $memberID,
+                'RECEIPT_EMPLOYEE' => $_SESSION['employeeID'],
                 'RECEIPT_DATE' => $receiptDate,
                 'RECEIPT_TIME' => $receiptTime,
                 'RECEIPT_DISCOUNTTOTAL' => $receiptDiscountTotal,
@@ -200,6 +202,11 @@ class payment extends CI_Controller
             $this->crud_model->insert('splitpay', $dataSplitPayment);
         }
         for ($k = 0; $k < count($serviceID); $k++) {
+            $dataServiceReceipt = array(
+                'SERREC_RECID' => $receiptID,
+                'SERREC_SERID' => $serviceID[$k],
+            );
+            $this->crud_model->insert('receiptofservice', $dataServiceReceipt);
             $dataHeadService = array(
                 'SERVICE_STATUS' => '2'
             );
@@ -226,7 +233,7 @@ class payment extends CI_Controller
                 }
             }
         }
-        $data['url'] = site_url('admin/service/storefont');
+        $data['url'] = site_url('admin/service/instore');
         echo json_encode($data);
     }
 
@@ -290,6 +297,7 @@ class payment extends CI_Controller
             $dataHeadReceipt = array(
                 'RECEIPT_ID' => $receiptID,
                 'RECEIPT_MEMBER' => null,
+                'RECEIPT_EMPLOYEE' => $_SESSION['employeeID'],
                 'RECEIPT_DATE' => $receiptDate,
                 'RECEIPT_TIME' => $receiptTime,
                 'RECEIPT_DISCOUNTTOTAL' => $receiptDiscountTotal,
@@ -305,6 +313,7 @@ class payment extends CI_Controller
             $dataHeadReceipt = array(
                 'RECEIPT_ID' => $receiptID,
                 'RECEIPT_MEMBER' => $memberID,
+                'RECEIPT_EMPLOYEE' => $_SESSION['employeeID'],
                 'RECEIPT_DATE' => $receiptDate,
                 'RECEIPT_TIME' => $receiptTime,
                 'RECEIPT_DISCOUNTTOTAL' => $receiptDiscountTotal,
@@ -382,6 +391,11 @@ class payment extends CI_Controller
             $this->crud_model->insert('splitpay', $dataSplitPayment);
         }
         for ($k = 0; $k < count($serviceID); $k++) {
+            $dataServiceReceipt = array(
+                'SERREC_RECID' => $receiptID,
+                'SERREC_SERID' => $serviceID[$k],
+            );
+            $this->crud_model->insert('receiptofservice', $dataServiceReceipt);
             for ($s = 0; $s < count($serviceNO); $s++) {
                 $remainder = $splitOrderAmount[$s];
                 $this->payment_model->updateSplitRemainder($serviceID[$k], $serviceNO[$s], $remainder);
@@ -414,18 +428,73 @@ class payment extends CI_Controller
             }
         }
 
-        $data['url'] = site_url('admin/service/storefont');
+        $data['url'] = site_url('admin/service/instore');
         echo json_encode($data);
+    }
+
+
+    public function historyPayment()
+    {
+        $search = $this->input->get('search');
+        $config['base_url'] = site_url('admin/payment/historyPayment');
+        $config['total_rows'] = $this->payment_model->countAllHistoryPayment($search);
+        $config['per_page'] = 5;
+        $config['reuse_query_string'] = TRUE;
+        $config['uri_segment'] = 4;
+        $config['full_tag_open'] = '<nav><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="page-item ">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" >';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+        $limit = $config['per_page'];
+        $offset = $this->uri->segment(4, 0);
+        $this->pagination->initialize($config);
+        $data['total'] = $config['total_rows'];
+        $data['historyPayment'] = $this->payment_model->historyPayment($search, $limit, $offset);
+        $data['links'] = $this->pagination->create_links();
+        $data['page'] = 'paymenthistory_view';
+        $this->load->view('admin/servicemain_view', $data);
     }
 
 
     public function bill()
     {
+        $data['HeadReceipt'] = $this->payment_model->paymentBillHead('REC2104180007');
+        $data['BodyReceipt'] = $this->payment_model->paymentBillBody('REC2104180007');
+
         $mpdf = new \Mpdf\Mpdf();
-        $html = $this->load->view('welcome_message','',TRUE);
-        $mpdf->AddPage('');
+        $html = $this->load->view('admin/paymentbill_view',$data, TRUE);
         $mpdf->WriteHTML($html);
         $mpdf->Output();
+    }
+
+    public function paymentBill($receipID)
+    {
+        // echo "
+        // <script language=\"JavaScript\">
+        // var url = 'http://localhost/food/index.php/admin/payment/historyPayment';
+        // function openWindow( url )
+        // {
+        // window.open(url, '_blank');
+        // window.focus();
+        // }
+        // openWindow(url);
+        // </script>";
+        $this->load->view('admin/paymentbill_view');
     }
 
 
