@@ -116,7 +116,7 @@
                                                 <table style="width: 100%;">
                                                     <tbody>
                                                         <?php foreach ($karaokeEmpty as $row2) : ?>
-                                                            <?php if ($row->ZONE_ID == $row2->SEAT_ZONE) { ?>
+                                                            <?php if ($row->ZONE_ID == $row2->SEAT_ZONE) { $time = date('H');?>
                                                                 <tr class="d-flex form-check form-check-inline" id="rowka<?= $inputNo; ?>">
                                                                     <td class="col-3">
                                                                         <input class="form-check-input useKaraokeEmpty" type="checkbox" name="karaokeEmpty[]" id="karaokeEmpty<?= $inputNo; ?>" value="<?= $row2->SEAT_ID; ?>">

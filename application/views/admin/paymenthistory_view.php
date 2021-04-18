@@ -65,7 +65,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->RECEIPT_DATE . ' ' . $row->RECEIPT_TIMES; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?= $row->RECEIPT_PRICETOTAL; ?></td>
                                             <td class="align-middle" style="text-align: center;">
-                                                <button class="btn btn-success  bill" style="text-align: center;"><i class="fa fa-print"></i></button>
+                                                <a href="<?= site_url('admin/payment/bill?receiptID=' . $row->RECEIPT_ID) ?>" target="_blank" class="btn btn-success  bill" style="text-align: center;"><i class="fa fa-print"></i></a>
                                             </td>
                                             <td class="align-middle" style="text-align: center;">
                                                 <button class="btn btn-danger delete" style="text-align: center;"><i class="fa fa-trash"></i></button>
@@ -74,15 +74,15 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
-                            <!-- <?php if ($links != null) {
-                                        echo $links;
-                                    } else { ?>
+                            <?php if ($links != null) {
+                                echo $links;
+                            } else { ?>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
                                         <li class="page-item active"><a class="page-link ">1</a></li>
                                     </ul>
                                 </nav>
-                            <?php } ?> -->
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -90,3 +90,25 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.delete', function() {
+            var receiptID = $(this).parents('tr').attr('id');
+            var result = confirm(`ยืนยันการลบประวัติการขาย รหัส ${receiptID}`);
+            if (result) {
+                $.ajax({
+                    url: "<?= site_url('admin/payment/deleteReceipt') ?>",
+                    method: "POST",
+                    data: {
+                        receiptID: receiptID,
+                    },
+                    success: function() {
+                        alert(`ลบประวัติการขาย รหัส ${receiptID} เสร็จสิ้น`);
+                        location.replace('<?= site_url('admin/payment/historyPayment') ?>');
+                    }
+
+                });
+            }
+        });
+    });
+</script>

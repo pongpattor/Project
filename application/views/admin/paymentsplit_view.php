@@ -68,7 +68,7 @@
                                                         } else {
                                                             $discount =  number_format(intval(($row->DISCOUNT * $amount) + 0.50), 2);
                                                         }
-                                                        $sumprice = ($row->SELLPRICE*$amount)-$discount;
+                                                        $sumprice = ($row->SELLPRICE * $amount) - $discount;
                                                         ?>
                                                         <td class="align-middle" style="text-align: center;"><span class="showDiscount"><?= $discount ?></span></td>
                                                         <?php $sumprice = number_format($sumprice, 2); ?>
@@ -151,7 +151,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4">
-                        <div class="table-responsive">
+                            <div class="table-responsive">
                                 <table class="table" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -195,7 +195,7 @@
                                                 ราคาสุทธิ
                                             </th>
                                             <th class="align-middle text-right">
-                                                <span id="totalShow" ></span>
+                                                <span id="totalShow"></span>
                                                 <input type="hidden" name="total" id="total" class="form-control" readonly>
                                             </th>
                                         </tr>
@@ -570,7 +570,8 @@
                             data: $(this).serialize(),
                             dataType: "JSON",
                             success: function(data) {
-                                alert('ชำระเงินเสร็จสิ้น');
+                                alert('ชำระเงินเสร็จสิ้น');;
+                                window.open(data.bill);
                                 location.replace(data.url);
                             }
                         });

@@ -233,6 +233,7 @@ class payment extends CI_Controller
                 }
             }
         }
+        $data['bill'] = site_url('admin/payment/bill?receiptID=' . $receiptID);
         $data['url'] = site_url('admin/service/instore');
         echo json_encode($data);
     }
@@ -427,7 +428,7 @@ class payment extends CI_Controller
                 }
             }
         }
-
+        $data['bill'] = site_url('admin/payment/bill?receiptID=' . $receiptID);
         $data['url'] = site_url('admin/service/instore');
         echo json_encode($data);
     }
@@ -470,31 +471,35 @@ class payment extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
+    public function deleteReceipt()
+    {
+        $receiptID = $this->input->post('receiptID');
+        $dataReceipt = array(
+            'RECEIPT_STATUS' => '0'
+        );
+        $this->crud_model->update('receipt', $dataReceipt, 'RECEIPT_ID', $receiptID);
+    }
+
 
     public function bill()
     {
-        $data['HeadReceipt'] = $this->payment_model->paymentBillHead('REC2104180007');
-        $data['BodyReceipt'] = $this->payment_model->paymentBillBody('REC2104180007');
-
-        $mpdf = new \Mpdf\Mpdf();
-        $html = $this->load->view('admin/paymentbill_view',$data, TRUE);
+        $receiptID = $this->input->get('receiptID');
+        $data['HeadReceipt'] = $this->payment_model->paymentBillHead($receiptID);
+        $data['BodyReceipt'] = $this->payment_model->paymentBillBody($receiptID);
+        $html = $this->load->view('admin/paymentbill_view', $data, TRUE);
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => [130, 400]
+        ]);
+        $mpdf->WriteHTML($html);
+        $pageSizeHeight   = $mpdf->y + 30;
+        $mpdf->page   = 0;
+        $mpdf->state  = 0;
+        unset($mpdf->pages[0]);
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => [130, $pageSizeHeight]
+        ]);
         $mpdf->WriteHTML($html);
         $mpdf->Output();
-    }
-
-    public function paymentBill($receipID)
-    {
-        // echo "
-        // <script language=\"JavaScript\">
-        // var url = 'http://localhost/food/index.php/admin/payment/historyPayment';
-        // function openWindow( url )
-        // {
-        // window.open(url, '_blank');
-        // window.focus();
-        // }
-        // openWindow(url);
-        // </script>";
-        $this->load->view('admin/paymentbill_view');
     }
 
 

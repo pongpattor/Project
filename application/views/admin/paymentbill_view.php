@@ -13,10 +13,10 @@
     </style>
 </head>
 
-<body>
+<body >
     <?php foreach ($HeadReceipt as $row) { ?>
         <div style="text-align:center">
-            <img src="<?= base_url('assets/image/logo.jpg') ?>" width="150px" height="150px" alt="">
+            <img src="<?= base_url('assets/image/logo.jpg') ?>" width="150px" height="100px" alt="">
         </div>
         <div style="text-align:center;">
             ซ.ลาดพร้าว87 แยก 4 <br> แขวงคลองเจ้าคุณสิงห์ เขตวังทองหลอง กรุงเทพมหานคร
@@ -26,13 +26,13 @@
             <table style="width: 100%;">
                 <tbody>
                     <tr>
-                        <td >วันที่ <?= $row->RECEIPT_DATE; ?></td>
+                        <td>วันที่ <?= $row->RECEIPT_DATE; ?></td>
                         <?php $time = str_replace(':', '.', $row->RECEIPT_TIMES); ?>
-                        <td >เวลา <?= $time . ' น.'; ?></td>
+                        <td>เวลา <?= $time . ' น.'; ?></td>
                     </tr>
                     <tr>
-                        <td >เลขที่ใบเสร็จ <?= $row->RECEIPT_ID; ?></td>
-                        <td >พนักงาน <?= $row->FULLNAME; ?></td>
+                        <td>เลขที่ใบเสร็จ <?= $row->RECEIPT_ID; ?></td>
+                        <td>พนักงาน <?= $row->FULLNAME; ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -105,6 +105,13 @@
         </div>
         <hr style="height: 2px;color: black;">
     <?php } ?>
+    <!-- <script>
+    function TEXT(){
+        var x = "Total Height: " + screen.height;
+        console.log(x);
+    }
+        setInterval(TEXT,1000);
+    </script> -->
 </body>
 
 </html>

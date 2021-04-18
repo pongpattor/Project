@@ -108,12 +108,11 @@
                     },
                     success: function() {
                         alert(`ลบประเภทชำระเงิน รหัส ${typePaymentID} เสร็จสิ้น`);
-                        location.replace('<?= site_url('admin/payment/typepayment') ?>')  ;
+                        location.replace('<?= site_url('admin/payment/typepayment') ?>');
                     }
                 });
             }
         });
-
 
     });
 </script>
