@@ -20,7 +20,7 @@ class promotionprice extends CI_Controller
     public function index()
     {
         $search = $this->input->get('search');
-        $config['base_url'] = site_url('admin/promotionset/index');
+        $config['base_url'] = site_url('admin/promotionprice/index');
         $config['total_rows'] = $this->promotionprice_model->countAllPromotionPrice($search);
         $config['per_page'] = 5;
         $config['reuse_query_string'] = TRUE;
@@ -66,16 +66,45 @@ class promotionprice extends CI_Controller
         $data['input'] = $_POST;
         $data['status'] = true;
         $promotionPriceName  = $this->input->post('promotionPriceName');
+        $promotionPriceDateStart = $this->input->post('promotionPriceDateStart');
+        $promotionPriceDateEnd = $this->input->post('promotionPriceDateEnd');
+        $promotionPriceProductID   = $this->input->post('promotionPriceProductID');
         $checkPromotionPriceName = $this->crud_model->count2Where('promotionprice', 'PROMOTIONPRICE_NAME', $promotionPriceName, 'PROMOTIONPRICE_STATUS', '1');
         if ($checkPromotionPriceName != 0) {
             $data['status'] = false;
+            $data['sameProname'] = '';
+        } else {
+            $data['sameProname'] = 'ชื่อโปรโมชั่นซ้ำ';
+        }
+        $i = 0;
+        $productID = '';
+        foreach ($promotionPriceProductID as $row) {
+            $productID .=  "'$row'";
+            if ($i < (count($promotionPriceProductID) - 1)) {
+                $productID .= ',';
+            }
+            $i++;
+        }
+        $productActivePro = $this->promotionprice_model->checkProduct($promotionPriceDateStart, $promotionPriceDateEnd, $productID);
+        if ($productActivePro != null) {
+            $j = 0;
+            $productName = '';
+            foreach ($productActivePro as $row2) {
+                $productName .=  $row2->PRODUCT_NAME;
+                if ($j < (count($productActivePro) - 1)) {
+                    $productName .= ',';
+                }
+                $j++;
+            }
+            $productName .= ' ถูกใช้ในโปรโมชั่นอื่นในช่วงเวลานี้แล้ว';
+            $data['status'] = false;
+            $data['productActivePro'] = $productName;
+        } else {
+            $data['productActivePro'] = '';
         }
         if ($data['status'] == true) {
             $promotionPriceID = $this->genIdPromotionPrice();
             $promotionPriceDiscount = $this->input->post('promotionPriceDiscount');
-            $promotionPriceDateStart = $this->input->post('promotionPriceDateStart');
-            $promotionPriceDateEnd = $this->input->post('promotionPriceDateEnd');
-            $promotionPriceProductID   = $this->input->post('promotionPriceProductID');
             $dataPromotionPrice = array(
                 'PROMOTIONPRICE_ID' => $promotionPriceID,
                 'PROMOTIONPRICE_NAME' => $promotionPriceName,
@@ -146,14 +175,44 @@ class promotionprice extends CI_Controller
             $checkPromotionPriceName = $this->crud_model->count2Where('promotionprice', 'PROMOTIONPRICE_NAME', $promotionPriceName, 'PROMOTIONPRICE_STATUS', '1');
             if ($checkPromotionPriceName != 0) {
                 $data['status'] = false;
+                $data['sameProname'] = '';
+            } else {
+                $data['sameProname'] = 'ชื่อโปรโมชั่นซ้ำ';
             }
+        }
+        $promotionPriceDateStart = $this->input->post('promotionPriceDateStart');
+        $promotionPriceDateEnd = $this->input->post('promotionPriceDateEnd');
+        $promotionPriceProductID   = $this->input->post('promotionPriceProductID');
+        $i = 0;
+        $productID = '';
+        foreach ($promotionPriceProductID as $row) {
+            $productID .=  "'$row'";
+            if ($i < (count($promotionPriceProductID) - 1)) {
+                $productID .= ',';
+            }
+            $i++;
+        }
+        $productActivePro = $this->promotionprice_model->checkProduct($promotionPriceDateStart, $promotionPriceDateEnd, $productID);
+        if ($productActivePro != null) {
+            $j = 0;
+            $productName = '';
+            foreach ($productActivePro as $row2) {
+                $productName .=  $row2->PRODUCT_NAME;
+                if ($j < (count($productActivePro) - 1)) {
+                    $productName .= ',';
+                }
+                $j++;
+            }
+            $productName .= ' ถูกใช้ในโปรโมชั่นอื่นในช่วงเวลานี้แล้ว';
+            $data['status'] = false;
+            $data['productActivePro'] = $productName;
+        } else {
+            $data['productActivePro'] = '';
         }
         if ($data['status'] == true) {
             $promotionPriceID = $this->input->post('promotionPriceID');
             $promotionPriceDiscount = $this->input->post('promotionPriceDiscount');
-            $promotionPriceDateStart = $this->input->post('promotionPriceDateStart');
-            $promotionPriceDateEnd = $this->input->post('promotionPriceDateEnd');
-            $promotionPriceProductID   = $this->input->post('promotionPriceProductID');
+
             $dataPromotionPrice = array(
                 'PROMOTIONPRICE_NAME' => $promotionPriceName,
                 'PROMOTIONPRICE_DISCOUNT' => $promotionPriceDiscount,
@@ -161,7 +220,7 @@ class promotionprice extends CI_Controller
                 'PROMOTIONPRICE_DATEEND' => $promotionPriceDateEnd,
 
             );
-            $this->crud_model->update('promotionprice', $dataPromotionPrice,'PROMOTIONPRICE_ID',$promotionPriceID);
+            $this->crud_model->update('promotionprice', $dataPromotionPrice, 'PROMOTIONPRICE_ID', $promotionPriceID);
             $this->crud_model->delete('promotionpricedetail', 'PROPRICE_ID', $promotionPriceID);
             for ($i = 0; $i < count($promotionPriceProductID); $i++) {
                 $dataPromotionPriceDetail = array(

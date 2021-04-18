@@ -1694,13 +1694,13 @@ $(document).ready(function () {
                 data: $(this).serialize(),
                 dataType: "JSON",
                 success: function (data) {
-                    // console.log(data);
                     if (data.status == true) {
                         alert('เพิ่มโปรโมชั่นลดราคาเสร็จสิ้น');
                         location.replace(data.url);
                     } else {
                         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                        $('#promotionPriceNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                        $('#promotionPriceNameError').html(data.sameProname);
+                        $('#ProPriceProductError').html(data.productActivePro);
                     }
                 }
             });
@@ -1708,6 +1708,7 @@ $(document).ready(function () {
         else {
             alert('กรุณากรอกข้อมูลให้ถูกต้อง')
             $('#promotionPriceNameError').html('');
+            $('#ProPriceProductError').html('');
         }
     });
 
@@ -1723,13 +1724,13 @@ $(document).ready(function () {
                     data: $(this).serialize(),
                     dataType: "JSON",
                     success: function (data) {
-                        // console.log(data);
                         if (data.status == true) {
                             alert('เพิ่มโปรโมชั่นลดราคาเสร็จสิ้น');
                             location.replace(data.url);
                         } else {
                             alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                            $('#promotionPriceNameError').html('ชื่อนี้ได้ถูกใช้ไปแล้ว');
+                            $('#promotionPriceNameError').html(data.sameProname);
+                            $('#ProPriceProductError').html(data.productActivePro);
                         }
                     }
                 });
@@ -1737,6 +1738,7 @@ $(document).ready(function () {
             else {
                 alert('กรุณากรอกข้อมูลให้ถูกต้อง')
                 $('#promotionPriceNameError').html('');
+                $('#ProPriceProductError').html('');
             }
         }
 
