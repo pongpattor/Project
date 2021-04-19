@@ -60,9 +60,9 @@ class service extends CI_Controller
             $dataService = array(
                 'SERVICE_ID' => $serviceID,
                 'SERVICE_CUSAMOUNT' => $AmountCustomerE,
+                'SERVICE_SEATTYPE' => '1',
                 'SERVICE_DSTART' => $serviceDStart,
                 'SERVICE_TSTART' => $serviceTStart,
-                'SERVICE_SEATTYPE' => '1',
                 'SERVICE_STATUS' => '1'
             );
             $this->crud_model->insert('service', $dataService);
@@ -109,9 +109,9 @@ class service extends CI_Controller
                 $dataService = array(
                     'SERVICE_ID' => $serviceID,
                     'SERVICE_CUSAMOUNT' => $AmountCustomerE[$i],
+                    'SERVICE_SEATTYPE' => '2',
                     'SERVICE_DSTART' => $serviceDStart,
                     'SERVICE_TSTART' => $serviceTStart,
-                    'SERVICE_SEATTYPE' => '2',
                     'SERVICE_STATUS' => '1'
                 );
                 $this->crud_model->insert('service', $dataService);
@@ -456,7 +456,8 @@ class service extends CI_Controller
         $AmountCustomerE = $this->input->post('AmountCustomerE');
         $serviceID = $this->input->post('serviceID');
         $dataServiceCusAmount = array(
-            'SERVICE_CUSAMOUNT' => $AmountCustomerE
+            'SERVICE_CUSAMOUNT' => $AmountCustomerE,
+            'SERVICE_SEATTYPE' => '1',
         );
         $this->crud_model->update('service', $dataServiceCusAmount, 'SERVICE_ID', $serviceID);
         $useKaraoke = 0;

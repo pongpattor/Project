@@ -171,7 +171,6 @@ class queue extends CI_Controller
                 $dataQS = array(
                     'QS_QUEUEID' => $queueID,
                     'QS_SEATID' => $karaoke[$i],
-
                 );
                 $this->crud_model->insert('queueseat', $dataQS);
             }
@@ -349,9 +348,9 @@ class queue extends CI_Controller
             $dataService = array(
                 'SERVICE_ID' => $serviceID,
                 'SERVICE_CUSAMOUNT' => $AmountCustomerE,
+                'SERVICE_SEATTYPE' => '1',
                 'SERVICE_DSTART' => $serviceDStart,
                 'SERVICE_TSTART' => $serviceTStart,
-                'SERVICE_SEATTYPE' => '1',
                 'SERVICE_STATUS' => '1'
             );
             $this->crud_model->insert('service', $dataService);;
