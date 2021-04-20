@@ -540,8 +540,8 @@
                                 data: $(this).serialize(),
                                 dataType: "JSON",
                                 success: function(data) {
-                                    // console.log(data);
                                     alert('ชำระเงินเสร็จสิ้น');
+                                    window.open(data.bill);
                                     location.replace(data.url);
                                 }
                             });

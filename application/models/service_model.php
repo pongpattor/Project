@@ -280,6 +280,7 @@ class service_model extends CI_Model
                         LEFT JOIN product ON servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID 
                     WHERE
                         servicedetail.DTSER_ID = '$serviceID' 
+                        AND servicedetail.DTSER_REMAINDER > 0
                     GROUP BY
                         servicedetail.DTSER_ID,
                         servicedetail.DTSER_NO 

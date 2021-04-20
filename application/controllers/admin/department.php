@@ -9,8 +9,7 @@ class department extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } 
-        else if ($_SESSION['employeePermission'][4] != 1) {
+        } else if ($_SESSION['employeePermission'][4] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -88,7 +87,7 @@ class department extends CI_Controller
 
     public function genIdDepartment()
     {
-        $maxID = $this->crud_model->maxID('department','DEPARTMENT_ID');
+        $maxID = $this->crud_model->maxID('department', 'DEPARTMENT_ID');
         $y = date('y');
         if ($maxID == '') {
             $id = 'DEP' . $y . '0001';
@@ -97,8 +96,7 @@ class department extends CI_Controller
             $year = substr($maxID, 3, 2);
             if ($y != $year) {
                 return 'DEP' . $y . '0001';
-            } 
-            else{
+            } else {
                 $id = substr($maxID, 5);
                 $id += 1;
                 while (strlen($id) < 4) {
@@ -112,11 +110,11 @@ class department extends CI_Controller
     public function editDepartment()
     {
         $departmentID = $this->input->get('departmentID');
-        $data['department'] = $this->crud_model->findWhere('department','DEPARTMENT_ID',$departmentID);
+        $data['department'] = $this->crud_model->findWhere('department', 'DEPARTMENT_ID', $departmentID);
         $data['page'] = 'department_edit_view';
         $this->load->view('admin/main_view', $data);
     }
-    
+
     public function updateDepartment()
     {
         $departmentName = $this->input->post('departmentName');
@@ -149,14 +147,13 @@ class department extends CI_Controller
     {
         $data['status'] = true;
         $departmentID = $this->input->post('departmentID');
-        $positionNum = $this->crud_model->count2Where('position','POSITION_DEPARTMENT',$departmentID,'POSITION_STATUS','1');
+        $positionNum = $this->department_model->checkEmpForDelDep($departmentID);
         if ($positionNum == 0) {
             $dataDepartment = array(
                 'DEPARTMENT_STATUS' => '0',
             );
             $this->crud_model->update('department', $dataDepartment, 'DEPARTMENT_ID', $departmentID);
-        }
-        else{
+        } else {
             $data['status'] = false;
         }
         echo json_encode($data);

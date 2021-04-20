@@ -56,6 +56,17 @@ class department_model extends CI_Model
         }
     }
 
-
+    public function checkEmpForDelDep($depID)
+    {
+        $sql = "SELECT COUNT(*) as cnt FROM department 
+        JOIN position ON department.DEPARTMENT_ID = position.POSITION_DEPARTMENT
+        JOIN employee ON position.POSITION_ID = employee.EMPLOYEE_POSITION
+        WHERE department.DEPARTMENT_ID = '$depID'
+        AND employee.EMPLOYEE_STATUS = '1'";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
     //Department End
 }

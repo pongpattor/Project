@@ -6,17 +6,18 @@ class promotionprice extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (empty($_SESSION['login'])) {
+        if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['permission'][13] != 1) {
+        } else if ($_SESSION['employeePermission'][13] != 1 ) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
-            return redirect(site_url('admin/admin/home'));
+            return redirect(site_url('admin/admin/'));
         }
         date_default_timezone_set('ASIA/BANGKOK');
         $this->load->model('promotionprice_model');
         $this->load->model('crud_model');
         $this->load->library('pagination');
     }
+
     public function index()
     {
         $search = $this->input->get('search');

@@ -114,7 +114,7 @@
                             alert(`ลบแผนก รหัส ${departmentID} เสร็จสิ้น`);
                             location.href = "<?= site_url('admin/department/') ?>";
                         } else {
-                            alert(`มีตำแหน่งใช้งานอยู่  \nไม่สามารถลบ รหัส ${departmentID} `);
+                            alert(`มีพนักงานอยู่ในแผนกนี้  \nไม่สามารถลบ รหัส ${departmentID} `);
                         }
                     }
                 });
