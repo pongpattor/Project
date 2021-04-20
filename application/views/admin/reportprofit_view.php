@@ -62,7 +62,9 @@
                         <div class="card  shadow-lg text-center h-100">
                             <div class="card-body">
                                 <h2 class="d-inline">ประเภทอาหาร</h2>
-                                <div id="foodpiechart"></div>
+                                <div class="table-responsive">
+                                    <div id="foodpiechart"></div>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="foodReporttable" class="table table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">
@@ -97,7 +99,9 @@
                         <div class="card shadow-lg text-center h-100">
                             <div class="card-body ">
                                 <h2 class="d-inline">ประเภทเครื่องดื่ม</h2>
-                                <div id="drinkpiechart"></div>
+                                <div class="table-responsive">
+                                    <div id="drinkpiechart"></div>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="drinkReporttable" class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">
@@ -205,7 +209,7 @@
         <?php }  ?>
 
         $(document).ready(function() {
-            
+
             $('#foodReporttable').dataTable({
                 "lengthMenu": [
                     [5, 10, 25, -1],
@@ -247,7 +251,7 @@
                 var dateStart = $('#dateStart').val();
                 var dateEnd = $('#dateEnd').val();
                 let check = true;
-                if ( dateStart == '' || dateEnd == '') {
+                if (dateStart == '' || dateEnd == '') {
                     check = false;
                 }
                 return check;

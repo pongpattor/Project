@@ -13,7 +13,6 @@ class payment extends CI_Controller
         } else if ($_SESSION['employeePermission'][18] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             echo '<script>window.history.back();</script>';
-
         }
         $this->load->model('crud_model');
         $this->load->model('payment_model');
@@ -508,6 +507,7 @@ class payment extends CI_Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output();
     }
+
 
 
 

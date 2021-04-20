@@ -62,7 +62,9 @@
                         <div class="card  shadow-lg text-center h-100">
                             <div class="card-body">
                                 <h2 class="d-inline">จองคิว</h2>
-                                <div id="queuepiechart"></div>
+                                <div class="table-responsive">
+                                    <div id="queuepiechart"></div>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="queueTable" class="table table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">

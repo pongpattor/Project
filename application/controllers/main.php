@@ -11,10 +11,13 @@ class main extends CI_Controller
 
     public function index()
     {
-        //$data['page'] = 'main';
-        $this->load->view('welcome_message');
+        $data['page'] = 'productstore_view';
+        $this->load->view('main', $data);
     }
-    public function test(){
-        echo 'hello';
+    public function recommendProduct()
+    {
+    }
+    public function hotSellProduct()
+    {
     }
 }

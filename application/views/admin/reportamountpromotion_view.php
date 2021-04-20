@@ -62,7 +62,9 @@
                         <div class="card  shadow-lg text-center h-100">
                             <div class="card-body">
                                 <h2 class="d-inline">โปรโมชั่นลดราคา</h2>
-                                <div id="propricepiechart"></div>
+                                <div class="table-responsive">
+                                    <div id="propricepiechart"></div>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="propricetable" class="table table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">
@@ -81,7 +83,7 @@
                                                         <td class="align-middle" style="text-align: center;"><?= $rowprice->PROMOTIONPRICE_NAME; ?></td>
                                                         <td class="align-middle" style="text-align: center;"><?= $rowprice->cntpro; ?></td>
                                                     </tr>
-                                                    <?php $no++;?>
+                                                    <?php $no++; ?>
                                             <?php
                                                 endforeach;
                                             } ?>
@@ -95,7 +97,9 @@
                         <div class="card shadow-lg text-center h-100">
                             <div class="card-body ">
                                 <h2 class="d-inline">โปรโมชั่นเซ็ท</h2>
-                                <div id="prosetpiechart"></div>
+                                <div class="table-responsive">
+                                    <div id="prosetpiechart"></div>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="prosettable" class="table  table-bordered table-sm" cellspacing="0" width="100%">
                                         <thead class="thead-dark">
@@ -109,12 +113,12 @@
                                             <?php if ($state == true) {
                                                 $no = 1;
                                                 foreach ($reportproset as $row) : ?>
-                                                        <tr>
-                                                            <td class="align-middle " style="text-align: center;"><?= $no ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->cntpro; ?></td>
-                                                        </tr>
-                                                    <?php $no++;?>
+                                                    <tr>
+                                                        <td class="align-middle " style="text-align: center;"><?= $no ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= $row->PROMOTIONSET_NAME; ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= $row->cntpro; ?></td>
+                                                    </tr>
+                                                    <?php $no++; ?>
                                             <?php
                                                 endforeach;
                                             } ?>
@@ -136,7 +140,7 @@
             });
             google.charts.setOnLoadCallback(propricepiechart);
             google.charts.setOnLoadCallback(prosetpiechart);
-            
+
             function prosetpiechart() {
 
                 var data = google.visualization.arrayToDataTable([
@@ -144,12 +148,12 @@
                     <?php $rowPieNo = 0;
                     $proset = '';
                     foreach ($reportproset as $rowPie) :
-                            $proset .= "['$rowPie->PROMOTIONSET_NAME',$rowPie->cntpro]";
-                            if ($rowPieNo < (count($reportproset) - 1)) {
-                                $proset .= ',';
-                            }
-                            $rowPieNo++;
-                        
+                        $proset .= "['$rowPie->PROMOTIONSET_NAME',$rowPie->cntpro]";
+                        if ($rowPieNo < (count($reportproset) - 1)) {
+                            $proset .= ',';
+                        }
+                        $rowPieNo++;
+
                         if ($rowPieNo == 9) {
                             break;
                         }
@@ -174,11 +178,11 @@
                     <?php $rowPieNo = 0;
                     $proprice = '';
                     foreach ($reportproprice as $rowPie) :
-                            $proprice .= "['$rowPie->PROMOTIONPRICE_NAME',$rowPie->cntpro]";
-                            if ($rowPieNo < (count($reportproprice) - 1)) {
-                                $proprice .= ',';
-                            }
-                            $rowPieNo++;
+                        $proprice .= "['$rowPie->PROMOTIONPRICE_NAME',$rowPie->cntpro]";
+                        if ($rowPieNo < (count($reportproprice) - 1)) {
+                            $proprice .= ',';
+                        }
+                        $rowPieNo++;
                         if ($rowPieNo == 9) {
                             break;
                         }
