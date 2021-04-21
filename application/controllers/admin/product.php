@@ -8,7 +8,7 @@ class product extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['permission'][5] != 1) {
+        } else if ($_SESSION['employeePermission'][5] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }
@@ -209,16 +209,20 @@ class product extends CI_Controller
 
     public function deleteProduct()
     {
+        $data['status'] = true;
         $productID = $this->input->post('productID');
-        $dataProduct = array(
-            'PRODUCT_STATUS' => '0',
-        );
-        $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
-        $this->crud_model->delete('recipe','RECIPE_PRODUCT',$productID);
-        $this->crud_model->delete('promotionpricedetail','PROPRICE_PRODUCT',$productID);
-        $this->crud_model->delete('promotionsetdetail','PROSETDETAIL_PRODUCT',$productID);
-
-
+        $check = $this->product_model->checkProductForDel($productID);
+        if ($check == 0) {
+            $dataProduct = array(
+                'PRODUCT_STATUS' => '0',
+            );
+            $this->crud_model->update('product', $dataProduct, 'PRODUCT_ID', $productID);
+            $this->crud_model->delete('recipe', 'RECIPE_PRODUCT', $productID);
+            $this->crud_model->delete('promotionpricedetail', 'PROPRICE_PRODUCT', $productID);
+            $this->crud_model->delete('promotionsetdetail', 'PROSETDETAIL_PRODUCT', $productID);
+        } else {
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
-
 }

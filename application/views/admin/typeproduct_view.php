@@ -134,9 +134,15 @@
                     data: {
                         typeProductID: typeProductID,
                     },
+                    dataType: "JSON",
                     success: function(data) {
-                        alert(`ลบประเภทสินค้า รหัส ${typeProductID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/typeproduct') ?>";
+                        if (data.status == true) {
+                            alert(`ลบประเภทสินค้า รหัส ${typeProductID} เสร็จสิ้น`);
+                            location.href = "<?= site_url('admin/typeproduct') ?>";
+                        } else {
+                            alert(`มีสินค้นอยู่ในประเภทสินค้านี้  \nไม่สามารถลบ รหัส ${typeProductID} ได้`);
+                        }
+
                     }
                 });
             }

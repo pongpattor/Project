@@ -134,9 +134,16 @@
                     data: {
                         ingredientID: ingredientID,
                     },
-                    success: function() {
-                        alert(`ลบวัตถุดิบ รหัส ${ingredientID} เสร็จสิ้น`);
-                        location.href = "<?= site_url('admin/ingredient') ?>";
+                    dataType: "JSON",
+                    success: function(data) {
+                        if (data.status == true) {
+                            alert(`ลบวัตถุดิบ รหัส ${ingredientID} เสร็จสิ้น`);
+                            location.href = "<?= site_url('admin/ingredient') ?>";
+                        } else {
+                            alert(`วัตถุดิบนี้อยู่ในสูตรการผลิตอาหาร\nไม่สามารถลบวัตถุดิบ รหัส ${ingredientID} นี้ได้`);
+
+                        }
+
                     }
                 });
             }

@@ -149,12 +149,18 @@ class ingredient extends CI_Controller
 
     public function deleteIngredient()
     {
+        $data['status'] = true;
         $ingredientID = $this->input->post('ingredientID');
-        $dataIngredient = array(
-            'INGREDIENT_STATUS' => '0',
-        );
-        $this->crud_model->update('ingredient', $dataIngredient, 'INGREDIENT_ID', $ingredientID);
-        $this->crud_model->delete('recipedetail', 'RECIPEDETAIL_INGREDIENT', $ingredientID);
-        // echo json_encode($data);
+        $check = $this->ingredient_model->checkIngreForDel($ingredientID);
+        if ($check == 0) {
+            $dataIngredient = array(
+                'INGREDIENT_STATUS' => '0',
+            );
+            $this->crud_model->update('ingredient', $dataIngredient, 'INGREDIENT_ID', $ingredientID);
+            $this->crud_model->delete('recipedetail', 'RECIPEDETAIL_INGREDIENT', $ingredientID);
+        } else {
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
 }

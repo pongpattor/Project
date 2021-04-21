@@ -15,7 +15,7 @@
             <div class="card-body">
                 <form action="<?= site_url('admin/product/'); ?>" method="GET">
                     <div class="row">
-                    <div class="col-10">
+                        <div class="col-10">
                             <div class="row">
                                 <div class="col-3 form-group row">
                                     <div class="col-3"> <label for="productActive" class="col-form-label">สถานะ</label></div>
@@ -90,7 +90,7 @@
                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
                                             <td class="align-middle" style="text-align: center;"><?php if ($row->TYPEPRODUCT_GROUP == '1') {
                                                                                                         echo 'อาหาร';
-                                                                                                    } else if($row->TYPEPRODUCT_GROUP == '2'){
+                                                                                                    } else if ($row->TYPEPRODUCT_GROUP == '2') {
                                                                                                         echo 'เครื่องดื่ม';
                                                                                                     }
                                                                                                     ?></td>
@@ -150,9 +150,16 @@
                     data: {
                         productID: productID,
                     },
+                    dataType: "JSON",
                     success: function(data) {
-                        alert(`ลบ ${productID} เสร็จสิ้น`);
-                       location.href = "<?= site_url('admin/product/') ?>";
+                        if (data.status == true) {
+
+                            alert(`ลบ ${productID} เสร็จสิ้น`);
+                            location.href = "<?= site_url('admin/product/') ?>";
+                        } else {
+                            alert(`สินค้านี้อยู่ในโปรโมชั่นที่กำลังถูกจัด\nไม่สามารถลบสินค้า รหัส ${productID} นี้ได้`);
+                        }
+
                     }
                 });
             }

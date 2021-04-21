@@ -106,7 +106,8 @@
                     data: {
                         typePaymentID: typePaymentID,
                     },
-                    success: function() {
+                    success: function(data) {
+                     
                         alert(`ลบประเภทชำระเงิน รหัส ${typePaymentID} เสร็จสิ้น`);
                         location.replace('<?= site_url('admin/payment/typepayment') ?>');
                     }

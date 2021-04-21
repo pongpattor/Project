@@ -3,10 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class typeproduct_model extends CI_Model
 {
-    public function typeProduct($search ,$typeProductGroup, $limit, $offset)
+    public function typeProduct($search, $typeProductGroup, $limit, $offset)
     {
         $sql = "SELECT * FROM typeproduct 
-        where 
+        where  TYPEPRODUCT_STATUS = '1'
+        AND
         (
             TYPEPRODUCT_ID LIKE  ? OR
             TYPEPRODUCT_NAME LIKE ? 
@@ -29,7 +30,7 @@ class typeproduct_model extends CI_Model
         return $query->result();
     }
 
-    public function countAllTypeProduct($search ,$typeProductGroup )
+    public function countAllTypeProduct($search, $typeProductGroup)
     {
         $sql = "SELECT COUNT(*) as cnt FROM typeproduct 
         where
@@ -47,6 +48,18 @@ class typeproduct_model extends CI_Model
                 '%' . $this->db->escape_like_str($search) . '%',
             )
         );
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
+
+    public function checkProductForDelType($typeProductID)
+    {
+        $sql = "SELECT COUNT(*) AS cnt FROM typeproduct 
+        JOIN product ON typeproduct.TYPEPRODUCT_ID = product.PRODUCT_TYPEPRODUCT
+        WHERE product.PRODUCT_STATUS = '1'
+        AND typeproduct.TYPEPRODUCT_ID = '$typeProductID'";
+        $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->cnt;
         }

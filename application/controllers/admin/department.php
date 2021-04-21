@@ -68,11 +68,13 @@ class department extends CI_Controller
     {
         $data['status'] = true;
         $departmentName = $this->input->post("departmentName");
-        $countDepartmentName = $this->crud_model->countWhere('department', 'DEPARTMENT_NAME', $departmentName);
+        $countDepartmentName = $this->crud_model->count2Where('department', 'DEPARTMENT_NAME', $departmentName, 'DEPARTMENT_STATUS', '1');
         if ($countDepartmentName == 0) {
             $dataDepartment = array(
                 'DEPARTMENT_ID' => $this->genIdDepartment(),
                 'DEPARTMENT_NAME' => $departmentName,
+                'DEPARTMENT_STATUS' => '1',
+
             );
             $this->crud_model->insert('department', $dataDepartment);
             $data['message'] = 'เพิ่มข้อมูลแผนกเสร็จสิ้น';
@@ -153,6 +155,10 @@ class department extends CI_Controller
                 'DEPARTMENT_STATUS' => '0',
             );
             $this->crud_model->update('department', $dataDepartment, 'DEPARTMENT_ID', $departmentID);
+            $dataPosition = array(
+                'POSITION_STATUS' => '0',
+            );
+            $this->crud_model->update('position', $dataPosition, 'POSITION_DEPARTMENT', $departmentID);
         } else {
             $data['status'] = false;
         }

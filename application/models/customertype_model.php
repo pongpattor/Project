@@ -67,7 +67,8 @@ class customertype_model extends CI_Model
     public function checkCustomerTypeName($customerTypeName)
     {
         $sql = "SELECT COUNT(*) as cnt FROM customertype
-                WHERE CUSTOMERTYPE_NAME = ?";
+                WHERE CUSTOMERTYPE_NAME = ?
+                AND CUSTOMERTYPE_STATUS = '1'";
         $query = $this->db->query(
             $sql,
             array(

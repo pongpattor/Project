@@ -8,7 +8,7 @@ class promotionprice extends CI_Controller
         parent::__construct();
         if (empty($_SESSION['employeeLogin'])) {
             return redirect(site_url('admin/login'));
-        } else if ($_SESSION['employeePermission'][13] != 1 ) {
+        } else if ($_SESSION['employeePermission'][13] != 1) {
             echo '<script>alert("คุณไม่มีสิทธิ์ในการใช้งานระบบนี้")</script>';
             return redirect(site_url('admin/admin/'));
         }

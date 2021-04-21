@@ -84,4 +84,43 @@ class product_model extends CI_Model
         return $query->result();
     }
 
+    public function checkProductForDel($productID)
+    {
+        $sql = "SELECT
+                    COUNT( * ) AS cnt 
+                FROM
+                    product
+                    LEFT JOIN (
+                    SELECT
+                        promotionset.PROMOTIONSET_ID,
+                        promotionsetdetail.PROSETDETAIL_PRODUCT 
+                    FROM
+                        promotionset
+                        JOIN promotionsetdetail ON promotionset.PROMOTIONSET_ID = promotionsetdetail.PROSETDETAIL_ID 
+                    WHERE
+                        promotionset.PROMOTIONSET_STATUS = '1' 
+                        AND (  CURRENT_DATE BETWEEN promotionset.PROMOTIONSET_DATESTART AND promotionset.PROMOTIONSET_DATEEND ) 
+                    ) proset ON product.PRODUCT_ID = proset.PROSETDETAIL_PRODUCT
+                    LEFT JOIN (
+                    SELECT
+                        promotionprice.PROMOTIONPRICE_ID,
+                        promotionpricedetail.PROPRICE_PRODUCT 
+                    FROM
+                        promotionprice
+                        JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID 
+                    WHERE
+                        promotionprice.PROMOTIONPRICE_STATUS = '1' 
+                        AND (  CURRENT_DATE BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND  ) 
+                    ) proprice ON product.PRODUCT_ID = proprice.PROPRICE_PRODUCT 
+                WHERE
+                    product.PRODUCT_STATUS = '1' 
+                    AND product.PRODUCT_ID = '$productID'
+                    AND (proprice.PROMOTIONPRICE_ID IS NOT NULL
+                    OR proset.PROMOTIONSET_ID IS NOT NULL)
+                    ";
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row) {
+            return $row->cnt;
+        }
+    }
 }

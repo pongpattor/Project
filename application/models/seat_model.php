@@ -173,4 +173,5 @@ class seat_model extends CI_Model
             return $row->cnt;
         }
     }
+
 }

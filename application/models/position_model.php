@@ -66,7 +66,8 @@ class position_model extends CI_Model
         $sql = "SELECT COUNT(*) AS cnt FROM position
                 JOIN department ON position.POSITION_DEPARTMENT = department.DEPARTMENT_ID
                 WHERE position.POSITION_NAME = '$positionName'
-                AND department.DEPARTMENT_ID = '$positionDepartment'";
+                AND department.DEPARTMENT_ID = '$positionDepartment'
+                AND position.POSITION_STATUS = '1'";
         $query = $this->db->query($sql);
         foreach ($query->result() as $row) {
             return $row->cnt;

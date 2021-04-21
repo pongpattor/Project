@@ -158,10 +158,19 @@ class typeproduct extends CI_Controller
 
     public function deleteTypeProduct()
     {
+        $data['status'] = true;
+
         $typeProductID = $this->input->post('typeProductID');
-        $dataStatus = array(
-            'TYPEPRODUCT_STATUS' => '0',
-        );
-        $this->crud_model->update('typeproduct',$dataStatus, 'TYPEPRODUCT_ID', $typeProductID);
+        $check = $this->typeproduct_model->checkProductForDelType($typeProductID);
+        if ($check == 0) {
+            $dataStatus = array(
+                'TYPEPRODUCT_STATUS' => '0',
+            );
+            $this->crud_model->update('typeproduct', $dataStatus, 'TYPEPRODUCT_ID', $typeProductID);
+            $data['url'] = site_url('admin/typeproduct');
+        } else {
+            $data['status'] = false;
+        }
+        echo json_encode($data);
     }
 }
