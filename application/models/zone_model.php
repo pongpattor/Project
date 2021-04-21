@@ -48,9 +48,6 @@ class zone_model extends CI_Model
                 '%' . $this->db->escape_like_str($search) . '%',
             )
         );
-        // echo '<pre>';
-        // print_r($this->db->last_query($query));
-        // echo '</pre>';
         foreach ($query->result() as $row) {
             return $row->cnt;
         }

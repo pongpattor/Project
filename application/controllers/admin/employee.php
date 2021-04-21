@@ -73,7 +73,7 @@ class employee extends CI_Controller
     {
         $this->load->model('position_model');
         $data['province'] = $this->crud_model->findall('province');
-        $data['department'] = $this->crud_model->findAll('department');
+        $data['department'] = $this->crud_model->findwhere('department', 'DEPARTMENT_STATUS', '1');
         $data['page'] = 'employee_add_view';
         $this->load->view('admin/main_view', $data);
     }

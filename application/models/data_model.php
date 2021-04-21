@@ -71,7 +71,7 @@ class data_model extends CI_Model
 
     public function fetchTypeProduct($typeProductGroup)
     {
-        $sql = "SELECT TYPEPRODUCT_ID,TYPEPRODUCT_NAME from typeproduct where TYPEPRODUCT_GROUP = '$typeProductGroup'";
+        $sql = "SELECT TYPEPRODUCT_ID,TYPEPRODUCT_NAME from typeproduct where TYPEPRODUCT_GROUP = '$typeProductGroup' AND TYPEPRODUCT_STATUS = '1' ";
         $query =  $this->db->query($sql)->result();
         $output = '<option value="" selected disable>กรุณาเลือกประเภทสินค้า</option>';
         //  echo '<pre>';

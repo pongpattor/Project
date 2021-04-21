@@ -1699,8 +1699,18 @@ $(document).ready(function () {
                         location.replace(data.url);
                     } else {
                         alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                        $('#promotionPriceNameError').html(data.sameProname);
-                        $('#ProPriceProductError').html(data.productActivePro);
+                        if (data.sameProname = '') {
+                            $('#promotionPriceNameError').html('');
+                        }
+                        else {
+                            $('#promotionPriceNameError').html(data.sameProname);
+                        }
+                        if (data.sameProname = '') {
+                            $('#productActivePro').html('');
+                        }
+                        else {
+                            $('#ProPriceProductError').html(data.productActivePro);
+                        }
                     }
                 }
             });
@@ -1729,8 +1739,18 @@ $(document).ready(function () {
                             location.replace(data.url);
                         } else {
                             alert('กรุณากรอกข้อมูลให้ถูกต้อง');
-                            $('#promotionPriceNameError').html(data.sameProname);
-                            $('#ProPriceProductError').html(data.productActivePro);
+                            if (data.sameProname = '') {
+                                $('#promotionPriceNameError').html('');
+                            }
+                            else {
+                                $('#promotionPriceNameError').html(data.sameProname);
+                            }
+                            if (data.sameProname = '') {
+                                $('#productActivePro').html('');
+                            }
+                            else {
+                                $('#ProPriceProductError').html(data.productActivePro);
+                            }
                         }
                     }
                 });

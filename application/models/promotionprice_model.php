@@ -98,6 +98,39 @@ class promotionprice_model extends CI_Model
         return $query->result();
     }
 
+
+    public function checkProductUpdate($propriceID, $dateStart, $dateEnd, $productID)
+    {
+        $sql = "SELECT
+        product.PRODUCT_NAME 
+    FROM
+        promotionprice
+        JOIN promotionpricedetail ON promotionprice.PROMOTIONPRICE_ID = promotionpricedetail.PROPRICE_ID
+        JOIN product ON product.PRODUCT_ID = promotionpricedetail.PROPRICE_PRODUCT 
+    WHERE
+        product.PRODUCT_ID IN ($productID) 
+        AND (
+                ( 
+                        ( '$dateStart' BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
+                    AND 
+                        ( '$dateEnd' BETWEEN promotionprice.PROMOTIONPRICE_DATESTART AND promotionprice.PROMOTIONPRICE_DATEEND ) 
+                ) 
+                OR promotionprice.PROMOTIONPRICE_DATESTART BETWEEN '$dateStart' AND '$dateEnd' 
+                OR 
+                ( 
+                        ( promotionprice.PROMOTIONPRICE_DATESTART BETWEEN '$dateStart' AND '$dateEnd' )
+                    AND 
+                        ( promotionprice.PROMOTIONPRICE_DATEEND BETWEEN '$dateStart' AND '$dateEnd' )
+                ) 
+                OR promotionprice.PROMOTIONPRICE_DATEEND BETWEEN '$dateStart' AND '$dateEnd' 
+            ) 
+            AND promotionprice.PROMOTIONPRICE_ID != '$propriceID'
+        GROUP BY product.PRODUCT_ID
+        ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function editPromotionPriceDetail($promotionPriceID)
     {
         $sql = "SELECT product.PRODUCT_ID,product.PRODUCT_NAME FROM promotionpricedetail

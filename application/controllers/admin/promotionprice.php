@@ -73,9 +73,9 @@ class promotionprice extends CI_Controller
         $checkPromotionPriceName = $this->crud_model->count2Where('promotionprice', 'PROMOTIONPRICE_NAME', $promotionPriceName, 'PROMOTIONPRICE_STATUS', '1');
         if ($checkPromotionPriceName != 0) {
             $data['status'] = false;
-            $data['sameProname'] = '';
-        } else {
             $data['sameProname'] = 'ชื่อโปรโมชั่นซ้ำ';
+        } else {
+            $data['sameProname'] = '';
         }
         $i = 0;
         $productID = '';
@@ -172,13 +172,15 @@ class promotionprice extends CI_Controller
         $data['status'] = true;
         $promotionPriceName  = $this->input->post('promotionPriceName');
         $promotionPriceNameOld  = $this->input->post('promotionPriceNameOld');
+        $promotionPriceID = $this->input->post('promotionPriceID');
+
         if (strtolower($promotionPriceName) != strtolower($promotionPriceNameOld)) {
             $checkPromotionPriceName = $this->crud_model->count2Where('promotionprice', 'PROMOTIONPRICE_NAME', $promotionPriceName, 'PROMOTIONPRICE_STATUS', '1');
             if ($checkPromotionPriceName != 0) {
                 $data['status'] = false;
-                $data['sameProname'] = '';
-            } else {
                 $data['sameProname'] = 'ชื่อโปรโมชั่นซ้ำ';
+            } else {
+                $data['sameProname'] = '';
             }
         }
         $promotionPriceDateStart = $this->input->post('promotionPriceDateStart');
@@ -193,7 +195,7 @@ class promotionprice extends CI_Controller
             }
             $i++;
         }
-        $productActivePro = $this->promotionprice_model->checkProduct($promotionPriceDateStart, $promotionPriceDateEnd, $productID);
+        $productActivePro = $this->promotionprice_model->checkProductUpdate($promotionPriceID, $promotionPriceDateStart, $promotionPriceDateEnd, $productID);
         if ($productActivePro != null) {
             $j = 0;
             $productName = '';
@@ -211,7 +213,6 @@ class promotionprice extends CI_Controller
             $data['productActivePro'] = '';
         }
         if ($data['status'] == true) {
-            $promotionPriceID = $this->input->post('promotionPriceID');
             $promotionPriceDiscount = $this->input->post('promotionPriceDiscount');
 
             $dataPromotionPrice = array(

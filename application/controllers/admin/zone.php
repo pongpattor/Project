@@ -66,11 +66,13 @@ class zone extends CI_Controller
     {
         $data['status'] = true;
         $zoneName = $this->input->post('zoneName');
-        $checkZoneName = $this->crud_model->countWhere('zone', 'ZONE_NAME', $zoneName);
+        $checkZoneName = $this->crud_model->count2Where('zone', 'ZONE_NAME', $zoneName, 'ZONE_STATUS', '1');
         if ($checkZoneName == 0) {
             $dataZone = array(
                 'ZONE_ID' => $this->genIdZone(),
                 'ZONE_NAME' => $zoneName,
+                'ZONE_STATUS' => '1',
+
             );
             $this->crud_model->insert('zone', $dataZone);
             $data['url'] = site_url('admin/zone');
@@ -123,7 +125,7 @@ class zone extends CI_Controller
             $data['url'] = site_url('admin/zone');
             $data['message'] = 'แก้ไขข้อมูลโซนเสร็จสิ้น';
         } else {
-            $checkZoneName = $this->crud_model->countWhere('zone', 'ZONE_NAME', $zoneName);
+            $checkZoneName = $this->crud_model->count2Where('zone', 'ZONE_NAME', $zoneName, 'ZONE_STATUS', '1');
             if ($checkZoneName == 0) {
                 $zoneID = $this->input->post('zoneID');
                 $dataZone = array(

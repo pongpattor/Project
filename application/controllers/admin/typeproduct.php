@@ -75,7 +75,7 @@ class typeproduct extends CI_Controller
 
         $typeProductName = $this->input->post('typeProductName');
         $typeProductGroup = $this->input->post('typeProductGroup');
-        $check = $this->crud_model->count2Where('typeproduct', 'TYPEPRODUCT_NAME', $typeProductName, 'TYPEPRODUCT_GROUP', $typeProductGroup);
+        $check = $this->crud_model->count2Where('typeproduct', 'TYPEPRODUCT_NAME', $typeProductName, 'TYPEPRODUCT_STATUS', '1');
         if ($check == 0) {
             $typeProductID = $this->genIdTypeProduct();
             $dataTypeProduct = array(
@@ -138,7 +138,7 @@ class typeproduct extends CI_Controller
                 'TYPEPRODUCT_GROUP' => $typeProductGroup,
             );
         } else {
-            $check = $this->crud_model->count2Where('typeproduct', 'TYPEPRODUCT_NAME', $typeProductName, 'TYPEPRODUCT_GROUP', $typeProductGroup);
+            $check = $this->crud_model->count2Where('typeproduct', 'TYPEPRODUCT_NAME', $typeProductName, 'TYPEPRODUCT_STATUS', '1');
             if ($check == 0) {
                 $dataTypeProduct = array(
                     'TYPEPRODUCT_NAME' => $typeProductName,

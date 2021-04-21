@@ -33,7 +33,8 @@ class typeproduct_model extends CI_Model
     public function countAllTypeProduct($search, $typeProductGroup)
     {
         $sql = "SELECT COUNT(*) as cnt FROM typeproduct 
-        where
+        where TYPEPRODUCT_STATUS = '1'
+        AND
         (
             TYPEPRODUCT_ID LIKE  ? OR
             TYPEPRODUCT_NAME LIKE ? 
@@ -63,5 +64,9 @@ class typeproduct_model extends CI_Model
         foreach ($query->result() as $row) {
             return $row->cnt;
         }
+    }
+
+    public function checkName(){
+        
     }
 }

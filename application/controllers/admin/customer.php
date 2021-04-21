@@ -71,7 +71,7 @@ class customer extends CI_Controller
 
     public function addCustomer()
     {
-        $data['customerType'] = $this->crud_model->find('customerType', 'CUSTOMERTYPE_ID,CUSTOMERTYPE_NAME');
+        $data['customerType'] = $this->crud_model->findSelectWhere('customerType','CUSTOMERTYPE_ID,CUSTOMERTYPE_NAME','CUSTOMERTYPE_STATUS','1');
         $data['province'] = $this->crud_model->findAll('province');
         $data['page'] = 'customer_add_view';
         $this->load->view('admin/main_view', $data);
@@ -214,7 +214,7 @@ class customer extends CI_Controller
         $customerID = $this->input->get('customerID');
         $data['customer'] = $this->customer_model->editCustomer($customerID);
         $data['customerTel'] = $this->crud_model->findSelectWhere('customertel', 'CUSTOMERTEL_ID,CUSTOMERTEL_TEL', 'CUSTOMERTEL_ID',  $customerID);
-        $data['customerType'] = $this->crud_model->find('customertype', 'CUSTOMERTYPE_ID,CUSTOMERTYPE_NAME');
+        $data['customerType'] = $this->crud_model->findSelectWhere('customerType','CUSTOMERTYPE_ID,CUSTOMERTYPE_NAME','CUSTOMERTYPE_STATUS','1');
         $data['province'] = $this->crud_model->findAll('province');
         $province = $data['customer']['0']->PROVINCE_ID;
         $data['amphur'] = $this->crud_model->findSelectWhere('amphur', 'AMPHUR_ID,AMPHUR_NAME', 'A_PROVINCE_ID', $province);
