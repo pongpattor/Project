@@ -104,7 +104,7 @@
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
                                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->AllAmount; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->AllAmount); ?></td>
                                                         </tr>
                                                     <?php $no++;
                                                     } ?>
@@ -142,7 +142,7 @@
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
                                                             <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->AllAmount; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->AllAmount); ?></td>
                                                         </tr>
                                                     <?php $no++;
                                                     } ?>

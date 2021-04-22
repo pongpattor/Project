@@ -199,7 +199,7 @@
 <script>
     $(document).ready(function() {
 
-
+        
 
         $(document).on('click', '#viewKaraoke', function() {
             $.ajax({

@@ -43,6 +43,8 @@ class report extends CI_Controller
             $dateStart = $this->input->get('dateStart');
             $dateEnd = $this->input->get('dateEnd');
             $data['report'] = $this->report_model->reportProfitProduct($dateStart, $dateEnd);
+            // $data['reportDrink'] = $this->report_model->reportProfitDrink($dateStart, $dateEnd);
+
         }
         // print_r($data);
         $data['page'] = 'reportprofit_view';

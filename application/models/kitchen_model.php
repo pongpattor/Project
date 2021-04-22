@@ -86,59 +86,69 @@ class kitchen_model extends CI_Model
 
     public function kitchenSame($typrproductGroup)
     {
-        $sql = "SELECT
-                    dtser.PRODUCT_ID,
-                    dtser.PRODUCT_NAME,
-                    dtser.DTSER_NOTE,
-                    dtser.DTSER_TYPEUSE,
-                    dtser.DT_STATUS,
-                    dtser.DTSER_STATUS,
-                    dtser.DPRODTSER_STATUS,
-                    SUM( dtser.DT_AMOUNT ) AS sumAmount,
-                    IFNULL(dtser.DPRODTSER_STATUS,dtser.DTSER_STATUS) AS cc
-                FROM
-                    (
-                    SELECT
-                        servicedetail.DTSER_DATE,
-                        servicedetail.DTSER_TIME,
-                        servicedetail.DTSER_STATUS,
-                        servicedetailprosetdetail.DPRODTSER_STATUS,
-                        servicedetail.DTSER_NOTE,
-                        servicedetail.DTSER_TYPEUSE,
-                        IFNULL( servicedetailprosetdetail.DPRODTSER_STATUS, servicedetail.DTSER_STATUS ) AS DT_STATUS,
-                        SUM( IFNULL( servicedetailprosetdetail.DPRODTSER_AMOUNT, servicedetail.DTSER_AMOUNT ) ) AS DT_AMOUNT,
-                        product.PRODUCT_ID,
-                        product.PRODUCT_NAME 
-                    FROM
-                        servicedetail
-                        LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
-                        LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
-                        LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
-                        LEFT JOIN product ON ( servicedetailfd.FDDTSER_PRODUCTID = product.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = product.PRODUCT_ID )
-                        LEFT JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
-                    WHERE
-                        typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
-                        AND servicedetail.DTSER_STATUS IN ( 0, 1 ) 
-                    OR servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 ) 
-                    GROUP BY
-                        servicedetail.DTSER_NOTE,
-                        servicedetail.DTSER_TYPEUSE,
-                        servicedetail.DTSER_STATUS,
-                        servicedetailprosetdetail.DPRODTSER_STATUS,
-                        product.PRODUCT_ID 
-                    ) dtser 
-                GROUP BY
-                    dtser.PRODUCT_ID,
-                    dtser.DTSER_NOTE,
-                    dtser.DTSER_TYPEUSE,
-                    dtser.DT_STATUS
-                HAVING  	sumAmount > 1   
-                AND cc !=2
 
-                ORDER BY
-                    dtser.DTSER_DATE ASC,
-                    dtser.DTSER_TIME ASC
-                ";
+
+        $sql = "SELECT
+        dtser.PRODUCT_ID,
+        dtser.PRODUCT_NAME,
+        dtser.DTSER_NOTE,
+        dtser.DTSER_TYPEUSE,
+        dtser.DT_STATUS,
+        dtser.DTSER_STATUS,
+        dtser.DPRODTSER_STATUS,
+        SUM( dtser.DT_AMOUNT ) AS sumAmount,
+        IFNULL( dtser.DPRODTSER_STATUS, dtser.DTSER_STATUS ) AS cc 
+    FROM
+        (
+        SELECT
+            servicedetail.DTSER_DATE,
+            servicedetail.DTSER_TIME,
+            servicedetail.DTSER_STATUS,
+            servicedetailprosetdetail.DPRODTSER_STATUS,
+            servicedetail.DTSER_NOTE,
+            servicedetail.DTSER_TYPEUSE,
+            IFNULL( servicedetailprosetdetail.DPRODTSER_STATUS, servicedetail.DTSER_STATUS ) AS DT_STATUS,
+            SUM( IFNULL( servicedetailprosetdetail.DPRODTSER_AMOUNT, servicedetail.DTSER_AMOUNT ) ) AS DT_AMOUNT,
+            pd.PRODUCT_ID,
+            pd.PRODUCT_NAME 
+        FROM
+            servicedetail
+            LEFT JOIN servicedetailfd ON ( servicedetail.DTSER_ID = servicedetailfd.FDDTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailfd.FDDTSER_NO )
+            LEFT JOIN servicedetailproset ON ( servicedetail.DTSER_ID = servicedetailproset.PRODTSER_SERVICEID AND servicedetail.DTSER_NO = servicedetailproset.PRODTSER_NO )
+            LEFT JOIN servicedetailprosetdetail ON ( servicedetailproset.PRODTSER_SERVICEID = servicedetailprosetdetail.DPRODTSER_SERVICEID AND servicedetailproset.PRODTSER_NO = servicedetailprosetdetail.DPRODTSER_NO )
+            LEFT JOIN (
+            SELECT
+                product.PRODUCT_ID,
+                product.PRODUCT_NAME 
+            FROM
+                product
+                JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID 
+            WHERE
+                typeproduct.TYPEPRODUCT_GROUP = '$typrproductGroup' 
+            ) pd ON ( servicedetailfd.FDDTSER_PRODUCTID = pd.PRODUCT_ID OR servicedetailprosetdetail.DPRODTSER_PRODUCTID = pd.PRODUCT_ID ) 
+        WHERE
+            servicedetail.DTSER_STATUS IN ( 0, 1 ) 
+            OR servicedetailprosetdetail.DPRODTSER_STATUS IN ( 0, 1 ) 
+        GROUP BY
+            servicedetail.DTSER_NOTE,
+            servicedetail.DTSER_TYPEUSE,
+            servicedetail.DTSER_STATUS,
+            servicedetailprosetdetail.DPRODTSER_STATUS,
+            pd.PRODUCT_ID 
+        ) dtser 
+        WHERE dtser.PRODUCT_ID IS NOT NULL
+    GROUP BY
+        dtser.PRODUCT_ID,
+        dtser.DTSER_NOTE,
+        dtser.DTSER_TYPEUSE,
+        dtser.DT_STATUS 
+    HAVING
+        sumAmount > 1 
+        AND cc != 2 
+    ORDER BY
+        dtser.DTSER_DATE ASC,
+        dtser.DTSER_TIME ASC
+        ";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -461,5 +471,4 @@ class kitchen_model extends CI_Model
             return $row->cnt;
         }
     }
-   
 }

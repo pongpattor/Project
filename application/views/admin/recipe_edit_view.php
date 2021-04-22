@@ -107,7 +107,7 @@
                                                             <tr id="row<?= $rowIngredient ?>">
                                                                 <td><?= $row->INGREDIENT_ID; ?></td>
                                                                 <td><?= $row->INGREDIENT_NAME; ?></td>
-                                                                <td><button type="button" value="<?= $row->INGREDIENT_ID ?>" class="addIngredient btn btn-info">เลือก</button></td>
+                                                                <td><button type="button" value="<?= $row->INGREDIENT_ID ?>" class="selectIngredient btn btn-info">เลือก</button></td>
                                                             </tr>
                                                         <?php $rowIngredient++;
                                                         endforeach; ?>

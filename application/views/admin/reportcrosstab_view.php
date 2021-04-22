@@ -29,7 +29,7 @@
                                                         <div class="col">
                                                             <?php $year = date('Y'); ?>
                                                             <select name="year" id="year" class="form-control " required>
-                                                            <option value="" disabled selected>กรุณาเลือก</option>
+                                                                <option value="" disabled selected>กรุณาเลือก</option>
                                                                 <?php for ($i = 0; $i < 10; $i++) : ?>
                                                                     <option value="<?= $year ?>" <?php
                                                                                                     if ($this->input->get('year') == $year) {
@@ -84,18 +84,18 @@
                                                 foreach ($report as $row) : ?>
                                                     <tr>
                                                         <td class="align-middle " style="text-align: center;"><?= $row->PRODUCT_NAME ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Jan; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Feb; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Mar; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Apr; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->May; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Jun; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Jul; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Aug; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Sep; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Oct; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Nov; ?></td>
-                                                        <td class="align-middle" style="text-align: center;"><?= $row->Dec; ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Jan, 2);  ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Feb, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Mar, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Apr, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->May, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Jun, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Jul, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Aug, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Sep, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Oct, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Nov, 2); ?></td>
+                                                        <td class="align-middle" style="text-align: center;"><?= number_format($row->Dec, 2); ?></td>
                                                     </tr>
                                             <?php
                                                 endforeach;
@@ -115,8 +115,8 @@
 
             $('#crosstabtable').dataTable({
                 "lengthMenu": [
-                    [ 10, 25, -1],
-                    [ 10, 25, "All"]
+                    [10, 25, -1],
+                    [10, 25, "All"]
                 ],
                 "columnDefs": [{
                     "className": "dt-center",

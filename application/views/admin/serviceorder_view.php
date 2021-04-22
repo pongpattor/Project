@@ -54,9 +54,11 @@
                                                         </thead>
                                                         <tbody>
                                                             <?php foreach ($recom as $roww) : ?>
-                                                                <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $roww->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
-                                                                <td class="align-middle"><?= $roww->PRODUCT_NAME; ?></td>
-                                                                <td class="align-middle"><?= $roww->PRODUCT_SELLPRICE; ?></td>
+                                                                <tr>
+                                                                    <td class="align-middle"><img src="<?= base_url('assets/image/product/' . $roww->PRODUCT_IMAGE); ?>" alt="" width="50px" height="50px"></td>
+                                                                    <td class="align-middle"><?= $roww->PRODUCT_NAME; ?></td>
+                                                                    <td class="align-middle"><?= $roww->PRODUCT_SELLPRICE; ?></td>
+                                                                </tr>
                                                             <?php endforeach; ?>
                                                         </tbody>
                                                     </table>
@@ -308,8 +310,6 @@
 </div>
 <script>
     $(document).ready(function() {
-
-        
 
         $('#้hotsellTable').dataTable({
             "lengthMenu": [

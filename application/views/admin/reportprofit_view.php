@@ -71,6 +71,7 @@
                                             <tr>
                                                 <th style="text-align: center;">#</th>
                                                 <th style="text-align: center;">ชื่อสินค้า</th>
+                                                <th style="text-align: center;">ประเภทสินค้า</th>
                                                 <th style="text-align: center;">กำไร/ขาดทุน</th>
                                             </tr>
                                         </thead>
@@ -81,8 +82,9 @@
                                                     <?php if ($row->TYPEPRODUCT_GROUP == '1') { ?>
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
                                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->profit; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->profitss, 2); ?></td>
                                                         </tr>
                                                     <?php $no++;
                                                     } ?>
@@ -108,6 +110,7 @@
                                             <tr>
                                                 <th style="text-align: center;">#</th>
                                                 <th style="text-align: center;">ชื่อสินค้า</th>
+                                                <th style="text-align: center;">ประเภทสินค้า</th>
                                                 <th style="text-align: center;">กำไร/ขาดทุน</th>
                                             </tr>
                                         </thead>
@@ -118,8 +121,9 @@
                                                     <?php if ($row->TYPEPRODUCT_GROUP == '2') { ?>
                                                         <tr>
                                                             <td class="align-middle " style="text-align: center;"><?= $no ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= $row->PRODUCT_NAME; ?></td>
                                                             <td class="align-middle" style="text-align: center;"><?= $row->TYPEPRODUCT_NAME; ?></td>
-                                                            <td class="align-middle" style="text-align: center;"><?= $row->profit; ?></td>
+                                                            <td class="align-middle" style="text-align: center;"><?= number_format($row->profitss, 2); ?></td>
                                                         </tr>
                                                     <?php $no++;
                                                     } ?>
@@ -153,7 +157,7 @@
                     $Drink = '';
                     foreach ($report as $rowPie) :
                         if ($rowPie->TYPEPRODUCT_GROUP == '2') {
-                            $Drink .= "['$rowPie->TYPEPRODUCT_NAME',$rowPie->profit]";
+                            $Drink .= "['$rowPie->PRODUCT_NAME',$rowPie->profitss]";
                             if ($rowPieNo < (count($report) - 1)) {
                                 $Drink .= ',';
                             }
@@ -164,7 +168,6 @@
                         }
                     endforeach;
                     echo $Drink;
-                    //         
                     ?>
                 ]);
 
@@ -184,7 +187,7 @@
                     $Food = '';
                     foreach ($report as $rowPie) :
                         if ($rowPie->TYPEPRODUCT_GROUP == '1') {
-                            $Food .= "['$rowPie->TYPEPRODUCT_NAME',$rowPie->profit]";
+                            $Food .= "['$rowPie->PRODUCT_NAME',$rowPie->profitss]";
                             if ($rowPieNo < (count($report) - 1)) {
                                 $Food .= ',';
                             }
@@ -195,6 +198,8 @@
                         }
                     endforeach;
                     echo $Food;
+
+
                     ?>
                 ]);
 
@@ -246,7 +251,6 @@
                 $('#dateEnd').prop('min', datestart);
             });
 
-
             function validationForm() {
                 var dateStart = $('#dateStart').val();
                 var dateEnd = $('#dateEnd').val();
@@ -257,7 +261,6 @@
                 return check;
 
             }
-
             $('#reportProfitsForm').on('submit', function(e) {
                 var chk = validationForm();
                 if (chk == false) {

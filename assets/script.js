@@ -936,7 +936,7 @@ $(document).ready(function () {
 
 
     var rowIngredient = 1;
-    $('.selectIngredient').on('click', function (e) {
+    $(document).on('click','.selectIngredient', function () {
         var rowid = $(this).parents("tr").attr("id");
         var id = $('#' + rowid + ' td').html();
         var name = $('#' + rowid + ' td:nth-child(2)').html();
