@@ -540,9 +540,10 @@
                                 data: $(this).serialize(),
                                 dataType: "JSON",
                                 success: function(data) {
-                                    alert('ชำระเงินเสร็จสิ้น');
-                                    window.open(data.bill);
-                                    location.replace(data.url);
+                                    console.log(data);
+                                    // alert('ชำระเงินเสร็จสิ้น');
+                                    // window.open(data.bill);
+                                    // location.replace(data.url);
                                 }
                             });
                         }
@@ -557,9 +558,11 @@
                             data: $(this).serialize(),
                             dataType: "JSON",
                             success: function(data) {
-                                alert('ชำระเงินเสร็จสิ้น');;
-                                window.open(data.bill);
-                                location.replace(data.url);
+                                console.log(data);
+
+                                // alert('ชำระเงินเสร็จสิ้น');;
+                                // window.open(data.bill);
+                                // location.replace(data.url);
                             }
                         });
                     }

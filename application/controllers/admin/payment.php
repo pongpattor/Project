@@ -87,6 +87,7 @@ class payment extends CI_Controller
 
     public function insertPayment()
     {
+        $data['test'] = $_POST;
         $memberType = $this->input->post('member');
         $receiptID = $this->genIdReceipt();
         $receiptDate = date('y-m-d');
@@ -110,6 +111,7 @@ class payment extends CI_Controller
         $serviceID = $this->input->post('serviceID');
         $typePaymentID = $this->input->post('typepaymentID');
         $pricePayment = $this->input->post('pricePayment');
+        $test2 = array();
         if ($memberType == '1') {
             $dataHeadReceipt = array(
                 'RECEIPT_ID' => $receiptID,
@@ -143,7 +145,6 @@ class payment extends CI_Controller
             );
         }
         $this->crud_model->insert('receipt', $dataHeadReceipt);
-
         for ($i = 0; $i < count($receiptDetailTpyeOrder); $i++) {
             $dataReceiptDetail = array(
                 'DTREC_ID' => $receiptID,
@@ -169,7 +170,8 @@ class payment extends CI_Controller
                     'FDDTREC_PROPRICEID' => $proprice,
                 );
                 $this->crud_model->insert('receiptdetailfd', $dataReceiptDetailFD);
-            } else if ($receiptDetailTpyeOrder[$i] == '2') {
+            } 
+            else if ($receiptDetailTpyeOrder[$i] == '2') {
                 $dataReceiptDetailProset = array(
                     'PROSDTREC_ID' => $receiptID,
                     'PROSDTREC_NO' => $i + 1,
@@ -189,7 +191,8 @@ class payment extends CI_Controller
                     );
                     $this->crud_model->insert('receiptdetailprosetdetail', $dataDetailProset);
                 };
-            } else if ($receiptDetailTpyeOrder[$i] == '3') {
+            }
+            else if ($receiptDetailTpyeOrder[$i] == '3') {
                 $dataReceiptDetailKaraoke = array(
                     'KARADTREC_ID' => $receiptID,
                     'KARADTREC_NO' => $i + 1,
