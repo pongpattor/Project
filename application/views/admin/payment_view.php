@@ -181,7 +181,7 @@
                                                 ราคาสุทธิ
                                             </th>
                                             <th class="align-middle text-right">
-                                                <span id="totalShow" ></span>
+                                                <span id="totalShow"></span>
                                                 <input type="hidden" name="total" id="total" class="form-control" readonly>
                                             </th>
                                         </tr>
@@ -367,7 +367,7 @@
 
         function totalVat() {
             let total = $('#totalPrice').val();
-            let vat = parseFloat(total) / 7;
+            let vat = (parseFloat(total) / 100) * 7;
             vat = parseInt(vat).toFixed(2);
             $('#totalVat').val(vat);
             let show = formatNumber(vat);

@@ -200,7 +200,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?= site_url('admin/report/reportCrossTab') ?>">รายงานปริมาณยอดขายประจำปี</a>
                                     <a class="nav-link" href="<?= site_url('admin/report/reportAmount') ?>">รายงานยอดจำนวนการขาย</a>
-                                    <a class="nav-link" href="<?= site_url('admin/report/reportProfits') ?>">รายงานกำไร/ขาดทุนแต่ละประเภท</a>
+                                    <a class="nav-link" href="<?= site_url('admin/report/reportProfits') ?>">รายงานกำไร/ขาดทุนแต่ละเมนู</a>
                                     <a class="nav-link" href="<?= site_url('admin/report/reportAmountQueue') ?>">รายงานยอดจำนวนการจองคิว</a>
                                     <a class="nav-link" href="<?= site_url('admin/report/reportAmountPromotion') ?>">รายงานจำนวนใช้งานโปรโมชั่น</a>
 

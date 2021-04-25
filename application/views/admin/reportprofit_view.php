@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card boder-0 shadow-lg text-center">
             <div class="card-header  bg-white">
-                <h3 class="d-inline">รายงานสรุปกำไร/ขาดทุนประเภทสินค้าตามช่วงเวลา </h3>
+                <h3 class="d-inline">รายงานสรุปกำไร/ขาดทุนเมนูตามช่วงเวลา </h3>
             </div>
         </div>
     </div>
@@ -61,9 +61,10 @@
                     <div class="col-6">
                         <div class="card  shadow-lg text-center h-100">
                             <div class="card-body">
-                                <h2 class="d-inline">ประเภทอาหาร</h2>
+                                <h2 class="d-inline">อาหาร</h2>
                                 <div class="table-responsive">
-                                    <div id="foodpiechart"></div>
+                                    <!-- <div id="foodpiechart"></div> -->
+                                    <div id="foodBarChart"></div>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="foodReporttable" class="table table-bordered table-sm" cellspacing="0" width="100%">
@@ -100,9 +101,10 @@
                     <div class="col-6">
                         <div class="card shadow-lg text-center h-100">
                             <div class="card-body ">
-                                <h2 class="d-inline">ประเภทเครื่องดื่ม</h2>
+                                <h2 class="d-inline">เครื่องดื่ม</h2>
                                 <div class="table-responsive">
-                                    <div id="drinkpiechart"></div>
+                                    <!-- <div id="drinkpiechart"></div> -->
+                                    <div id="drinkBarChart"></div>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="drinkReporttable" class="table  table-bordered table-sm" cellspacing="0" width="100%">
@@ -138,80 +140,80 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         <?php if ($state == true) { ?>
+
             google.charts.load('current', {
-                'packages': ['corechart']
+                'packages': ['bar']
             });
-            google.charts.setOnLoadCallback(foodpiechart);
-            google.charts.setOnLoadCallback(drinkpiechart);
+            google.charts.setOnLoadCallback(foodBarChart);
+            google.charts.setOnLoadCallback(drinkBarChart);
 
-            function drinkpiechart() {
-
+            function foodBarChart() {
                 var data = google.visualization.arrayToDataTable([
-                    ['Task', 'ReportAmountDrink'],
-                    <?php $rowPieNo = 0;
-                    $Drink = '';
-                    foreach ($report as $rowPie) :
-                        if ($rowPie->TYPEPRODUCT_GROUP == '2') {
-                            $Drink .= "['$rowPie->PRODUCT_NAME',$rowPie->profitss]";
-                            if ($rowPieNo < (count($report) - 1)) {
-                                $Drink .= ',';
-                            }
-                            $rowPieNo++;
+                    ['สินค้า', 'กำไร/ขาดทุน'],
+                    <?php
+                    $food = '';
+                    $rowfood = 0;
+                    foreach ($report as $row) :
+                        if ($row->TYPEPRODUCT_GROUP == '1') {
+                            $food .= "['$row->PRODUCT_NAME',$row->profitss],";
+                            $rowfood++;
                         }
-                        if ($rowPieNo == 9) {
+                        if ($rowfood == 9) {
                             break;
                         }
                     endforeach;
-                    echo $Drink;
+                    echo $food;
                     ?>
                 ]);
-
                 var options = {
-                    title: 'กำไร/ขาดทุนประเภทเครื่องดื่ม'
+                    chart: {
+                        title: 'กำไร/ขาดทุน',
+                    },
+                    bars: 'vertical' // Required for Material Bar Charts.
                 };
-                document.getElementById("drinkpiechart").style.width = "100%";
-                document.getElementById("drinkpiechart").style.height = "350px";
-                var chart = new google.visualization.PieChart(document.getElementById('drinkpiechart'));
-                chart.draw(data, options);
+
+                var chart = new google.charts.Bar(document.getElementById('foodBarChart'));
+
+                chart.draw(data, google.charts.Bar.convertOptions(options));
             }
 
-            function foodpiechart() {
+            function drinkBarChart() {
                 var data = google.visualization.arrayToDataTable([
-                    ['Task', 'ReportAmountFood'],
-                    <?php $rowPieNo = 0;
-                    $Food = '';
-                    foreach ($report as $rowPie) :
-                        if ($rowPie->TYPEPRODUCT_GROUP == '1') {
-                            $Food .= "['$rowPie->PRODUCT_NAME',$rowPie->profitss]";
-                            if ($rowPieNo < (count($report) - 1)) {
-                                $Food .= ',';
-                            }
-                            $rowPieNo++;
+                    ['สินค้า', 'กำไร/ขาดทุน'],
+                    <?php
+                    $drink = '';
+                    $rowdrink = 0;
+                    foreach ($report as $row) :
+                        if ($row->TYPEPRODUCT_GROUP == '2') {
+                            $drink .= "['$row->PRODUCT_NAME',$row->profitss],";
+                            $rowdrink++;
                         }
-                        if ($rowPieNo == 9) {
+                        if ($rowdrink == 9) {
                             break;
                         }
                     endforeach;
-                    echo $Food;
-
-
+                    echo $drink;
                     ?>
                 ]);
-
                 var options = {
-                    title: 'กำไร/ขาดทุนประเภทอาหาร'
+                    chart: {
+                        title: 'กำไร/ขาดทุน',
+                    },
+                    bars: 'vertical' // Required for Material Bar Charts.
                 };
-                document.getElementById("foodpiechart").style.width = "100%";
-                document.getElementById("foodpiechart").style.height = "350px";
-                var chart = new google.visualization.PieChart(document.getElementById('foodpiechart'));
-                chart.draw(data, options);
+
+                var chart = new google.charts.Bar(document.getElementById('drinkBarChart'));
+
+                chart.draw(data, google.charts.Bar.convertOptions(options));
             }
-        <?php }  ?>
+
+        <?php } ?>
 
         $(document).ready(function() {
 

@@ -24,6 +24,7 @@ class report_model extends CI_Model
                 LEFT JOIN receiptdetailproset ON ( receiptdetail.DTREC_ID = receiptdetailproset.PROSDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailproset.PROSDTREC_NO )
                 LEFT JOIN receiptdetailprosetdetail ON ( receiptdetailproset.PROSDTREC_ID = receiptdetailprosetdetail.DPRODTREC_ID AND receiptdetailproset.PROSDTREC_NO = receiptdetailprosetdetail.DPRODTREC_NO )
                 WHERE receiptdetail.DTREC_TYPEORDER != '3'
+                AND product.PRODUCT_STATUS = '1'
                 AND (receipt.RECEIPT_DATE BETWEEN '$dateStart' AND '$dateEnd')) amtproduct
                 ON product.PRODUCT_ID = amtproduct.PRODUCT
                 GROUP BY product.PRODUCT_ID
@@ -98,6 +99,7 @@ class report_model extends CI_Model
                     GROUP BY
                         receiptdetailfd.FDDTREC_PRODUCTID 
                     ) profitstb ON product.PRODUCT_ID = profitstb.PRODUCT 
+                    WHERE product.PRODUCT_STATUS = '1'
                 GROUP BY
                     product.PRODUCT_ID
                     ORDER BY profitss DESC";
@@ -105,40 +107,6 @@ class report_model extends CI_Model
         return $query->result();
     }
 
-    // public function reportProfitDrink($dateStart, $dateEnd)
-    // {
-    //     $sql = "SELECT
-    //                 product.PRODUCT_ID,
-    //                 product.PRODUCT_NAME,
-    //                 typeproduct.TYPEPRODUCT_NAME,
-    //                 SUM( IFNULL( profitstb.profit, 0 ) ) AS profitss,
-    //                 typeproduct.TYPEPRODUCT_GROUP
-    //             FROM
-    //                 product
-    //                 JOIN typeproduct ON product.PRODUCT_TYPEPRODUCT = typeproduct.TYPEPRODUCT_ID
-    //                 LEFT JOIN (
-    //                 SELECT
-    //                     IFNULL( receiptdetailprosetdetail.DPRODTREC_PRODUCT, receiptdetailfd.FDDTREC_PRODUCTID ) AS PRODUCT,
-    //                     SUM( ( receiptdetail.DTREC_PRICEALL ) - ( receiptdetailfd.FDDTREC_COSTPRICE * receiptdetail.DTREC_AMOUNT ) ) AS profit 
-    //                 FROM
-    //                     receipt
-    //                     JOIN receiptdetail ON receipt.RECEIPT_ID = receiptdetail.DTREC_ID
-    //                     LEFT JOIN receiptdetailfd ON ( receiptdetail.DTREC_ID = receiptdetailfd.FDDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailfd.FDDTREC_NO )
-    //                     LEFT JOIN receiptdetailproset ON ( receiptdetail.DTREC_ID = receiptdetailproset.PROSDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailproset.PROSDTREC_NO )
-    //                     LEFT JOIN receiptdetailprosetdetail ON ( receiptdetailproset.PROSDTREC_ID = receiptdetailprosetdetail.DPRODTREC_ID AND receiptdetailproset.PROSDTREC_NO = receiptdetailprosetdetail.DPRODTREC_NO ) 
-    //                 WHERE
-    //                     receiptdetail.DTREC_TYPEORDER = '1' 
-    //                     AND ( receipt.RECEIPT_DATE BETWEEN '$dateStart' AND '$dateEnd' ) 
-    //                 GROUP BY
-    //                     receiptdetailfd.FDDTREC_PRODUCTID 
-    //                 ) profitstb ON product.PRODUCT_ID = profitstb.PRODUCT 
-    //                 WHERE  typeproduct.TYPEPRODUCT_GROUP = '2'
-    //             GROUP BY
-    //                 product.PRODUCT_ID
-    //                 ORDER BY profitss DESC";
-    //     $query = $this->db->query($sql);
-    //     return $query->result();
-    // }
 
     public function reportProprice($dateStart, $dateEnd)
     {
@@ -228,6 +196,7 @@ class report_model extends CI_Model
                 YEAR ( receipt.RECEIPT_DATE ) = '$year'
                 GROUP BY 	receiptdetailfd.FDDTREC_PRODUCTID,yymm
                 )rec ON rec.FDDTREC_PRODUCTID = product.PRODUCT_ID
+                WHERE product.PRODUCT_STATUS = '1'
                 GROUP BY product.PRODUCT_ID";
 
         $query = $this->db->query($sql);
