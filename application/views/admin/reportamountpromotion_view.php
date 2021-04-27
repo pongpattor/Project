@@ -164,7 +164,7 @@
                 ]);
 
                 var options = {
-                    title: 'กำไร/ขาดทุนประเภทเครื่องดื่ม'
+                    title: 'จำนวนการใช้โปรโมชั่นเซ็ท'
                 };
                 document.getElementById("prosetpiechart").style.width = "100%";
                 document.getElementById("prosetpiechart").style.height = "350px";
@@ -192,7 +192,7 @@
                 ]);
 
                 var options = {
-                    title: 'กำไร/ขาดทุนประเภทอาหาร'
+                    title: 'จำนวนการใช้โปรโมชั่นลดราคา'
                 };
                 document.getElementById("propricepiechart").style.width = "100%";
                 document.getElementById("propricepiechart").style.height = "350px";

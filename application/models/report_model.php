@@ -24,9 +24,9 @@ class report_model extends CI_Model
                 LEFT JOIN receiptdetailproset ON ( receiptdetail.DTREC_ID = receiptdetailproset.PROSDTREC_ID AND receiptdetail.DTREC_NO = receiptdetailproset.PROSDTREC_NO )
                 LEFT JOIN receiptdetailprosetdetail ON ( receiptdetailproset.PROSDTREC_ID = receiptdetailprosetdetail.DPRODTREC_ID AND receiptdetailproset.PROSDTREC_NO = receiptdetailprosetdetail.DPRODTREC_NO )
                 WHERE receiptdetail.DTREC_TYPEORDER != '3'
-                AND product.PRODUCT_STATUS = '1'
                 AND (receipt.RECEIPT_DATE BETWEEN '$dateStart' AND '$dateEnd')) amtproduct
                 ON product.PRODUCT_ID = amtproduct.PRODUCT
+                WHERE product.PRODUCT_STATUS ='1'
                 GROUP BY product.PRODUCT_ID
                 ORDER BY AllAmount $sort
                 ";
