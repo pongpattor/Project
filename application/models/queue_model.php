@@ -227,7 +227,7 @@ class queue_model extends CI_Model
         queue
         INNER JOIN queueseat ON queue.QUEUE_ID = queueseat.QS_QUEUEID
         INNER JOIN seat ON queueseat.QS_SEATID = seat.SEAT_ID
-        LEFT JOIN queuekaraoke ON queueseat.QS_SEATID = queuekaraoke.QSK_KARAOKEID 
+        LEFT JOIN queuekaraoke ON (queueseat.QS_SEATID = queuekaraoke.QSK_KARAOKEID AND queueseat.QS_QUEUEID = queuekaraoke.QSK_QUEUEID)
         WHERE
         QUEUE_ID = '$queueID'
         ";

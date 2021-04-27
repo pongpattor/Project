@@ -231,6 +231,7 @@ class service_model extends CI_Model
         $sql = "SELECT zone.ZONE_ID,zone.ZONE_NAME FROM zone
         JOIN seat ON seat.SEAT_ZONE = zone.ZONE_ID
         WHERE zone.ZONE_STATUS ='1'
+        AND seat.SEAT_STATUS = '1'
         GROUP BY zone.ZONE_ID";
         $query = $this->db->query($sql);
         return $query->result();

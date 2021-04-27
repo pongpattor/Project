@@ -392,7 +392,6 @@ class queue extends CI_Controller
                 }
             }
         }
-
         echo json_encode($data);
     }
 
