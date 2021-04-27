@@ -87,7 +87,6 @@ class payment extends CI_Controller
 
     public function insertPayment()
     {
-        $data['test'] = $_POST;
         $memberType = $this->input->post('member');
         $receiptID = $this->genIdReceipt();
         $receiptDate = date('y-m-d');
@@ -111,7 +110,6 @@ class payment extends CI_Controller
         $serviceID = $this->input->post('serviceID');
         $typePaymentID = $this->input->post('typepaymentID');
         $pricePayment = $this->input->post('pricePayment');
-        $test2 = array();
         if ($memberType == '1') {
             $dataHeadReceipt = array(
                 'RECEIPT_ID' => $receiptID,
@@ -156,7 +154,6 @@ class payment extends CI_Controller
                 'DTREC_PRICEALL' => $receiptDetailPriceAll[$i],
             );
             $this->crud_model->insert('receiptdetail', $dataReceiptDetail);
-
             if ($receiptDetailTpyeOrder[$i] == '1') {
                 $proprice = null;
                 if ($receiptDetailProprice[$i] != '' || $receiptDetailProprice[$i] != null) {
