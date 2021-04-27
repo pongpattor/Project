@@ -22,9 +22,9 @@
                                 <div class="col-sm col-md col-xl-6 ">
                                     <label>ชื่อตำแหน่ง </label>
                                     <input type="text" name="positionName" class="form-control" id="positionName" value="<?= $row->POSITION_NAME ?>" required maxlength="50">
-                                   <span id="positionNameError" style="color:red"></span>
+                                    <span id="positionNameError" style="color:red"></span>
                                     <input type="hidden" name="positionID" value="<?= $row->POSITION_ID; ?>">
-                                    <input type="hidden" name="positionNameOld"  value="<?= $row->POSITION_NAME; ?>">
+                                    <input type="hidden" name="positionNameOld" value="<?= $row->POSITION_NAME; ?>">
                                     <input type="hidden" name="positionDepartmentOld" value="<?= $row->POSITION_DEPARTMENT; ?>">
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                                                 <label class="form-check-label" for="exampleCheck13">จัดการข้อมูลรับล็อต เพิ่ม ลบ แก้ไข</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" name="permission[]" id="exampleCheck14" class="chkper"<?php if ($permission[13] == 1) {
+                                                <input type="checkbox" name="permission[]" id="exampleCheck14" class="chkper" <?php if ($permission[13] == 1) {
                                                                                                                                     echo 'checked';
                                                                                                                                 } ?>>
                                                 <label class="form-check-label" for="exampleCheck14">จัดการข้อมูลโปรโมชั่นลดราคา เพิ่ม ลบ แก้ไข</label>
@@ -182,10 +182,11 @@
                         </center>
                     </div>
                 </div>
+                <br>
             <?php endforeach; ?>
             </form>
             </div>
         </div>
     </div>
 </div>
-</div>
+<br>

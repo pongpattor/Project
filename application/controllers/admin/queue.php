@@ -89,6 +89,7 @@ class queue extends CI_Controller
         $this->load->view('admin/servicemain_view', $data);
     }
 
+
     public function selectSeat()
     {
         $date = $_POST['queueDate'];
@@ -340,7 +341,6 @@ class queue extends CI_Controller
                 'QUEUE_ACTIVE' => '2'
             );
             $this->crud_model->update('queue', $dataqueue, 'QUEUE_ID', $queueID);
-
             $serviceID = $this->genServiceID();
             $AmountCustomerE = $this->input->post('amount');
             $serviceDStart = date('Y-m-d');

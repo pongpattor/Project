@@ -170,7 +170,6 @@ class queue_model extends CI_Model
         AND QUEUE_ACTIVE = '1'
                     GROUP BY queueseat.QS_SEATID))
         AND SEAT_QUEUE = '1'
-        AND SEAT_ACTIVE = '0'
         AND SEAT_ENABLE = '1'
         AND SEAT_STATUS = '1') s
         ON zone.ZONE_ID = s.SEAT_ZONE";

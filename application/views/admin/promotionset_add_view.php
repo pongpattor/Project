@@ -125,7 +125,7 @@
                                 <center>
                                     <div class="input-group">
                                         <div class="col">
-                                            <a href="<?= site_url('admin/recipe/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
+                                            <a href="<?= site_url('admin/promotionset/'); ?>" class="btn btn-danger btn-xs" id="btn_cancel">ยกเลิก</a>
                                         </div>
                                         <div class="col">
                                             <input class="btn btn-success btn-xs" type="submit" value="  เพิ่ม  ">
