@@ -284,6 +284,8 @@
 <script>
     $(document).ready(function() {
 
+    
+
         $('#typepaymentTable').dataTable({
             "lengthMenu": [
                 [5, 10, 25, -1],
