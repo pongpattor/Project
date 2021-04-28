@@ -87,7 +87,6 @@ class kitchen_model extends CI_Model
     public function kitchenSame($typrproductGroup)
     {
 
-
         $sql = "SELECT
         dtser.PRODUCT_ID,
         dtser.PRODUCT_NAME,
@@ -146,6 +145,7 @@ class kitchen_model extends CI_Model
         sumAmount > 1 
         AND cc != 2 
     ORDER BY
+        cc DESC,
         dtser.DTSER_DATE ASC,
         dtser.DTSER_TIME ASC
         ";
