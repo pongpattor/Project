@@ -81,6 +81,23 @@
 </form>
 <script>
     $(document).ready(function() {
+
+        // $('#splitOrderForm').on('submit',function(){
+        //    var check = 0;
+        //    $('.orderSelect').each(function(){
+        //        if($('.orderSelect').prop('checked') == true){
+        //         check = 1;
+        //         return false;
+        //        }
+        //    });
+        //    if(check==0){
+        //        alert('กรุณาเลือกรายการ');
+        //        return false;
+        //    }else{
+        //        return true;
+        //    }
+        // });
+        
         $(document).on('change', '.orderAmount', function() {
             if ($(this).val() == '' || $(this).val() == null) {
                 $(this).val(1);
